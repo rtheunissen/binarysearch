@@ -5,24 +5,55 @@
     <title></title>
     <style>
 
+        html, body {
+            background-color: #ffffff;
+        }
+
         body {
             display: flex;
         }
-
         article {
+            font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+            line-height: 1.4;
             width: 100%;
             display: block;
             max-width: 900px;
             margin: 0 auto;
+            font-size: 1.1em;
+
+        }
+
+        .math, pre {
+            font-family: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
+        }
+
+        .math {
+        }
+
+        blockquote {
+
         }
 
         .indent {
             margin-left: 2em;
         }
 
+        .subscript {
+            font-size: 70%;
+            padding-left: 1px;
+            position: relative;
+            top: 0.4em;
+        }
+
         h1, h2, h3, h4, a, p, li, ul {
-            font-family: "EB Garamond";
-            font-size: 18px;
+
+        }
+
+        a {
+            color: #000;
+            display: inline-block;
+            text-underline-offset: 2px;
+            text-decoration-thickness: 2px;
         }
 
         .graphs {
@@ -36,214 +67,166 @@
             display: flex;
             flex-direction: column;
             flex: 1;
-            width: 50%;
+            padding: 20px;
+            box-sizing: border-box;
+            width: 100%;
         }
 
     </style>
+
+<!--    The guarantees we want from a data structure depend on our model of how that data structure will be used.-->
 </head>
 <body>
 <article>
 
-    <h1 id="title">Linear lists as balanced binary search trees</h1>
+    <h1 id="title">Exploring the design space of binary search trees</h1>
 
-    <p id="author">Rudi Theunissen, June 2023</p>
+    <p id="author"><Rudi Theunissen, June 2023</p>
 
     <section id="abstract">
         <p>
-            This open-source research project explores the design space of binary search trees to implement linear list data structures.
-            The balancing of binary search trees is an active, well-studied topic in computer science going back over 60 years.
-            Almost every computer science course on data structures includes some mention of binary search trees [https://sp23.datastructur.es].
-            Many tree balancing algorithms have been invented over the years, but only a few are usually found in textbooks and in practice.
+            The study of <em>binary search trees</em> is an actively-researched topic in computer science going back over 60 years, and most computer science courses on data structures still include them, including
+            <a href="http://web.stanford.edu/class/cs166/">Stanford</a>,
+            <a href="https://sp23.datastructur.es/">UC Berkeley</a>,
+            <a href="https://cs.brown.edu/courses/cs016/lectures.html">Brown</a> and
+            <a href="https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011">MIT OpenCourseware</a>.
+            Many tree algorithms have been proposed over the years, but only a few are usually found in common textbooks and in practice.
             Some algorithms are more intuitive and more efficient, but reference implementations are difficult to find and therefore difficult to teach.
-            Students often miss the opportunity to practice algorithm design because they are so distracted by seemingly arbitrary invariants and acronyms.
-            The goal of this project is to maintain a state-of-the-art binary search tree implementation reference that is easy to study and translate.
+            Students often miss the opportunity to practice algorithm design and explore creatively because they are so distracted by seemingly arbitrary invariants and acronyms.
+            <br>
+            <br>
+            The goal of this project is to produce a standard implementation reference that is easy to study and translate.
+            The work includes benchmarks, measurements, animations, and a few original contributions.
         </p>
     </section>
 
+
     <section id="table-of-contents">
-        <h2>Table of Contents</h2>
-        <pre>
-        1. Introduction
-            - Memory
-            - Linear lists
-                - List operations
-                - Dynamic arrays
-                - Linked lists
-            - Binary search trees
-                - Relative position
-                - Node structure
-                - Traversal
-                - Balance
-                - Rotations
-            - Persistence
-                - Structural sharing
-                - Immutability
-                - Parent pointers
-            - Concurrency
-                - Contention
-                - Recursion
-            - Benchmarking
-                - Access distributions
-                - Operations
-        2. Strategies to restore balance
-            - Balancing by rotation
-                - Day-Stout-Warren
-            - Balancing by recursive median partitioning
-                - Height balance
-                - Weight balance
-        3. Strategies to maintain balance
-            - Join-based implementations
-            - Rank-balanced trees
-            - Weight-balanced trees
-            - Randomly-balanced trees
-            - Self-adjusting trees
-            - Height-balanced trees
-        4. Evaluation
-            5. Measurements
-            6. Evaluation criteria
-            5. Benchmarks
-            7. Conclusions
-               Source code
-            9. Repository
-            10. Animations
-            11. Contributing
-                -. Open problems
-            - Missing proofs of correctness
-            - Complexity of balancing by median partitioning
-            - Similar analysis for set data structures
-            - Translation to another language, perhaps Rust
-            - Comparisons to other list data structures
-              Notes
-              References
-        </pre>
+        <h2></h2>
+
     </section>
 
     <section id="introduction">
-        <h2>1. Introduction</h2>
+        <h2>Introduction </h2>
 
         <section id="memory">
-            <h3>Memory</h3>
+            <h3>Abstract memory</h3>
             <p>
-                A computer program can use _memory_ to keep information while the program is running.
-                A program can allocate, access, and free individual pieces of memory as needed.
-                When some amount of memory is required, the program can ask an _allocator_ to reserve some memory and in return the allocator provides the program with an address with which to access that particular piece of memory.
-                When a program is using a lot of memory, it suggests that it has allocated a lot more memory than it has freed and is holding on to a lot of information.
+
             </p>
             <p>
-                For example, when a web browser has many tabs open at the same time, all of that contextual information must be kept in memory and can only be freed when the user starts closing some tabs.
-                All the memory that was allocated by a program is usually freed when that program exits, but during the lifetime of the program there can be many requests to allocate and free pieces of memory.
+                A computer program can use memory to keep information in hand while working on a problem.
+                When more memory is needed, the program can ask an <em>allocator</em> to reserve some and in return receive an address by which to access that particular piece of memory.
+                Memory allocated by a program is usually freed by the time the program exits, but during its lifetime there can be many requests to allocate and free individual pieces of memory.
             </p>
             <p>
-                For the sake of illustration, we can think of memory as documents stored in a massive, indexed filing cabinet.
-                To allocate memory, we can ask a clerk known as "the allocator" to reserve space in the cabinet for us, enough for some known number of documents that we intend to work with.
-                When we ask the allocator to reserve some space for us, assuming the cabinet is not full, we are provided with a number known as the _address_ which uniquely identifies that reserved space.
-                When we are done with our work, we let the allocator know that the space we reserved is now free for someone else to use and whatever documents are still stored there can be discarded.
-                The most important thing to be aware of is the capacity of the cabinet and the _cost_ of the allocator interacting with the memory.
+                We can think of memory as a collection of documents stored in a massive, physical, indexed filing cabinet.
+                To allocate memory, we can ask a clerk to reserve space in the cabinet for us, enough for some known or estimated number of documents that we intend to work with.
+                When we ask the allocator to reserve some space for us, assuming the cabinet is not full, we are provided with an index which uniquely identifies that reserved space.
+                When we are done with our work, we let the clerk know that the space we reserved is now free for someone else to use and whatever is stored there can be discarded.
             </p>
             <p>
-                The "cost" here is simply energy; in the case of the cabinet clerk that would be kinetic energy, and in the case of a computer it would be electrical energy.
-                Spending energy takes time, so we can assert that for a program to be fast it must minimize its interaction with memory.
-                A program is considered _efficient_ when it meets its requirements using only a small amount of energy relative to the complexity of the problem it solves.
+                The most important thing to be aware of is the <em>cost</em> of memory interaction, which is energy.
+                In the case of the cabinet clerk it would be kinetic energy, running around climbing ladders, and in the case of a computer it would be electrical energy.
+                A program is considered efficient when it meets its requirements using only a small amount of energy relative to the complexity of the problem.
                 Some problems can not avoid frequent interaction with memory, but an inefficient algorithm wastes energy by interacting with memory more often than it needs to.
-
+            </p>
+            <blockquote>
+                What does a program actually <em>do</em> with memory? What is meant by "information" here exactly?
+            </blockquote>
+            <p>
+                Example: find the average grade of all students in a given school, where student records are stored as one file per student.
+                A program starts by loading all the student records into memory, then looks through them all to calculate the average.
+                Along the way, the program tracks a sum of all grades to later divide by the number of records to get the average.
+                Using this approach, if there were <span class="math">N</span> students, we would need to allocate <span class="math">N</span> files in memory.
+                The memory requirements for this algorithm is therefore <em>linear</em>: if the number of students were to double, so would the number of allocations.
             </p>
             <p>
-                > What does a program actually _do_ with memory? What is meant by "information" here exactly?
-
+                There is a more efficient approach, one not so eager in the way it reads the student records into memory.
+                Instead of loading <em>all</em> the students into memory at the start of the program, the program scans the files one at a time and only allocates memory for one record.
+                As soon as we add a grade to the sum, we can overwrite the record in memory because it is no longer relevant to the calculation.
+                This algorithm requires only a <em>constant</em> amount of memory but would still be linear in time because every student record <em>must</em> be read once at some point.
+                In this case, if the number of students were to double, the algorithm would take about twice as long to run but would not require any more memory than before.
             </p>
             <p>
-                Consider a program to find the average age of all students in a school, where user data is stored in a file and every user has a date of birth as part of its data model.
-                The program works by first loading all the students into memory, then inspects every user to determine their age based on the current date and the user's date of birth.
-                Along the way, the program tracks the sum of each age and the number of students encountered.
+                Consider that a student record includes a field to specify a friend who is also a student, and that related student would also have a friend, and so forth.
+                This creates a recursive relationship between two students.
+                To avoid an infinitely describing data model, the friend field must be stored as a unique student <em>reference</em>.
+                When a program has a student record in hand and would like to know who their best friend is, it must first <em>dereference</em> that identifier to get their file in hand.
             </p>
             <p>
-                At the end of the program, it prints the age sum divided by the number of students, then exits.
-                The user data model also includes other information like name and email address.
-                For the sake of illustration, we return to filing cabinet allocator and determine that we need one sheet of paper to record the information for one user.
-                If there are N students in the school, we would need to allocate N sheets of paper to temporarily store all the user information in memory to calculate the average age.
-                This algorithm is said to have _linear complexity_ because the required amount of time and space is linear in the size of the dataset: if the number of students were to double, so would the energy requirements of the algorithm.
-            </p>
-            <p>
-                There is a more efficient approach, one not so eager in the way it reads the file where the user information is stored.
-                Instead of loading all the students into memory at the start of the program, the program scans the file one page at a time and only allocates enough working memory for one user.
-                As soon as it adds their age to the sum it can overwrite the user information with the next user from the file because it no longer needs that information.
-                This algorithm requires only a _constant_ amount of memory but would still be linear in time because every student record _must_ be read.
-                In this case, if the number of students were to double, the algorithm would take about twice as long to run but would not require any more memory than before and is therefore more efficient.
-            </p>
-            <p>
-                As a final consideration to wrap up this concept, consider that a user might have an emergency contact which is also a user, and that user would then also have an emergency contact, and so forth.
-                To avoid an infinitely described data model, the emergency contact of a user is stored not as a user but as an _address_ to a user: we call this a _reference_ or a _pointer_.
-                When a program needs to know the name of a user's emergency contact it must first _dereference_ the memory address of that user's emergency contact to get the sheet of paper containing the user information of the emergency contact.
-            </p>
-            <p>
-                With all that in mind, we do not need to concern ourselves with the business of a particular program or the inner-workings of the memory allocator in the context of this project.
-                The task at hand is to design data structures in memory that any program can use to organize information in a general way.
+                In the context of this project, we do concern ourselves with the requirements of a particular program or the inner-workings of the memory allocator.
+                The task at hand is to design structures in memory that programs can use to organize information in a general way.
             </p>
         </section>
 
         <section id="linear-lists">
             <h3>Linear lists</h3>
             <p>
-                This project explores specifically the implementation of a _list_ data type[^2]: a discrete, linear, ordered sequence.
-                Lists are found everywhere in computer programs and algorithm design.
-                Using the example from the previous section, the first algorithm organized student records as a list in memory, and the user data file from that example likely also organized the information as a list of students.
-                As long as there is enough memory available to remember the sequence, there is no conceptual limit to the size of a list.
+                This project explores specifically the implementation of dynamic and discrete ordered sequences.
+                Sequences are a fundamental data type in algorithm design and data models, for example: search results, events that occur over time, DNA.
+                This text is itself a sequence of characters that form an article which might be part of a list of posts somewhere.
+                There is no conceptual limit to the size of a list, as long as there is enough memory available to store it.
             </p>
             <p>
-                The following operations describe all the ways that a program can interact with a list, known as its programming _interface_.
-                A data structure must support every list operation to qualify as an implementation of a list.
-                As an exercise, consider how you might implement these operations using index cards to remember a sequence of words.
+                For a data structure to qualify as a list, it must support every behavior of a list.
+                A program using a structure as a list might not know exactly how it works, only that its abstract behavior is that of a list.
+                If it walks like a list and quacks like a list, then you can use it as a list.
+            </p>
+            <p>
+                The following operations describe the list data type used in this project:
             </p>
             <ul>
-                <li>`New` creates an empty list.</li>
-                <li>`Size` returns the number of values in the sequence.</li>
-                <li>`Select` reads the value at a position in the list.</li>
-                <li>`Update` writes a value at a position in the list.</li>
-                <li>`Insert` adds a new value at a position in the list, increasing the position of all values that follow.</li>
-                <li>`Delete` removes the value at a position in a list, decreasing the position of all nodes that follow.</li>
+                <li><strong>New</strong> creates an empty list.</li>
+                <li><strong>Size</strong> returns the number of values in the list.</li>
+                <li><strong>Select</strong> reads the value at a given position.</li>
+                <li><strong>Update</strong> updates a value at a given position.</li>
+                <li><strong>Insert</strong> adds a new value at a given position, pushing back all values that follow.</li>
+                <li><strong>Delete</strong> removes the value at a given position, pulling forward all values that follow.</li>
             </ul>
 
             <section id="dynamic-arrays">
                 <h4>Dynamic arrays</h4>
                 <p>
-                    Perhaps the most common computer memory implementation of lists in practice is the _dynamic array_[^3].
-                    An array is a block of contiguous memory allocated all at once and indexed directly by offset from the address of the array structure itself.
-                    The amount of memory to allocate for an array is the length of the array multiplied by the memory required for an individual value.
+                    Perhaps the most common computer memory implementation of lists in practice is the <em>dynamic array</em>[^3].
+                    An array is a block of contiguous memory allocated all at once and indexed directly by offset from the address of the block.
+                    The amount of memory to allocate for an array is the length of the array multiplied by the memory required per value.
                 </p>
                 <p>
-                    To illustrate this, we could use a sheet of grid paper to represent the allocated array where every square is a space in
-                    which a value could be stored, perhaps in this case a single character. The number of squares on the sheet is the length
-                    of the array and the number of squares with values in them is the size of the list. Given that a list is a sequence of values,
-                    there would be no gaps between each position, so starting from a blank sheet as an empty list we insert one value at a time
-                    starting in the top left corner working our way across the page and down as we start filling up the memory of the array.
+                    To illustrate this, we could use a sheet of grid paper to represent an allocated array where every square is a space in which a single character can be stored.
+                    The sheet is the array and the squares with values in them form the sequence.
+                    Given that an array is sequential and the position of a value is determined by its offset from the start of the array, there can be no gaps between values.
+                    Starting from a blank sheet as an empty list, we might insert one value at a time at the end of the sequence: from the top left corner across the page by column and down the page by row as we start filling up the memory of the array.
+                    However, nothing is stopping us from starting in the bottom right spiralling in towards the center.
                 </p>
                 <p>
-                    Arrays are particularly efficient for some list operations, but less so for others. Lookup and update, both variations of _search_,
-                    is very efficient because the memory address of a value in the list can be calculated as the address of the array plus the
-                    position of the value in question. Inserting a value at the end of the list is very efficient also: simply write into the next
-                    empty space and increment the size. However, consider what happens when a value is to be inserted somewhere _within_ the sequence.
-                    Since there are no empty spaces, a space must first be created by moving every value from that position onwards one position towards the
-                    end of the list, which is _linear_ in the size of the list. Delete is similarly inefficient, as well as split and join.
+                    We are free to organize the memory itself however we like, as long as we continue to maintain the list operations efficiently.
+                    The sequence of characters we are recording on the grid paper has semantic meaning to the program asking us to record them, but the structure is not aware of that.
+                    The structure might not know what the data means, and the program might not know how exactly the structure operates.
+                    The data structure simply qualifies as a list, and offers theoretical bounds of performance for each list operation.
                 </p>
                 <p>
-                    What makes an array _dynamic_ is the ability to increase its memory capacity by reallocating the entire sequence into a larger
-                    block of memory, copying every value from the original array to the new allocation, followed by a free of the previous allocation.
-                    Doing so is _linear_ in the size of the list but occurs infrequently enough to not consider it a major concern. Common ways to
-                    mitigate this cost is to predict accurately an upper bound of the required length, or otherwise to double the previous length
-                    whenever capacity runs out.  Insertion, expected to be efficient at the end of the list, is said to be _amortized_[^4] because the
-                    many low-cost operations make up for the infrequent large cost of reallocation. This characteristic of dynamic arrays is
-                    often used to teach amortized analysis.
+                    Arrays are particularly efficient for some list operations, but less so for others. Select and update, both variations of <em>search</em>, is very efficient because the memory address of a value in the list can be calculated by the address of the array itself plus the search position.
+                    Inserting a value at the end of the list is very efficient also: simply write into the next empty space and increment the size.
+                    However, consider what happens when a value is to be inserted somewhere <em>within</em> the sequence.
+                    Since there are no empty spaces, space must first be created by moving every value from that position one step towards the end of the list, which is <em>linear</em> in the size of the list. Delete is similarly inefficient, as well as split and join.
+                </p>
+                <p>
+                    What makes an array <em>dynamic</em> is the ability to increase its memory capacity by reallocating the entire sequence into a larger block of memory, copying every value from the original array to the new allocation.
+                    Doing so is <em>linear</em> in the size of the list but occurs infrequently enough to not be considered a major concern.
+                    Common ways to mitigate this cost is to predict an accurate upper-bound as the initial capacity to avoid reallocation entirely, or otherwise to double the previous length when capacity runs out.
+                    Insertion, expected to be efficient at the end of the list, is said to be <em>amortized</em>[^4] because the many low-cost operations make up for the infrequent large cost of reallocation.
                 </p>
             </section>
 
             <section id="linked-lists">
                 <h4>Linked lists</h4>
                 <p>
-                    Found somewhere in every textbook on algorithms and data structures is the _linked list_[^5], consisting of _nodes_
+                    Found somewhere in every textbook on algorithms and data structures is the <em>linked list</em>[^5], consisting of <em>nodes</em>
                     that each contain a value and a pointer to the next node in the sequence. The data structure itself keeps a pointer
                     to the first node of the sequence, here referred to as the "root" node, as well as a counter of the total number
-                    of linked nodes in its sequence to support the _size_ operation. The last node of the list points to nothing because there is no next
-                    value after it in the sequence. A pointer to nothing is a _null_ pointer or _nil_ in some languages.
+                    of linked nodes in its sequence to support the <em>size</em> operation. The last node of the list points to nothing because there is no next
+                    value after it in the sequence. A pointer to nothing is a <em>nil</em> pointer or <em>nil</em> in some languages.
                     To insert a new value at a position within the sequence, start at the root and follow pointers one node at a time
                     until the number of nodes encountered equals the target position. At this point, we can insert a new value by allocating
                     a new node for it, pointing the current node to that node, and the new node to the previous next node of the current node.
@@ -251,7 +234,7 @@
                     thereby removing that node from the sequence of nodes reachable from the root.
                 </p>
                 <p>
-                    Many of the operations of a linked list require that we follow a number of links equal to the target position and is therefore _linear_ in the size of the list: the number of memory interactions grows at the same rate as the size of the list.
+                    Many of the operations of a linked list require that we follow a number of links equal to the target position and is therefore <em>linear</em> in the size of the list: the number of memory interactions grows at the same rate as the size of the list.
                     The maximum path length is equal to the size of the list.
                     There is no way around this because the only way to reach a specific node is to follow the path that leads to it, starting from the root node since that is the only reference we have in hand at the start of the operation.
                     There is no need to allocate a large amount of memory all at once or to reallocate anything because memory is allocated individually for each node as needed.
@@ -282,124 +265,120 @@
                 Instead of starting the search at the front of the list, what if we started somewhere in the middle?
                 Nodes to the right of this median would point to the next node in the sequence as they did before, but nodes to the left of the median would now point in the other direction towards the front of the list.
                 Doing so reduces the maximum path length because the program would now need to walk at most about halfway.
-                To achieve this, notice that the median node now has _two_ pointers: one going left and another going right.
+                To achieve this, notice that the median node now has <em>two</em> pointers: one going left and another going right.
             </p>
             <p>
-                Applying the same strategy _recursively_ to the left and right sides of the median node produces a structure known as a _binary search tree_.
-                The initial median node is at the very top of the tree, becoming the _root_ node.
+                Applying the same strategy <em>recursively</em> to the left and right sides of the median node produces a structure known as a <em>binary search tree</em>.
+                The initial median node is at the very top of the tree, becoming the <em>root</em> node.
                 Every node now has two links, one to its left subtree and another to its right subtree.
             </p>
 
             <section id="node-structure">
                 <h4>Node structure</h4>
+                <p>
+                    Some nodes may not have a left or right subtree, suggesting that either or both links could be nil, but the pointers themselves are still there because they are part of the allocated node structure.
+                    A node that has neither a left or right subtree is called a <em>leaf</em> node.
+                </p>
                 <pre>
-                        type Node struct {
-                           l *Node
-                           r *Node
-                           s uint64
-                           x any
-                        }
+    type Node struct {
+       l *Node
+       r *Node
+       s uint64
+       x any
+    }
 
-                        00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 LEFT   |
-                        00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 RIGHT  | STRUCTURE
-                        00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 SIZE   |
-                        00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 DATA
+    00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 LEFT   |
+    00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 RIGHT  | STRUCTURE
+    00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 SIZE   |
+    00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 DATA
                     </pre>
             </section>
 
             <section id="traversal">
                 <h4>Traversal</h4>
                 <p>
-                    The fundamental rule that every node must follow is that the value of the left node exists somewhere _earlier_ in the sequence, and the value of the right node exists somewhere _after_.
+                    The fundamental rule that every node must follow is that the value of the left node exists somewhere <em>earlier</em> in the sequence, and the value of the right node exists somewhere <em>after</em>.
                     When this rule is valid at every node in the tree, we get a total linear ordering of all values even though the paths branch in two directions every time.
-                    The same sequence of the original linked list can therefore still be derived from the tree structure, making use of an _inorder tree traversal_.
+                    The same sequence of the original linked list can therefore still be derived from the tree structure, making use of an <em>inorder tree traversal</em>.
                 </p>
                 <p>
                     Starting at the root, perform a traversal of the left subtree, then produce the root, then perform a traversal of the right subtree.
                     The first node produced by this algorithm is therefore the left-most node of the tree and the last node is the right-most node.
                     To illustrate this, we can draw a binary search tree on a grid where the horizontal coordinate is the position of the node in the sequence, and the vertical coordinate is the length of the longest path.
                     Dragging a vertical line across the page from left to right will intersect the nodes in sequential order.
-                    The only address we have in hand at the start of the traversal is the root, so to get to the left-most node we need to follow along the _left spine_ of the tree first, eventually coming back up to the root before descending to the left-most node of the right subtree, and so forth.
+                    The only address we have in hand at the start of the traversal is the root, so to get to the left-most node we need to follow along the <em>left spine</em> of the tree first, eventually coming back up to the root before descending to the left-most node of the right subtree, and so forth.
                 </p>
             </section>
 
             <section id="logarithmic-path-length">
                 <h4>Logarithmic path length</h4>
                 <p>
-                    Every time we partitioned a list around its median we halved its maximum path length, and then we halved the maximum path length of each half, and so on until we reached a single node that could not be partitioned any further.
+                    Every time we partitioned a sublist around its median we halved its maximum path length, and then we halved the maximum path length of each half, and so on until we reached a single node that could not be partitioned any further.
                     The question becomes "how many times can we divide a number by 2 until we get to 1?".
-                    This is known as the _binary logarithm_[https://en.wikipedia.org/wiki/Binary_logarithm], written as log₂ and sometimes referred to as "log with base 2".
-                    If a pizza has 8 slices, we can halve it once to get 4 slices, again to get 2 slices, and one more time to get 1 slice, and therefore the binary log of 8 is 3 because we could split the pizza in half three times.
-                    The binary log function is frequently encountered in computer science and information theory because it relates so closely to binary numbers in the base 2 numeral system; numbers made up of only 1's and 0's knows as "bits".
-                    For example, the number of bits required to encode an integer `n` in binary is ⌊log₂(n)⌋ + 1.
-                    The same reasoning applies to decimal numbers: the number of digits required to represent an integer is the floor of the log with base 10, similarly the number of times we can divide a number by 10 before we get to 1.
-                    When we divide a decimal number by 10, the representation shortens by 1 digit.
-                    Similarly, when we divide a binary number by 2, the representation shortens by 1 bit.
-                    A two-way branch at every node recursively halves the maximum path length, which results in a maximum path length _logarithmic_ in the size of the list:
-                    if the size of the list doubled, the search cost increases by one. More generally, the search cost grows _much_ slower than the size of the list.
+                    This is known as the discrete <a href="https://en.wikipedia.org/wiki/Binary_logarithm">binary logarithm</a>, written as <span class="math">⌊log<span class="subscript">2</span>⌋</span>.
                 </p>
                 <p>
-                    Some nodes may not have a left or right subtree, suggesting that either or both links could be null, but the pointers themselves are still there because they are part of the allocated node structure.
-                    A node that has neither a left or right subtree is called a _leaf_ node.
+                    The discrete binary log is frequently encountered in computer science and information theory because it relates so closely to binary numbers.
+                    For example, the number of bits required to encode some integer <span class="math">N</span> in binary is <span class="math">⌊log<span class="subscript">2</span>(N)⌋+1</span>.
+                    The same reasoning applies to decimal numbers: the number of digits required to represent a decimal integer <span class="math">N</span> is <span class="math">⌊log<span class="subscript">10</span>(N)⌋</span>, or the number of times we can divide by 10 before we get to 1.
+                </p>
+                <p>
+                    When we divide a decimal number by 10, the representation shortens by 1 digit.
+                    Similarly, when we divide a binary number by 2, the representation shortens by 1 bit.
+                    A two-way branch at every node ideally halves the path length every time and is therefore <em>logarithmic</em> in the size of the list: when the size of the list doubles, the search cost only increases by one.
+                    By extension, search cost grows linearly when the list grows exponentially. This is great!
                 </p>
             </section>
 
             <section id="insert">
                 <h4>Inserting a new node into a binary tree</h4>
                 <p>
-                    Recall that inserting a value into in a dynamic array requires the program to first shift all values to the right of that position to create space for the new value.
-                    The null pointers of a binary tree is exactly these gaps, where number of null pointers in a binary tree is always one more than the number of nodes.
-                    There is a gap at the front of the sequence, in-between every value, and a gap at the end of the sequence.
-                    Inserting a node into a binary tree replaces one of these null pointers with a new leaf node, thereby occupying one of the previously existing gaps but also creating two more gaps.
-                    To illustrate this, we can draw the missing pointers on any tree that does not include them throughout this project, count them, and observe that there is always one more than the number of nodes in the tree.
+                    Recall that inserting a value into in a dynamic array requires the program to first push all values to the right of that position on step forward to create space for the new value.
+                    The nil pointers of a binary search tree are exactly these gaps already allocated, where the number of nil pointers is always one more than the number of nodes.
+                    There is a space at the front of the sequence (the nil left subtree of the left-most node), between every node, and a space at the end of the sequence (the nil right subtree of the right-most node).
+                    Inserting a node into a binary tree replaces one of these nil pointers with a new node, thereby occupying one of the existing spaces but also creating two more.
+                </p>
+                <p>
+                    To verify this, draw the empty subtrees on any binary tree that you can come up with, count them, and observe that there is always one more than the number of nodes in the tree.
                 </p>
             </section>
 
             <section id="relative-position">
                 <h4>Relative position</h4>
-
                 <p>
-                    We now have a data structure with nodes pointing to other nodes, but it is not yet clear how this operates as a list.
+                    We now have a data structure with nodes pointing to other nodes, but it is not yet clear how this operates as a sequence.
                     Traversing a linked list in search of a position is simple because every time we follow a link we count exactly +1 node.
                     To implement search by position on a binary search tree, we need to be able to count towards a position.
                     When we follow a link in either direction along the search path, we skip all the nodes of the opposite branch.
                     At the root of the tree, the first branch skips about half the nodes of the entire sequence, then the second branch skips about a quarter, then an eight, all the way down the tree until we find the node at the position we are searching for.
                 </p>
                 <p>
-                    This is known as _binary search_, which is a well-known algorithm completely independent of linked nodes and tree structures.
+                    This is known as <em>binary search</em>, which is a well-known algorithm completely independent of linked nodes and tree structures.
                     Many of us have applied this algorithm in our every-day lives perhaps without realizing it. Consider an old-school dictionary
                     or telephone directory where all the records are printed in alphabetical order. How would you search for a particular entry?
-                    If we started on the first page and searched one page at a time it would be a _linear search_, taking time proportional
+                    If we started on the first page and searched one page at a time it would be a <em>linear search</em>, taking time proportional
                     to the size of the directory. Our intuition might suggest to us that there is a smarter way to go about this, that we can achieve the
                     same result by doing less work: start somewhere in the middle of the book, perhaps not the exact median page but somewhere close to it,
-                    then determine whether the page we are looking for is before or after that page. Because the directory is _ordered_,
+                    then determine whether the page we are looking for is before or after that page. Because the directory is <em>ordered</em>,
                     we know that we can reject either the left or right half entirely. Repeating this step on the resulting half once again
                     divides the search space again in half, until eventually we close in on the page we are looking for.
+                </p>
+                <p>
                     To implement binary search, we need to determine whether to branch to the left or the right; do we reject the left half or the right half?
+                    In the context of a list implementation, this determination requires some <em>comparison by position</em> to either seek further forward or backward in the sequence, relative to the current node.
+                    With linked lists, we tracked the current search position by counting every node one at a time, but a binary search tree can skip <em>multiple</em> nodes at a time.
+                    To apply a similar counting strategy to binary trees, we need to know the number of nodes in the left subtree: if we were to reject all the nodes of the left subtree, would we skip too far ahead?
                 </p>
                 <p>
-                    In the context of a list implementation, this determination requires some _comparison by position_, for which we do not yet have the required information.
-                    In the case of a linear search, we tracked the current search position by counting nodes one at a time, but a binary search tree can skip _multiple_ nodes at a time.
-                    To apply a similar counting strategy we need to know how many nodes are in the left subtree: if we were to reject all the nodes of the left subtree, would we skip too far ahead in the sequence?
-                </p>
-                <p>
-                    We can follow this algorithm to search by position:
-                </p>
-                    <pre>
-        If the position we are searching for is equal to the number of nodes in the left subtree, we have found the node we were looking for because skipping all the nodes of the left subtree would skip ahead to exactly this position in the sequence.
-        Otherwise, if the position is greater than the size of the left subtree, we know that we can reject the entire left subtree because even if we skipped all those nodes we would still need to skip further ahead in the sequence, and therefore the node we are looking for must be somewhere in the right subtree.
-        In this case, reduce the search position by one plus the size of the left subtree and follow the link to the right to continue the search.
-        Otherwise, the position is still less than the size of the left subtree, suggesting that we need to seek towards the front of the list because our current position is still too far ahead in the sequence.
-        In this case, follow the link to the left and continue the search.
-                    </pre>
-                <p>
-                    This brings us to the root of our first problem: how can we know the relative position of the current node?
-                    We previously structured a binary tree from an existing linked list by choosing the exact median at every step, but binary search does not have such a strict requirement to be effective.
+                    We previously structured a binary tree from an existing linked list by choosing the exact median at every step, but binary search does not have such a strict requirement.
                     Even a somewhat poor approximation of the median might only increase the search cost by a few steps.
-                    Therefore, we must accept that the current node along the search path might not be the exact median of its subtree, and therefore we can not know its position unless we record that information somewhere.
+                    Therefore, we can assert the current node along the search path might not be the exact median of its subtree, and therefore we can not know its position unless we record that information as part of the structure.
                 </p>
                 <p>
-                    Perhaps the most common approach to solve this is to store in every node the size of that subtree. [https://en.wikipedia.org/wiki/Order_statistic_tree] [340 Chapter 14 Augmenting Data Structures CLRS].
+                    How should we track the size of the left subtree?
+                </p>
+                <p>
+                    Perhaps the most common approach to solve this is to store in every node the size of that subtree. [https://en.wikipedia.org/wiki/Order<em>statistic</em>tree] [340 Chapter 14 Augmenting Data Structures CLRS].
                     Inserting a new node requires that we then increment the size field of every node along the search path because the new node that will eventually be
                     attached at the bottom of the tree would be a common descendant, thereby increasing each of their size by 1.
                     To determine the relative position of a node we can dereference its left link to read the size field of that node, wherein lies a fundamental weakness:
@@ -408,7 +387,7 @@
                 </p>
                 <p>
                     We could instead store in each node the size of its left subtree specifically, as suggested by Knuth in [] and Crane in [].
-                    Keeping a separate _size_ field in the tree alongside the reference to the root node allows us to track the current subtree size at each step along the search path.
+                    Keeping a separate <em>size</em> field in the tree alongside the reference to the root node allows us to track the current subtree size at each step along the search path.
                     The size of the right subtree can be calculated as needed as the size of the subtree minus the known size of the left subtree, minus one.
                     This approach allows us to know the subtree sizes of both the left and right nodes without the need to dereference either of them.
                     Insertion then only increments the size field of a node when branching to the left because inserting to the right would
@@ -430,27 +409,30 @@
                     This last approach is rare but not unheard of.
                     In 2004, Jörg Schmücker proposed a list implementation using this exact approach to the Apache Commons Collections library in 2004 [https://markmail.org/message/43ux2i3rbsigtotu?q=TreeList+list:org%2Eapache%2Ecommons%2Edev/&page=4#query:TreeList%20list%3Aorg.apache.commons.dev%2F+page:4+mid:mv2nw4ajw2kywmku+state:results],
                     which is still part of the main branch at the time of this writing [https://github.com/apache/commons-collections/blob/3a5c5c2838d0dacbed2722c4f860d36d0c32f325/src/main/java/org/apache/commons/collections4/list/TreeList.java].
+
+                </p>
+                <p>
                     In 1997, in section 6.3 of [Randomized Binary Search Trees], Martinez and Roura describe the use of an "orientation bit" in every node to indicate which of the two subtrees the size field is referring to.
-                    They suggest to flip the orientation at every step along the search path as needed to always store the size of the subtree _not_ increasing in size, thereby leaving behind valid size information in the wake of a failure.
+                    They suggest to flip the orientation at every step along the search path as needed to always store the size of the subtree <em>not</em> increasing in size, thereby leaving behind valid size information in the wake of a failure.
                     Leonor Frias Moya used the bit-orientation technique in [].
                 </p>
                 <p>
-                    This project uses the approach where every node consistently stores the size of its left subtree:
+                    This project uses the approach where every node stores the size of its left subtree:
                 </p>
                 <ul>
-                    <li>No need to dereference a node to know the size of its subtree.</li>
+                    <li>No need to dereference a node to know its size.</li>
                     <li>No need to consider whether a node is a left or right link.</li>
                     <li>No need to adjust the size field of a node when branching to the right.</li>
                 </ul>
                 <p>
-                    The following illustration shows a binary search tree where every node is annotated with the size of its left subtree, followed by a function that implements the search algorithm described above.
+                    We can now follow this algorithm to search by relative position:
                 </p>
 
-                ??
                 <pre>
-        // `p` is the current node along the search path.
-        // `i` is the current search position, also the distance from the result.
-        func lookup(p *Node, i uint64) *Node {
+        p : pointer along the search path
+        i : search position, also distance
+
+        func search(p *Node, i uint64) *Node {
            for {
               if i == p.s {
                  return p
@@ -464,26 +446,34 @@
            }
         }
                 </pre>
+                <p>
+                    When the position we are searching for is equal to the number of nodes in the left subtree, we have found the node we were looking.
+                    Skipping all the nodes of the left subtree would skip ahead to exactly this position in the sequence.
+                    Otherwise, the position is less than the size of the left subtree, we need to seek towards the front of the list because our current position is still too far ahead in the sequence.
+                    In this case, follow the link to the left and continue the search.
+                    Otherwise, if the position is greater than the size of the left subtree, we know that we can reject the entire left subtree because even if we skipped all those nodes we would still need to seek further ahead in the sequence, and therefore the node we are looking for must be somewhere in the right subtree.
+                    In this case, reduce the search position by the size of the left subtree, including the current node, then descend to the right to continue the search.
+                </p>
             </section>
         </section>
 
         <section id="persistence">
             <h3>Persistence</h3>
             <p>
-                A _persistent data structure_ can create many independent versions of itself over time, where changes in a future version would not be visible to a program still referencing an older version.
+                A <em>persistent data structure</em> can create many independent versions of itself over time, where changes in a future version would not be visible to a program still referencing an older version.
                 Persistence adds the dimension of time as a history, where any version can still be modified to create new versions from that point in time without affecting other versions.
                 A program can preserve the current state by first allocating a duplicate structure before making changes, thereby producing a new version entirely.
-                For this to be efficient, a data structure must be _cheap to copy_ and implicitly share memory between versions over time.
+                For this to be efficient, a data structure must be <em>cheap to copy</em> and implicitly share memory between versions over time.
             </p>
 
-            https://en.wikipedia.org/wiki/Persistent_data_structure
+            https://en.wikipedia.org/wiki/Persistent<em>data</em>structure
 
             <section id="reference-counting">
                 <h4>Reference counting</h4>
                 <p>
                     To avoid copying all the nodes when copying a tree, we allow trees to share common subtrees in memory over time.
                     Sme tree far in the future might still point to a node that was allocated in a much earlier version.
-                    We need to keep track of these references, so we store in every node a _reference count_ indicating the number of other trees that also reference that node.
+                    We need to keep track of these references, so we store in every node a <em>reference count</em> indicating the number of other trees that also reference that node.
                     When the reference count of a node is zero, it suggests that no other trees are aware of that node, so the program can modify it without the need to copy it first.
                     No copying will occur and all modifications will be in-place if a tree never shares a node with another tree.
                     When the reference count of a node is greater than zero, it suggests that another tree has a dependency on it.
@@ -512,14 +502,14 @@
                     Every node has a unique path from the root, so for any operation we can mark the nodes that would need to be modified and trace their paths back up to the root;
                     it is these paths that would need to be copied so that they all belong to the same, new version of the tree that includes those modifications.
                 </p>
-                https://en.wikipedia.org/wiki/Persistent_data_structure#:~:text=in%20the%20array.-,Path%20copying,-%5Bedit%5D
+                https://en.wikipedia.org/wiki/Persistent<em>data</em>structure#:~:text=in%20the%20array.-,Path%20copying,-%5Bedit%5D
             </section>
 
 
             <section id="parent-pointers">
                 <h4>Parent pointers</h4>
                 <p>
-                    Many implementations of binary search tree algorithms involve one additional pointer: the _parent_ pointer, pointing back up to the node that points to it.
+                    Many implementations of binary search tree algorithms involve one additional pointer: the <em>parent</em> pointer, pointing back up to the node that points to it.
                     Path copying requires that _during an operation, all paths that lead to a modification must be copied_, but with parent pointers all paths lead to all nodes.
                     Parent pointers create cycles between nodes, which is not compatible with path-copying and therefore not part of the node structure used in this project.
                     Avoiding parent pointers also saves on memory interaction because there are fewer pointer relationships to maintain, and no need to allocate space for the pointer in the node structure.
@@ -530,11 +520,11 @@
         <section id="concurrency">
             <h3>Concurrency</h3>
             <p>
-                A data structure that supports _concurrency_ provides in some way the ability to run multiple operations at the same time.
-                This is not exactly _parallelism_, which is where the work of a single operation is divided up and worked on concurrently, together towards the same outcome.
+                A data structure that supports <em>concurrency</em> provides in some way the ability to run multiple operations at the same time.
+                This is not exactly <em>parallelism</em>, which is where the work of a single operation is divided up and worked on concurrently, together towards the same outcome.
                 Concurrency, for example, is where an operation to insert a new value does not prevent another similar operation from starting before the previous one ends.
                 To illustrate this idea on a binary search tree, imagine two insert operations starting at the same time.
-                One of these operations must win the race to the root node, and the other operation must wait in line right behind it: this is called _contention_.
+                One of these operations must win the race to the root node, and the other operation must wait in line right behind it: this is called <em>contention</em>.
                 The first insert operation must branch to the left of the root, so it increments the size of the left subtree and follows the left link, never to be seen again.
                 The second operation is clear to operate on the root node as soon as the first operation follows that left link:
                 if it too must branch left then it will likely be blocked by the first operation again, but if the second operation branches to the right then these two operations are forever independent.
@@ -544,7 +534,7 @@
             <section id="recursion">
                 <h4>Recursion</h4>
                 <p>
-                    Binary tree algorithms often use _recursion_ to implement operations as two phases: (1) a search phase downward from the root, and (2) a maintenance phase upward towards the root.
+                    Binary tree algorithms often use <em>recursion</em> to implement operations as two phases: (1) a search phase downward from the root, and (2) a maintenance phase upward towards the root.
                     A blocking operation would need to wait for the algorithm to go all the way down, then come all the way back up to make final adjustments.
                     For this reason, we choose whenever possible, to implement algorithms as one iterative top-down phase, combining the search and maintenance phases into one.
                     Recursive implementations are still valuable because they help us to learn the algorithms and verify the iterative solutions.
@@ -559,7 +549,7 @@
         <h2>2. Strategies to restore balance</h2>
         <p>
             Consider then what would happen to the structure of the tree if we repeatedly inserted many nodes at the end of the sequence.
-            Eventually, the tree structure becomes _unbalanced_, where too many branches are too far from the median of their sequence.
+            Eventually, the tree structure becomes <em>unbalanced</em>, where too many branches are too far from the median of their sequence.
             Starting from an empty tree, always inserting at the end of the sequence would create precisely a linked list.
             Over time, even a perfectly balanced tree might become unbalanced when nodes are inserted, deleted, split, and joined.
         </p>
@@ -583,7 +573,7 @@
             Keep in mind that a node only keeps pointers to other nodes, not the nodes themselves, so to get the information of another node we need first retrieve it from memory.
             Every time the program follows a link from one node to another, it must interact with memory to dereference that next node.
             Generally, a tree search uses less energy when there are fewer links to follow per search.
-            Balance is therefore a measure of low _average path length_: on average, how many links would a program need to follow?
+            Balance is therefore a measure of low <em>average path length</em>: on average, how many links would a program need to follow?
             The path length of a node is the number of links to reach it from the root.
             The average path length is the sum of all path lengths divided by the size of the tree.
         </p>
@@ -596,7 +586,7 @@
         <section id="rotations">
             <h3>Rotations</h3>
             <p>
-                A tree _rotation_ is a minor local branch adjustment that changes the path lengths of some nodes without changing their order.
+                A tree <em>rotation</em> is a minor local branch adjustment that changes the path lengths of some nodes without changing their order.
                 Consider the three of nodes in 1 and the transformation required to form the tree in 2:
                 move (c) up from the right, pushing (a) down to the left, dragging (d) along with it, and (b) moves across.
                 The transformation from 2 to 3 is similar:
@@ -629,7 +619,7 @@
             <h3>Partitioning</h3>
             <p>
                 In 1980, Stephenson [] presented an algorithm to always insert a new node at the root of the tree by splitting the tree in two: nodes that occur before the new node and nodes that occur after, then setting those two trees as the left and right subtrees of the new node.
-                A variation of this algorithm is called _partition_, which moves the node at a given position to the root of its tree in a single top-down pass:
+                A variation of this algorithm is called <em>partition</em>, which moves the node at a given position to the root of its tree in a single top-down pass:
             </p>
             <pre>
       Allocate two nodes, L and R.
@@ -690,13 +680,13 @@
             <h3>Median balance</h3>
 
             <p>Definition:<br>
-                <span class="indent">A node is **median-balanced** if the _size_ of its left and right subtrees differ by no more than 1.</span>
+                <span class="indent">A node is **median-balanced** if the <em>size</em> of its left and right subtrees differ by no more than 1.</span>
             </p>
             <p>Definition:<br>
                 <span class="indent">A tree is median-balanced if all of its nodes are median-balanced.</span>
             </p>
             <p>
-                More recently in 2017, Ivo Muusse published an algorithm for balancing a binary search tree [] that uses _partition_ to replace every node by the median of its subtree.
+                More recently in 2017, Ivo Muusse published an algorithm for balancing a binary search tree [] that uses <em>partition</em> to replace every node by the median of its subtree.
                 Consider a node of size 100 at position 10, suggesting a left subtree size of 10.
                 The median node is at position 50, so the algorithm moves that node to the top to replace the original node, which is now somewhere in the left subtree.
                 The number of nodes is now evenly distributed between the left and right subtrees, but there might be nodes within those subtrees that are not balanced.
@@ -759,13 +749,13 @@
                 The median-balancing strategy would partition at (b) to make (c) the root, but the average path length stays the same.
                 This partitioning step is therefore work that is not productive because balance did not improve.
                 We can continue to use the same partition-based balancing algorithm, but the definition of balance must change to only partition if the node is not already height-balanced.
-                Any node that is _not_ height-balanced is partitioned to become median-balanced, which results in a height-balanced tree.
+                Any node that is <em>not</em> height-balanced is partitioned to become median-balanced, which results in a height-balanced tree.
                 The problem to solve is then <mark>to determine whether a node is height-balanced using only the size of its left and right subtrees</mark>.
             </p>
             <p>
                 Muusse solves this in []: pretend that both subtrees are already strictly height-balanced, then compare their minimum and maximum heights.
                 When a tree is height-balanced, all the layers are of the tree are full except for maybe the bottom level, where some gaps might exist.
-                The bottom level of the larger subtree gets completed with _ceil_, and the bottom level of the smaller subtree gets emptied with _floor_.
+                The bottom level of the larger subtree gets completed with <em>ceil</em>, and the bottom level of the smaller subtree gets emptied with <em>floor</em>.
                 By comparing these heights we can determine if the height difference is greater than 1:
             </p>
             <pre>
@@ -779,7 +769,7 @@
             </pre>
             <p>
                 This function, as presented above and by Muusse in [], can be simplified using an identity of log₂ where `⌈log₂(x+1)⌉ ≡ ⌊log₂(x)⌋+1` [].
-                The result is the same whether you complete the bottom level with _ceil_, or empty the bottom level with _floor_ and add 1.
+                The result is the same whether you complete the bottom level with <em>ceil</em>, or empty the bottom level with <em>floor</em> and add 1.
             </p>
             <pre>
       HeightBalanced(x,y) := ⌊log₂(x)⌋ - ⌊log₂(y+1)⌋ ≤ 0
@@ -849,7 +839,7 @@
             <p>
                 Another consideration is to keep the size of each subtree within a constant factor of the other.
                 For example, we might consider a node to be balanced if the size of one subtree is no more than twice that of the other.
-                This strategy is commonly known as _weight balancing_, originally invented as "trees of bounded balance" in 1980 [] ??
+                This strategy is commonly known as <em>weight balancing</em>, originally invented as "trees of bounded balance" in 1980 [] ??
                 In 2001, Roura presented a variant of weight balance that directly considers the logarithm of the subtree size.
             </p>
             <p>Definition:<br>
@@ -890,10 +880,10 @@
                 At each increment, a random tree is balanced independently by each definition, then measured to capture: (1) partition count, (2) partition depth, (3) path length, and (4) time taken.
             </p>
             <div class="graphs">
-                <img src="benchmarks/svg/balancers/Balance/Partition/Uniform/PartitionCount__sbezier__lines.svg">
-                <img src="benchmarks/svg/balancers/Balance/Partition/Uniform/PartitionDepth__sbezier__lines.svg">
-                <img src="benchmarks/svg/balancers/Balance/Partition/Uniform/AveragePathLength__unique__dots.svg">
-                <img src="benchmarks/svg/balancers/Balance/Partition/Uniform/MaximumPathLength__unique__dots.svg">
+                <img src="benchmarks/svg/balancers/Balance/Partition/Uniform/PartitionCount<em>_sbezier_</em>lines.svg">
+                <img src="benchmarks/svg/balancers/Balance/Partition/Uniform/PartitionDepth<em>_sbezier_</em>lines.svg">
+                <img src="benchmarks/svg/balancers/Balance/Partition/Uniform/AveragePathLength<em>_unique_</em>dots.svg">
+                <img src="benchmarks/svg/balancers/Balance/Partition/Uniform/MaximumPathLength<em>_unique_</em>dots.svg">
             </div>
             <p>
                 Observations on balancing random trees by partition:
@@ -918,17 +908,71 @@
         <h2>3. Strategies to maintain balance over time</h2>
         <p>
             Restoring balance to an existing tree is useful but expensive — the entire tree must be traversed.
-            There is also the question of _when_ exactly to perform such a balancing operation, to avoid balancing too often or not often enough.
+            There is also the question of <em>when</em> exactly to perform such a balancing operation, to avoid balancing too often or not often enough.
             Consider instead of either balancing the entire tree or not at all, to balance incrementally and thereby distribute the cost of balancing.
             During an update, an algorithm can make structural changes along the path to maintain balance over time.
             Some strategies make structural changes all over the place, while others are more selective.
             A valid balancing algorithm guarantees that the tree is always left in a balanced state.
-            A program can then _know_ that a given tree is balanced because it is always balanced.
+            A program can then <em>know</em> that a given tree is balanced because it is always balanced.
         </p>
 
-        https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree
+        https://en.wikipedia.org/wiki/Self-balancing<em>binary_search</em>tree
 
     </section>
+    <pre>
+        1. Introduction
+            - Giving semantic meaning to abstract memory
+            - Linear lists
+                - List operations
+                - Dynamic arrays
+                - Linked lists
+            - Binary search trees
+                - Relative position
+                - Node structure
+                - Traversal
+                - Balance
+                - Rotations
+            - Persistence
+                - Structural sharing
+                - Immutability
+                - Parent pointers
+            - Concurrency
+                - Contention
+                - Recursion
+            - Benchmarking
+                - Access distributions
+                - Operations
+        2. Strategies to restore balance
+            - Balancing by rotation
+                - Day-Stout-Warren
+            - Balancing by recursive median partitioning
+                - Height balance
+                - Weight balance
+        3. Strategies to maintain balance
+            - Join-based implementations
+            - Rank-balanced trees
+            - Weight-balanced trees
+            - Randomly-balanced trees
+            - Self-adjusting trees
+            - Height-balanced trees
+        4. Evaluation
+            5. Measurements
+            6. Evaluation criteria
+            5. Benchmarks
+            7. Conclusions
+               Source code
+            9. Repository
+            10. Animations
+            11. Contributing
+                -. Open problems
+            - Missing proofs of correctness
+            - Complexity of balancing by median partitioning
+            - Similar analysis for set data structures
+            - Translation to another language, perhaps Rust
+            - Comparisons to other list data structures
+              Notes
+              References
+        </pre>
 </article>
 </body>
 </html>
