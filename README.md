@@ -2,6 +2,8 @@
 
 `make test`
 
+`make coverage`
+
 `make animation`
 
 `make plot -j`
