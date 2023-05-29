@@ -1,0 +1,9 @@
+services:
+  shell:
+    network_mode: 'host'
+    build:
+      context: .
+    working_dir: /project
+    command: /bin/sh
+    volumes:
+      - ./:/project

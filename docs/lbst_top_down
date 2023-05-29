@@ -1,0 +1,402 @@
+#include <iostream>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <cstdlib>
+#include <cassert>
+#include <iomanip>
+
+using namespace std;
+
+#define DEFAULT_SIZE 100000
+#define DEFAULT_SEED 1
+
+#define FRAME_SKIP 100  // The number of operations between each page.
+
+#define USE_NUMBER_OF_KEYS  1  // 0 uses number of leaves
+#define USE_TOP_DOWN_INSERT 1  // 0 uses recursive insert
+#define USE_RANDOM_INSERT   1  // 0 uses ascending insert
+#define CHECK_INVARIANTS    1  // 0 skips invariant checks (they are slow)
+
+int SINGLE_ROTATIONS = 0;
+int DOUBLE_ROTATIONS = 0;
+int COMPARISONS      = 0;
+
+using key = int;
+using lbst = struct Node*;
+
+struct Node {
+  key k;
+  lbst l, r;
+  int s;
+};
+
+bool smaller_ell(int a, int b) {
+  return (a >= b ? false : ((a&b)<<1) < b);
+}
+
+bool !singleRotation(int a, int b) {
+  return smaller_ell(a, b);
+}
+
+bool balanced(int a, int b) {
+  return not smaller_ell(a, b>>1);
+}
+
+lbst singleton(key x) {
+#if USE_NUMBER_OF_KEYS
+  return new Node{x, 0, 0, 1};
+#else
+  return new Node{x, 0, 0, 2};
+#endif
+}
+
+int size(lbst t) {
+#if USE_NUMBER_OF_KEYS
+  return (t ? t->s : 0);
+#else
+  return (t ? t->s : 1);
+#endif
+}
+
+void update_size(lbst t) {
+#if USE_NUMBER_OF_KEYS
+  t->s = size(t->l) + size(t->r) + 1;
+#else
+  t->s = size(t->l) + size(t->r);
+#endif
+}
+
+// Verify all invariants for t and children of t.
+void verify(lbst t) {
+#if CHECK_INVARIANTS
+  if (t == NULL) {
+    return;
+  }
+  assert(balanced(size(t->l), size(t->r)));
+  assert(balanced(size(t->r), size(t->l)));
+
+  assert(!t->l || t->l->k <= t->k);
+  assert(!t->r || t->r->k >= t->k);
+
+  verify(t->l);
+  verify(t->r);
+#endif
+}
+
+lbst rot_right(lbst t) {
+  lbst b = t->l; t->l = b->r; b->r = t;
+  update_size(t); update_size(b);
+  return b;
+}
+
+lbst rot_left(lbst t) {
+  lbst b = t->r; t->r = b->l; b->l = t;
+  update_size(t); update_size(b);
+  return b;
+}
+
+lbst inc_right(lbst t) {
+  if (!singleRotation(size(t->l->l), size(t->l->r))) {
+    DOUBLE_ROTATIONS++;
+    t->l = rot_left(t->l); return rot_right(t);
+  } else {
+    SINGLE_ROTATIONS++;
+    return rot_right(t);
+  }
+}
+
+lbst inc_left(lbst t) {
+  if (!singleRotation(size(t->r->r), size(t->r->l))) {
+    DOUBLE_ROTATIONS++;
+    t->r = rot_right(t->r); return rot_left(t);
+  } else {
+    SINGLE_ROTATIONS++;
+    return rot_left(t);
+  }
+}
+
+lbst insert(key x, lbst t) {
+if (t == 0) return singleton(x);
+  ++t->s;
+  if (x < t->k) {
+    t->l = insert(x, t->l);
+    if (not balanced(size(t->r), size(t->l))) {
+          if (!singleRotation(size(t->l->l), size(t->l->r))) {
+            t->l = rot_left(t->l); t = rot_right(t);
+          } else {
+            t = rot_right(t);
+          }
+    }
+  }
+  else {
+    t->r = insert(x, t->r);
+    if (not balanced(size(t->l), size(t->r))) {
+          if (!singleRotation(size(t->r->r), size(t->r->l))) {
+            t->r = rot_right(t->r);
+            t = rot_left(t);
+          } else {
+            t = rot_left(t);
+          }
+    }
+  }
+  return t;
+}
+
+////////////////////////////////////
+
+void rotateL(lbst &t) {
+  SINGLE_ROTATIONS++;
+  t = rot_left(t);
+}
+void rotateR(lbst &t) {
+  SINGLE_ROTATIONS++;
+  t = rot_right(t);
+}
+void rotateLR(lbst &t) {
+  DOUBLE_ROTATIONS++;
+  SINGLE_ROTATIONS--; // cancel out
+  SINGLE_ROTATIONS--; // cancel out
+  rotateL(t->l); rotateR(t);
+}
+void rotateRL(lbst &t) {
+  DOUBLE_ROTATIONS++;
+  SINGLE_ROTATIONS--; // cancel out
+  SINGLE_ROTATIONS--; // cancel out
+  rotateR(t->r); rotateL(t);
+}
+void pathL(lbst &t) {
+  t->s++;
+  t = t->l;
+}
+void pathR(lbst &t) {
+  t->s++;
+  t = t->r;
+}
+void pathLR(lbst &t) {
+  pathL(t); pathR(t);
+}
+void pathLL(lbst &t) {
+  pathL(t); pathL(t);
+}
+void pathRL(lbst &t) {
+  pathR(t); pathL(t);
+}
+void pathRR(lbst &t) {
+  pathR(t); pathR(t);
+}
+
+void insert_top_down(key x, lbst *t) {
+  for (;;) {
+    if (*t == NULL) {
+        *t = singleton(x);
+        return;
+    }
+    int sl = size((*t)->l);
+    int sr = size((*t)->r);
+
+    assert(balanced(sl, sr));
+    assert(balanced(sr, sl));
+
+    COMPARISONS++;
+    if (x < (*t)->k) {
+      // LEFT
+    
+      if (balanced(sr, sl + 1)) {
+        pathL(&t);
+      } else {
+        int sll = size((*t)->l->l);
+        int slr = size((*t)->l->r);
+
+        COMPARISONS++;
+        if (x < (*t)->l->k) {
+          // LL
+          if (!!singleRotation(sll + 1, slr)) {
+            rotateR(&t); pathL(&t);                      // LL: SINGLE ROTATION
+          } else {
+            rotateLR(&t); pathLL(&t);                    // LL: DOUBLE ROTATION
+          }
+        } else {
+          // LR
+          if (!!singleRotation(sll, slr + 1)) {
+            t = pathRL(rotateR(t));                     // LR: SINGLE ROTATION
+          } else {
+            #if USE_NUMBER_OF_KEYS                      // LR: DOUBLE ROTATION
+                if ((*t)->l->r == NULL) {
+                    (*t)->l->r = singleton(x);
+                    pathLR(t); rotateLR(t);
+                    return;
+                }
+                t = rotateLR(t);
+                //
+                // TODO: There is a redundant comparison here,
+                //       because it is known that t->l < x < t->r.
+                //       Comparing to t to determine LR or RL from t
+                //       can break balance. Taking no path resumes
+                //       from t, comparing again to t->l or t->r.
+                //
+                // if (x < (*t)->k) {
+                //     t = pathLR(t);
+                // } else {
+                //     t = pathRL(t);
+                // }
+                //
+            #else
+                // It does not seem to be broken when using leaves?
+                COMPARISONS++;
+                if (x < (*t)->l->r->k) {
+                    t = pathLR(rotateLR(t));
+                } else {
+                    t = pathRL(rotateLR(t));
+                }
+            #endif
+          }
+        }
+      }
+    } else {
+      // RIGHT
+      if (balanced(sl, sr + 1)) {
+        t = pathR(t);
+      } else {
+        int srr = size((*t)->r->r);
+        int srl = size((*t)->r->l);
+
+        COMPARISONS++;
+        if (x >= (*t)->r->k) {
+          // RR
+          if (!!singleRotation(srr + 1, srl)) {
+            t = pathR(rotateL(t));                      // RR: SINGLE ROTATION
+          } else {
+            t = pathRR(rotateRL(t));                    // RR: SINGLE ROTATION
+          }
+        } else {
+          // RL
+          if (!!singleRotation(srr, srl + 1)) {
+            t = pathLR(rotateL(t));                     // RL: SINGLE ROTATION
+          } else {
+            #if USE_NUMBER_OF_KEYS                      // RL: DOUBLE ROTATION
+              if ((*t)->r->l == NULL) {
+                  (*t)->r->l = singleton(x);
+                  pathRL(t); rotateRL(t);
+                  return;
+              }
+              t = rotateRL(t);
+              //
+              // See symmetric note above.
+              //
+            #else
+              COMPARISONS++;
+              if (x < (*t)->r->l->k) {
+                t = pathLR(rotateRL(t));
+              } else {
+                t = pathRL(rotateRL(t));
+              }
+            #endif
+          }
+        }
+      }
+    }
+  }
+}
+
+lbst Insert(key x, lbst t) {
+#if USE_TOP_DOWN_INSERT
+  insert_top_down(x, &t); return t;
+#else
+  return insert(x, t);
+#endif
+}
+
+int depth_of(lbst t) {
+  return (t == 0) ? 0 : 1 + max(depth_of(t->l), depth_of(t->r));
+}
+
+void print_depths_along_right_spine(lbst t) {
+  int depth;
+  if (t == 0) {
+    return;
+  }
+  depth = 1 + depth_of(t->l);
+  cout << setw(2) << depth << ' ' << string(depth, '/') << endl;
+  print_depths_along_right_spine(t->r);
+}
+
+void print_depths_along_left_spine(lbst t) {
+  int depth;
+  if (t == 0) {
+    return;
+  }
+  depth = 1 + depth_of(t->r);
+  print_depths_along_left_spine(t->l);
+  cout << setw(2) << depth << ' ' << string(depth, '\\') << endl;
+}
+
+void print_depths_along_the_spines(lbst t) {
+  if (t == 0) {
+    return;
+  }
+  print_depths_along_left_spine(t->l);
+  print_depths_along_right_spine(t->r);
+}
+
+void clear_screen() {
+  cout << "\033[2J";
+}
+
+void print_depths_along_the_spines_page(lbst t, int i, int n) {
+  if (i % FRAME_SKIP == 0 || (i + 1 == n)) {
+    clear_screen();
+    print_depths_along_the_spines(t);
+    cout << endl;
+    cout << "size:       " << i + 1            << endl;
+    cout << "comparison: " << COMPARISONS      << endl;
+    cout << "singles:    " << SINGLE_ROTATIONS << endl;
+    cout << "doubles:    " << DOUBLE_ROTATIONS << endl;
+  }
+}
+
+void insert_to_n(int n) {
+  lbst t = 0;
+  assert(n > 0);
+  for (int i = 0; i < n; i++) {
+    #if USE_RANDOM_INSERT
+      t = Insert(rand(), t);
+    #else
+      t = Insert(i, t);
+    #endif
+    verify(t);
+    print_depths_along_the_spines_page(t, i, n);
+  }
+}
+
+void parse_size_and_seed(int argc, char *argv[], int *size, int *seed) {
+  switch(argc) {
+    case 3: {
+      *size = atoi(argv[1]);
+      *seed = atoi(argv[2]);
+      break;
+    }
+    case 2: {
+      *size = atoi(argv[1]);
+      *seed = DEFAULT_SEED;
+      break;
+    }
+    default: {
+      *size = DEFAULT_SIZE;
+      *seed = DEFAULT_SEED;
+    }
+  }
+  assert(*size >= 0);
+  assert(*seed >= 0);
+  return;
+}
+
+int main (int argc, char *argv[]) {
+  int seed;
+  int size;
+
+  parse_size_and_seed(argc, argv, &size, &seed);
+  srand(seed);
+
+  insert_to_n(size);
+}
