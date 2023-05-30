@@ -14,21 +14,43 @@
         }
         article {
             font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
-            line-height: 1.4;
+            line-height: 1.5;
             width: 100%;
             display: block;
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
-            font-size: 1.1em;
+            font-size: 1em;
             overflow: hidden;
 
         }
 
-        .math, pre {
+        pre {
             font-family: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
         }
 
         .math {
+            font-family: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
+            padding: 0px;
+        }
+
+        mark {
+            border-radius: 3px;
+            background-color: rgba(255, 255, 0, 0.15);
+            padding: 2px 0px;
+        }
+
+        mark.info {
+            background-color: rgba(0, 0, 255, 0.05);
+        }
+
+        mark.oc {
+            background-color: rgba(0, 255, 0, 0.10);
+        }
+
+        .code {
+            background-color: #eee;
+            padding: 2px 5px;
+            border-radius: 5px;
         }
 
         blockquote {
@@ -59,19 +81,21 @@
         }
 
         .graphs {
+            margin: 20px 0;
             flex-wrap: wrap;
             width: 100%;
             display: flex;
-            justify-content: center;
+            justify-content: left;
         }
 
         .graphs img {
+            margin: 20px 0;
             display: flex;
             flex-direction: column;
-            flex: 1;
-            padding: 20px;
+            flex: 0;
+            padding: 0px;
             box-sizing: border-box;
-            width: 100%;
+            width: 50%;
         }
 
     </style>
@@ -83,7 +107,7 @@
 
     <h1 id="title">Exploring the design space of binary search trees</h1>
 
-    <p id="author"><Rudi Theunissen, June 2023</p>
+    <p id="author">Rudi Theunissen, June 2023</p>
 
     <section id="abstract">
         <p>
@@ -183,8 +207,8 @@
                 <li><strong>Size</strong> returns the number of values in the list.</li>
                 <li><strong>Select</strong> reads the value at a given position.</li>
                 <li><strong>Update</strong> updates a value at a given position.</li>
-                <li><strong>Insert</strong> adds a new value at a given position, pushing back all values that follow.</li>
-                <li><strong>Delete</strong> removes the value at a given position, pulling forward all values that follow.</li>
+                <li><strong>Insert</strong> adds a new value at a given position.</li>
+                <li><strong>Delete</strong> removes the value at a given position.</li>
             </ul>
 
             <section id="dynamic-arrays">
@@ -650,30 +674,30 @@
 
 
             <pre>
-    func partition(p *Node, i uint64) *Node {
-       n := Node{s: i}
-       l := &n
-       r := &n
-       for i != p.s {
-          if i < p.s {
-             p.s = p.s - i - 1
-             r.l = p
-             r = r.l
-             p = p.l
-          } else {
-             i = i - p.s - 1
-             l.r = p
-             l = l.r
-             p = p.r
-          }
-       }
-       r.l = p.r
-       l.r = p.l
-       p.l = n.r
-       p.r = n.l
-       p.s = n.s
-       return p
-    }
+        func partition(p *Node, i uint64) *Node {
+           n := Node{s: i}
+           l := &n
+           r := &n
+           for i != p.s {
+              if i < p.s {
+                 p.s = p.s - i - 1
+                 r.l = p
+                 r = r.l
+                 p = p.l
+              } else {
+                 i = i - p.s - 1
+                 l.r = p
+                 l = l.r
+                 p = p.r
+              }
+           }
+           r.l = p.r
+           l.r = p.l
+           p.l = n.r
+           p.r = n.l
+           p.s = n.s
+           return p
+        }
             </pre>
 
         </section>
@@ -696,10 +720,10 @@
             </p>
 
             <pre>
-    Start with the root of the tree as P.
-    Partition the median node of P if P is not balanced.
-    Balance the left subtree of P.
-    Balance the right subtree of P.
+        Start with the root of the tree as P.
+        Partition the median node of P if P is not balanced.
+        Balance the left subtree of P.
+        Balance the right subtree of P.
             </pre>
             <p>
             This algorithm has multiple useful properties:
@@ -730,18 +754,18 @@
                 <span class="indent">A tree is height-balanced if all of its nodes are height-balanced.</span>
             </p>
             <pre>
-              1                            2
+            1                            2
 
 
 
-             (b)                          (c)
-            /   \                        /   \
-          (a)   (d)                    (b)   (d)
-               /   \                   /       \
-             (c)   (e)               (a)       (e)
+           (b)                          (c)
+          /   \                        /   \
+        (a)   (d)                    (b)   (d)
+             /   \                   /       \
+           (c)   (e)               (a)       (e)
 
 
-        HEIGHT-BALANCED             MEDIAN-BALANCED
+      HEIGHT-BALANCED             MEDIAN-BALANCED
 
             </pre>
             <p>
@@ -752,7 +776,7 @@
                 This partitioning step is therefore work that is not productive because balance did not improve.
                 We can continue to use the same partition-based balancing algorithm, but the definition of balance must change to only partition if the node is not already height-balanced.
                 Any node that is <em>not</em> height-balanced is partitioned to become median-balanced, which results in a height-balanced tree.
-                The problem to solve is then <mark>to determine whether a node is height-balanced using only the size of its left and right subtrees</mark>.
+                The problem to solve is then <mark class="info">to determine whether a node is height-balanced using only the size of its left and right subtrees</mark>.
             </p>
             <p>
                 Muusse solves this in []: pretend that both subtrees are already strictly height-balanced, then compare their minimum and maximum heights.
@@ -761,22 +785,22 @@
                 By comparing these heights we can determine if the height difference is greater than 1:
             </p>
             <pre>
-      HeightBalanced(x,y) := ⌈log₂(max(x,y)+1)⌉ - ⌊log₂(min(x,y)+1)⌋ ≤ 1
+        HeightBalanced(x,y) := ⌈log₂(max(x,y)+1)⌉ - ⌊log₂(min(x,y)+1)⌋ ≤ 1
             </pre>
             <p>
                 Without loss of generality, assume that x > y:
             </p>
             <pre>
-      HeightBalanced(x,y) := ⌈log₂(x+1)⌉ - ⌊log₂(y+1)⌋ ≤ 1
+        HeightBalanced(x,y) := ⌈log₂(x+1)⌉ - ⌊log₂(y+1)⌋ ≤ 1
             </pre>
             <p>
-                This function, as presented above and by Muusse in [], can be simplified using an identity of log₂ where `⌈log₂(x+1)⌉ ≡ ⌊log₂(x)⌋+1` [].
+                This function, as presented above and by Muusse in [], <mark class="oc">can be simplified using an identity of log₂</mark> where <span class="math">⌈log₂(x+1)⌉ ≡ ⌊log₂(x)⌋+1</span> [].
                 The result is the same whether you complete the bottom level with <em>ceil</em>, or empty the bottom level with <em>floor</em> and add 1.
             </p>
             <pre>
-      HeightBalanced(x,y) := ⌊log₂(x)⌋ - ⌊log₂(y+1)⌋ ≤ 0
+        HeightBalanced(x,y) := ⌊log₂(x)⌋ - ⌊log₂(y+1)⌋ ≤ 0
 
-      HeightBalanced(x,y) := ⌊log₂(x)⌋ ≤ ⌊log₂(y+1)⌋
+        HeightBalanced(x,y) := ⌊log₂(x)⌋ ≤ ⌊log₂(y+1)⌋
             </pre>
 
             <p>
@@ -790,15 +814,15 @@
             </p>
             <pre>
 
-      00001101 = 13, because 8 + 4 + 0 + 1 = 13
-          ↑
-         MSB
+       00001101 = 13, because 8 + 4 + 0 + 1 = 13
+           ↑
+          MSB
 
-            The MSB of 13 is at position 4
-            log₂(13) = ~3.7, so ⌊log₂(13)⌋+1 = 4
-            The number of bits required to encode the number 13 in binary is 4
-
-
+             The MSB of 13 is at position 4
+             log₂(13) = ~3.7, so ⌊log₂(13)⌋+1 = 4
+             The number of bits required to encode the number 13 in binary is 4
+    
+    
       00010001 = 17, because 16 + 0 + 0 + 0 + 1 = 17
          ↑
         MSB
@@ -806,32 +830,32 @@
             The MSB of 17 is at position 5
             log₂(17) = ~4.1, so ⌊log₂(17)⌋+1 = 5
             The number of bits required to encode the number 17 in binary is 5
-
-            </pre>
+    
+              </pre>
 <p>
                 Using this information, we can determine whether a node is height-balanced by comparing the MSB of the size of each subtree.
                 More generally, we need to determine if the MSB of one integer is less than or equal to the MSB of another.
 </p>
             <pre>
-      HeightBalanced(x,y) := ⌊log₂(x)⌋ ≤ ⌊log₂(y+1)⌋
+        HeightBalanced(x,y) := ⌊log₂(x)⌋ ≤ ⌊log₂(y+1)⌋
 
-      HeightBalanced(x,y) := MSB(x) ≤ MSB(y+1)
+        HeightBalanced(x,y) := MSB(x) ≤ MSB(y+1)
 </pre>
             <p>
                 This allows us to determine height-balance without the need to actually calculate either logarithm, which would require slow floating-point operations.
                 There are a few ways to compare the MSB of the integers using bitwise operations [][][]:
             </p>
             <pre>
-      SmallerMSB(x, y) := x < y && ((x & y) << 1) < y    Roura, S. (2001). A New Method for Balancing Binary Search Trees. ICALP.
-      SmallerMSB(x, y) := x < y && x < (x ^ y)           Chan, T.M. (2002). Closest-point problems simplified on the RAM. SODA '02.
-      SmallerMSB(x, y) := x < (~x & y)                   Warren, H.S. (2002). Hacker's Delight. 2nd Edition, section 5-3.
+        SmallerMSB(x, y) := x < y && ((x & y) << 1) < y    Roura, S. (2001). A New Method for Balancing Binary Search Trees. ICALP.
+        SmallerMSB(x, y) := x < y && x < (x ^ y)           Chan, T.M. (2002). Closest-point problems simplified on the RAM. SODA '02.
+        SmallerMSB(x, y) := x < (~x & y)                   Warren, H.S. (2002). Hacker's Delight. 2nd Edition, section 5-3.
 </pre>
             <p>
                 Using the third approach involves only one inequality and benchmarks slightly faster than the others.
                 Putting it all together, we can use the following expression to determine if a node with two height-balanced subtrees is height-balanced:
             </p>
             <pre>
-      HeightBalanced(x, y) := (x & ~(y+1)) ≤ (y+1)
+      <mark>HeightBalanced(x, y) := (x & ~(y+1)) ≤ (y+1)</mark>
             </pre>
         </section>
 
@@ -845,7 +869,7 @@
                 In 2001, Roura presented a variant of weight balance that directly considers the logarithm of the subtree size.
             </p>
             <p>Definition:<br>
-                <span class="indent">A node is **weight-balanced** if the bit positions of the MSB of each subtree size differ by no more than 1.</span>
+                <span class="indent">A node is <strong>weight-balanced</strong> if the bit positions of the MSB of each subtree size differ by no more than 1.</span>
             </p>
             <p>
                 This definition of balance is more relaxed but still maintains a height upper-bound of `2×⌊log₂(size)⌋`.
@@ -870,41 +894,144 @@
             <pre>
       WeightBalanced(x, y) := MSB(x >> 1) ≤ MSB(y)
 
-      WeightBalanced(x, y) := ((x >> 1) & ~y) ≤ y
+      <mark>WeightBalanced(x, y) := ((x >> 1) & ~y) ≤ y</mark>
             </pre>
         </section>
 
         <section id="balancer-analysis">
             <h3>Analysis</h3>
             <p>
-                We now have three definitions of balance for a partition-based balancing algorithm: `median`, `height`, and `weight`.
-                For measurements and analysis, trees are created in size increments of 100 all the way up to 1,000,000 for a total of 10,000 samples.
-                At each increment, a random tree is balanced independently by each definition, then measured to capture: (1) partition count, (2) partition depth, (3) path length, and (4) time taken.
+                We now have three definitions of balance: (i) median, (ii) height and (iii) weight.
+            </p>
+            <p>
+                10,000 trees are created in size increments of 100 up to 1,000,000.
+                At every increment, a tree is grown, uniformly randomized, balanced and measured.
+                Randomization uses the size as the seed at each step, so every strategy gets the same exact tree to balance.
+                All measurements should match exactly across systems because they measure the structure of the trees, which under the same randomness every time produces the same results.
             </p>
             <div class="graphs">
-                <img src="benchmarks/svg/balancers/Balance/Partition/Uniform/PartitionCount<em>_sbezier_</em>lines.svg">
-                <img src="benchmarks/svg/balancers/Balance/Partition/Uniform/PartitionDepth<em>_sbezier_</em>lines.svg">
-                <img src="benchmarks/svg/balancers/Balance/Partition/Uniform/AveragePathLength<em>_unique_</em>dots.svg">
-                <img src="benchmarks/svg/balancers/Balance/Partition/Uniform/MaximumPathLength<em>_unique_</em>dots.svg">
+                <img src="benchmarks/svg/balancers/Balance/Partition/Uniform/PartitionCount__sbezier__lines.svg">
+                <img src="benchmarks/svg/balancers/Balance/Partition/Uniform/TotalPartitionDepth__sbezier__lines.svg">
+                <img src="benchmarks/svg/balancers/Balance/Partition/Uniform/AveragePartitionDepth__sbezier__lines.svg">
+                <img src="benchmarks/svg/balancers/Balance/All/Uniform/Duration__sbezier__lines.svg">
+                <img src="benchmarks/svg/balancers/Balance/Partition/Uniform/AveragePathLength__unique__dots.svg">
+                <img src="benchmarks/svg/balancers/Balance/Partition/Uniform/MaximumPathLength__unique__dots.svg">
             </div>
-            <p>
-                Observations on balancing random trees by partition:
+
+            <section id="partition-count">
+                <h4>Partition count</h4>
+                <p>
+                    Partition count is the number of times the balancing algorithm decided to partition a node.
+                    This number is simply the total number of calls to <span class="code">partition</span> to balance a tree.
+                    Dividing this number by the size of the tree at each step gives us the average partition count per node.
+                    Lower is better because partitioning involves memory interaction, however it is possible for a strategy balance parts of the tree incidentally.
+                    so
+                </p>
+                <p>
+                    The results show <mark>height-balance partitions more nodes than median-balance</mark>, which is unexpected.
+                    The entire introduction of height-balance as an alternative to median-balance in [] was to avoid redundant partitioning.
+                    Comparisons were not made there between the two, only between height-balance and DSW, as reference.
+                </p>
+                <p>
+                    On the other hand, weight-balance appears to consistently partition ~0.23 times per node with very little variance.
+                    The results suggest that all of these strategies partition linearly in the size of the tree.
+                </p>
+            </section>
+
+            <section id="partition-depth">
+                <h4>Partition depth</h4>
+                <p>
+                    We have not yet considered what happens comparatively during each partition.
+                    Partition depth is the number of links followed during partition, also the path length to the median, or simply <em>the amount of work done during partition</em>.
+                    When we sum all partitioning depths and divide by the size of the tree, we get the average number of links followed during partition, per node.
+                    The shape of this plot matches what Muusse labels in Figure 5.3 of [] as <em>node visits divided by N</em>.
+                </p>
+                <p>
+                    A more direct evaluation of partition depth and count can be made by plotting the total partition depth against the total partition count, which is then the average depth per partition.
+                    This is slightly different from plotting partition depth against size because it normalizes instead against the partition count, which is different between strategies.
+                    The results show that <mark>height-balance consistently has the smallest average partition depth</mark>, while also consistently partitioning the most often.
+                </p>
+
+            </section>
+
+            <section id="duration">
+                <h4>Duration</h4>
+                <p>
+                    100 trees are also created in size increments of 10,000 up to 1,000,000.
+                    At every increment, a tree is grown, uniformly randomized, balanced and timed in milliseconds.
+                    Duration is then averaged over 100 iterations to smooth out random blips that occur during such small durations.
+                    DSW is also included in the benchmark as a standard reference of tree balancing in optimal space and time [].
+                    Keep in mind that duration-based benchmarks are system-dependent and the results could be entirely different on other machines.
+                </p>
+                <p>
+                    The result set used by this project was generated on an Intel i5 13600K with 32GB of DDR5 memory.
+                </p>
+                <p>
+                    Which is more efficient: (i) to partition more often but lower in the tree, or (ii) to partition less often but higher up in the tree, or somewhere in the middle?
+                    The results indicate a correlation between duration and partition count, because <mark>median-balance is more efficient than height-balance</mark>, which is unexpected.
+                    The average depth per partition is effectively the cost of partitioning, and the measurements show that the average cost is around 3.
+                    Therefore, the cost of more frequent partitioning is greater than the benefits of slightly shorter partitioning paths.
+                </p>
+                <p>
+                    Using <mark>weight-balance is faster than median-balance and height-balance.</mark>
+                </p>
+                <p>
+                    DSW is consistently slower than all three partition-based strategies.
+                </p>
+            </section>
+
+            <section id="average-path-length">
+                <h4>Average path length</h4>
+                <p>
+                    The total path length of a binary tree is the sum of the path lengths from every node to the root of the tree, and the average path length is that sum divided by the number of nodes.
+                    This measurement can be thought of as the average depth of the tree, search cost, or simply a measure of how well-balanced it is.
+                </p>
+                <p>
+                    The results show that the average path length after balancing generally appears to approach the binary log of the size as size increases.
+                    Both median-balance and height-balance result in the exact same average path length, as expected by definition.
+                    There is more variance in weight-balance, but the proportionality is the same.
+                    This is all expected because we are choosing to give up <em>some</em> balance to partition less.
+                    Doing so appears to be a productive trade because weight-balance is ~10% faster but the average path length is only ~3% more.
+                </p>
+            </section>
+
+            <section id="maximum-path-length">
+                <h4>Maximum path length</h4>
+                <p>
+                    The maximum path length is the longest path from the root to any node, and can be thought of as worst-case search cost.
+                </p>
+                <p>
+                    The results are the same for median-balance and height-balance, as is the case with average path length.
+                    The results show that the worst-case search cost of weight-balance grows at the same rate as median-balance and height-balance, but is ~30% greater.
+                    However, keep in mind that this is the <em>worst-case</em> search cost, which is a very unlikely branch to take.
+                    Average path length is a much better indicator of search cost because it would be accurate for most operations and does incorporate the effect of some unusually long paths.
+                </p>
+            </section>
             </p>
-            <ul>
-                <li>Balancing by height results in the same height and average path length as by median.</li>
-                <li>Balancing by height partitions more often but total partition depth is lower than by median.</li>
-                <li>Balancing by height is slower than balancing by median. **Unexpected!**</li>
-                <li>Balancing by weight results in slightly higher height and average path length.</li>
-                <li>Balancing by median is faster than balancing by height.</li>
-                <li>Balancing by weight is faster than balancing by height and median.</li>
-                <li>Complexity appears to be linear.</li>
-            </ul>
+
             <p>
-                The expectation was that height-balance uses fewer partitioning steps to achieve the same path length as median-balance, but this does not appear to be the case.
-                Height-balancing interacts with fewer nodes during each partition on average, but partitions more often enough to be less efficient than median-balancing overall.
+                Overall, balancing binary search trees by selective median partitioning is conceptually intuitive and viable in practice.
+                The results suggest that <mark>balancing randomized trees by partition is linear in the size of the tree</mark>.
             </p>
+
         </section>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <section id="strategies-to-maintain-balance-over-time">
         <h2>3. Strategies to maintain balance over time</h2>

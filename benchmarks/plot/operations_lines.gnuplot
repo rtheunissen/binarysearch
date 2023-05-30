@@ -8,7 +8,7 @@ data = data_dir."/".OPERATION
 
 svg = "benchmarks/svg/operations/".OPERATION."/".GROUP."/".MEASUREMENT."__".smooth."__lines.svg"
 
-system mkdir(svg)
+#system mkdir(svg)
 
 set output svg
 
@@ -30,7 +30,7 @@ do for [Distribution=1:|Distributions|] {
 
     svg = "benchmarks/svg/operations/".OPERATION."/".GROUP."/".DISTRIBUTION."/".MEASUREMENT."__".smooth."__lines.svg"
 
-    system mkdir(svg)
+    #system mkdir(svg)
 
     set output svg
 

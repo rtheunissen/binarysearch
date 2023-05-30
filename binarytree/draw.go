@@ -3,6 +3,7 @@ package binarytree
 import (
 	. "fmt"
 	"io"
+	. "trees/utility"
 )
 
 // Draw is a basic implementation of a binary tree drawing algorithm, derived

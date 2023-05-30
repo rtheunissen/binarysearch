@@ -2,6 +2,7 @@ package binarytree
 
 import (
 	"arena"
+	"trees/abstract/list"
 )
 
 //type ExteriorHeightsAlongTheSpines = [2][]int
@@ -13,11 +14,11 @@ import (
 // TODO I don't think this interface has any Data
 type BinaryTree interface {
 	Root() *Node
-	Size() Size
+	Size() list.Size
 
 	InteriorHeightsAlongTheSpines() [2][]int
 	ExteriorHeightsAlongTheSpines() [2][]int
-	SymmetricWeightPerLevel() [2][]Size
+	SymmetricWeightPerLevel() [2][]list.Size
 }
 
 // The internal path length of a binary tree that has n internal nodes is
@@ -63,8 +64,8 @@ type BinaryTree interface {
 
 type Tree struct {
 	arena *arena.Arena
-	root  *Node
-	size  Size
+	root *Node
+	size list.Size
 }
 
 // Clone creates a shallow copy of the tree and shares its root with the copy.
@@ -105,7 +106,7 @@ func (tree Tree) Free() {
 //   })
 //}
 
-func (tree *Tree) insert(p **Node, s Size, i Position, x Data) {
+func (tree *Tree) insert(p **Node, s list.Size, i list.Position, x list.Data) {
 	for {
 		if *p == nil {
 			*p = tree.allocate(Node{x: x})
@@ -125,7 +126,7 @@ func (tree *Tree) insert(p **Node, s Size, i Position, x Data) {
 	}
 }
 
-func (tree *Tree) Insert(i Size, x Data) {
+func (tree *Tree) Insert(i list.Size, x list.Data) {
 	tree.insert(&tree.root, tree.size, i, x)
 	tree.size++
 }
@@ -149,7 +150,7 @@ func (tree Tree) Verify() {
 //  return tree.root
 //}
 
-func (tree Tree) Size() Size {
+func (tree Tree) Size() list.Size {
 	return tree.size
 }
 
@@ -157,7 +158,7 @@ func (tree Tree) Root() *Node {
 	return tree.root
 }
 
-func (tree Tree) lookup(p *Node, i Size) Data {
+func (tree Tree) lookup(p *Node, i list.Size) list.Data {
 	for {
 		if i == p.s {
 			return p.x
@@ -182,7 +183,7 @@ func (tree Tree) lookup(p *Node, i Size) Data {
 //   tree.update(tree.root, i, x)
 //}
 
-func (tree Tree) Each(visit func(Data)) {
+func (tree Tree) Each(visit func(list.Data)) {
 	tree.root.inorder(visit)
 }
 
@@ -228,7 +229,7 @@ func (tree Tree) Each(visit func(Data)) {
 //   return p
 //}
 
-func (tree *Tree) dissolve(p *Node, s Size) *Node {
+func (tree *Tree) dissolve(p *Node, s list.Size) *Node {
 	defer tree.release(p)
 	if p.l == nil {
 		return p.r
@@ -253,7 +254,7 @@ func (tree *Tree) dissolve(p *Node, s Size) *Node {
 	}
 }
 
-func (tree *Tree) delete(p **Node, s Size, i Size) (x Data) {
+func (tree *Tree) delete(p **Node, s list.Size, i list.Size) (x list.Data) {
 	for {
 		tree.copy(p)
 		if i == (*p).s {
@@ -347,7 +348,7 @@ func (tree Tree) ExteriorHeightsAlongTheSpines() (h [2][]int) {
 	return
 }
 
-func (tree Tree) countNodesPerLevel(p *Node, counter *[]Size, level int) {
+func (tree Tree) countNodesPerLevel(p *Node, counter *[]list.Size, level int) {
 	if p == nil {
 		return
 	}
@@ -360,7 +361,7 @@ func (tree Tree) countNodesPerLevel(p *Node, counter *[]Size, level int) {
 	tree.countNodesPerLevel(p.r, counter, level+1)
 }
 
-func (tree Tree) SymmetricWeightPerLevel() (weights [2][]Size) {
+func (tree Tree) SymmetricWeightPerLevel() (weights [2][]list.Size) {
 	if tree.root == nil {
 		return
 	}

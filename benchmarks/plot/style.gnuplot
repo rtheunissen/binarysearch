@@ -5,38 +5,39 @@
 #
 ##################################################################
 
+set terminal svg size 640,420 dynamic butt
+
+set samples 1000
+
 set border 6 front lc '#000000' lt 1 lw 0
 
-set style line 1000 dashtype 1 lw 0.5 pt 1 ps 0 lc "#EEEEEE"
+set style line 1000 dashtype 1 lw 1 pt 1 ps 0 lc "#EEEEEE"
 
 #set grid y2tics back linestyle 1000
 set grid xtics back linestyle 1000
 
-
-set lmargin 5
+#set lmargin 1
 set tmargin 7
-set rmargin 5
-set bmargin 4
+#set rmargin 7
+#set bmargin 5
 
-set xlabel  font "Arial,12"
-set ylabel  font "Arial,12"
-set y2label font "Arial,12"
-
-set title font "Arial,16"
+set title font "Arial,20"
 set title offset 0,4
+
+set xlabel  font "Arial,16" offset 0,-1
+set ylabel  font "Arial,16"
+
+unset y2label
+unset ylabel
 
 set key reverse Left
 set key horizontal outside center top
 set key at screen 0.5, screen 0.85
 set key width 0
 set key height 0
-set key spacing 1.2
-set key samplen 3
-set key font "monospace,11"
-
-set terminal svg size 540,360 dynamic butt
-set size 1,1
-set origin 0,0
+set key spacing 1.1
+set key samplen 4
+set key font "monospace,16"
 
 set autoscale xfix
 
@@ -52,16 +53,12 @@ unset mx2tics
 unset x2tics
 unset y2tics
 
-set xtics font "Arial,12"
-set xrange [1:*]
-
-set samples 1000
-
+set xtics font "monospace,16"
+set xrange [0.5:*]
 
 unset y2tics
-set y2tics autofreq font "Arial,12"
+set y2tics autofreq font "monospace,16"
 set y2range [*:*]
-
 
 set datafile missing "NaN"
 
@@ -146,8 +143,8 @@ Weight     = 102
 Height     = 103
 DSW        = 104
 
-set style line Median  dashtype 1  ps 1 lw 1 pt  10 pn 2 lc rgb COLOR_PURPLE
-set style line Height  dashtype 4  ps 1 lw 1 pt   4 pn 2 lc rgb COLOR_GREEN
-set style line Weight  dashtype 1  ps 1 lw 1 pt   9 pn 2 lc rgb COLOR_BLACK
-set style line DSW     dashtype 1  ps 1 lw 1 pt   6 pn 2 lc rgb COLOR_YELLOW
+set style line Median  dashtype 1  ps 2 lw 2 pt  10 pn 2 lc rgb COLOR_PURPLE
+set style line Height  dashtype 4  ps 2 lw 2 pt   4 pn 2 lc rgb COLOR_GREEN
+set style line Weight  dashtype 1  ps 2 lw 2 pt   9 pn 2 lc rgb COLOR_BLACK
+set style line DSW     dashtype 1  ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_YELLOW
 

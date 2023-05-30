@@ -1,20 +1,18 @@
 load "benchmarks/plot/style.gnuplot"
 load "benchmarks/plot/functions.gnuplot"
 
-set title "{/:Bold ".OPERATION."}"
+# set title "{/:Bold ".OPERATION."}"
 
 data = data_dir."/".OPERATION
 
 svg = "benchmarks/svg/balancers/".OPERATION."/".GROUP."/".MEASUREMENT."__".smooth."__lines.svg"
 
-system mkdir(svg)
+#system mkdir(svg)
 
 set output svg
 
 print svg
 
-set tmargin 6
-set title offset 0,3
 
 set table $TEMP
 
@@ -28,11 +26,11 @@ do for [Distribution=1:|Distributions|] {
 
     DISTRIBUTION = Distributions[Distribution]
 
-    set title "{/:Bold ".OPERATION."} — {/:Italic ".DISTRIBUTION."}"
+    # set title "{/:Bold ".OPERATION."} — {/:Italic ".DISTRIBUTION."}"
 
     svg = "benchmarks/svg/balancers/".OPERATION."/".GROUP."/".DISTRIBUTION."/".MEASUREMENT."__".smooth."__lines.svg"
 
-    system mkdir(svg)
+    #system mkdir(svg)
 
     set output svg
 

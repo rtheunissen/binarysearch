@@ -1,6 +1,4 @@
-GO_BUILD_FLAGS = 
-
-GO = GOEXPERIMENT=arenas go 
+GO = GOEXPERIMENT=arenas go
 
 #
 shell:

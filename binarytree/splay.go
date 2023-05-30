@@ -1,5 +1,7 @@
 package binarytree
 
+import . "trees/abstract/list"
+
 type Splay struct {
 	Tree
 }

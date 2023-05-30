@@ -1,5 +1,7 @@
 package binarytree
 
+import . "trees/abstract/list"
+
 type AVLRelaxedBottomUp struct {
 	AVLWeakBottomUp
 }

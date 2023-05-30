@@ -31,7 +31,7 @@ do for [Operation=1:|Operations|] {
         MEASUREMENT = 'Allocations'
 
         set xlabel "Operations × 10^5"
-        set ylabel "{/:Bold Allocations } / log_2(Size)"
+        set ylabel "{/:Bold Allocations } / log_2Size"
 
         x = "column('Position')/(column('Scale')/10)"
         y = "column('Allocations')/1000/log2(column('Size'))"
@@ -58,7 +58,7 @@ do for [Operation=1:|Operations|] {
         MEASUREMENT = 'MaximumPathLength'
 
         set xlabel "Operations × 10^5"
-        set ylabel "{/:Bold Maximum Path Length } / log_2(Size)"
+        set ylabel "{/:Bold Maximum Path Length } / log_2Size"
 
         x = "column('Position')/(column('Scale')/10)"
         y = "column('MaximumPathLength')/log2(column('Size'))"
@@ -86,7 +86,7 @@ do for [Operation=1:|Operations|] {
         MEASUREMENT = 'AveragePathLength'
 
         set xlabel "Operations × 10^5"
-        set ylabel "{/:Bold Average Path Length } / log_2(Size)"
+        set ylabel "{/:Bold Average Path Length } / log_2Size"
 
         set format y2 "%.3f"
 

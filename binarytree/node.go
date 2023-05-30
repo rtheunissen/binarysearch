@@ -1,5 +1,10 @@
 package binarytree
 
+import (
+	. "trees/abstract/list"
+	"trees/utility"
+)
+
 type BinaryTreeNode interface {
 	Height() int
 	TotalInternalPathLength(Size) Size
@@ -162,7 +167,7 @@ func (p *Node) height() int {
 	if p == nil {
 		return -1
 	}
-	return 1 + Max(p.l.height(), p.r.height())
+	return 1 + utility.Max(p.l.height(), p.r.height())
 }
 
 // Counts the number of nodes reachable from p*, including itself.

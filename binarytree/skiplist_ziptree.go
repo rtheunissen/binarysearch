@@ -2,6 +2,7 @@ package binarytree
 
 import (
 	"math/bits"
+	. "trees/abstract/list"
 	"trees/random"
 )
 

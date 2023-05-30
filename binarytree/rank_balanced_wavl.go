@@ -1,6 +1,7 @@
 package binarytree
 
 import (
+	. "trees/abstract/list"
 	"trees/utility"
 )
 

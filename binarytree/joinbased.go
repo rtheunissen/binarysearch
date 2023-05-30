@@ -1,5 +1,7 @@
 package binarytree
 
+import . "trees/abstract/list"
+
 // TODO just inline all of this stuff
 
 type Joiner interface {

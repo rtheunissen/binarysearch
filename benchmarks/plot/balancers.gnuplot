@@ -16,6 +16,7 @@ array Distributions[5] = [ "Uniform", "Normal", "Skewed", "Zipf", "Maximum" ]
 array Operations[1] = [ "Balance" ]
 
 
+
 do for [Operation=1:|Operations|] {
 
     OPERATION = Operations[Operation]
@@ -34,7 +35,8 @@ do for [Operation=1:|Operations|] {
         MEASUREMENT = "PartitionCount"
 
         set xlabel "{Size × 10^5}"
-        set ylabel "{/:Bold Partition Count} / Size"
+        set ylabel ""
+        set title "{/:Bold Partition Count} / Size"
 
         set format y2 "%.2f"
 
@@ -55,17 +57,47 @@ do for [Operation=1:|Operations|] {
 
         ##################################################################
         #
-        #           PARTITION DEPTH
+        #           TOTAL PARTITION DEPTH
         #
         ##################################################################
 
-        MEASUREMENT = "PartitionDepth"
+        MEASUREMENT = "TotalPartitionDepth"
 
         set xlabel "{Size × 10^5}"
-        set ylabel "{/:Bold Partition Depth} / Size"
+        set ylabel ""
+        set title "{/:Bold Partition Depth} / Size"
 
         x = "(column('Size')/(column('Scale')/10))"
         y = "(column('PartitionDepth')/column('Size'))"
+
+        set format y2 "%.2f"
+
+        data_dir = "benchmarks/data/measurements"
+
+        smooth = "sbezier"
+        load "benchmarks/plot/balancers_lines.gnuplot"
+
+        smooth = "unique"
+        load "benchmarks/plot/balancers_dots.gnuplot"
+
+        smooth = "cumulative"
+        load "benchmarks/plot/balancers_lines.gnuplot"
+
+
+        ##################################################################
+        #
+        #           AVERAGE PARTITION DEPTH
+        #
+        ##################################################################
+
+        MEASUREMENT = "AveragePartitionDepth"
+
+        set xlabel "{Size × 10^5}"
+        set ylabel ""
+        set title "{/:Bold Partition Depth } / Partition Count"
+
+        x = "(column('Size')/(column('Scale')/10))"
+        y = "(column('PartitionDepth')/column('PartitionCount'))"
 
         set format y2 "%.2f"
 
@@ -90,7 +122,8 @@ do for [Operation=1:|Operations|] {
         MEASUREMENT = "Rotations"
 
         set xlabel "{Size × 10^5}"
-        set ylabel "{/:Bold Rotations}"
+        set ylabel ""
+        set title "{/:Bold Rotations}"
 
         x = "(column('Size')/(column('Scale')/10))"
         y = "(column('Rotations'))"
@@ -118,7 +151,8 @@ do for [Operation=1:|Operations|] {
         MEASUREMENT = "MaximumPathLength"
 
         set xlabel "Size × 10^5"
-        set ylabel "{/:Bold Maximum Path Length } / log_2(Size)"
+        set ylabel ""
+        set title "{/:Bold Maximum Path Length } / log_2Size"
 
         x = "(column('Size')/(column('Scale')/10))"
         y = "(column('MaximumPathLength')/log2(column('Size')))"
@@ -145,7 +179,8 @@ do for [Operation=1:|Operations|] {
         MEASUREMENT = "AveragePathLength"
 
         set xlabel "Size × 10^5"
-        set ylabel "{/:Bold Average Path Length } / log_2(Size)"
+        set ylabel ""
+        set title "{/:Bold Average Path Length } / log_2Size"
 
         x = "(column('Size')/(column('Scale')/10))"
         y = "(column('AveragePathLength')/log2(column('Size')))"
@@ -173,7 +208,8 @@ do for [Operation=1:|Operations|] {
         MEASUREMENT = "Duration"
 
         set xlabel "Size × 10^5"
-        set ylabel "{/:Bold Duration } / Size"
+        set ylabel ""
+        set title "{/:Bold Duration } / Size"
 
         x = "column('Size')/(column('Scale')/10)"
         y = "(column('Duration')/column('Size'))" # nanos to ms

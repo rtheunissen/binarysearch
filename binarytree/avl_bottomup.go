@@ -1,18 +1,20 @@
 package binarytree
 
+import "trees/abstract/list"
+
 type AVLBottomUp struct {
 	AVL
 }
 
-func (AVLBottomUp) New() List {
+func (AVLBottomUp) New() list.List {
 	return &AVLBottomUp{}
 }
 
-func (tree *AVLBottomUp) Clone() List {
+func (tree *AVLBottomUp) Clone() list.List {
 	return &AVLBottomUp{AVL{Tree: tree.Tree.Clone()}}
 }
 
-func (tree *AVLBottomUp) insert(p *Node, i Position, x Data) *Node {
+func (tree *AVLBottomUp) insert(p *Node, i list.Position, x list.Data) *Node {
 	if p == nil {
 		return tree.allocate(Node{x: x})
 	}
@@ -26,12 +28,12 @@ func (tree *AVLBottomUp) insert(p *Node, i Position, x Data) *Node {
 	return tree.fix(p)
 }
 
-func (tree *AVLBottomUp) Insert(i Position, x Data) {
+func (tree *AVLBottomUp) Insert(i list.Position, x list.Data) {
 	tree.root = tree.insert(tree.root, i, x)
 	tree.size++
 }
 
-func (tree *AVLBottomUp) delete(p *Node, i Position, x *Data) *Node {
+func (tree *AVLBottomUp) delete(p *Node, i list.Position, x *list.Data) *Node {
 	tree.copy(&p)
 	if i == p.s {
 		*x = p.x
@@ -47,18 +49,18 @@ func (tree *AVLBottomUp) delete(p *Node, i Position, x *Data) *Node {
 	return tree.fix(p)
 }
 
-func (tree *AVLBottomUp) Delete(i Position) (x Data) {
+func (tree *AVLBottomUp) Delete(i list.Position) (x list.Data) {
 	assert(i < tree.size)
 	tree.root = tree.delete(tree.root, i, &x)
 	tree.size--
 	return
 }
 
-func (tree *AVLBottomUp) Join(other List) List {
+func (tree *AVLBottomUp) Join(other list.List) list.List {
 	return &AVLBottomUp{tree.AVL.Join(other.(*AVLBottomUp).AVL)}
 }
 
-func (tree *AVLBottomUp) Split(i Position) (List, List) {
+func (tree *AVLBottomUp) Split(i list.Position) (list.List, list.List) {
 	l, r := tree.AVL.Split(i)
 	return &AVLBottomUp{l},
 		&AVLBottomUp{r}
