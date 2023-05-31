@@ -1,10 +1,10 @@
 package main
 
 import (
+	"binarysearch/benchmarks"
+	"binarysearch/binarytree"
+	"binarysearch/distribution"
 	"flag"
-	"trees/benchmarks"
-	"trees/binarytree"
-	"trees/distribution"
 )
 
 func main() {

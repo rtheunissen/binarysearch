@@ -1,8 +1,8 @@
 package binarytree
 
 import (
-	. "trees/abstract/list"
-	"trees/utility"
+   . "binarysearch/abstract/list"
+   "binarysearch/utility"
 )
 
 type BinaryTreeNode interface {
@@ -220,7 +220,7 @@ func (p *Node) inorder(visit func(Data)) {
 }
 
 func (p *Node) rotateL() (r *Node) {
-	// measurement(&rotations, 1)
+	measurement(&rotations, 1)
 	r = p.r
 	p.r = r.l
 	r.l = p
@@ -229,7 +229,7 @@ func (p *Node) rotateL() (r *Node) {
 }
 
 func (p *Node) rotateR() (l *Node) {
-	// measurement(&rotations, 1)
+	measurement(&rotations, 1)
 	l = p.l
 	p.l = l.r
 	l.r = p
@@ -850,13 +850,13 @@ func deleteR(p *Node, i *Position) **Node {
 
 /*
 func (tree *Tree) pathL(p *Node) **Node {
-   assert(p.l != nil)
+   // assert(p.l != nil)
    tree.copy(&p.l)
    return pathL(p)
 }
 
 func (tree *Tree) pathR(p *Node, i *Position) **Node {
-   assert(p.r != nil)
+   // assert(p.r != nil)
    tree.copy(&p.r)
    return pathR(p, i)
 }
@@ -982,7 +982,7 @@ func (tree *Tree) appendL(p **Node, n *Node) {
 
 //// TODO put this under linked list ?
 //func (tree *Tree) truncateL(p **Node) *Node {
-//   assert(*p != nil)
+//   // assert(*p != nil)
 //   tree.copy(p)
 //   for (*p).l != nil {
 //      p = &(*p).l
@@ -994,7 +994,7 @@ func (tree *Tree) appendL(p **Node, n *Node) {
 //}
 //
 //func (tree *Tree) truncateR(p **Node) *Node {
-//   assert(*p != nil)
+//   // assert(*p != nil)
 //   tree.copy(p)
 //   for (*p).r != nil {
 //      p = &(*p).r

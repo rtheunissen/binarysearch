@@ -1,8 +1,8 @@
 package main
 
 import (
+	"binarysearch/binarytree"
 	"math"
-	"trees/binarytree"
 )
 
 func B(height, size uint64) bool {

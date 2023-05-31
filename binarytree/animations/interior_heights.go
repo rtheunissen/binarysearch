@@ -1,9 +1,9 @@
 package animations
 
 import (
-	"trees/binarytree"
-	console2 "trees/console"
-	"trees/utility"
+   "binarysearch/binarytree"
+   console2 "binarysearch/console"
+   "binarysearch/utility"
 )
 
 type InteriorHeights struct {

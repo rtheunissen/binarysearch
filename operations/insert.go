@@ -1,8 +1,8 @@
 package operations
 
 import (
-	"trees/abstract/list"
-	"trees/distribution"
+   "binarysearch/abstract/list"
+   "binarysearch/distribution"
 )
 
 type Insert struct {

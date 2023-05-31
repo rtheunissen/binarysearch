@@ -1,9 +1,9 @@
 package distribution
 
 import (
-   "golang.org/x/exp/rand"
-   "math"
-   "trees/random"
+	"binarysearch/random"
+	"golang.org/x/exp/rand"
+	"math"
 )
 
 type Gamma struct {

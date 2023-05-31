@@ -1,3 +1,6 @@
+
+
+
 array AVLWeak[4]                = [ "AVLBottomUp", "AVLWeakJoinBased", "AVLWeakBottomUp", "AVLWeakTopDown" ]
 array AVLRelaxed[4]             = [ "AVLRelaxedBottomUp", "AVLRelaxedTopDown", "RedBlackRelaxedBottomUp", "RedBlackRelaxedTopDown" ]
 array RankBalanced[4]           = [ "AVLWeakBottomUp", "AVLWeakTopDown", "AVLRelaxedBottomUp", "RedBlackRelaxedTopDown" ]
@@ -88,7 +91,7 @@ do for [Operation=1:|Operations|] {
         set xlabel "Operations × 10^5"
         set ylabel "{/:Bold Average Path Length } / log_2Size"
 
-        set format y2 "%.3f"
+        set format y2 "%.2f"
 
         x = "(column('Position')/(column('Scale')/10))"
         y = "(column('AveragePathLength')/log2(column('Size')))"

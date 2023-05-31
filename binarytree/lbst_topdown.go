@@ -1,8 +1,8 @@
 package binarytree
 
 import (
-	. "trees/abstract/list"
-	"trees/utility"
+	. "binarysearch/abstract/list"
+	"binarysearch/utility"
 )
 
 type LBSTTopDown struct {

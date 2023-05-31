@@ -1,8 +1,9 @@
 package binarytree
 
+import . "binarysearch/abstract/list"
+
 import (
-	. "trees/abstract/list"
-	"trees/random"
+	"binarysearch/random"
 )
 
 type TreapJoinBased struct {

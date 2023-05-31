@@ -1,10 +1,10 @@
 package binarytree
 
 import (
-   "testing"
-   "trees/abstract/list"
-   "trees/distribution"
-   "trees/tests"
+	"binarysearch/abstract/list"
+	"binarysearch/distribution"
+	"binarysearch/tests"
+	"testing"
 )
 
 // TODO: can the tests use operations?

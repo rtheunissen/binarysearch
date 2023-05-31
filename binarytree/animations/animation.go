@@ -1,11 +1,11 @@
 package animations
 
 import (
-   "github.com/eiannone/keyboard"
-   "io"
-   "math"
-   "trees/abstract/list"
-   "trees/distribution"
+	"binarysearch/abstract/list"
+	"binarysearch/distribution"
+	"github.com/eiannone/keyboard"
+	"io"
+	"math"
 )
 
 type BinaryTreeAnimation struct {

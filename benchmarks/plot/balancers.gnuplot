@@ -15,8 +15,6 @@ array Distributions[5] = [ "Uniform", "Normal", "Skewed", "Zipf", "Maximum" ]
 
 array Operations[1] = [ "Balance" ]
 
-
-
 do for [Operation=1:|Operations|] {
 
     OPERATION = Operations[Operation]
@@ -36,12 +34,13 @@ do for [Operation=1:|Operations|] {
 
         set xlabel "{Size × 10^5}"
         set ylabel ""
+
         set title "{/:Bold Partition Count} / Size"
 
-        set format y2 "%.2f"
+        x = "column('Size')/(column('Scale')/10)"
+        y = "column('PartitionCount')/column('Size')"
 
-        x = "(column('Size')/(column('Scale')/10))"
-        y = "(column('PartitionCount')/column('Size'))"
+        set format y2 "%.2f"
 
         data_dir = "benchmarks/data/measurements"
 
@@ -65,10 +64,11 @@ do for [Operation=1:|Operations|] {
 
         set xlabel "{Size × 10^5}"
         set ylabel ""
+
         set title "{/:Bold Partition Depth} / Size"
 
-        x = "(column('Size')/(column('Scale')/10))"
-        y = "(column('PartitionDepth')/column('Size'))"
+        x = "column('Size')/(column('Scale')/10)"
+        y = "column('PartitionDepth')/column('Size')"
 
         set format y2 "%.2f"
 
@@ -94,10 +94,11 @@ do for [Operation=1:|Operations|] {
 
         set xlabel "{Size × 10^5}"
         set ylabel ""
+
         set title "{/:Bold Partition Depth } / Partition Count"
 
-        x = "(column('Size')/(column('Scale')/10))"
-        y = "(column('PartitionDepth')/column('PartitionCount'))"
+        x = "column('Size')/(column('Scale')/10)"
+        y = "column('PartitionDepth')/column('PartitionCount')"
 
         set format y2 "%.2f"
 
@@ -123,10 +124,11 @@ do for [Operation=1:|Operations|] {
 
         set xlabel "{Size × 10^5}"
         set ylabel ""
+
         set title "{/:Bold Rotations}"
 
-        x = "(column('Size')/(column('Scale')/10))"
-        y = "(column('Rotations'))"
+        x = "column('Size')/(column('Scale')/10)"
+        y = "column('Rotations')"
 
         set format y2 "%.0f"
 
@@ -152,10 +154,11 @@ do for [Operation=1:|Operations|] {
 
         set xlabel "Size × 10^5"
         set ylabel ""
+
         set title "{/:Bold Maximum Path Length } / log_2Size"
 
-        x = "(column('Size')/(column('Scale')/10))"
-        y = "(column('MaximumPathLength')/log2(column('Size')))"
+        x = "column('Size')/(column('Scale')/10)"
+        y = "column('MaximumPathLength')/log2(column('Size'))"
 
         set format y2 "%.2f"
 
@@ -180,10 +183,11 @@ do for [Operation=1:|Operations|] {
 
         set xlabel "Size × 10^5"
         set ylabel ""
+
         set title "{/:Bold Average Path Length } / log_2Size"
 
-        x = "(column('Size')/(column('Scale')/10))"
-        y = "(column('AveragePathLength')/log2(column('Size')))"
+        x = "column('Size')/(column('Scale')/10)"
+        y = "column('AveragePathLength')/log2(column('Size'))"
 
         set format y2 "%.2f"
 
@@ -209,10 +213,11 @@ do for [Operation=1:|Operations|] {
 
         set xlabel "Size × 10^5"
         set ylabel ""
+
         set title "{/:Bold Duration } / Size"
 
         x = "column('Size')/(column('Scale')/10)"
-        y = "(column('Duration')/column('Size'))" # nanos to ms
+        y = "column('Duration')/column('Size')" # nanos to ms
 
         set format y2 "%.0f"
 

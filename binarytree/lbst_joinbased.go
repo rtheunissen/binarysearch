@@ -1,6 +1,6 @@
 package binarytree
 
-import . "trees/abstract/list"
+import . "binarysearch/abstract/list"
 
 type LBSTJoinBased struct {
 	LBST // TODO: Remove these, just use Tree at the base always

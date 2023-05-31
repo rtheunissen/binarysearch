@@ -1,11 +1,11 @@
 package benchmarks
 
 import (
+	"binarysearch/abstract/list"
+	"binarysearch/distribution"
+	"binarysearch/utility"
 	"fmt"
 	"time"
-	"trees/abstract/list"
-	"trees/distribution"
-	"trees/utility"
 )
 
 type TreeBenchmark struct {

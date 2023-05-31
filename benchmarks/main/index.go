@@ -1,10 +1,10 @@
 package main
 
 import (
+   "binarysearch/benchmarks"
    "fmt"
    "os"
    "path"
-   "trees/benchmarks"
 )
 
 func main() {

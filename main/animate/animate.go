@@ -1,13 +1,13 @@
 package main
 
 import (
+	"binarysearch/abstract/list"
+	"binarysearch/binarytree/animations"
+	console2 "binarysearch/console"
+	"binarysearch/distribution"
+	operations2 "binarysearch/operations"
 	"flag"
 	"os"
-	"trees/abstract/list"
-	"trees/binarytree/animations"
-	console2 "trees/console"
-	"trees/distribution"
-	operations2 "trees/operations"
 )
 
 func main() {

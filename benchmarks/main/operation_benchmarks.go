@@ -1,13 +1,13 @@
 package main
 
 import (
+	"binarysearch/abstract/list"
+	"binarysearch/benchmarks"
+	"binarysearch/binarytree"
+	"binarysearch/distribution"
+	operations2 "binarysearch/operations"
+	"binarysearch/utility"
 	"flag"
-	"trees/abstract/list"
-	"trees/benchmarks"
-	"trees/binarytree"
-	"trees/distribution"
-	operations2 "trees/operations"
-	"trees/utility"
 )
 
 func main() {
@@ -23,12 +23,12 @@ func main() {
 		Iterations: *iterations,
 		Operation: utility.Resolve(*operation, []list.Operation{
 			&operations2.Insert{},
-			&operations2.InsertPersistent{},
-			&operations2.InsertDelete{},
-			&operations2.InsertDeletePersistent{},
-			&operations2.InsertDeleteCycles{},
+			//&operations2.InsertPersistent{},
+			//&operations2.InsertDelete{},
+			//&operations2.InsertDeletePersistent{},
+			//&operations2.InsertDeleteCycles{},
 			&operations2.InsertDeleteCyclesPersistent{},
-			&operations2.SplitJoin{},
+			//&operations2.SplitJoin{},
 		}),
 		Distributions: []distribution.Distribution{
 			&distribution.Uniform{},
@@ -47,9 +47,9 @@ func main() {
 			//&binarytree.AVLRelaxedBottomUp{},
 			//&binarytree.RedBlackRelaxedBottomUp{},
 			//&binarytree.RedBlackRelaxedTopDown{},
-			//&binarytree.LBSTBottomUp{},
-			//&binarytree.LBSTTopDown{},
-			//&binarytree.LBSTJoinBased{},
+			&binarytree.LBSTBottomUp{},
+			&binarytree.LBSTTopDown{},
+			&binarytree.LBSTJoinBased{},
 			&binarytree.LBSTRelaxed{},
 			//&binarytree.TreapTopDown{},
 			//&binarytree.TreapJoinBased{},

@@ -1,12 +1,12 @@
 package benchmarks
 
 import (
-   "fmt"
-   "time"
-   "trees/abstract/list"
-   "trees/binarytree"
-   "trees/distribution"
-   "trees/utility"
+	"binarysearch/abstract/list"
+	"binarysearch/binarytree"
+	"binarysearch/distribution"
+	"binarysearch/utility"
+	"fmt"
+	"time"
 )
 
 type BalancerBenchmark struct {

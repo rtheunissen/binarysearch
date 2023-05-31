@@ -1,12 +1,12 @@
 package tests
 
 import (
+	"binarysearch/abstract/list"
+	"binarysearch/distribution"
+	"binarysearch/random"
+	"binarysearch/utility"
 	"fmt"
 	"testing"
-	"trees/abstract/list"
-	"trees/distribution"
-	"trees/random"
-	"trees/utility"
 )
 
 type Test func(*testing.T, list.List, list.Size, distribution.Distribution)

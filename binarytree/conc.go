@@ -1,8 +1,8 @@
 package binarytree
 
 import (
-	. "trees/abstract/list"
-	"trees/utility"
+   . "binarysearch/abstract/list"
+   "binarysearch/utility"
 )
 
 // https://www.youtube.com/watch?v=o0NR9GrcHQo

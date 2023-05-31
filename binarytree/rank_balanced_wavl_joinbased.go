@@ -1,6 +1,6 @@
 package binarytree
 
-import . "trees/abstract/list"
+import . "binarysearch/abstract/list"
 
 type AVLWeakJoinBased struct {
 	WAVL

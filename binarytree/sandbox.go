@@ -1,15 +1,7 @@
 package binarytree
 
-import (
-   "fmt"
-   "github.com/davecgh/go-spew/spew"
-   "os"
-   "time"
-   "trees/random"
-)
-
 func init() {
-	spew.Config.Indent = "       "
+	//spew.Config.Indent = "       "
 }
 
 //
@@ -146,20 +138,20 @@ func init() {
 
 func Sandbox() {
 
-	for seed := uint64(time.Now().UnixNano()); ; seed++ {
-		t := LBSTTopDown{}.New()
-		r := random.New(seed)
-		fmt.Println(seed, "---")
-		for i := uint64(1); i <= 16; i++ {
-			j := random.LessThan(t.Size()+1, r)
-			fmt.Println(j)
-			t.(*LBSTTopDown).Draw(os.Stderr)
-			t.Insert(j, 0)
-			t.(*LBSTTopDown).Draw(os.Stderr)
-			t.Verify()
-		}
-		t.Free()
-	}
+	//for seed := uint64(time.Now().UnixNano()); ; seed++ {
+	//	t := LBSTTopDown{}.New()
+	//	r := random.New(seed)
+	//	fmt.Println(seed, "---")
+	//	for i := uint64(1); i <= 16; i++ {
+	//		j := random.LessThan(t.Size()+1, r)
+	//		fmt.Println(j)
+	//		t.(*LBSTTopDown).Draw(os.Stderr)
+	//		t.Insert(j, 0)
+	//		t.(*LBSTTopDown).Draw(os.Stderr)
+	//		t.Verify()
+	//	}
+	//	t.Free()
+	//}
 
 	//
 	//a := LBSTRelaxed{}.New().(*LBSTRelaxed)
@@ -1079,8 +1071,8 @@ func Sandbox() {
 //   //    }
 //   //    p := l.Join(r)
 //   //    p.Verify()
-//   //    assert(p.Size() == l.Size() + r.Size())
-//   //    assert(p.Size() == p.(*WAVL).root.count())
+//   //    // assert(p.Size() == l.Size() + r.Size())
+//   //    // assert(p.Size() == p.(*WAVL).root.count())
 //   //    print(".")
 //   // }
 //}

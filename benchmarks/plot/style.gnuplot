@@ -5,7 +5,7 @@
 #
 ##################################################################
 
-set terminal svg size 640,420 dynamic butt
+set terminal svg size 720,480 dynamic
 
 set samples 1000
 
@@ -16,28 +16,20 @@ set style line 1000 dashtype 1 lw 1 pt 1 ps 0 lc "#EEEEEE"
 #set grid y2tics back linestyle 1000
 set grid xtics back linestyle 1000
 
-#set lmargin 1
-set tmargin 7
-#set rmargin 7
-#set bmargin 5
-
 set title font "Arial,20"
-set title offset 0,4
+set title offset 0,5
 
 set xlabel  font "Arial,16" offset 0,-1
 set ylabel  font "Arial,16"
 
-unset y2label
-unset ylabel
-
-set key reverse Left
-set key horizontal outside center top
-set key at screen 0.5, screen 0.85
 set key width 0
 set key height 0
-set key spacing 1.1
+set key spacing 1.25
 set key samplen 4
+set key reverse Left
+set key horizontal outside center top
 set key font "monospace,16"
+set key at graph 0.5, screen 0.9
 
 set autoscale xfix
 
@@ -54,7 +46,7 @@ unset x2tics
 unset y2tics
 
 set xtics font "monospace,16"
-set xrange [0.5:*]
+set xrange [0.8:*]
 
 unset y2tics
 set y2tics autofreq font "monospace,16"
@@ -105,31 +97,26 @@ Zip                        = 18
 Splay                      = 19
 Conc                       = 20
 
-set style line AVLBottomUp                  dashtype 1 ps 1 lw 1 pt   1 pn 2 lc rgb COLOR_BLACK
-set style line AVLJoinBased                 dashtype 1 ps 1 lw 1 pt   2 pn 2 lc rgb COLOR_CYAN
-
-set style line AVLWeakBottomUp              dashtype 1 ps 1 lw 1 pt   4 pn 2 lc rgb COLOR_BLUE
-set style line AVLWeakTopDown               dashtype 1 ps 1 lw 1 pt   3 pn 2 lc rgb COLOR_RED
-set style line AVLWeakJoinBased             dashtype 1 ps 1 lw 1 pt   5 pn 2 lc rgb COLOR_CYAN
-
-set style line AVLRelaxedTopDown            dashtype 1 ps 1 lw 1 pt   6 pn 2 lc rgb COLOR_BLUE
-set style line AVLRelaxedBottomUp           dashtype 1 ps 1 lw 1 pt   7 pn 2 lc rgb COLOR_YELLOW
-set style line RedBlackRelaxedBottomUp      dashtype 1 ps 1 lw 1 pt   8 pn 2 lc rgb COLOR_GREEN
-set style line RedBlackRelaxedTopDown       dashtype 1 ps 1 lw 1 pt   9 pn 2 lc rgb COLOR_RED
-
-set style line LBSTBottomUp                 dashtype 1 ps 1 lw 1 pt  10 pn 2 lc rgb COLOR_GREEN
-set style line LBSTTopDown                  dashtype 1 ps 1 lw 1 pt  11 pn 2 lc rgb COLOR_BLUE
-set style line LBSTJoinBased                dashtype 1 ps 1 lw 1 pt  12 pn 2 lc rgb COLOR_YELLOW
-set style line LBSTRelaxed                  dashtype 1 ps 1 lw 1 pt  13 pn 2 lc rgb COLOR_RED
-
-set style line TreapTopDown                 dashtype 1 ps 1 lw 1 pt  14 pn 2 lc rgb COLOR_RED
-set style line TreapJoinBased               dashtype 1 ps 1 lw 1 pt  15 pn 2 lc rgb COLOR_CYAN
-set style line TreapFingerTree              dashtype 1 ps 1 lw 1 pt  16 pn 2 lc rgb COLOR_BLUE
-set style line Randomized                   dashtype 1 ps 1 lw 1 pt  17 pn 2 lc rgb COLOR_YELLOW
-set style line Zip                          dashtype 1 ps 1 lw 1 pt  18 pn 2 lc rgb COLOR_GREEN
-
-set style line Splay                        dashtype 1 ps 1 lw 1 pt  19 pn 2 lc rgb COLOR_PINK
-set style line Conc                         dashtype 1 ps 1 lw 1 pt  20 pn 2 lc rgb COLOR_PURPLE
+set style line AVLBottomUp                  dashtype 1 ps 2 lw 2 pt   1 pn 2 lc rgb COLOR_BLACK
+set style line AVLJoinBased                 dashtype 1 ps 2 lw 2 pt   2 pn 2 lc rgb COLOR_CYAN
+set style line AVLWeakBottomUp              dashtype 1 ps 2 lw 2 pt   4 pn 2 lc rgb COLOR_BLUE
+set style line AVLWeakTopDown               dashtype 1 ps 2 lw 2 pt   3 pn 2 lc rgb COLOR_RED
+set style line AVLWeakJoinBased             dashtype 1 ps 2 lw 2 pt   5 pn 2 lc rgb COLOR_CYAN
+set style line AVLRelaxedTopDown            dashtype 1 ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_BLUE
+set style line AVLRelaxedBottomUp           dashtype 1 ps 2 lw 2 pt   7 pn 2 lc rgb COLOR_YELLOW
+set style line RedBlackRelaxedBottomUp      dashtype 1 ps 2 lw 2 pt   8 pn 2 lc rgb COLOR_GREEN
+set style line RedBlackRelaxedTopDown       dashtype 1 ps 2 lw 2 pt   9 pn 2 lc rgb COLOR_RED
+set style line LBSTBottomUp                 dashtype 1 ps 2 lw 2 pt  10 pn 2 lc rgb COLOR_GREEN
+set style line LBSTTopDown                  dashtype 1 ps 2 lw 2 pt  11 pn 2 lc rgb COLOR_BLUE
+set style line LBSTJoinBased                dashtype 1 ps 2 lw 2 pt  12 pn 2 lc rgb COLOR_YELLOW
+set style line LBSTRelaxed                  dashtype 1 ps 2 lw 2 pt  13 pn 2 lc rgb COLOR_RED
+set style line TreapTopDown                 dashtype 1 ps 2 lw 2 pt  14 pn 2 lc rgb COLOR_RED
+set style line TreapJoinBased               dashtype 1 ps 2 lw 2 pt  15 pn 2 lc rgb COLOR_CYAN
+set style line TreapFingerTree              dashtype 1 ps 2 lw 2 pt  16 pn 2 lc rgb COLOR_BLUE
+set style line Randomized                   dashtype 1 ps 2 lw 2 pt  17 pn 2 lc rgb COLOR_YELLOW
+set style line Zip                          dashtype 1 ps 2 lw 2 pt  18 pn 2 lc rgb COLOR_GREEN
+set style line Splay                        dashtype 1 ps 2 lw 2 pt  19 pn 2 lc rgb COLOR_PINK
+set style line Conc                         dashtype 1 ps 2 lw 2 pt  20 pn 2 lc rgb COLOR_PURPLE
 
 
 ##################################################################

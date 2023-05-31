@@ -1,14 +1,14 @@
 package benchmarks
 
 import (
-   "fmt"
-   "io"
-   "os"
-   "path"
-   "strconv"
-   "strings"
-   "text/template"
-   "trees/utility"
+	"binarysearch/utility"
+	"fmt"
+	"io"
+	"os"
+	"path"
+	"strconv"
+	"strings"
+	"text/template"
 )
 
 func Template(input io.Reader) *template.Template {

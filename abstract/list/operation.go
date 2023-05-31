@@ -1,7 +1,7 @@
 package list
 
 import (
-	"trees/distribution"
+   "binarysearch/distribution"
 )
 
 type Operation interface {

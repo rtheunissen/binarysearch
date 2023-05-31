@@ -1,6 +1,6 @@
 package binarytree
 
-import . "trees/abstract/list"
+import . "binarysearch/abstract/list"
 
 // TODO just inline all of this stuff
 

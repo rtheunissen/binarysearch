@@ -1,8 +1,8 @@
 package binarytree
 
 import (
-	. "trees/abstract/list"
-	"trees/random"
+   . "binarysearch/abstract/list"
+   "binarysearch/random"
 )
 
 type TreapFingerTree struct {
@@ -28,7 +28,7 @@ func (tree *TreapFingerTree) Clone() List {
 //}
 
 //func (p *Node) flipL(s Size) {
-//   assert(s == p.count())
+//   // assert(s == p.count())
 //   for p != nil {
 //      p = p.Copy()
 //      sl := p.s
@@ -98,7 +98,7 @@ func (tree *TreapFingerTree) rotateParentLeftOnRightSpine(p *Node) {
 	r.r = p.l
 	p.l = r
 	p.s = p.s + r.s + 1
-	// measurement(&rotations, 1)
+	measurement(&rotations, 1)
 }
 
 func (tree *TreapFingerTree) rotateParentRightOnLeftSpine(p *Node) {
@@ -109,7 +109,7 @@ func (tree *TreapFingerTree) rotateParentRightOnLeftSpine(p *Node) {
 	p.r = l
 	p.s = p.s + l.s + 1
 	l.s = p.s - l.s - 1
-	// measurement(&rotations, 1)
+	measurement(&rotations, 1)
 }
 
 func (tree *TreapFingerTree) rotateRightIntoRoot(l *Node) {
@@ -127,7 +127,7 @@ func (tree *TreapFingerTree) rotateRightIntoRoot(l *Node) {
 	p.s = p.s - l.s - 1
 
 	tree.root = l // TODO: consider returning this, accepting p?, not tree
-	// measurement(&rotations, 1)
+	measurement(&rotations, 1)
 }
 
 func (tree *TreapFingerTree) rotateLeftIntoRoot(r *Node) {
@@ -145,7 +145,7 @@ func (tree *TreapFingerTree) rotateLeftIntoRoot(r *Node) {
 	p.s = r.s - p.s - 1
 
 	tree.root = r
-	// measurement(&rotations, 1)
+	measurement(&rotations, 1)
 }
 
 func (tree *TreapFingerTree) rotateUpR(p *Node) *Node {
@@ -192,7 +192,7 @@ func (tree *TreapFingerTree) rotateDownL(p *Node) {
 		r.s = p.s - r.s - 1
 		p.s = p.s - r.s - 1
 	}
-	// measurement(&rotations, 1)
+	measurement(&rotations, 1)
 }
 
 func (tree *TreapFingerTree) rotateDownR(p *Node) {
@@ -204,7 +204,7 @@ func (tree *TreapFingerTree) rotateDownR(p *Node) {
 		p.r = l
 		p.s = p.s - l.s - 1
 	}
-	// measurement(&rotations, 1)
+	measurement(&rotations, 1)
 }
 
 //	func (tree *TreapFingerTree) setRoot(p *Node) {
@@ -1308,13 +1308,13 @@ func (tree TreapFingerTree) Verify() {
 //
 //// Returns the Data at i.
 //func (t *TreapFingerTreeOld) Get(i int) Data {
-//  assert(i < t.size)
+//  // assert(i < t.size)
 //  return t.seekTo(i).s
 //}
 //
 //// Replaces the Data at i, returns t.
 //func (t *TreapFingerTreeOld) Set(i int, s Data) {
-//  assert(i < t.size) // TODO move these assertions to the list impl?
+//  // assert(i < t.size) // TODO move these assertions to the list impl?
 //  t.shadowTo(i).withData(s)
 //}
 //
@@ -1595,7 +1595,7 @@ func (tree TreapFingerTree) Verify() {
 ////
 ////
 //func (t *TreapFingerTreeOld) Shift() (s Data) {
-//  assert(!t.isEmpty())
+//  // assert(!t.isEmpty())
 //  if t.head != nil {
 //     s = t.head.s
 //     t.dissolveHead()
@@ -1765,7 +1765,7 @@ func (tree TreapFingerTree) Verify() {
 ////
 ////
 //func (t *TreapFingerTreeOld) Insert(i int, s Data) {
-//  assert(i <= t.size)
+//  // assert(i <= t.size)
 //
 //  // takes care of the null root case also.
 //  if i == 0 {
@@ -1989,9 +1989,9 @@ func (tree TreapFingerTree) Verify() {
 ////
 //func (t *TreapFingerTreeOld) Validate() {
 //  if t.isEmpty() {
-//     assert(t.head == nil)
-//     assert(t.tail == nil)
-//     assert(t.size == 0)
+//     // assert(t.head == nil)
+//     // assert(t.tail == nil)
+//     // assert(t.size == 0)
 //     return
 //  }
 //  t.verifyRelationPositionInvariant()
@@ -2006,11 +2006,11 @@ func (tree TreapFingerTree) Verify() {
 //func (t *TreapFingerTreeOld) verifyRanksAlongLeftSpine(p *Node) {
 //  for ; p != nil; p = p.l {
 //     if p.hasR() {
-//        assert(rankOf(p) >= rankOf(p.r))
+//        // assert(rankOf(p) >= rankOf(p.r))
 //        p.r.verifyRankHeapInvariant()
 //     }
 //     if p.hasL() {
-//        assert(rankOf(p) <= rankOf(p.l))
+//        // assert(rankOf(p) <= rankOf(p.l))
 //     }
 //  }
 //}
@@ -2020,11 +2020,11 @@ func (tree TreapFingerTree) Verify() {
 //func (t *TreapFingerTreeOld) verifyRanksAlongRightSpine(p *Node) {
 //  for ; p != nil; p = p.r {
 //     if p.hasL() {
-//        assert(rankOf(p) >= rankOf(p.l))
+//        // assert(rankOf(p) >= rankOf(p.l))
 //        p.l.verifyRankHeapInvariant()
 //     }
 //     if p.hasR() {
-//        assert(rankOf(p) <= rankOf(p.r))
+//        // assert(rankOf(p) <= rankOf(p.r))
 //     }
 //  }
 //}
@@ -2039,14 +2039,14 @@ func (tree TreapFingerTree) Verify() {
 //     //
 //     if t.head != nil {
 //        for p := t.head; p.hasL(); p = p.l {
-//           assert(rankOf(p) <= rankOf(t.root))
+//           // assert(rankOf(p) <= rankOf(t.root))
 //        }
 //     }
 //     //
 //     //
 //     if t.tail != nil {
 //        for p := t.tail; p.hasR(); p = p.r {
-//           assert(rankOf(p) <= rankOf(t.root))
+//           // assert(rankOf(p) <= rankOf(t.root))
 //        }
 //     }
 //  }
@@ -2054,23 +2054,23 @@ func (tree TreapFingerTree) Verify() {
 //
 ////
 //func (t *TreapFingerTreeOld) verifyRoot() {
-//  assert(t.root.l == nil)
-//  assert(t.root.r == nil)
-//  assert(t.root.sizeRL() == t.head.size())
+//  // assert(t.root.l == nil)
+//  // assert(t.root.r == nil)
+//  // assert(t.root.sizeRL() == t.head.size())
 //}
 //
 ////
 //func (t *TreapFingerTreeOld) verifyRelationPositionInvariant() {
 //  if t.root != nil {
-//     assert(t.root.isR())
-//     assert(t.head.size() == t.root.sizeRL())
+//     // assert(t.root.isR())
+//     // assert(t.head.size() == t.root.sizeRL())
 //  }
 //  for p := t.head; p != nil; p = p.l {
-//     assert(p.isL())
+//     // assert(p.isL())
 //     p.verifyRelativePositionInvariant()
 //  }
 //  for p := t.tail; p != nil; p = p.r {
-//     assert(p.isR())
+//     // assert(p.isR())
 //     p.verifyRelativePositionInvariant()
 //  }
 //}
@@ -2130,7 +2130,7 @@ func (tree TreapFingerTree) Verify() {
 ////
 ////
 //func (t *TreapFingerTreeOld) Split(i Index) (List, List) {
-//  assert(i <= t.size)
+//  // assert(i <= t.size)
 //  //
 //  //
 //  if i == t.size { return t, &TreapFingerTreeOld{} }

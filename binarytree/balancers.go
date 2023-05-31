@@ -1,9 +1,9 @@
 package binarytree
 
 import (
-	. "trees/abstract/list"
-	"trees/distribution"
-	. "trees/utility"
+	. "binarysearch/abstract/list"
+	"binarysearch/distribution"
+	. "binarysearch/utility"
 )
 
 type Balancer interface {

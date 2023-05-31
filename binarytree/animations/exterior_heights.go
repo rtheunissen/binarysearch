@@ -1,11 +1,11 @@
 package animations
 
 import (
-   "golang.org/x/text/language"
-   "golang.org/x/text/message"
-   "trees/binarytree"
-   console2 "trees/console"
-   "trees/utility"
+	"binarysearch/binarytree"
+	console2 "binarysearch/console"
+	"binarysearch/utility"
+	"golang.org/x/text/language"
+	"golang.org/x/text/message"
 )
 
 type ExteriorHeights struct {

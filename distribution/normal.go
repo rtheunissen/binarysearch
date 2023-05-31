@@ -1,8 +1,8 @@
 package distribution
 
 import (
-   "golang.org/x/exp/rand"
-   "trees/random"
+	"binarysearch/random"
+	"golang.org/x/exp/rand"
 )
 
 type Normal struct {

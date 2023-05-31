@@ -1,9 +1,9 @@
 package operations
 
 import (
-	"trees/abstract/list"
-	"trees/distribution"
-	"trees/random"
+   "binarysearch/abstract/list"
+   "binarysearch/distribution"
+   "binarysearch/random"
 )
 
 type InsertDelete struct {

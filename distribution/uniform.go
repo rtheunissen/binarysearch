@@ -1,7 +1,7 @@
 package distribution
 
 import (
-	"trees/random"
+   "binarysearch/random"
 )
 
 type Uniform struct {

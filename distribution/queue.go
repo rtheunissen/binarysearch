@@ -1,6 +1,6 @@
 package distribution
 
-import "trees/random"
+import "binarysearch/random"
 
 type Queue struct {
 	random.Source

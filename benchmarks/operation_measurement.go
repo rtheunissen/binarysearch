@@ -1,11 +1,11 @@
 package benchmarks
 
 import (
+	"binarysearch/abstract/list"
+	"binarysearch/binarytree"
+	"binarysearch/distribution"
+	"binarysearch/utility"
 	"fmt"
-	"trees/abstract/list"
-	"trees/binarytree"
-	"trees/distribution"
-	"trees/utility"
 )
 
 type OperationMeasurement struct {

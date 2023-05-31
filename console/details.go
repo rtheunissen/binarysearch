@@ -1,8 +1,8 @@
 package console
 
 import (
+	"binarysearch/utility"
 	"io"
-	"trees/utility"
 )
 
 type Details struct {

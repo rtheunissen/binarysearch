@@ -112,10 +112,7 @@
     <section id="abstract">
         <p>
             The study of <em>binary search trees</em> is an actively-researched topic in computer science going back over 60 years, and most computer science courses on data structures still include them, including
-            <a href="http://web.stanford.edu/class/cs166/">Stanford</a>,
-            <a href="https://sp23.datastructur.es/">UC Berkeley</a>,
-            <a href="https://cs.brown.edu/courses/cs016/lectures.html">Brown</a> and
-            <a href="https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011">MIT OpenCourseware</a>.
+            <a href="http://web.stanford.edu/class/cs166/">Stanford</a> and <a href="https://sp23.datastructur.es/">UC Berkeley</a>.
             Many tree algorithms have been proposed over the years, but only a few are usually found in common textbooks and in practice.
             Some algorithms are more intuitive and more efficient, but reference implementations are difficult to find and therefore difficult to teach.
             Students often miss the opportunity to practice algorithm design and explore creatively because they are so distracted by seemingly arbitrary invariants and acronyms.
@@ -572,7 +569,7 @@
     <hr>
 
     <section id="strategies-to-restore-balance">
-        <h2>2. Strategies to restore balance</h2>
+        <h2>2. Strategies to restore balance to an existing tree</h2>
         <p>
             Consider then what would happen to the structure of the tree if we repeatedly inserted many nodes at the end of the sequence.
             Eventually, the tree structure becomes <em>unbalanced</em>, where too many branches are too far from the median of their sequence.
@@ -1037,16 +1034,50 @@
         <h2>3. Strategies to maintain balance over time</h2>
         <p>
             Restoring balance to an existing tree is useful but expensive — the entire tree must be traversed.
-            There is also the question of <em>when</em> exactly to perform such a balancing operation, to avoid balancing too often or not often enough.
-            Consider instead of either balancing the entire tree or not at all, to balance incrementally and thereby distribute the cost of balancing.
-            During an update, an algorithm can make structural changes along the path to maintain balance over time.
+            There is also the question of <em>when</em> to balance exactly to avoid balancing too often, or not enough.
+            Consider then, instead of balancing the entire tree or no balancing at all, to balance incrementally and thereby spread the cost across updates.
+            During an update, an algorithm can make local structural changes along the search path to maintain tree balance.
             Some strategies make structural changes all over the place, while others are more selective.
-            A valid balancing algorithm guarantees that the tree is always left in a balanced state.
-            A program can then <em>know</em> that a given tree is balanced because it is always balanced.
+            A valid balancing algorithm is one that (i) does not change the ordering of the nodes, and (ii) always returns the tree in a balanced state, depending on the definition of balance of that tree.
+            A program can then <em>know</em> that a given tree is balanced because it is always balanced, by definition.
         </p>
 
-        https://en.wikipedia.org/wiki/Self-balancing<em>binary_search</em>tree
+        https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree
 
+        <section id="height-balanced-trees">
+            avl
+            conc
+
+            wavl bu
+            wavl td
+
+            ravl bu
+            ravl td
+
+            redblack bu
+            redblack td
+        </section>
+        <section id="weight-balanced-trees">
+            lbst bu
+            lbst td
+            lbst rel
+        </section>
+        <section id="random-balanced-trees">
+            randomized
+            treaptopdown
+            treapfingertree
+            zip
+        </section>
+        <section id="self-adjusting-trees">
+            splay
+            *winners*
+        </section>
+        <section id="join-based-trees">
+            abl bu
+            avl jb
+            lbst bu
+            lbst jb
+        </section>
     </section>
     <pre>
         1. Introduction

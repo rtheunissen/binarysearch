@@ -1,8 +1,8 @@
 package binarytree
 
 import (
-	. "trees/abstract/list"
-	"trees/random"
+   . "binarysearch/abstract/list"
+   "binarysearch/random"
 )
 
 type Randomized struct {

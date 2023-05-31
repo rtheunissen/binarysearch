@@ -1,11 +1,11 @@
 package binarytree
 
 import (
-   "testing"
-   "trees/abstract/list"
-   "trees/distribution"
-   "trees/random"
-   "trees/utility"
+	"binarysearch/abstract/list"
+	"binarysearch/distribution"
+	"binarysearch/random"
+	"binarysearch/utility"
+	"testing"
 )
 
 func TestBalancers(t *testing.T) {

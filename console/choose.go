@@ -1,9 +1,9 @@
 package console
 
 import (
+	"binarysearch/utility"
 	"fmt"
 	"strconv"
-	"trees/utility"
 )
 
 func Choose[T any](prompt string, options ...T) T {
