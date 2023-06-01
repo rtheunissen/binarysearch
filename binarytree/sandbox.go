@@ -1071,8 +1071,8 @@ func Sandbox() {
 //   //    }
 //   //    p := l.Join(r)
 //   //    p.Verify()
-//   //    // assert(p.Size() == l.Size() + r.Size())
-//   //    // assert(p.Size() == p.(*WAVL).root.count())
+//   //    assert(p.Size() == l.Size() + r.Size())
+//   //    assert(p.Size() == p.(*WAVL).root.count())
 //   //    print(".")
 //   // }
 //}

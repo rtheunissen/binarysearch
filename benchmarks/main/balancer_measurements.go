@@ -34,6 +34,9 @@ func main() {
 			&binarytree.Height{},
 			&binarytree.Weight{},
 			&binarytree.DSW{},
+			&binarytree.Half{},
+			&binarytree.Log{},
+			&binarytree.Half2{},
 		},
 	}.Run()
 }

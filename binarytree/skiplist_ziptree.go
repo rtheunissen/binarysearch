@@ -120,7 +120,7 @@ func (tree *Zip) zip(l, r *Node, sl Size) (root *Node) {
 
 //
 //func (tree *Zip) zipRecursive(x, y *Node, sl Size) *Node {
-//   // assert(sl == x.count())
+//   assert(sl == x.count())
 //   if x == nil { return y }
 //   if y == nil { return x }
 //   if rank(x) < rank(y) {
@@ -142,7 +142,7 @@ func (tree *Zip) zip(l, r *Node, sl Size) (root *Node) {
 //   }
 //   tree.pathcopy(&p)
 //   if i == p.i {
-//      // assert(p.i == p.l.count())
+//      assert(p.i == p.l.count())
 //      *x = p.x
 //      return tree.zipRecursive(p.l, p.r, p.i)
 //   }

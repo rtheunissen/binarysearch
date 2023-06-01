@@ -5,13 +5,15 @@
 #
 #
 
-array Partition[3] = [ "Median", "Height", "Weight" ]
+array Partition[6] = [ "Height", "Median", "Weight", "Log", "Half", "Half2" ]
 
 array All[4] = [ "Median", "Height", "Weight", "DSW" ]
 
 array Groups[2] = [ "Partition", "All" ]
+array Groups[1] = [ "Partition" ]
 
-array Distributions[5] = [ "Uniform", "Normal", "Skewed", "Zipf", "Maximum" ]
+
+array Distributions[1] = [ "Uniform" ]
 
 array Operations[1] = [ "Balance" ]
 

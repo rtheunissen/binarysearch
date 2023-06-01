@@ -12,7 +12,7 @@ animation: animate
 
 # Run the test suite.
 test: assertions-on measurements-off
-	${GO} test -count 1 -memprofile mem.prof   ./binarytree
+	${GO} test -count 1 ./binarytree
 
 # Runs the test suite and collects code coverage.
 coverage: assertions-off measurements-off
@@ -59,39 +59,33 @@ sandbox:
 
 benchmarks: operation-benchmarks balancer-benchmarks
 
+measurements: operation-measurements balancer-measurements
+
+balancer-measurements: assertions-off measurements-on
+	${GO} run benchmarks/main/balancer_measurements.go > benchmarks/data/measurements/Balance
+
 balancer-benchmarks: assertions-off measurements-off
 	${GO} run benchmarks/main/balancer_benchmarks.go > benchmarks/data/Balance
+
+
+
+
 
 define benchmark-operation
 	${GO} run benchmarks/main/operation_benchmarks.go -operation $(1) > benchmarks/data/$(1)
 endef
 
 operation-benchmarks: assertions-off measurements-off
+	$(call benchmark-operation,Insert)
+	$(call benchmark-operation,InsertPersistent)
+	$(call benchmark-operation,InsertDelete)
+	$(call benchmark-operation,InsertDeletePersistent)
+	$(call benchmark-operation,InsertDeleteCycles)
 	$(call benchmark-operation,InsertDeleteCyclesPersistent)
+	$(call benchmark-operation,SplitJoin)
 
 
 
-
-
-
-
-
-measurements: operation-measurements balancer-measurements
-
-balancer-measurements: assertions-off measurements-on
-	${GO} run benchmarks/main/balancer_measurements.go > benchmarks/data/measurements/Balance
-
-balancer-measurement-median:
-	$(call measure-balancer,Median)
-
-balancer-measurement-height:
-	$(call measure-balancer,Height)
-
-balancer-measurement-weight:
-	$(call measure-balancer,Weight)
-
-balancer-measurement-dsw:
-	$(call measure-balancer,DSW)
 
 
 operation-measurements: assertions-off measurements-on \

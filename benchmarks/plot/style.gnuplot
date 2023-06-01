@@ -129,9 +129,14 @@ Median     = 101
 Weight     = 102
 Height     = 103
 DSW        = 104
+Log        = 105
+Half       = 106
+Half2      = 107
 
 set style line Median  dashtype 1  ps 2 lw 2 pt  10 pn 2 lc rgb COLOR_PURPLE
 set style line Height  dashtype 4  ps 2 lw 2 pt   4 pn 2 lc rgb COLOR_GREEN
 set style line Weight  dashtype 1  ps 2 lw 2 pt   9 pn 2 lc rgb COLOR_BLACK
 set style line DSW     dashtype 1  ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_YELLOW
-
+set style line Log     dashtype 1  ps 2 lw 2 pt   5 pn 2 lc rgb COLOR_BLUE
+set style line Half    dashtype 1  ps 2 lw 2 pt   3 pn 2 lc rgb COLOR_PINK
+set style line Half2   dashtype 1  ps 2 lw 2 pt   8 pn 2 lc rgb COLOR_CYAN

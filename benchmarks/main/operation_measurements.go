@@ -5,7 +5,7 @@ import (
 	"binarysearch/benchmarks"
 	"binarysearch/binarytree"
 	"binarysearch/distribution"
-	operations2 "binarysearch/operations"
+	operations "binarysearch/operations"
 	"binarysearch/utility"
 	"flag"
 )
@@ -20,13 +20,13 @@ func main() {
 		Scale:   *scale,
 		Samples: *samples,
 		Operation: utility.Resolve(*operation, []list.Operation{
-			&operations2.Insert{},
-			//&operations2.InsertPersistent{},
-			//&operations2.InsertDelete{},
-			//&operations2.InsertDeletePersistent{},
-			//&operations2.InsertDeleteCycles{},
-			&operations2.InsertDeleteCyclesPersistent{},
-			//&operations2.SplitJoin{},
+			&operations.Insert{},
+			&operations.InsertPersistent{},
+			&operations.InsertDelete{},
+			&operations.InsertDeletePersistent{},
+			&operations.InsertDeleteCycles{},
+			&operations.InsertDeleteCyclesPersistent{},
+			&operations.SplitJoin{},
 		}),
 		Measurements: []binarytree.Measurement{
 			&binarytree.PartitionCount{},
@@ -44,26 +44,26 @@ func main() {
 			&distribution.Maximum{},
 		},
 		Strategies: []list.List{
-			//&binarytree.AVLBottomUp{},
-			//&binarytree.AVLJoinBased{},
-			//&binarytree.AVLWeakTopDown{},
-			//&binarytree.AVLWeakBottomUp{},
-			//&binarytree.AVLWeakJoinBased{},
-			//&binarytree.AVLRelaxedTopDown{},
-			//&binarytree.AVLRelaxedBottomUp{},
-			//&binarytree.RedBlackRelaxedTopDown{},
-			//&binarytree.RedBlackRelaxedBottomUp{},
+			&binarytree.AVLBottomUp{},
+			&binarytree.AVLJoinBased{},
+			&binarytree.AVLWeakTopDown{},
+			&binarytree.AVLWeakBottomUp{},
+			&binarytree.AVLWeakJoinBased{},
+			&binarytree.AVLRelaxedTopDown{},
+			&binarytree.AVLRelaxedBottomUp{},
+			&binarytree.RedBlackRelaxedTopDown{},
+			&binarytree.RedBlackRelaxedBottomUp{},
 			&binarytree.LBSTBottomUp{},
 			&binarytree.LBSTTopDown{},
 			&binarytree.LBSTJoinBased{},
 			&binarytree.LBSTRelaxed{},
-			//&binarytree.TreapTopDown{},
-			//&binarytree.TreapJoinBased{},
-			//&binarytree.TreapFingerTree{},
-			//&binarytree.Randomized{},
-			//&binarytree.Zip{},
-			//&binarytree.Splay{},
-			//&binarytree.Conc{},
+			&binarytree.TreapTopDown{},
+			&binarytree.TreapJoinBased{},
+			&binarytree.TreapFingerTree{},
+			&binarytree.Randomized{},
+			&binarytree.Zip{},
+			&binarytree.Splay{},
+			&binarytree.Conc{},
 		},
 	}.Run()
 }

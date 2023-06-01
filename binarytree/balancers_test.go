@@ -14,6 +14,7 @@ func TestBalancers(t *testing.T) {
 		&Height{},
 		&Weight{},
 		&DSW{},
+		&Half{},
 	}
 	distributions := []distribution.Distribution{
 		&distribution.Uniform{},

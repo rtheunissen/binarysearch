@@ -1,7 +1,6 @@
-package tests
+package list
 
 import (
-	"binarysearch/abstract/list"
 	"binarysearch/distribution"
 	"binarysearch/random"
 	"binarysearch/utility"
@@ -9,12 +8,12 @@ import (
 	"testing"
 )
 
-type Test func(*testing.T, list.List, list.Size, distribution.Distribution)
+type Test func(*testing.T, List, Size, distribution.Distribution)
 
 type TestSuite struct {
 	Tests         []Test
-	Lists         []list.List
-	Scale         list.Size
+	Lists         []List
+	Scale         Size
 	Distributions []distribution.Distribution
 }
 
@@ -29,7 +28,7 @@ func (suite TestSuite) Run(t *testing.T) {
 					for _, test := range suite.Tests {
 						//test := test
 						t.Run(utility.FuncName(test), func(t *testing.T) {
-							for scale := list.Size(0); scale <= suite.Scale; scale++ {
+							for scale := Size(0); scale <= suite.Scale; scale++ {
 								t.Run(fmt.Sprint(scale), func(t *testing.T) {
 									test(t, strategy, scale, dist.New(random.Uint64()))
 								})
@@ -42,41 +41,41 @@ func (suite TestSuite) Run(t *testing.T) {
 	}
 }
 
-func assertEqual(expected, actual list.Data) {
+func assertEqual(expected, actual Data) {
 	if actual != expected {
 		panic(fmt.Sprintf("expected: %d, actual: %d", expected, actual))
 	}
 }
 
-func assertList(reference list.List, actual list.List) {
-	i := list.Position(0)
+func assertList(reference List, actual List) {
+	i := Position(0)
 	n := reference.Size()
-	actual.Each(func(x list.Data) {
+	actual.Each(func(x Data) {
 		assertEqual(reference.Select(i), x)
 		i++
 	})
 	assertEqual(n, i)
 }
 
-func referenceFor(instance list.List) *list.Reference {
+func referenceFor(instance List) *Reference {
 	i := 0
-	v := make(list.Reference, instance.Size())
-	instance.Each(func(data list.Data) {
+	v := make(Reference, instance.Size())
+	instance.Each(func(data Data) {
 		v[i] = data
 		i++
 	})
 	return &v
 }
 
-func referenceOfSize(size list.Size) list.List {
-	ref := make(list.Reference, size)
-	for i := list.Size(0); i < size; i++ {
+func referenceOfSize(size Size) List {
+	ref := make(Reference, size)
+	for i := Size(0); i < size; i++ {
 		ref[i] = random.Uint64()
 	}
 	return &ref
 }
 
-func insertToSize(impl list.List, size list.Size, position distribution.Distribution) list.List {
+func insertToSize(impl List, size Size, position distribution.Distribution) List {
 	instance := impl.New()
 	for instance.Size() < size {
 		instance.Insert(position.LessThan(instance.Size()+1), random.Uint64())
@@ -84,7 +83,7 @@ func insertToSize(impl list.List, size list.Size, position distribution.Distribu
 	return instance
 }
 
-func fromReference(impl list.List, reference list.Reference) list.List {
+func fromReference(impl List, reference Reference) List {
 	instance := impl.New()
 	for _, x := range reference {
 		instance.Insert(instance.Size(), x)
@@ -92,14 +91,14 @@ func fromReference(impl list.List, reference list.Reference) list.List {
 	return instance
 }
 
-func TestNew(t *testing.T, impl list.List, size list.Size, position distribution.Distribution) {
-	ref := referenceOfSize(size).(*list.Reference)
+func TestNew(t *testing.T, impl List, size Size, position distribution.Distribution) {
+	ref := referenceOfSize(size).(*Reference)
 	instance := fromReference(impl, *ref)
 	instance.Verify()
 	instance.Free()
 }
 
-func TestDelete(t *testing.T, impl list.List, size list.Size, position distribution.Distribution) {
+func TestDelete(t *testing.T, impl List, size Size, position distribution.Distribution) {
 	seq := insertToSize(impl, size, position)
 	ref := referenceFor(seq)
 	for ref.Size() > 0 {
@@ -108,7 +107,7 @@ func TestDelete(t *testing.T, impl list.List, size list.Size, position distribut
 	seq.Free()
 }
 
-func TestDeletePersistent(t *testing.T, impl list.List, size list.Size, position distribution.Distribution) {
+func TestDeletePersistent(t *testing.T, impl List, size Size, position distribution.Distribution) {
 	seq := insertToSize(impl, size, position)
 	ref := referenceFor(seq)
 	for ref.Size() > 0 {
@@ -117,7 +116,7 @@ func TestDeletePersistent(t *testing.T, impl list.List, size list.Size, position
 	seq.Free()
 }
 
-func testDeleteInPlace(reference *list.Reference, sequence list.List, position distribution.Distribution) {
+func testDeleteInPlace(reference *Reference, sequence List, position distribution.Distribution) {
 	i := position.LessThan(reference.Size())
 	x := reference.Delete(i)
 	assertEqual(x, sequence.Delete(i))
@@ -125,7 +124,7 @@ func testDeleteInPlace(reference *list.Reference, sequence list.List, position d
 	assertList(reference, sequence)
 }
 
-func TestInsert(t *testing.T, impl list.List, size list.Size, position distribution.Distribution) {
+func TestInsert(t *testing.T, impl List, size Size, position distribution.Distribution) {
 	seq := impl.New()
 	ref := referenceFor(seq)
 	for ref.Size() < size {
@@ -134,7 +133,7 @@ func TestInsert(t *testing.T, impl list.List, size list.Size, position distribut
 	seq.Free()
 }
 
-func TestInsertPersistent(t *testing.T, impl list.List, size list.Size, position distribution.Distribution) {
+func TestInsertPersistent(t *testing.T, impl List, size Size, position distribution.Distribution) {
 	seq := impl.New()
 	ref := referenceFor(seq)
 	for ref.Size() < size {
@@ -143,7 +142,7 @@ func TestInsertPersistent(t *testing.T, impl list.List, size list.Size, position
 	seq.Free()
 }
 
-func testInsertInPlace(reference *list.Reference, sequence list.List, position distribution.Distribution) {
+func testInsertInPlace(reference *Reference, sequence List, position distribution.Distribution) {
 	i := position.LessThan(reference.Size() + 1)
 	x := random.Uint64()
 	sequence.Insert(i, x)
@@ -152,7 +151,7 @@ func testInsertInPlace(reference *list.Reference, sequence list.List, position d
 	assertList(reference, sequence)
 }
 
-func testInsertPersistent(reference *list.Reference, sequence list.List, position distribution.Distribution) {
+func testInsertPersistent(reference *Reference, sequence List, position distribution.Distribution) {
 	snapshot := sequence.Clone()
 
 	i := position.LessThan(reference.Size() + 1)
@@ -173,7 +172,7 @@ func testInsertPersistent(reference *list.Reference, sequence list.List, positio
 	assertList(reference, sequence)
 }
 
-func testPersistentDelete(reference *list.Reference, sequence list.List, position distribution.Distribution) {
+func testPersistentDelete(reference *Reference, sequence List, position distribution.Distribution) {
 	snapshot := sequence.Clone()
 
 	i := position.LessThan(reference.Size())
@@ -212,9 +211,9 @@ func testPersistentDelete(reference *list.Reference, sequence list.List, positio
 //    seq.Verify()
 // }
 
-func TestInsertDelete(t *testing.T, impl list.List, size list.Size, position distribution.Distribution) {
+func TestInsertDelete(t *testing.T, impl List, size Size, position distribution.Distribution) {
 	seq := impl.New()
-	ref := list.Reference{}
+	ref := Reference{}
 	for ref.Len() < size {
 		testInsertInPlace(&ref, seq, position)
 		testInsertInPlace(&ref, seq, position)
@@ -226,9 +225,9 @@ func TestInsertDelete(t *testing.T, impl list.List, size list.Size, position dis
 	seq.Free()
 }
 
-func TestInsertDeletePersistent(t *testing.T, impl list.List, size list.Size, position distribution.Distribution) {
+func TestInsertDeletePersistent(t *testing.T, impl List, size Size, position distribution.Distribution) {
 	seq := impl.New()
-	ref := list.Reference{}
+	ref := Reference{}
 	for ref.Len() < size {
 		testInsertPersistent(&ref, seq, position)
 		testInsertPersistent(&ref, seq, position)
@@ -240,11 +239,11 @@ func TestInsertDeletePersistent(t *testing.T, impl list.List, size list.Size, po
 	seq.Free()
 }
 
-func TestJoinFromSplit(t *testing.T, impl list.List, size list.Size, distribution distribution.Distribution) {
+func TestJoinFromSplit(t *testing.T, impl List, size Size, distribution distribution.Distribution) {
 	instance := insertToSize(impl, size, distribution)
 	reference := referenceFor(instance)
 
-	for i := list.Size(0); i < size; i++ {
+	for i := Size(0); i < size; i++ {
 
 		// Split the sequence and reference.
 		L, R := instance.Split(i)
@@ -272,11 +271,11 @@ func TestJoinFromSplit(t *testing.T, impl list.List, size list.Size, distributio
 	instance.Free()
 }
 
-func TestJoin(t *testing.T, impl list.List, size list.Size, distribution distribution.Distribution) {
+func TestJoin(t *testing.T, impl List, size Size, distribution distribution.Distribution) {
 	if size == 0 {
 		return
 	}
-	for i := list.Size(0); i < size; i++ {
+	for i := Size(0); i < size; i++ {
 		L := insertToSize(impl, random.Uint64()%size, distribution)
 		R := insertToSize(impl, random.Uint64()%size, distribution)
 
@@ -307,7 +306,7 @@ func TestJoin(t *testing.T, impl list.List, size list.Size, distribution distrib
 	}
 }
 
-func TestJoinAfterInsertDelete(t *testing.T, impl list.List, size list.Size, distribution distribution.Distribution) {
+func TestJoinAfterInsertDelete(t *testing.T, impl List, size Size, distribution distribution.Distribution) {
 	L := impl.New()
 	R := impl.New()
 
@@ -349,11 +348,11 @@ func TestJoinAfterInsertDelete(t *testing.T, impl list.List, size list.Size, dis
 	R.Free()
 }
 
-func TestSplit(t *testing.T, impl list.List, size list.Size, position distribution.Distribution) {
+func TestSplit(t *testing.T, impl List, size Size, position distribution.Distribution) {
 	instance := insertToSize(impl, size, position)
 	reference := referenceFor(instance)
 
-	for i := list.Size(0); i <= reference.Size(); i++ {
+	for i := Size(0); i <= reference.Size(); i++ {
 
 		// Split
 		L, R := instance.Split(i)
@@ -386,8 +385,8 @@ func TestSplit(t *testing.T, impl list.List, size list.Size, position distributi
 	instance.Free()
 }
 
-func TestSelect(t *testing.T, impl list.List, size list.Size, distribution distribution.Distribution) {
-	ref := referenceOfSize(size).(*list.Reference)
+func TestSelect(t *testing.T, impl List, size Size, distribution distribution.Distribution) {
+	ref := referenceOfSize(size).(*Reference)
 	seq := fromReference(impl, *ref)
 
 	for s := size; s > 0; s-- {
@@ -410,7 +409,7 @@ func TestSelect(t *testing.T, impl list.List, size list.Size, distribution distr
 	seq.Free()
 }
 
-func TestSelectAfterInsert(t *testing.T, impl list.List, scale list.Size, distribution distribution.Distribution) {
+func TestSelectAfterInsert(t *testing.T, impl List, scale Size, distribution distribution.Distribution) {
 	instance := impl.New()
 	reference := referenceFor(instance)
 	for reference.Size() < scale {
@@ -423,7 +422,7 @@ func TestSelectAfterInsert(t *testing.T, impl list.List, scale list.Size, distri
 	instance.Free()
 }
 
-func TestSelectAfterInsertPersistent(t *testing.T, impl list.List, scale list.Size, distribution distribution.Distribution) {
+func TestSelectAfterInsertPersistent(t *testing.T, impl List, scale Size, distribution distribution.Distribution) {
 	instance := impl.New()
 	reference := referenceFor(instance)
 	for reference.Size() < scale {
@@ -436,7 +435,7 @@ func TestSelectAfterInsertPersistent(t *testing.T, impl list.List, scale list.Si
 	instance.Free()
 }
 
-func TestUpdate(t *testing.T, impl list.List, size list.Size, distribution distribution.Distribution) {
+func TestUpdate(t *testing.T, impl List, size Size, distribution distribution.Distribution) {
 	seq := insertToSize(impl, size, distribution)
 	ref := referenceFor(seq)
 
@@ -451,8 +450,8 @@ func TestUpdate(t *testing.T, impl list.List, size list.Size, distribution distr
 	seq.Free()
 }
 
-func TestUpdatePersistent(t *testing.T, impl list.List, size list.Size, distribution distribution.Distribution) {
-	ref := referenceOfSize(size).(*list.Reference)
+func TestUpdatePersistent(t *testing.T, impl List, size Size, distribution distribution.Distribution) {
+	ref := referenceOfSize(size).(*Reference)
 	seq := fromReference(impl, *ref)
 
 	for s := size; s > 0; s-- {

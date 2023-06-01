@@ -21,6 +21,7 @@
             margin: 0 auto;
             font-size: 1em;
             overflow: hidden;
+            padding: 20px;
 
         }
 
@@ -1027,8 +1028,7 @@
 
 
 
-
-
+    <hr>
 
     <section id="strategies-to-maintain-balance-over-time">
         <h2>3. Strategies to maintain balance over time</h2>
@@ -1036,15 +1036,19 @@
             Restoring balance to an existing tree is useful but expensive — the entire tree must be traversed.
             There is also the question of <em>when</em> to balance exactly to avoid balancing too often, or not enough.
             Consider then, instead of balancing the entire tree or no balancing at all, to balance incrementally and thereby spread the cost across updates.
+            https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree
+        </p>
+        <p>
             During an update, an algorithm can make local structural changes along the search path to maintain tree balance.
             Some strategies make structural changes all over the place, while others are more selective.
             A valid balancing algorithm is one that (i) does not change the ordering of the nodes, and (ii) always returns the tree in a balanced state, depending on the definition of balance of that tree.
             A program can then <em>know</em> that a given tree is balanced because it is always balanced, by definition.
         </p>
 
-        https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree
-
         <section id="height-balanced-trees">
+            The first and most-referenced
+
+
             avl
             conc
 

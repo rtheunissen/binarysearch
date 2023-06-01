@@ -360,7 +360,7 @@ func (LBSTRelaxed) isBalanced(x, y Size) bool {
 	//
 	// Complexity: O(1)
 	//
-	return !utility.SmallerLog2(x, y>>1)
+	return !utility.SmallerLog2(x, y >> 1)
 }
 
 func (tree *LBSTRelaxed) joinLr(l, r *Node, sl, sr Size) *Node {
@@ -384,7 +384,6 @@ func (tree *LBSTRelaxed) joinlR(l, r *Node, sl, sr Size) *Node {
 	if l == nil {
 		return r
 	}
-	//if r == nil { return l }
 	if tree.isBalanced(sl, sr) { // TODO: wrong way around?
 		p := tree.deleteMin(&r)
 		p.l = l

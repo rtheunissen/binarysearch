@@ -3,7 +3,6 @@ package binarytree
 import (
 	"binarysearch/abstract/list"
 	"binarysearch/distribution"
-	"binarysearch/tests"
 	"testing"
 )
 
@@ -11,25 +10,25 @@ import (
 // TODO: do we need list tests really?
 // TODO: can we not make them binarytree?
 func TestBST(t *testing.T) {
-	tests.TestSuite{
+	list.TestSuite{
 		Scale: 100,
-		Tests: []tests.Test{
-			tests.TestNew,
-			tests.TestSelect,
-			tests.TestSelectAfterInsert,
-			tests.TestSelectAfterInsertPersistent,
-			tests.TestUpdate,
-			tests.TestUpdatePersistent,
-			tests.TestInsert,
-			tests.TestInsertPersistent,
-			tests.TestDelete,
-			tests.TestDeletePersistent,
-			tests.TestInsertDelete,
-			tests.TestInsertDeletePersistent,
-			tests.TestSplit,
-			tests.TestJoin,
-			tests.TestJoinFromSplit,
-			tests.TestJoinAfterInsertDelete,
+		Tests: []list.Test{
+			list.TestNew,
+			list.TestSelect,
+			list.TestSelectAfterInsert,
+			list.TestSelectAfterInsertPersistent,
+			list.TestUpdate,
+			list.TestUpdatePersistent,
+			list.TestInsert,
+			list.TestInsertPersistent,
+			list.TestDelete,
+			list.TestDeletePersistent,
+			list.TestInsertDelete,
+			list.TestInsertDeletePersistent,
+			list.TestSplit,
+			list.TestJoin,
+			list.TestJoinFromSplit,
+			list.TestJoinAfterInsertDelete,
 		},
 		Distributions: []distribution.Distribution{
 			&distribution.Uniform{},
