@@ -6,9 +6,9 @@ import (
 )
 
 type BinaryTreeNode interface {
-	Height() int
-	TotalInternalPathLength(Size) Size
-	TotalReferenceCount() Size
+   Height() int
+   TotalInternalPathLength(Size) Size
+   TotalReferenceCount() Size
 }
 
 // Node
@@ -61,14 +61,14 @@ type BinaryTreeNode interface {
 // that a node is only referenced by its own tree and is not shared by others.
 
 type Node struct {
-	ReferenceCounter
+   ReferenceCounter
 
-	l *Node // Pointers to the left and right subtrees.
-	r *Node
+   l *Node // Pointers to the left and right subtrees.
+   r *Node
 
-	s uint64 // Size, usually of the left subtree and therefore also position.
-	x uint64 // Data
-	y uint64 // Rank
+   s uint64 // Size, usually of the left subtree and therefore also position.
+   x uint64 // Data
+   y uint64 // Rank
 }
 
 //func (p Node) Position() Size {
@@ -104,25 +104,25 @@ type Node struct {
 //
 // ??
 func averagePathLength(p *Node, depth uint64, totalDepth *uint64, totalNodes *uint64) {
-	if p == nil {
-		return
-	}
-	*totalNodes = *totalNodes + 1
-	*totalDepth = *totalDepth + depth
-	averagePathLength(p.l, depth+1, totalDepth, totalNodes)
-	averagePathLength(p.r, depth+1, totalDepth, totalNodes)
+   if p == nil {
+      return
+   }
+   *totalNodes = *totalNodes + 1
+   *totalDepth = *totalDepth + depth
+   averagePathLength(p.l, depth+1, totalDepth, totalNodes)
+   averagePathLength(p.r, depth+1, totalDepth, totalNodes)
 }
 
 // long IPL(lbst t)
 // { if (t == null) return 0;
 //
-//	 return IPL(t->l) + IPL(t->r) + t->s;
-//	}
+//    return IPL(t->l) + IPL(t->r) + t->s;
+//   }
 func (p *Node) AveragePathLength() float64 {
-	var totalDepth uint64
-	var totalNodes uint64
-	averagePathLength(p, 0, &totalDepth, &totalNodes)
-	return float64(totalDepth) / float64(totalNodes)
+   var totalDepth uint64
+   var totalNodes uint64
+   averagePathLength(p, 0, &totalDepth, &totalNodes)
+   return float64(totalDepth) / float64(totalNodes)
 }
 
 //
@@ -142,15 +142,15 @@ func (p *Node) AveragePathLength() float64 {
 
 // TODO: Maybe put this on each tree where used
 func rank(p *Node) uint64 {
-	if p == nil {
-		return 0
-	} else {
-		return p.y
-	}
+   if p == nil {
+      return 0
+   } else {
+   	return p.y
+   }
 }
 
 func (p Node) isLeaf() bool { // TODO conc can have its own that doesn't check p.r for nil
-	return p.l == nil && p.r == nil
+   return p.l == nil && p.r == nil
 }
 
 // Max: 2n - 1
@@ -160,34 +160,34 @@ func (p Node) isLeaf() bool { // TODO conc can have its own that doesn't check p
 //
 
 func (p *Node) MaximumPathLength() int {
-	return p.height()
+   return p.height()
 }
 
 func (p *Node) height() int {
-	if p == nil {
-		return -1
-	}
-	return 1 + utility.Max(p.l.height(), p.r.height())
+   if p == nil {
+   	return -1
+   }
+   return 1 + utility.Max(p.l.height(), p.r.height())
 }
 
 // Counts the number of nodes reachable from p*, including itself.
 func (p *Node) size() Size {
-	if p == nil {
-		return 0
-	} else {
-		return 1 + p.l.size() + p.r.size()
-	}
+   if p == nil {
+   	return 0
+   } else {
+   	return 1 + p.l.size() + p.r.size()
+   }
 }
 
 // Returns the number of nodes in the left subtree of p*.
 // TODO: This is not the case for all tree implementations - should this be up to the tree? Maybe mix it in?
 func (p *Node) sizeL() Size {
-	return p.s
+   return p.s
 }
 
 // Returns the number of nodes in the right subtree of p*, given the s of p*.
 func (p *Node) sizeR(s Size) Size {
-	return s - p.s - 1
+   return s - p.s - 1
 }
 
 // Recursive in-order traversal of p*, left-self-right.
@@ -211,42 +211,42 @@ func (p *Node) sizeR(s Size) Size {
 //}
 
 func (p *Node) inorder(visit func(Data)) {
-	if p == nil {
-		return
-	}
-	p.l.inorder(visit)
-	visit(p.x)
-	p.r.inorder(visit)
+   if p == nil {
+   	return
+   }
+   p.l.inorder(visit)
+   visit(p.x)
+   p.r.inorder(visit)
 }
 
 func (p *Node) rotateL() (r *Node) {
-	measurement(&rotations, 1)
-	r = p.r
-	p.r = r.l
-	r.l = p
-	r.s = r.s + p.s + 1
-	return r
+   // measurement(&rotations, 1)
+   r = p.r
+   p.r = r.l
+   r.l = p
+   r.s = r.s + p.s + 1
+   return r
 }
 
 func (p *Node) rotateR() (l *Node) {
-	measurement(&rotations, 1)
-	l = p.l
-	p.l = l.r
-	l.r = p
-	p.s = p.s - l.s - 1
-	return l
+   // measurement(&rotations, 1)
+   l = p.l
+   p.l = l.r
+   l.r = p
+   p.s = p.s - l.s - 1
+   return l
 }
 
 // Rotates the LEFT subtree LEFT, then rotates the root RIGHT.
 func (p *Node) rotateLR() *Node {
-	p.l = p.l.rotateL()
-	return p.rotateR()
+   p.l = p.l.rotateL()
+   return p.rotateR()
 }
 
 // Rotates the RIGHT subtree RIGHT, then rotates the root LEFT.
 func (p *Node) rotateRL() *Node {
-	p.r = p.r.rotateR()
-	return p.rotateL()
+   p.r = p.r.rotateR()
+   return p.rotateL()
 }
 
 // `i` is the number of nodes that will be attached to the left still
@@ -335,14 +335,14 @@ func (p *Node) rotateRL() *Node {
 //}
 
 func (tree Tree) verifySize(p *Node, s Size) Size {
-	if p == nil {
-		return 0
-	}
-	sl := tree.verifySize(p.l, p.sizeL())
-	sr := tree.verifySize(p.r, p.sizeR(s))
+   if p == nil {
+   	return 0
+   }
+   sl := tree.verifySize(p.l, p.sizeL())
+   sr := tree.verifySize(p.r, p.sizeR(s))
 
-	invariant(s == sl+sr+1)
-	return s
+   invariant(s == sl+sr+1)
+   return s
 }
 
 // func partition2(root *Node, i Position) (*Node, *Node) {
@@ -445,17 +445,17 @@ func (tree Tree) verifySize(p *Node, s Size) Size {
 //}
 
 func (tree *Tree) replacedByRightSubtree(p **Node) *Node {
-	tree.copy(p)
-	r := *p
-	*p = (*p).r
-	return r
+   tree.copy(p)
+   r := *p
+   *p = (*p).r
+   return r
 }
 
 func (tree *Tree) replacedByLeftSubtree(p **Node) *Node {
-	tree.copy(p)
-	l := *p
-	*p = (*p).l
-	return l
+   tree.copy(p)
+   l := *p
+   *p = (*p).l
+   return l
 }
 
 //
@@ -476,47 +476,47 @@ func (tree *Tree) replacedByLeftSubtree(p **Node) *Node {
 //
 
 func (tree *Tree) deleteMin2(p *Node) (root *Node, deleted *Node) {
-	assert(p != nil)
-	n := Node{}
-	l := &n
-	for {
-		tree.copy(&p)
-		if p.l == nil {
-			l.l = p.r
-			break
-		}
-		p.s = p.s - 1
-		l.l = p
-		l = l.l
-		p = p.l
-	}
-	return n.l, p
+   // assert(p != nil)
+   n := Node{}
+   l := &n
+   for {
+   	tree.copy(&p)
+   	if p.l == nil {
+   		l.l = p.r
+   		break
+   	}
+   	p.s = p.s - 1
+   	l.l = p
+   	l = l.l
+   	p = p.l
+   }
+   return n.l, p
 }
 
 func (tree *Tree) deleteMin(p **Node) *Node {
-	for {
-		tree.copy(p)
-		if (*p).l == nil {
-			r := *p
-			*p = (*p).r
-			return r
-		}
-		(*p).s--
-		p = &(*p).l
-	}
+   for {
+   	tree.copy(p)
+   	if (*p).l == nil {
+   		r := *p
+   		*p = (*p).r
+   		return r
+   	}
+   	(*p).s--
+   	p = &(*p).l
+   }
 }
 
 func (tree *Tree) deleteMax(p **Node) *Node {
-	for {
-		if (*p).r == nil {
-			tree.copy(p)
-			l := *p
-			*p = (*p).l
-			return l
-		}
-		tree.copy(p)
-		p = &(*p).r
-	}
+   for {
+   	if (*p).r == nil {
+   		tree.copy(p)
+   		l := *p
+   		*p = (*p).l
+   		return l
+   	}
+   	tree.copy(p)
+   	p = &(*p).r
+   }
 }
 
 //
@@ -550,20 +550,20 @@ func (tree *Tree) deleteMax(p **Node) *Node {
 // }
 
 func (tree *Tree) update(p *Node, i Position, x Data) {
-	for {
-		if i == p.s {
-			p.x = x
-			return
-		}
-		if i < p.s {
-			tree.copy(&p.l)
-			p = p.l
-		} else {
-			tree.copy(&p.r)
-			i = i - p.s - 1
-			p = p.r
-		}
-	}
+   for {
+   	if i == p.s {
+   		p.x = x
+   		return
+   	}
+   	if i < p.s {
+   		tree.copy(&p.l)
+   		p = p.l
+   	} else {
+   		tree.copy(&p.r)
+   		i = i - p.s - 1
+   		p = p.r
+   	}
+   }
 }
 
 // func (Node) update(root **Node, i Position, s Data) {
@@ -827,109 +827,109 @@ func (tree *Tree) update(p *Node, i Position, x Data) {
 //}
 
 func insertL(p *Node) **Node {
-	p.s++
-	return &p.l
+   p.s++
+   return &p.l
 }
 
 func insertR(p *Node, i *Position) **Node {
-	*i = *i - p.s - 1
-	return &p.r
+   *i = *i - p.s - 1
+   return &p.r
 }
 
 func deleteL(p *Node) **Node {
-	//println("deleteL")
-	p.s--
-	return &p.l
+   //println("deleteL")
+   p.s--
+   return &p.l
 }
 
 func deleteR(p *Node, i *Position) **Node {
-	//println("deleteR")
-	*i = *i - p.s - 1
-	return &p.r
+   //println("deleteR")
+   *i = *i - p.s - 1
+   return &p.r
 }
 
 /*
 func (tree *Tree) pathL(p *Node) **Node {
-   assert(p.l != nil)
+   // assert(p.l != nil)
    tree.copy(&p.l)
    return pathL(p)
 }
 
 func (tree *Tree) pathR(p *Node, i *Position) **Node {
-   assert(p.r != nil)
+   // assert(p.r != nil)
    tree.copy(&p.r)
    return pathR(p, i)
 }
 */
 // TODO: these are nuts
 func (tree *Tree) pathLeft(p ***Node) {
-	assert((**p).l != nil)
-	tree.copy(&(**p).l)
-	*p = insertL(**p)
+   // assert((**p).l != nil)
+   tree.copy(&(**p).l)
+   *p = insertL(**p)
 }
 func (tree *Tree) pathRight(p ***Node, i *Position) {
-	assert((**p).r != nil)
-	tree.copy(&(**p).r)
-	*p = insertR(**p, i)
+   // assert((**p).r != nil)
+   tree.copy(&(**p).r)
+   *p = insertR(**p, i)
 }
 func (tree *Tree) attach(p **Node, x Data) {
-	*p = tree.allocate(Node{x: x})
+   *p = tree.allocate(Node{x: x})
 }
 func (tree *Tree) attachL(p *Node, x Data) {
-	p.s++
-	p.l = tree.allocate(Node{x: x})
+   p.s++
+   p.l = tree.allocate(Node{x: x})
 }
 
 func (tree *Tree) attachLL(p *Node, x Data) {
-	tree.copy(&p.l)
-	p.s++
-	p.l.s++
-	p.l.l = tree.allocate(Node{x: x})
+   tree.copy(&p.l)
+   p.s++
+   p.l.s++
+   p.l.l = tree.allocate(Node{x: x})
 }
 func (tree *Tree) attachRR(p *Node, x Data) {
-	tree.copy(&p.r)
-	p.r.r = tree.allocate(Node{x: x})
+   tree.copy(&p.r)
+   p.r.r = tree.allocate(Node{x: x})
 }
 func (tree *Tree) attachLR(p *Node, x Data) {
-	tree.copy(&p.l)
-	p.s++
-	p.l.r = tree.allocate(Node{x: x})
+   tree.copy(&p.l)
+   p.s++
+   p.l.r = tree.allocate(Node{x: x})
 }
 
 func (tree *Tree) attachRL(p *Node, x Data) {
-	tree.copy(&p.r)
-	p.r.s++
-	p.r.l = tree.allocate(Node{x: x})
+   tree.copy(&p.r)
+   p.r.s++
+   p.r.l = tree.allocate(Node{x: x})
 }
 
 func (tree *Tree) attachR(p *Node, x Data) {
-	p.r = tree.allocate(Node{x: x})
+   p.r = tree.allocate(Node{x: x})
 }
 
 func pathDeletingRightIgnoringIndex(p *Node) **Node {
-	return &p.r
+   return &p.r
 }
 
 func (tree Tree) rotateL(p **Node) {
-	tree.copy(&(*p).r)
-	*p = (*p).rotateL()
+   tree.copy(&(*p).r)
+   *p = (*p).rotateL()
 }
 
 func (tree Tree) rotateR(p **Node) {
-	tree.copy(&(*p).l)
-	*p = (*p).rotateR()
+   tree.copy(&(*p).l)
+   *p = (*p).rotateR()
 }
 
 func (tree Tree) rotateRL(p **Node) {
-	tree.copy(&(*p).r)
-	tree.copy(&(*p).r.l)
-	*p = (*p).rotateRL()
+   tree.copy(&(*p).r)
+   tree.copy(&(*p).r.l)
+   *p = (*p).rotateRL()
 }
 
 func (tree Tree) rotateLR(p **Node) {
-	tree.copy(&(*p).l)
-	tree.copy(&(*p).l.r)
-	*p = (*p).rotateLR()
+   tree.copy(&(*p).l)
+   tree.copy(&(*p).l.r)
+   *p = (*p).rotateLR()
 }
 
 // // Creates a new path starting at p* by descending to the left until there is
@@ -963,26 +963,26 @@ func (tree Tree) rotateLR(p **Node) {
 // //    2. p* → ◯ → ◯ → ◯ → n*
 // //
 func (tree *Tree) appendR(p **Node, n *Node) {
-	for *p != nil {
-		tree.copy(p)
-		p = &(*p).r
-	}
-	*p = n
+   for *p != nil {
+   	tree.copy(p)
+   	p = &(*p).r
+   }
+   *p = n
 }
 
 // // Creates a new path starting at p* by descending to the left until there is
 // // no left child, then appends n* to the left of the last node on the path.
 func (tree *Tree) appendL(p **Node, n *Node) {
-	for *p != nil {
-		tree.copy(p)
-		p = &(*p).l
-	}
-	*p = n
+   for *p != nil {
+   	tree.copy(p)
+   	p = &(*p).l
+   }
+   *p = n
 }
 
 //// TODO put this under linked list ?
 //func (tree *Tree) truncateL(p **Node) *Node {
-//   assert(*p != nil)
+//   // assert(*p != nil)
 //   tree.copy(p)
 //   for (*p).l != nil {
 //      p = &(*p).l
@@ -994,7 +994,7 @@ func (tree *Tree) appendL(p **Node, n *Node) {
 //}
 //
 //func (tree *Tree) truncateR(p **Node) *Node {
-//   assert(*p != nil)
+//   // assert(*p != nil)
 //   tree.copy(p)
 //   for (*p).r != nil {
 //      p = &(*p).r

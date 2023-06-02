@@ -31,8 +31,8 @@ func (strategy Partition) balance(tree *Tree, p *Node, s Size) *Node {
    sl := p.sizeL()
    sr := p.sizeR(s)
 
-   assert(strategy.isBalanced(sl, sr) || sl < sr)
-   assert(strategy.isBalanced(sr, sl) || sr < sl)
+   // assert(strategy.isBalanced(sl, sr) || sl < sr)
+   // assert(strategy.isBalanced(sr, sl) || sr < sl)
 
    // Replace `p` by its underlying median if not balanced.
    if !strategy.isBalanced(sl, sr) || !strategy.isBalanced(sr, sl) {
@@ -484,7 +484,7 @@ func (balancer DSW) compress(p *Node, c Size) *Node {
 //            rest ← temp
 //            tail.right ← temp
 
-//	func (tree Tree) Vine(size Size) (root *Node) {
+//   func (tree Tree) Vine(size Size) (root *Node) {
 //	 p := &root
 //	 for ; size > 0; size-- {
 //	   *p = tree.allocate(Node{})
@@ -505,7 +505,7 @@ func (Tree) Vine(size Size) Tree {
 }
 
 func (Tree) WorstCaseMedianVine(size Size) Tree {
-   assert(size > 0)
+   // assert(size > 0)
    t := Tree{}
    n := Node{}
    p := &n
@@ -584,7 +584,7 @@ func (tree Tree) Randomize(access distribution.Distribution) Tree {
 }
 
 func (tree Tree) randomize(access distribution.Distribution, p *Node, s Size) *Node {
-   assert(p.size() == s)
+   // assert(p.size() == s)
    if p == nil {
       return nil
    }

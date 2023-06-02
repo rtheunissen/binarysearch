@@ -1,47 +1,47 @@
 package animations
 
 import (
-	"binarysearch/abstract/list"
-	"binarysearch/distribution"
-	"github.com/eiannone/keyboard"
-	"io"
-	"math"
+   "binarysearch/abstract/list"
+   "binarysearch/distribution"
+   "github.com/eiannone/keyboard"
+   "io"
+   "math"
 )
 
 type BinaryTreeAnimation struct {
-	Height int
-	Offset int
-	Frame  uint64
-	list.Position
-	io.Writer
-	list.List
-	list.Operation
-	distribution.Distribution // remove
-	list.Size
+   Height int
+   Offset int
+   Frame  uint64
+   list.Position
+   io.Writer
+   list.List
+   list.Operation
+   distribution.Distribution // remove
+   list.Size
 }
 
 func (animation *BinaryTreeAnimation) Setup() {
-	if err := keyboard.Open(); err != nil {
-		panic(err)
-	}
-	animation.Frame = 0
-	animation.List = animation.Operation.Setup(animation.List, animation.Size)
-	animation.New(123)
+   if err := keyboard.Open(); err != nil {
+      panic(err)
+   }
+   animation.Frame = 0
+   animation.List = animation.Operation.Setup(animation.List, animation.Size)
+   animation.New(123)
 }
 
 func (animation *BinaryTreeAnimation) Close() {
-	if err := keyboard.Close(); err != nil {
-		panic(err)
-	}
-	//os.Exit(0)
+   if err := keyboard.Close(); err != nil {
+      panic(err)
+   }
+   //os.Exit(0)
 }
 
 func (animation *BinaryTreeAnimation) waitForKeyPress() keyboard.Key {
-	_, key, err := keyboard.GetKey()
-	if err != nil {
-		panic(err)
-	}
-	return key
+   _, key, err := keyboard.GetKey()
+   if err != nil {
+      panic(err)
+   }
+   return key
 }
 
 // This is like steps in the measure, because this is just measure!
@@ -61,48 +61,48 @@ func (animation *BinaryTreeAnimation) waitForKeyPress() keyboard.Key {
 //}
 
 func (animation *BinaryTreeAnimation) Valid() bool {
-	return animation.Operation.Valid(animation.List, animation.Size)
+   return animation.Operation.Valid(animation.List, animation.Size)
 }
 
 func (animation *BinaryTreeAnimation) Update() {
-	switch key := animation.waitForKeyPress(); key {
+   switch key := animation.waitForKeyPress(); key {
 
-	// " ← " decreases the draw offset of the image within the viewport.
-	case keyboard.KeyArrowLeft:
-		animation.Offset = int(math.Max(float64(-animation.Height/2), float64(animation.Offset-1)))
+   // " ← " decreases the draw offset of the image within the viewport.
+   case keyboard.KeyArrowLeft:
+      animation.Offset = int(math.Max(float64(-animation.Height/2), float64(animation.Offset-1)))
 
-	// " → " increases the draw offset of the image within the viewport.
-	case keyboard.KeyArrowRight:
-		animation.Offset = int(math.Min(float64(+animation.Height/2), float64(animation.Offset+1)))
+   // " → " increases the draw offset of the image within the viewport.
+   case keyboard.KeyArrowRight:
+   	animation.Offset = int(math.Min(float64(+animation.Height/2), float64(animation.Offset+1)))
 
-	// " ↑ " increases the height of the viewport.
-	case keyboard.KeyArrowUp:
-		animation.Height = animation.Height + 1
+   // " ↑ " increases the height of the viewport.
+   case keyboard.KeyArrowUp:
+   	animation.Height = animation.Height + 1
 
-	// " ↓ " Decreases the height of the viewport.
-	case keyboard.KeyArrowDown:
-		animation.Height = int(math.Max(0, float64(animation.Height-1)))
+   // " ↓ " Decreases the height of the viewport.
+   case keyboard.KeyArrowDown:
+   	animation.Height = int(math.Max(0, float64(animation.Height-1)))
 
-		// Exit
-	case keyboard.KeyCtrlC:
-		fallthrough
-	case keyboard.KeyCtrlD:
-		fallthrough
-	case keyboard.KeyCtrlZ:
-		fallthrough
-	case keyboard.KeyCtrlQ:
-		fallthrough
-	case keyboard.KeyEsc:
-		animation.Close()
-	default:
-		for animation.Valid() {
-			animation.List, animation.Position = animation.Operation.Update(animation.List, animation.Distribution)
-			if animation.shouldRenderFrame() {
-				animation.Frame++
-				return
-			}
-		}
-	}
+   	// Exit
+   case keyboard.KeyCtrlC:
+   	fallthrough
+   case keyboard.KeyCtrlD:
+   	fallthrough
+   case keyboard.KeyCtrlZ:
+   	fallthrough
+   case keyboard.KeyCtrlQ:
+   	fallthrough
+   case keyboard.KeyEsc:
+   	animation.Close()
+   default:
+   	for animation.Valid() {
+   		animation.List, animation.Position = animation.Operation.Update(animation.List, animation.Distribution)
+   		if animation.shouldRenderFrame() {
+   			animation.Frame++
+   			return
+   		}
+   	}
+   }
 }
 
 //	  1 to   100 : Render every page
@@ -110,10 +110,10 @@ func (animation *BinaryTreeAnimation) Update() {
 //
 // 1000 to 10000 : Render every 100th etc.
 func (animation *BinaryTreeAnimation) shouldRenderFrame() bool {
-	nextLog10 := math.Ceil(math.Log10(float64(animation.List.Size() + 1)))
-	nextPow10 := math.Pow10(int(nextLog10))
-	frameSkip := uint64(nextPow10 / 100)
-	return frameSkip == 0 || animation.List.Size()%frameSkip == 0
+   nextLog10 := math.Ceil(math.Log10(float64(animation.List.Size() + 1)))
+   nextPow10 := math.Pow10(int(nextLog10))
+   frameSkip := uint64(nextPow10 / 100)
+   return frameSkip == 0 || animation.List.Size()%frameSkip == 0
 }
 
 //

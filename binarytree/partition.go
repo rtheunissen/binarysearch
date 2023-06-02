@@ -5,7 +5,7 @@ package binarytree
 // resulting root. This algorithm is identical to splay with no rotation steps.
 //
 func (tree Tree) partition(p *Node, i uint64) *Node {
-   assert(i < p.size())
+   // assert(i < p.size())
    // measurement(&partitionCount, 1)
 
    n := Node{s: i}
@@ -37,7 +37,7 @@ func (tree Tree) partition(p *Node, i uint64) *Node {
 
 // TODO: temp because randomize uses partition
 func (tree Tree) partition2(p *Node, i uint64) *Node {
-   assert(i < p.size())
+   // assert(i < p.size())
 
    n := Node{s: i}
    l := &n

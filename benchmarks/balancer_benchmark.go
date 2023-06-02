@@ -41,6 +41,7 @@ func (benchmark BalancerBenchmark) Run() {
          instance := binarytree.Splay{}.New().(*binarytree.Splay)
 
          stderr([]any{
+            time.Now().Format(time.RFC822),
             alignL(utility.NameOf(strategy)),
             alignR(fmt.Sprint(iteration, "/", benchmark.Iterations)),
          }...)

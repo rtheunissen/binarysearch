@@ -147,12 +147,7 @@ plot-operations:
 
 # make measurements -j && make benchmarks && make plot -j
 
-overnight-operations:
-	time $(MAKE) operation-measurements -j
-	time $(MAKE) operation-benchmarks
-
 overnight:
-	time $(MAKE) operation-measurements -j
-	time $(MAKE) balancer-measurements -j
-	time $(MAKE) operation-benchmarks
-	time $(MAKE) balancer-benchmarks
+	$(MAKE) operation-measurements balancer-measurements -j
+	$(MAKE) operation-benchmarks
+	$(MAKE) balancer-benchmarks

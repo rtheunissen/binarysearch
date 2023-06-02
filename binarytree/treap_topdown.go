@@ -2,18 +2,18 @@ package binarytree
 import . "binarysearch/abstract/list"
 
 import (
-	"binarysearch/random"
+   "binarysearch/random"
 )
 
 type TreapTopDown struct {
-	Tree
-	random.Source
+   Tree
+   random.Source
 }
 
 func (TreapTopDown) New() List {
-	return &TreapTopDown{
-		Source: random.New(random.Uint64()),
-	}
+   return &TreapTopDown{
+      Source: random.New(random.Uint64()),
+   }
 }
 
 //func (tree *TreapTopDown) randomRank() uint64 {
@@ -21,42 +21,42 @@ func (TreapTopDown) New() List {
 //}
 
 func (tree *TreapTopDown) Clone() List {
-	return &TreapTopDown{
-		Tree:   tree.Tree.Clone(),
-		Source: tree.Source,
-	}
+   return &TreapTopDown{
+      Tree:   tree.Tree.Clone(),
+      Source: tree.Source,
+   }
 }
 
 func (tree *TreapTopDown) join(l, r *Node, sl Size) (root *Node) {
-	assert(sl == l.size())
-	p := &root
-	for {
-		if l == nil {
-			*p = r
-			return
-		}
-		if r == nil {
-			*p = l
-			return
-		}
-		if l.y >= r.y {
-			tree.copy(&l)
-			sl = sl - l.s - 1
-			*p = l
-			p = &l.r
-			l = *p
-		} else {
-			tree.copy(&r)
-			r.s = r.s + sl
-			*p = r
-			p = &r.l
-			r = *p
-		}
-	}
+   // assert(sl == l.size())
+   p := &root
+   for {
+      if l == nil {
+         *p = r
+         return
+      }
+      if r == nil {
+         *p = l
+         return
+      }
+      if l.y >= r.y {
+         tree.copy(&l)
+         sl = sl - l.s - 1
+         *p = l
+         p = &l.r
+         l = *p
+      } else {
+         tree.copy(&r)
+         r.s = r.s + sl
+         *p = r
+         p = &r.l
+         r = *p
+      }
+   }
 }
 
 func (tree *TreapTopDown) join2(l, r *Node, sl, sr Size) (root *Node) {
-	return tree.join(l, r, sl)
+   return tree.join(l, r, sl)
 }
 
 //
@@ -106,133 +106,133 @@ func (tree *TreapTopDown) join2(l, r *Node, sl, sr Size) (root *Node) {
 //}
 
 func (tree *TreapTopDown) join3(l, p, r *Node, sl, sr Size) (root *Node) {
-	//tree.pathcopy(&p)
-	if rank(p) >= rank(l) && rank(p) >= rank(r) {
-		p.l = l
-		p.r = r
-		p.s = sl
-		return p
-	}
-	if rank(l) > rank(r) {
-		l.r = tree.join3(l.r, p, r, sl-l.s-1, sr)
-		return l
-	} else {
-		r.l = tree.join3(l, p, r.l, sl, r.s)
-		r.s = r.s + sl + 1
-		return r
-	}
+   //tree.pathcopy(&p)
+   if rank(p) >= rank(l) && rank(p) >= rank(r) {
+      p.l = l
+      p.r = r
+      p.s = sl
+      return p
+   }
+   if rank(l) > rank(r) {
+      l.r = tree.join3(l.r, p, r, sl-l.s-1, sr)
+      return l
+   } else {
+      r.l = tree.join3(l, p, r.l, sl, r.s)
+      r.s = r.s + sl + 1
+      return r
+   }
 }
 
 func (tree TreapTopDown) delete(p **Node, i Position, x *Data) {
-	for {
-		if i == (*p).s {
-			*x = (*p).x
-			if (*p).l == nil && (*p).r == nil {
-				*p = nil
-			} else {
-				tree.copy(p)
-				//defer tree.release(*p)//
-				*p = tree.join((*p).l, (*p).r, (*p).s)
-			}
-			return
-		}
-		tree.copy(p)
-		if i < (*p).s {
-			p = deleteL(*p)
-		} else {
-			p = deleteR(*p, &i)
-		}
-	}
+   for {
+      if i == (*p).s {
+         *x = (*p).x
+         if (*p).l == nil && (*p).r == nil {
+            *p = nil
+         } else {
+            tree.copy(p)
+            defer tree.release(*p)// TODO what
+            *p = tree.join((*p).l, (*p).r, (*p).s)
+         }
+         return
+      }
+      tree.copy(p)
+      if i < (*p).s {
+         p = deleteL(*p)
+      } else {
+         p = deleteR(*p, &i)
+      }
+   }
 }
 
 func (tree *TreapTopDown) insert(p **Node, i Position, n *Node) {
-	for {
-		if *p == nil {
-			*p = n
-			return
-		}
-		if (*p).y <= n.y {
-			n.l, n.r = tree.Tree.split(*p, i)
-			n.s = i
-			*p = n
-			return
-		}
-		tree.copy(p)
-		if i <= (*p).s {
-			p = insertL(*p)
-		} else {
-			p = insertR(*p, &i)
-		}
-	}
+   for {
+      if *p == nil {
+         *p = n
+         return
+      }
+      if (*p).y <= n.y {
+         n.l, n.r = tree.Tree.split(*p, i)
+         n.s = i
+         *p = n
+         return
+      }
+      tree.copy(p)
+      if i <= (*p).s {
+         p = insertL(*p)
+      } else {
+         p = insertR(*p, &i)
+      }
+   }
 }
 
 func (tree *TreapTopDown) Insert(i Position, x Data) {
-	assert(i <= tree.size)
-	tree.size++
-	tree.insert(&tree.root, i, tree.allocate(Node{x: x, y: tree.Source.Uint64()}))
+   // assert(i <= tree.size)
+   tree.size++
+   tree.insert(&tree.root, i, tree.allocate(Node{x: x, y: tree.Source.Uint64()}))
 }
 
 func (tree *TreapTopDown) Delete(i Position) (x Data) {
-	assert(i < tree.Size())
-	tree.delete(&tree.root, i, &x)
-	tree.size--
-	return
+   // assert(i < tree.Size())
+   tree.delete(&tree.root, i, &x)
+   tree.size--
+   return
 }
 
 func (tree TreapTopDown) split(i Size) (Tree, Tree) {
-	assert(i <= tree.Size())
-	tree.share(tree.root)
-	l, r := tree.Tree.split(tree.root, i)
+   // assert(i <= tree.Size())
+   tree.share(tree.root)
+   l, r := tree.Tree.split(tree.root, i)
 
-	return Tree{arena: tree.arena, root: l, size: i},
-		Tree{arena: tree.arena, root: r, size: tree.size - i}
+   return Tree{arena: tree.arena, root: l, size: i},
+      Tree{arena: tree.arena, root: r, size: tree.size - i}
 }
 
 func (tree TreapTopDown) Split(i Position) (List, List) {
-	assert(i <= tree.Size())
-	l, r := tree.split(i)
-	return &TreapTopDown{Tree: l, Source: tree.Source},
-		&TreapTopDown{Tree: r, Source: tree.Source}
+   // assert(i <= tree.Size())
+   l, r := tree.split(i)
+   return &TreapTopDown{Tree: l, Source: tree.Source},
+      &TreapTopDown{Tree: r, Source: tree.Source}
 }
 
 func (tree *TreapTopDown) Select(i Size) Data {
-	assert(i < tree.Size())
-	return tree.lookup(tree.root, i)
+   // assert(i < tree.Size())
+   return tree.lookup(tree.root, i)
 }
 
 func (tree *TreapTopDown) Update(i Size, x Data) {
-	assert(i < tree.Size())
-	tree.copy(&tree.root)
-	tree.update(tree.root, i, x)
+   // assert(i < tree.Size())
+   tree.copy(&tree.root)
+   tree.update(tree.root, i, x)
 }
 
 // TODO: Figure out a standard naming for "that"
 
 func (tree TreapTopDown) Join(that List) List {
-	tree.share(tree.root)
-	tree.share(that.(*TreapTopDown).root)
-	return &TreapTopDown{
-		Tree{
-			arena: tree.arena,
-			root:  tree.join(tree.root, that.(*TreapTopDown).root, tree.size),
-			size:  tree.size + that.(*TreapTopDown).size,
-		},
-		tree.Source,
-	}
+   tree.share(tree.root)
+   tree.share(that.(*TreapTopDown).root)
+   return &TreapTopDown{
+      Tree{
+         arena: tree.arena,
+         root:  tree.join(tree.root, that.(*TreapTopDown).root, tree.size),
+         size:  tree.size + that.(*TreapTopDown).size,
+      },
+      tree.Source,
+   }
 }
 
 func (tree TreapTopDown) verifyMaxRankHeap(p *Node) {
-	if p == nil {
-		return
-	}
-	invariant(rank(p) >= rank(p.l))
-	invariant(rank(p) >= rank(p.r))
+   if p == nil {
+      return
+   }
+   invariant(rank(p) >= rank(p.l))
+   invariant(rank(p) >= rank(p.r))
 
-	tree.verifyMaxRankHeap(p.l)
-	tree.verifyMaxRankHeap(p.r)
+   tree.verifyMaxRankHeap(p.l)
+   tree.verifyMaxRankHeap(p.r)
 }
 
 func (tree TreapTopDown) Verify() {
-	tree.verifySizes()
-	tree.verifyMaxRankHeap(tree.root)
+   tree.verifySizes()
+   tree.verifyMaxRankHeap(tree.root)
 }

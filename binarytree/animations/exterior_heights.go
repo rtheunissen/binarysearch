@@ -1,21 +1,21 @@
 package animations
 
 import (
-	"binarysearch/binarytree"
-	console2 "binarysearch/console"
-	"binarysearch/utility"
-	"golang.org/x/text/language"
-	"golang.org/x/text/message"
+   "binarysearch/binarytree"
+   console2 "binarysearch/console"
+   "binarysearch/utility"
+   "golang.org/x/text/language"
+   "golang.org/x/text/message"
 )
 
 type ExteriorHeights struct {
-	BinaryTreeAnimation
-	heights [2][]int
-	frame   uint64
+   BinaryTreeAnimation
+   heights [2][]int
+   frame   uint64
 }
 
 func (animation *ExteriorHeights) Introduction() string {
-	return `
+   return `
      This animation is an effective way to visualize the shape of the tree.
    
      The height of a node is the number of levels from top to bottom when drawn
@@ -63,54 +63,54 @@ func (animation *ExteriorHeights) Introduction() string {
 }
 
 func (animation *ExteriorHeights) Update() {
-	animation.BinaryTreeAnimation.Update()
-	//
-	//
-	//
-	if animation.BinaryTreeAnimation.Frame != animation.frame {
-		animation.heights = animation.List.(binarytree.BinaryTree).ExteriorHeightsAlongTheSpines()
-		animation.frame = animation.BinaryTreeAnimation.Frame
-	}
+   animation.BinaryTreeAnimation.Update()
+   //
+   //
+   //
+   if animation.BinaryTreeAnimation.Frame != animation.frame {
+      animation.heights = animation.List.(binarytree.BinaryTree).ExteriorHeightsAlongTheSpines()
+      animation.frame = animation.BinaryTreeAnimation.Frame
+   }
 }
 
 func (animation *ExteriorHeights) Render() {
-	animation.getGraphics().Print(animation)
+   animation.getGraphics().Print(animation)
 }
 
 func (animation *ExteriorHeights) getGraphics() console2.Graphics {
-	if animation.Frame == 0 {
-		return console2.Graphics{
-			console2.Clear,
-			console2.Text(animation.Introduction()),
-		}
-	}
-	return console2.Graphics{
-		console2.Clear,
-		console2.Histogram{
-			Series: animation.heights,
-			Height: animation.Height,
-			Offset: animation.Offset,
-		},
-		console2.FocusBar{
-			Focus: animation.Position,
-			Total: animation.List.Size(),
-		},
-		console2.Line,
-		console2.Details{
-			Labels: []string{
-				"Animation",
-				"Strategy",
-				"Operation",
-				"Distribution",
-				"Size",
-			},
-			Values: []string{
-				"Heights along the spines",
-				utility.NameOf(animation.List),
-				utility.NameOf(animation.Operation),
-				utility.NameOf(animation.Distribution),
-				message.NewPrinter(language.English).Sprint(animation.List.Size()),
-			},
-		},
-	}
+   if animation.Frame == 0 {
+   	return console2.Graphics{
+   		console2.Clear,
+   		console2.Text(animation.Introduction()),
+   	}
+   }
+   return console2.Graphics{
+   	console2.Clear,
+   	console2.Histogram{
+   		Series: animation.heights,
+   		Height: animation.Height,
+   		Offset: animation.Offset,
+   	},
+   	console2.FocusBar{
+   		Focus: animation.Position,
+   		Total: animation.List.Size(),
+   	},
+   	console2.Line,
+   	console2.Details{
+   		Labels: []string{
+   			"Animation",
+   			"Strategy",
+   			"Operation",
+   			"Distribution",
+   			"Size",
+   		},
+   		Values: []string{
+   			"Heights along the spines",
+   			utility.NameOf(animation.List),
+   			utility.NameOf(animation.Operation),
+   			utility.NameOf(animation.Distribution),
+   			message.NewPrinter(language.English).Sprint(animation.List.Size()),
+   		},
+   	},
+   }
 }

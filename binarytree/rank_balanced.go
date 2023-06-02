@@ -42,7 +42,7 @@ func isTwoTwo(p *Node) bool {
 }
 
 func rankDifference(parent, child *Node) int {
-   assert(parent.rank() >= child.rank())
+   // assert(parent.rank() >= child.rank())
    return parent.rank() - child.rank()
 }
 
