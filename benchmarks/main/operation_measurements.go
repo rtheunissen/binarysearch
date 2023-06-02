@@ -5,7 +5,7 @@ import (
    "binarysearch/benchmarks"
    "binarysearch/binarytree"
    "binarysearch/distribution"
-   operations "binarysearch/operations"
+   "binarysearch/operations"
    "binarysearch/utility"
    "flag"
 )

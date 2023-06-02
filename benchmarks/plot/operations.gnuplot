@@ -12,10 +12,8 @@ array CombinationSplay[5]       = [ "AVLRelaxedBottomUp", "AVLWeakBottomUp", "LB
 array SizeOnly[4]               = [ "LBSTBottomUp", "LBSTRelaxed", "Randomized", "Splay" ]
 
 array Groups[9] = [ "AVLWeak", "AVLRelaxed", "WeightBalanced", "RankBalanced", "Probabilistic", "Other", "Combination", "CombinationSplay", "SizeOnly" ]
-array Groups[1] = [ "WeightBalanced" ]
 
 array Operations[7] = [ "Insert", "InsertPersistent", "InsertDelete", "InsertDeletePersistent", "InsertDeleteCycles", "InsertDeleteCyclesPersistent", "SplitJoin" ]
-array Operations[4] = [ "Insert", "InsertDelete", "InsertDeleteCycles", "InsertDeleteCyclesPersistent"]
 
 array Distributions[5] = [ "Uniform", "Normal", "Skewed", "Zipf", "Maximum" ]
 
