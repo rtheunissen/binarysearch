@@ -34,7 +34,7 @@ import (
 //     which is plenty in most cases before the tree becomes too wide.
 func (p *Node) Draw(writer io.Writer) {
    if p == nil {
-   	return
+      return
    }
    // The first stage of the drawing algorithm collects nodes, level by level.
    //
@@ -48,30 +48,30 @@ func (p *Node) Draw(writer io.Writer) {
 
    level = append(level, p)
    for {
-   	// Collect the nodes for the next level by iterating through the nodes
-   	// of the current level, until all nodes in the next level are nil.
-   	//
-   	var next []*Node
-   	for i, node := range level {
-   		if node != nil {
-   			break
-   		}
-   		if i == len(level)-1 { // All nodes in the next level are nil.
-   			goto drawing
-   		}
-   	}
-   	for _, node := range level {
-   		if node == nil {
-   			next = append(next, nil)
-   			next = append(next, nil)
-   		} else {
-   			next = append(next, node.l)
-   			next = append(next, node.r)
-   		}
-   	}
-   	// Add the collected nodes to the list of level, move on to the next.
-   	levels = append(levels, level)
-   	level = next
+      // Collect the nodes for the next level by iterating through the nodes
+      // of the current level, until all nodes in the next level are nil.
+      //
+      var next []*Node
+      for i, node := range level {
+         if node != nil {
+            break
+         }
+         if i == len(level)-1 { // All nodes in the next level are nil.
+            goto drawing
+         }
+      }
+      for _, node := range level {
+         if node == nil {
+            next = append(next, nil)
+            next = append(next, nil)
+         } else {
+            next = append(next, node.l)
+            next = append(next, node.r)
+         }
+      }
+      // Add the collected nodes to the list of level, move on to the next.
+      levels = append(levels, level)
+      level = next
    }
    // Now we can start drawing.
    //
@@ -80,164 +80,165 @@ func (p *Node) Draw(writer io.Writer) {
    //
 drawing:
    for depth, level := range levels {
-   	//
-   	// The spacing is a measure of the separation between nodes, increasing
-   	// exponentially from the bottom to the top of the tree.
-   	//
-   	spacing := 1 << (len(levels) - depth)
+      //
+      // The spacing is a measure of the separation between nodes, increasing
+      // exponentially from the bottom to the top of the tree.
+      //
+      spacing := 1 << (len(levels) - depth)
 
-   	// Skip the line-work for the first level because the root has to parent.
-   	if depth > 0 {
-   		//
-   		// The first space to write is the prefix, or the leading gap from the
-   		// left of the frame before the first node of the level is to be drawn.
-   		//
-   		Fprint(writer, Repeat(" ", spacing-1))
+      // Skip the line-work for the first level because the root has to parent.
+      if depth > 0 {
+         //
+         // The first space to write is the prefix, or the leading gap from the
+         // left of the frame before the first node of the level is to be drawn.
+         //
+         Fprint(writer, Repeat(" ", spacing-1))
 
-   		// Here begins the line-work.
-   		//
-   		// There are 3 possibilities for each pair of nodes on this level:
-   		//
-   		//    ╭───┴───╮      Left and right are not nil.
-   		//
-   		//    ╭───╯          Left is not nil, right is nil.
-   		//
-   		//        ╰───╮      Left is nil, right is not nil.
-   		//
-   		// We first draw the left side, then the connector to the parent node,
-   		// then the right side, as indicated by these vertical guides:
-   		//
-   		//       | |
-   		//   ╭───|┴|───╮
-   		//       | |
-   		//   ╭───|╯|
-   		//       | |
-   		//       |╰|───╮
-   		//       | |
-   		//
-   		for i, node := range level {
-   			if i%2 == 0 {
-   				//
-   				// Left node.
-   				//
-   				// Here we draw a shape like this: ╭──, under which the node will
-   				// be placed in the next row of the drawing. When the node is nil
-   				// we just draw more spacing until we are under the parent, where
-   				// the line for the next node (the right subtree) will be drawn.
-   				//
-   				if node == nil {
-   					Fprint(writer, Repeat(" ", spacing))
-   				} else {
-   					Fprint(writer, "╭")
-   					Fprint(writer, Repeat("─", spacing-1))
-   				}
-   			} else {
-   				//
-   				// Right node.
-   				//
-   				// Here we first draw the connector to the parent: ╯ or ┴ or ╰
-   				// depending on whether the left or right nodes are nil, then
-   				// the line towards where the right child will be drawn, then the
-   				// connector to the right node (all spacing if the node is nil).
-   				//
-   				// Because the index is odd, we know that a previous index must
-   				// exist, so it is safe to access the left node as level[i-1].
-   				//
-   				if node == nil {
-   					//
-   					// The right node of the pair is nil, so either the left node
-   					// is also nil (no line-work at all), or the left node is not
-   					// nil, in which case it is the only non-nil node under the
-   					// parent and we can use the ╯ connector to complete the pair.
-   					//
-   					if level[i-1] == nil {
-   						Fprint(writer, " ") // Left and right are nil.
-   					} else {
-   						Fprint(writer, "╯") // Left is not nil, right is nil.
-   					}
-   					if i < len(level)-1 {
-   						Fprint(writer, Repeat(" ", spacing))
-   					}
-   					//
-   					// The right node is nil so the line-work for this pair is now
-   					// complete. The final step is to draw the spacing before the
-   					// line-work for the next pair should start. However, only add
-   					// this spacing if this is not the last node of the level.
-   					//
-   				} else {
-   					//
-   					// The right node of the pair is NOT nil, so either the left
-   					// node is nil (╰) or they are both not nil (┴).
-   					//
-   					if level[i-1] == nil {
-   						Fprint(writer, "╰") // Left is nil, right is not nil.
-   					} else {
-   						Fprint(writer, "┴") // Left and right are not nil.
-   					}
-   					//
-   					// The right node is NOT nil, so we need to now draw a line
-   					// from the parent connector to where the right node will be
-   					// drawn below. Given that there is a node here, we can draw
-   					// the downward connector (╮) exactly above that node.
-   					//
-   					Fprint(writer, Repeat("─", spacing-1))
-   					Fprint(writer, "╮")
-   				}
-   				//
-   				// The final step is to draw the spacing that separates this pair
-   				// from the next pair on this level. However, to avoid wrapping
-   				// and unnecessary trailing whitespace, we only add this spacing
-   				// if this was not the last pair of the level.
-   				//
-   				if i < len(level)-1 {
-   					Fprint(writer, Repeat(" ", spacing))
-   					Fprint(writer, Repeat(" ", spacing-1))
-   				}
-   			}
-   		}
-   		Fprint(writer, "\n")
-   	}
-   	// The line-work for this level is done, and we are now on a new line.
-   	// Here we follow the same pattern as with the line-work, except instead
-   	// of lines we draw the `value` of each node.
-   	//
-   	// There is no need to consider differences between left and right because
-   	// all nodes are drawn the same and the spacing is consistent.
-   	//
-   	for i, node := range level {
-   		//
-   		// When the node to draw is nil, we need to draw empty space below the
-   		// missing line-work, up to where the node value would have been drawn
-   		// if it was not nil, and then more spacing for the separation leading
-   		// up to the next pair when it is not the last node of the level.
-   		//
-   		if node == nil {
-   			if i < len(level)-1 {
-   				Fprint(writer, Repeat(" ", spacing))
-   				Fprint(writer, Repeat(" ", spacing))
-   			}
-   		} else {
-   			//
-   			// When the node to draw is NOT nil, we center the node's value (x)
-   			// within a cell of 3-characters and prefix it with node separation.
-   			//
-   			value := Centered(String(node.s), " ", 3)
-   			Fprint(writer, Repeat(" ", spacing-len(value)+1))
-   			Fprint(writer, value)
+         // Here begins the line-work.
+         //
+         // There are 3 possibilities for each pair of nodes on this level:
+         //
+         //    ╭───┴───╮      Left and right are not nil.
+         //
+         //    ╭───╯          Left is not nil, right is nil.
+         //
+         //        ╰───╮      Left is nil, right is not nil.
+         //
+         // We first draw the left side, then the connector to the parent node,
+         // then the right side, as indicated by these vertical guides:
+         //
+         //       | |
+         //   ╭───|┴|───╮
+         //       | |
+         //   ╭───|╯|
+         //       | |
+         //       |╰|───╮
+         //       | |
+         //
+         for i, node := range level {
+            if i%2 == 0 {
+               //
+               // Left node.
+               //
+               // Here we draw a shape like this: ╭──, under which the node will
+               // be placed in the next row of the drawing. When the node is nil
+               // we just draw more spacing until we are under the parent, where
+               // the line for the next node (the right subtree) will be drawn.
+               //
+               if node == nil {
+                  Fprint(writer, Repeat(" ", spacing))
+               } else {
+                  Fprint(writer, "╭")
+                  Fprint(writer, Repeat("─", spacing-1))
+               }
+            } else {
+               //
+               // Right node.
+               //
+               // Here we first draw the connector to the parent: ╯ or ┴ or ╰
+               // depending on whether the left or right nodes are nil, then
+               // the line towards where the right child will be drawn, then the
+               // connector to the right node (all spacing if the node is nil).
+               //
+               // Because the index is odd, we know that a previous index must
+               // exist, so it is safe to access the left node as level[i-1].
+               //
+               if node == nil {
+                  //
+                  // The right node of the pair is nil, so either the left node
+                  // is also nil (no line-work at all), or the left node is not
+                  // nil, in which case it is the only non-nil node under the
+                  // parent and we can use the ╯ connector to complete the pair.
+                  //
+                  if level[i-1] == nil {
+                     Fprint(writer, " ") // Left and right are nil.
+                  } else {
+                     Fprint(writer, "╯") // Left is not nil, right is nil.
+                  }
+                  if i < len(level)-1 {
+                     Fprint(writer, Repeat(" ", spacing))
+                  }
+                  //
+                  // The right node is nil so the line-work for this pair is now
+                  // complete. The final step is to draw the spacing before the
+                  // line-work for the next pair should start. However, only add
+                  // this spacing if this is not the last node of the level.
+                  //
+               } else {
+                  //
+                  // The right node of the pair is NOT nil, so either the left
+                  // node is nil (╰) or they are both not nil (┴).
+                  //
+                  if level[i-1] == nil {
+                     Fprint(writer, "╰") // Left is nil, right is not nil.
+                  } else {
+                     Fprint(writer, "┴") // Left and right are not nil.
+                  }
+                  //
+                  // The right node is NOT nil, so we need to now draw a line
+                  // from the parent connector to where the right node will be
+                  // drawn below. Given that there is a node here, we can draw
+                  // the downward connector (╮) exactly above that node.
+                  //
+                  Fprint(writer, Repeat("─", spacing-1))
+                  Fprint(writer, "╮")
+               }
+               //
+               // The final step is to draw the spacing that separates this pair
+               // from the next pair on this level. However, to avoid wrapping
+               // and unnecessary trailing whitespace, we only add this spacing
+               // if this was not the last pair of the level.
+               //
+               if i < len(level)-1 {
+                  Fprint(writer, Repeat(" ", spacing))
+                  Fprint(writer, Repeat(" ", spacing-1))
+               }
+            }
+         }
+         Fprint(writer, "\n")
+      }
+      // The line-work for this level is done, and we are now on a new line.
+      // Here we follow the same pattern as with the line-work, except instead
+      // of lines we draw the `value` of each node.
+      //
+      // There is no need to consider differences between left and right because
+      // all nodes are drawn the same and the spacing is consistent.
+      //
+      for i, node := range level {
+         //
+         // When the node to draw is nil, we need to draw empty space below the
+         // missing line-work, up to where the node value would have been drawn
+         // if it was not nil, and then more spacing for the separation leading
+         // up to the next pair when it is not the last node of the level.
+         //
+         if node == nil {
+            if i < len(level)-1 {
+               Fprint(writer, Repeat(" ", spacing))
+               Fprint(writer, Repeat(" ", spacing))
+            }
+         } else {
+            //
+            // When the node to draw is NOT nil, we center the node's value (x)
+            // within a cell of 3-characters and prefix it with node separation.
+            //
+            value := Centered(String(node.s), " ", 3)
+            Fprint(writer, Repeat(" ", spacing-len(value)+1))
+            Fprint(writer, value)
 
-   			// Draw spacing to create separation between this pair and the next
-   			// pair of nodes on this level. However, to avoid line-wrapping and
-   			// unnecessary trailing whitespace, we only add this spacing if this
-   			// is not the last node of the current level.
-   			if i < len(level)-1 {
-   				Fprint(writer, Repeat(" ", spacing-1))
-   			}
-   		}
-   	}
-   	Fprint(writer, "\n")
+            // Draw spacing to create separation between this pair and the next
+            // pair of nodes on this level. However, to avoid line-wrapping and
+            // unnecessary trailing whitespace, we only add this spacing if this
+            // is not the last node of the current level.
+            if i < len(level)-1 {
+               Fprint(writer, Repeat(" ", spacing-1))
+            }
+         }
+      }
+      Fprint(writer, "\n")
    }
 }
 
+//TODO: is Draw ever _not_ stdout?
 func (tree Tree) Draw(writer io.Writer) {
    tree.root.Draw(writer)
 }

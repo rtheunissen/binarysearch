@@ -459,23 +459,23 @@ type LBSTBottomUp struct {
 // For the scapegoat tree, we use the logarithmic balance rule, where the
 // discrete binary logarithm of the two sizes differ by at most 1.
 //
-//	-1 <= floor(log₂(s)) - floor(log₂(y)) <= 1
+//   -1 <= floor(log₂(s)) - floor(log₂(y)) <= 1
 //
 // Considering the binary representation, we look at the left-most bit set to 1,
 // the most-significant bit. 00001101
 //
-//	↖
-//	 MSB at position 3
+//   ↖
+//    MSB at position 3
 //
 // The position of the most-significant bit, from the right starting at zero,
 // is equal to the floor of the binary logarithm. The balance test is then to
 // determine if the MSB is at most one step different in either direction.
 // For example:
 //
-//	       ↓                       ↓                    ↓
-//	s:   00100000              00001000              00010001
-//	y:   00111001              00010001              01001101
-//	       ↑ BALANCED             ↑ BALANCED          ↑ NOT BALANCED
+//          ↓                       ↓                    ↓
+//   s:   00100000              00001000              00010001
+//   y:   00111001              00010001              01001101
+//          ↑ BALANCED             ↑ BALANCED          ↑ NOT BALANCED
 //
 // When `s` <= `y`, as in the examples above, we can shift the bits of `y` one
 // position to the right, then, if the MSB of `s` is less than the MSB of `y`
@@ -488,15 +488,15 @@ func (LBSTBottomUp) New() List {
 
 func (tree *LBSTBottomUp) Clone() List {
    return &LBSTBottomUp{
-   	LBST: LBST{
-   		Tree: tree.Tree.Clone(),
-   	},
+      LBST: LBST{
+         Tree: tree.Tree.Clone(),
+      },
    }
 }
 
 func (tree *LBSTBottomUp) insert(p *Node, s Size, i Position, x Data) *Node {
    if p == nil {
-   	return tree.allocate(Node{x: x})
+      return tree.allocate(Node{x: x})
    }
    tree.copy(&p)
    sl := p.s
@@ -506,26 +506,26 @@ func (tree *LBSTBottomUp) insert(p *Node, s Size, i Position, x Data) *Node {
    // assert(tree.isBalanced(sr, sl))
 
    if i <= p.s {
-   	p.l = tree.insert(p.l, sl, i, x)
-   	p.s = p.s + 1
+      p.l = tree.insert(p.l, sl, i, x)
+      p.s = p.s + 1
 
-   	if !tree.isBalanced(sr, sl+1) {
-   		if !tree.singleRotation((*p).l.s, p.s-(*p).l.s-1) {
-   			tree.rotateLR(&p)
-   		} else {
-   			tree.rotateR(&p)
-   		}
-   	}
+      if !tree.isBalanced(sr, sl+1) {
+         if !tree.singleRotation((*p).l.s, p.s-(*p).l.s-1) {
+            tree.rotateLR(&p)
+         } else {
+            tree.rotateR(&p)
+         }
+      }
    } else {
-   	p.r = tree.insert(p.r, sr, i-sl-1, x)
+      p.r = tree.insert(p.r, sr, i-sl-1, x)
 
-   	if !tree.isBalanced(sl, sr+1) {
-   		if !tree.singleRotation(sr+1-(*p).r.s-1, (*p).r.s) {
-   			tree.rotateRL(&p)
-   		} else {
-   			tree.rotateL(&p)
-   		}
-   	}
+      if !tree.isBalanced(sl, sr+1) {
+         if !tree.singleRotation(sr+1-(*p).r.s-1, (*p).r.s) {
+            tree.rotateRL(&p)
+         } else {
+            tree.rotateL(&p)
+         }
+      }
    }
    return p
 }
@@ -540,52 +540,52 @@ func (tree *LBSTBottomUp) delete(p *Node, s Size, i Position, x *Data) *Node {
    // assert(tree.isBalanced(sr, sl))
 
    if i == p.s {
-   	defer tree.release(p)
-   	*x = p.x
-   	if p.l == nil {
-   		return p.r
-   	}
-   	if p.r == nil {
-   		return p.l
-   	}
-   	if sl > sr {
-   		var max *Node
-   		p.l = tree.extractMax(p.l, sl, &max)
-   		p.x = max.x
-   		p.s--
-   	} else {
-   		var min *Node
-   		p.r = tree.extractMin(p.r, sr, &min)
-   		p.x = min.x
-   	}
-   	return p
+      defer tree.release(p)
+      *x = p.x
+      if p.l == nil {
+         return p.r
+      }
+      if p.r == nil {
+         return p.l
+      }
+      if sl > sr {
+         var max *Node
+         p.l = tree.extractMax(p.l, sl, &max)
+         p.x = max.x
+         p.s--
+      } else {
+         var min *Node
+         p.r = tree.extractMin(p.r, sr, &min)
+         p.x = min.x
+      }
+      return p
    }
    if i < p.s {
-   	p.l = tree.delete(p.l, sl, i, x)
-   	p.s--
+      p.l = tree.delete(p.l, sl, i, x)
+      p.s--
 
-   	if !tree.isBalanced(sl-1, sr) {
-   		srl := (*p).r.s
-   		srr := sr - (*p).r.s - 1
-   		if tree.singleRotation(srr, srl) {
-   			tree.rotateL(&p)
-   		} else {
-   			tree.rotateRL(&p)
-   		}
-   	}
+      if !tree.isBalanced(sl-1, sr) {
+         srl := (*p).r.s
+         srr := sr - (*p).r.s - 1
+         if tree.singleRotation(srr, srl) {
+            tree.rotateL(&p)
+         } else {
+            tree.rotateRL(&p)
+         }
+      }
 
    } else {
-   	p.r = tree.delete(p.r, sr, i-sl-1, x)
+      p.r = tree.delete(p.r, sr, i-sl-1, x)
 
-   	if !tree.isBalanced(sr-1, sl) {
-   		sll := (*p).l.s
-   		slr := sl - (*p).l.s - 1
-   		if tree.singleRotation(sll, slr) {
-   			tree.rotateR(&p)
-   		} else {
-   			tree.rotateLR(&p)
-   		}
-   	}
+      if !tree.isBalanced(sr-1, sl) {
+         sll := (*p).l.s
+         slr := sl - (*p).l.s - 1
+         if tree.singleRotation(sll, slr) {
+            tree.rotateR(&p)
+         } else {
+            tree.rotateLR(&p)
+         }
+      }
    }
    return p
 }
@@ -618,7 +618,7 @@ func (tree LBSTBottomUp) Split(i Position) (List, List) {
    l, r := tree.LBST.Split(i)
 
    return &LBSTBottomUp{l},
-   	&LBSTBottomUp{r}
+      &LBSTBottomUp{r}
 }
 
 func (tree LBSTBottomUp) Join(that List) List {

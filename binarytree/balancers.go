@@ -64,84 +64,6 @@ func (strategy Partition) Verify(tree Tree) {
 
 }
 
-type Weight struct{}
-
-func (balancer Weight) Restore(tree Tree) Tree {
-   return Partition{balancer}.Restore(tree)
-}
-
-func (balancer Weight) Verify(tree Tree) {
-   balancer.verify(tree.root, tree.size)
-}
-
-// -1 <= ⌊log₂(L)⌋ - ⌊log₂(R)⌋ <= 1
-func (balancer Weight) verify(p *Node, s Size) {
-   if p == nil {
-      return
-   }
-   invariant(Difference(Log2(p.sizeL() + 1), Log2(p.sizeR(s) + 1)) <= 1)
-
-   balancer.verify(p.l, p.sizeL())
-   balancer.verify(p.r, p.sizeR(s))
-}
-
-func (Weight) isBalanced(x, y Size) bool {
-   return !SmallerLog2(x+1, (y+1)>>1)
-}
-
-
-
-
-type Half struct{}
-
-func (balancer Half) Restore(tree Tree) Tree {
-   return Partition{balancer}.Restore(tree)
-}
-
-func (Half) isBalanced(x, y Size) bool {
-   return !(x < (y >> 1))
-}
-
-func (balancer Half) Verify(tree Tree) {
-   balancer.verify(tree.root, tree.size)
-}
-
-func (balancer Half) verify(p *Node, s Size) {
-   if p == nil {
-      return
-   }
-   //invariant(Difference(p.l.height(), p.r.height()) <= 1)
-   //
-   //balancer.verify(p.l, p.sizeL())
-   //balancer.verify(p.r, p.sizeR(s))
-}
-
-
-
-type Half2 struct{}
-
-func (balancer Half2) Restore(tree Tree) Tree {
-   return Partition{balancer}.Restore(tree)
-}
-
-func (Half2) isBalanced(x, y Size) bool {
-   return !((x + 1) < ((y + 1) >> 1))
-}
-
-func (balancer Half2) Verify(tree Tree) {
-   balancer.verify(tree.root, tree.size)
-}
-
-func (balancer Half2) verify(p *Node, s Size) {
-   if p == nil {
-      return
-   }
-   //invariant(Difference(p.l.height(), p.r.height()) <= 1)
-   //
-   //balancer.verify(p.l, p.sizeL())
-   //balancer.verify(p.r, p.sizeR(s))
-}
-
 
 
 type Log struct{}
@@ -166,10 +88,144 @@ func (balancer Log) verify(p *Node, s Size) {
 }
 
 func (Log) isBalanced(x, y Size) bool {
-   return !SmallerLog2(x, y>>1)
+   return !SmallerLog2(x+1, (y+1) >> 1)
 }
 
-//!(MSB(y) < MSB(x >> 1))
+
+
+
+type Constant struct{}
+
+func (balancer Constant) Restore(tree Tree) Tree {
+   return Partition{balancer}.Restore(tree)
+}
+
+func (balancer Constant) Verify(tree Tree) {
+   balancer.verify(tree.root, tree.size)
+}
+
+// -1 <= ⌊log₂(L)⌋ - ⌊log₂(R)⌋ <= 1
+func (balancer Constant) verify(p *Node, s Size) {
+   if p == nil {
+      return
+   }
+   //invariant(Difference(Log2(p.sizeL()), Log2(p.sizeR(s))) <= 1)
+
+   balancer.verify(p.l, p.sizeL())
+   balancer.verify(p.r, p.sizeR(s))
+}
+
+func (Constant) isBalanced(x, y Size) bool {
+   return !(x+1 < (y+1) >> 1)
+}
+
+
+
+
+type Weight struct{}
+
+func (balancer Weight) Restore(tree Tree) Tree {
+   return Partition{balancer}.Restore(tree)
+}
+
+func (balancer Weight) Verify(tree Tree) {
+   balancer.verify(tree.root, tree.size)
+}
+
+// -1 <= ⌊log₂(L)⌋ - ⌊log₂(R)⌋ <= 1
+func (balancer Weight) verify(p *Node, s Size) {
+   if p == nil {
+      return
+   }
+   invariant(Difference(Log2(p.sizeL()), Log2(p.sizeR(s))) <= 1)
+
+   balancer.verify(p.l, p.sizeL())
+   balancer.verify(p.r, p.sizeR(s))
+}
+
+func (Weight) isBalanced(x, y Size) bool {
+   return !SmallerLog2(x, y >> 1)
+}
+
+
+
+
+
+
+type Cost struct{}
+
+func (balancer Cost) Restore(tree Tree) Tree {
+   tree.root = balancer.balance(&tree, tree.root, tree.size)
+   return tree
+}
+
+func (strategy Cost) balance(tree *Tree, p *Node, s Size) *Node {
+   if s < 3 {
+      return p
+   }
+   //sl := p.sizeL()
+   //sr := p.sizeR(s)
+
+   // assert(strategy.isBalanced(sl, sr) || sl < sr)
+   // assert(strategy.isBalanced(sr, sl) || sr < sl)
+
+   // Replace `p` by its underlying median if not balanced.
+   if !strategy.isBalanced(p, s) {
+      p = tree.partition(p, s >> 1)
+   }
+   // Recursively balance the left and right subtrees.
+   p.l = strategy.balance(tree, p.l, p.sizeL())
+   p.r = strategy.balance(tree, p.r, p.sizeR(s))
+   return p
+}
+
+func (Cost) isBalanced(p *Node, s Size) bool {
+   sl := p.sizeL()
+   sr := p.sizeR(s)
+   if sl > sr {
+      if p.l.sizeL() > p.l.sizeR(sl) {
+         if p.l.sizeL() > sr {
+            return false
+         }
+      } else {
+         if p.l.sizeR(sl) > sr {
+            return false
+         }
+      }
+   } else {
+      if p.r.sizeR(sr) > p.r.sizeL() {
+         if p.r.sizeR(sr) > sl {
+            return false
+         } else {
+            //
+         }
+      } else {
+         if p.r.sizeL() > sl {
+            return false
+         }
+      }
+   }
+   return true
+   //return !SmallerLog2(x, y >> 1)
+}
+
+func (balancer Cost) Verify(tree Tree) {
+   balancer.verify(tree.root, tree.size)
+}
+
+func (balancer Cost) verify(p *Node, s Size) {
+   if p == nil {
+      return
+   }
+   // -1 <= ⌊log₂(L)⌋ - ⌊log₂(R)⌋ <= 1
+   //invariant(Difference(Log2(p.sizeL()), Log2(p.sizeR(s))) <= 1)
+   //invariant(Difference(p.l.height(), p.r.height()) <= 1)
+
+   balancer.verify(p.l, p.sizeL())
+   balancer.verify(p.r, p.sizeR(s))
+}
+
+
 
 type Median struct{}
 
@@ -485,13 +541,13 @@ func (balancer DSW) compress(p *Node, c Size) *Node {
 //            tail.right ← temp
 
 //   func (tree Tree) Vine(size Size) (root *Node) {
-//	 p := &root
-//	 for ; size > 0; size-- {
-//	   *p = tree.allocate(Node{})
-//	    p = &(*p).r
-//	 }
-//	 return
-//	}
+//    p := &root
+//    for ; size > 0; size-- {
+//      *p = tree.allocate(Node{})
+//       p = &(*p).r
+//    }
+//    return
+//   }
 func (Tree) Vine(size Size) Tree {
    t := Tree{}
    n := Node{}
@@ -533,20 +589,20 @@ func (Tree) WorstCaseMedianVine(size Size) Tree {
 //}
 
 // void flatten(TreeNode *root) {
-//	while (root) {
-//		if (root->left && root->right) {
-//			TreeNode* t = root->left;
-//			while (t->right)
-//				t = t->right;
-//			t->right = root->right;
-//		}
+//   while (root) {
+//      if (root->left && root->right) {
+//         TreeNode* t = root->left;
+//         while (t->right)
+//            t = t->right;
+//         t->right = root->right;
+//      }
 
 //
 //        if(root->left)
-//		    root->right = root->left;
-//		root->left = NULL;
-//		root = root->right;
-//	}
+//          root->right = root->left;
+//      root->left = NULL;
+//      root = root->right;
+//   }
 //}
 
 //func (tree Tree) treeToVineAlt(p *Node) (vine *Node) {

@@ -60,10 +60,10 @@ func (tree *Conc) asLeaf(x Data) *Node {
 // Note that we store the height in the unused data field `s`.
 func (tree *Conc) link(l, r *Node) *Node {
    return tree.allocate(Node{
-   	y: utility.Max(l.y, r.y) + 1,
-   	s: l.s + r.s,
-   	l: l,
-   	r: r,
+      y: utility.Max(l.y, r.y) + 1,
+      s: l.s + r.s,
+      l: l,
+      r: r,
    })
 }
 
@@ -72,36 +72,36 @@ func (tree *Conc) link(l, r *Node) *Node {
 // Creates a reduced and balanced concatenation of two subtrees.
 func (tree *Conc) balanced(l, r *Node) *Node {
    if l == nil {
-   	return r
+      return r
    }
    if r == nil {
-   	return l
+      return l
    }
    return tree.concat(l, r)
 }
 
 func (tree *Conc) concat(l, r *Node) *Node {
    if l.y > r.y && ((l.y - r.y) > 1) {
-   	if l.l.y >= l.r.y {
-   		return tree.link(l.l, tree.concat(l.r, r))
-   	}
-   	rr := tree.concat(l.r.r, r)
-   	if l.y-rr.y < 3 {
-   		return tree.link(tree.link(l.l, l.r.l), rr)
-   	} else {
-   		return tree.link(l.l, tree.link(l.r.l, rr))
-   	}
+      if l.l.y >= l.r.y {
+         return tree.link(l.l, tree.concat(l.r, r))
+      }
+      rr := tree.concat(l.r.r, r)
+      if l.y-rr.y < 3 {
+         return tree.link(tree.link(l.l, l.r.l), rr)
+      } else {
+         return tree.link(l.l, tree.link(l.r.l, rr))
+      }
    }
    if r.y > l.y && ((r.y - l.y) > 1) {
-   	if r.r.y >= r.l.y {
-   		return tree.link(tree.concat(l, r.l), r.r)
-   	}
-   	ll := tree.concat(l, r.l.l)
-   	if r.y-ll.y < 3 {
-   		return tree.link(ll, tree.link(r.l.r, r.r))
-   	} else {
-   		return tree.link(tree.link(ll, r.l.r), r.r)
-   	}
+      if r.r.y >= r.l.y {
+         return tree.link(tree.concat(l, r.l), r.r)
+      }
+      ll := tree.concat(l, r.l.l)
+      if r.y-ll.y < 3 {
+         return tree.link(ll, tree.link(r.l.r, r.r))
+      } else {
+         return tree.link(tree.link(ll, r.l.r), r.r)
+      }
    }
    return tree.link(l, r)
 }
@@ -113,13 +113,13 @@ func (tree Conc) Select(i Position) (x Data) {
 
 func (tree Conc) lookup(p *Node, i Position) *Node {
    if p.isLeaf() {
-   	assert(i == 0)
-   	return p
+      // assert(i == 0)
+      return p
    }
    if i < p.l.s {
-   	return tree.lookup(p.l, i)
+      return tree.lookup(p.l, i)
    } else {
-   	return tree.lookup(p.r, i-p.l.s)
+      return tree.lookup(p.r, i-p.l.s)
    }
 }
 
@@ -130,12 +130,12 @@ func (tree *Conc) Update(i Position, x Data) {
 
 func (tree *Conc) update(p *Node, i Position, x Data) *Node {
    if p.isLeaf() {
-   	return tree.asLeaf(x)
+      return tree.asLeaf(x)
    }
    if i < p.l.s {
-   	return tree.link(tree.update(p.l, i, x), p.r)
+      return tree.link(tree.update(p.l, i, x), p.r)
    } else {
-   	return tree.link(p.l, tree.update(p.r, i-p.l.s, x))
+      return tree.link(p.l, tree.update(p.r, i-p.l.s, x))
    }
 }
 
@@ -143,24 +143,24 @@ func (tree *Conc) Insert(i Position, x Data) {
    // assert(i <= tree.Size())
    tree.size++
    if tree.root == nil {
-   	tree.root = tree.asLeaf(x)
+      tree.root = tree.asLeaf(x)
    } else {
-   	tree.root = tree.insert(tree.root, i, x)
+      tree.root = tree.insert(tree.root, i, x)
    }
 }
 
 func (tree *Conc) insert(p *Node, i Position, x Data) *Node {
    if p.isLeaf() {
-   	if i == 0 {
-   		return tree.link(tree.asLeaf(x), p)
-   	} else {
-   		return tree.link(p, tree.asLeaf(x))
-   	}
+      if i == 0 {
+         return tree.link(tree.asLeaf(x), p)
+      } else {
+         return tree.link(p, tree.asLeaf(x))
+      }
    }
    if i < p.l.s {
-   	return tree.balanced(tree.insert(p.l, i, x), p.r)
+      return tree.balanced(tree.insert(p.l, i, x), p.r)
    } else {
-   	return tree.balanced(p.l, tree.insert(p.r, i-p.l.s, x))
+      return tree.balanced(p.l, tree.insert(p.r, i-p.l.s, x))
    }
 }
 
@@ -173,51 +173,51 @@ func (tree *Conc) Delete(i Position) (x Data) {
 
 func (tree *Conc) delete(p *Node, i Position, x *Data) *Node {
    if p.isLeaf() {
-   	*x = p.x
-   	return nil
+      *x = p.x
+      return nil
    }
    if i < p.l.s {
-   	return tree.balanced(tree.delete(p.l, i, x), p.r)
+      return tree.balanced(tree.delete(p.l, i, x), p.r)
    } else {
-   	return tree.balanced(p.l, tree.delete(p.r, i-p.l.s, x))
+      return tree.balanced(p.l, tree.delete(p.r, i-p.l.s, x))
    }
 }
 
 func (tree Conc) Split(i Position) (List, List) {
    // assert(i <= tree.Size())
    if i == 0 {
-   	return &Conc{Tree: Tree{arena: tree.arena}},
-   		&Conc{Tree: Tree{arena: tree.arena, root: tree.root, size: tree.size}}
+      return &Conc{Tree: Tree{arena: tree.arena}},
+         &Conc{Tree: Tree{arena: tree.arena, root: tree.root, size: tree.size}}
    } else {
-   	l, r := tree.split(tree.root, i)
-   	return &Conc{Tree: Tree{arena: tree.arena, root: l, size: i}}, &Conc{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
+      l, r := tree.split(tree.root, i)
+      return &Conc{Tree: Tree{arena: tree.arena, root: l, size: i}}, &Conc{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
    }
 }
 
 func (tree Conc) split(p *Node, i Position) (*Node, *Node) {
    if p.isLeaf() {
-   	if i == 0 {
-   		return nil, p
-   	} else {
-   		return p, nil
-   	}
+      if i == 0 {
+         return nil, p
+      } else {
+         return p, nil
+      }
    }
    if i < p.l.s {
-   	l, r := tree.split(p.l, i)
-   	return l, tree.balanced(r, p.r)
+      l, r := tree.split(p.l, i)
+      return l, tree.balanced(r, p.r)
    } else {
-   	l, r := tree.split(p.r, i-p.l.s)
-   	return tree.balanced(p.l, l), r
+      l, r := tree.split(p.r, i-p.l.s)
+      return tree.balanced(p.l, l), r
    }
 }
 
 func (tree Conc) Join(other List) List {
    return &Conc{
-   	Tree: Tree{
-   		arena: tree.arena,
-   		root:  tree.join(other.(*Conc)),
-   		size:  tree.size + other.Size(),
-   	},
+      Tree: Tree{
+         arena: tree.arena,
+         root:  tree.join(other.(*Conc)),
+         size:  tree.size + other.Size(),
+      },
    }
 }
 
@@ -231,13 +231,13 @@ func (tree Conc) Each(visit func(Data)) {
 
 func (tree Conc) inorder(p *Node, visit func(Data)) {
    if p == nil {
-   	return
+      return
    }
    if p.isLeaf() {
-   	visit(p.x)
+      visit(p.x)
    } else {
-   	tree.inorder(p.l, visit)
-   	tree.inorder(p.r, visit)
+      tree.inorder(p.l, visit)
+      tree.inorder(p.r, visit)
    }
 }
 
@@ -249,12 +249,12 @@ func (tree Conc) Verify() {
 
 func (tree Conc) verifyHeights(p *Node) {
    if p == nil {
-   	return
+      return
    }
    if p.isLeaf() {
-   	invariant(p.y == 0)
+      invariant(p.y == 0)
    } else {
-   	invariant(utility.Difference(p.l.y, p.r.y) <= 1)
+      invariant(utility.Difference(p.l.y, p.r.y) <= 1)
    }
    tree.verifyHeights(p.l)
    tree.verifyHeights(p.r)
@@ -262,7 +262,7 @@ func (tree Conc) verifyHeights(p *Node) {
 
 func (tree Conc) verifyLeaves(p *Node) {
    if p == nil {
-   	return
+      return
    }
    invariant((p.l == nil) == (p.r == nil))
    tree.verifyLeaves(p.l)
@@ -271,7 +271,7 @@ func (tree Conc) verifyLeaves(p *Node) {
 
 func (tree Conc) verifySizes(p *Node) {
    if p == nil {
-   	return
+      return
    }
    invariant(p.s == Conc{}.Count(p))
    tree.verifySizes(p.l)

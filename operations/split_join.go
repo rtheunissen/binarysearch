@@ -11,8 +11,8 @@ type SplitJoin struct {
 
 func (operation *SplitJoin) Setup(strategy list.List, scale list.Size) list.List {
    instance := strategy.New()
-   for instance.Size() < scale {
-      instance.Insert(random.LessThan(instance.Size()+1, random.Uniform()), 0)
+   for instance.Size() < scale / 2 {
+       instance.Insert(random.LessThan(instance.Size()+1, random.Uniform()), 0)
    }
    return instance
 }

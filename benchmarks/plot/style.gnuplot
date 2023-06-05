@@ -5,7 +5,7 @@
 #
 ##################################################################
 
-set terminal svg size 720,480 dynamic
+set terminal svg size 720,420 dynamic
 
 set samples 1000
 
@@ -16,11 +16,11 @@ set style line 1000 dashtype 1 lw 1 pt 1 ps 0 lc "#EEEEEE"
 #set grid y2tics back linestyle 1000
 set grid xtics back linestyle 1000
 
-set title font "Arial,20"
+set title font ",20"
 set title offset 0,5
 
-set xlabel  font "Arial,16" offset 0,-1
-set ylabel  font "Arial,16"
+set xlabel  font ",16" offset 0,-1
+set ylabel  font ",16"
 
 set key width 0
 set key height 0
@@ -28,7 +28,7 @@ set key spacing 1.25
 set key samplen 4
 set key reverse Left
 set key horizontal outside center top
-set key font "monospace,16"
+set key font ",16"
 set key at graph 0.5, screen 0.9
 
 set autoscale xfix
@@ -45,11 +45,11 @@ unset mx2tics
 unset x2tics
 unset y2tics
 
-set xtics font "monospace,16"
-set xrange [0.8:*]
+set xtics font ",16"
+set xrange [0.9:*]
 
 unset y2tics
-set y2tics autofreq font "monospace,16"
+set y2tics autofreq font ",16"
 set y2range [*:*]
 
 set datafile missing "NaN"
@@ -96,6 +96,8 @@ Randomized                 = 17
 Zip                        = 18
 Splay                      = 19
 Conc                       = 20
+RedBlackBottomUp           = 21
+
 
 set style line AVLBottomUp                  dashtype 1 ps 2 lw 2 pt   1 pn 2 lc rgb COLOR_BLACK
 set style line AVLJoinBased                 dashtype 1 ps 2 lw 2 pt   2 pn 2 lc rgb COLOR_CYAN
@@ -104,8 +106,9 @@ set style line AVLWeakTopDown               dashtype 1 ps 2 lw 2 pt   3 pn 2 lc 
 set style line AVLWeakJoinBased             dashtype 1 ps 2 lw 2 pt   5 pn 2 lc rgb COLOR_CYAN
 set style line AVLRelaxedTopDown            dashtype 1 ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_BLUE
 set style line AVLRelaxedBottomUp           dashtype 1 ps 2 lw 2 pt   7 pn 2 lc rgb COLOR_YELLOW
+set style line RedBlackBottomUp             dashtype 1 ps 2 lw 2 pt  12 pn 2 lc rgb COLOR_RED
 set style line RedBlackRelaxedBottomUp      dashtype 1 ps 2 lw 2 pt   8 pn 2 lc rgb COLOR_GREEN
-set style line RedBlackRelaxedTopDown       dashtype 1 ps 2 lw 2 pt   9 pn 2 lc rgb COLOR_RED
+set style line RedBlackRelaxedTopDown       dashtype 1 ps 2 lw 2 pt   9 pn 2 lc rgb COLOR_CYAN
 set style line LBSTBottomUp                 dashtype 1 ps 2 lw 2 pt  10 pn 2 lc rgb COLOR_GREEN
 set style line LBSTTopDown                  dashtype 1 ps 2 lw 2 pt  11 pn 2 lc rgb COLOR_BLUE
 set style line LBSTJoinBased                dashtype 1 ps 2 lw 2 pt  12 pn 2 lc rgb COLOR_YELLOW
@@ -126,17 +129,17 @@ set style line Conc                         dashtype 1 ps 2 lw 2 pt  20 pn 2 lc 
 ##################################################################
 
 Median     = 101
-Weight     = 102
-Height     = 103
-DSW        = 104
-Log        = 105
-Half       = 106
-Half2      = 107
+Height     = 102
+Weight     = 103
+Cost       = 104
+DSW        = 105
+Log        = 106
+Constant   = 107
 
-set style line Median  dashtype 1  ps 2 lw 2 pt  10 pn 2 lc rgb COLOR_PURPLE
-set style line Height  dashtype 4  ps 2 lw 2 pt   4 pn 2 lc rgb COLOR_GREEN
-set style line Weight  dashtype 1  ps 2 lw 2 pt   9 pn 2 lc rgb COLOR_BLACK
-set style line DSW     dashtype 1  ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_YELLOW
-set style line Log     dashtype 1  ps 2 lw 2 pt   5 pn 2 lc rgb COLOR_BLUE
-set style line Half    dashtype 1  ps 2 lw 2 pt   3 pn 2 lc rgb COLOR_PINK
-set style line Half2   dashtype 1  ps 2 lw 2 pt   8 pn 2 lc rgb COLOR_CYAN
+set style line Median       dashtype 1  ps 2 lw 2 pt  10 pn 2 lc rgb COLOR_BLACK
+set style line Height       dashtype 4  ps 2 lw 2 pt   4 pn 2 lc rgb COLOR_BLUE
+set style line Weight       dashtype 1  ps 2 lw 2 pt   9 pn 2 lc rgb COLOR_PURPLE
+set style line DSW          dashtype 1  ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_YELLOW
+set style line Cost         dashtype 1  ps 2 lw 2 pt   7 pn 2 lc rgb COLOR_GREEN
+set style line Log          dashtype 1  ps 2 lw 2 pt   8 pn 2 lc rgb COLOR_PINK
+set style line Constant     dashtype 1  ps 2 lw 2 pt   11 pn 2 lc rgb COLOR_CYAN

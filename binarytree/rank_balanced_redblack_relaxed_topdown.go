@@ -159,117 +159,117 @@ func (tree *RedBlackRelaxedTopDown) insert(p **Node, i Position, x Data) {
          }
       } else {
          //
-      	// RIGHT
-   		//
-   		// "If the next node on the search path is nil, replace it by a new
-   		//  node of rank 0 containing the item to be inserted. This completes
-   		//  the insertion: the new node may be a 0-child, but *p is not."
-   		//
-   		if (*p).r == nil {
-   			tree.attachR(*p, x)
-   			return
-   		}
-   		if !isZeroZero((*p).r) && !isZeroChild(*p, (*p).r) {
-   			tree.pathRight(&p, &i)
-   			continue
-   		}
-   		if isZeroZero((*p).r) {
-   			tree.pathRight(&p, &i)
-   			promote(*p)
-   			continue
-   		}
-   		// In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child
+         // RIGHT
+         //
+         // "If the next node on the search path is nil, replace it by a new
+         //  node of rank 0 containing the item to be inserted. This completes
+         //  the insertion: the new node may be a 0-child, but *p is not."
+         //
+         if (*p).r == nil {
+            tree.attachR(*p, x)
+            return
+         }
+         if !isZeroZero((*p).r) && !isZeroChild(*p, (*p).r) {
+            tree.pathRight(&p, &i)
+            continue
+         }
+         if isZeroZero((*p).r) {
+            tree.pathRight(&p, &i)
+            promote(*p)
+            continue
+         }
+         // In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child
 
-   		// From y, take one step down the
-   		// search path to z. If z is null, replace z by a new node of rank 0 containing the item to
-   		// be inserted; if the new node is a 0-child, do a rotate or double rotate step to restore
-   		// the rank rule (Figure 6(d), (e), and (f)). This completes the insertion.
-   		if i > (*p).s+(*p).r.s+1 {
-   			//
-   			// RIGHT RIGHT
-   			//
-   			// "If this node is nil, replace it by a new node containing the
-   			//  item to be inserted. "
-   			//
-   			if (*p).r.r == nil {
-   				tree.attachRR(*p, x)
-   				if isZeroChild((*p).r, (*p).r.r) { // or is p.r.rank == 0 ?
-   					tree.rotateL(p)
-   				}
-   				return
-   			}
-   			// In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child.
+         // From y, take one step down the
+         // search path to z. If z is null, replace z by a new node of rank 0 containing the item to
+         // be inserted; if the new node is a 0-child, do a rotate or double rotate step to restore
+         // the rank rule (Figure 6(d), (e), and (f)). This completes the insertion.
+         if i > (*p).s+(*p).r.s+1 {
+            //
+            // RIGHT RIGHT
+            //
+            // "If this node is nil, replace it by a new node containing the
+            //  item to be inserted. "
+            //
+            if (*p).r.r == nil {
+               tree.attachRR(*p, x)
+               if isZeroChild((*p).r, (*p).r.r) { // or is p.r.rank == 0 ?
+                  tree.rotateL(p)
+               }
+               return
+            }
+            // In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child.
 
-   			//If z is not a 0,0-node, replace w by y and x by z, completing the
-   			// step (Figure 6(g)).
-   			if !isZeroZero((*p).r.r) {
-   				tree.pathRight(&p, &i)
-   				tree.pathRight(&p, &i)
-   				continue
-   			}
-   			// If z is a 0,0-node but not a 1-child, promote z, and replace w by y and
-   			// x by z, completing the step (Figure 6(g)).
-   			if !isOneChild((*p).r, (*p).r.r) {
-   				tree.pathRight(&p, &i)
-   				tree.pathRight(&p, &i)
-   				tree.promote(*p)
-   				continue
-   			}
-   			// Otherwise (z is a 0,0-node and a 1-child), do a rotate or double rotate step to restore the rank rule (Figure 6(h) and (i), respectively).
-   			//  (i) Node z is a 0,0-node and a 1-child, and y and z are both left or
-   			//both right children: promote z, do a rotate step, and replace w by z and x by the child of z along the search
-   			//path.
-   			tree.rotateL(p)
-   			tree.pathRight(&p, &i)
-   			tree.promote(*p)
-   			continue
+            //If z is not a 0,0-node, replace w by y and x by z, completing the
+            // step (Figure 6(g)).
+            if !isZeroZero((*p).r.r) {
+               tree.pathRight(&p, &i)
+               tree.pathRight(&p, &i)
+               continue
+            }
+            // If z is a 0,0-node but not a 1-child, promote z, and replace w by y and
+            // x by z, completing the step (Figure 6(g)).
+            if !isOneChild((*p).r, (*p).r.r) {
+               tree.pathRight(&p, &i)
+               tree.pathRight(&p, &i)
+               tree.promote(*p)
+               continue
+            }
+            // Otherwise (z is a 0,0-node and a 1-child), do a rotate or double rotate step to restore the rank rule (Figure 6(h) and (i), respectively).
+            //  (i) Node z is a 0,0-node and a 1-child, and y and z are both left or
+            //both right children: promote z, do a rotate step, and replace w by z and x by the child of z along the search
+            //path.
+            tree.rotateL(p)
+            tree.pathRight(&p, &i)
+            tree.promote(*p)
+            continue
 
-   		} else {
-   			//
-   			// RIGHT LEFT
-   			//
-   			if (*p).r.l == nil {
-   				tree.attachRL(*p, x)
-   				if isZeroChild((*p).r, (*p).r.l) { // or is p.l.rank == 0 ?
-   					tree.rotateRL(p)
-   				}
-   				return
-   			}
-   			// In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child.
+         } else {
+            //
+            // RIGHT LEFT
+            //
+            if (*p).r.l == nil {
+               tree.attachRL(*p, x)
+               if isZeroChild((*p).r, (*p).r.l) { // or is p.l.rank == 0 ?
+                  tree.rotateRL(p)
+               }
+               return
+            }
+            // In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child.
 
-   			//If z is not a 0,0-node, replace w by y and x by z, completing the
-   			// step (Figure 6(g)).
-   			if !isZeroZero((*p).r.l) {
-   				tree.pathRight(&p, &i)
-   				tree.pathLeft(&p)
-   				continue
-   			}
-   			// If z is a 0,0-node but not a 1-child, promote z, and replace w by y and
-   			// x by z, completing the step (Figure 6(g)).
-   			if !isOneChild((*p).r, (*p).r.l) {
-   				tree.pathRight(&p, &i)
-   				tree.pathLeft(&p)
-   				tree.promote(*p)
-   				continue
-   			}
-   			// Otherwise (z is a 0,0-node and a 1-child), do a rotate or double rotate step to restore the rank rule (Figure 6(h) and (i), respectively).
+            //If z is not a 0,0-node, replace w by y and x by z, completing the
+            // step (Figure 6(g)).
+            if !isZeroZero((*p).r.l) {
+               tree.pathRight(&p, &i)
+               tree.pathLeft(&p)
+               continue
+            }
+            // If z is a 0,0-node but not a 1-child, promote z, and replace w by y and
+            // x by z, completing the step (Figure 6(g)).
+            if !isOneChild((*p).r, (*p).r.l) {
+               tree.pathRight(&p, &i)
+               tree.pathLeft(&p)
+               tree.promote(*p)
+               continue
+            }
+            // Otherwise (z is a 0,0-node and a 1-child), do a rotate or double rotate step to restore the rank rule (Figure 6(h) and (i), respectively).
 
-   			// (j) Node z is a 0,0-node and a 1-child, and exactly one of y and z is a left child: promote z, do a double
-   			//            //rotate step, replace w by whichever of x and y is on the search path from z after the rotations, and replace x
-   			//            //by the child of the new w on the search path.
-   			tree.rotateRL(p)
-   			tree.promote(*p)
-   			//
-   			// "If a double rotation is done, take one further step down the
-   			//  search path after the rotation. Ths completes the step."
-   			//
-   			if i > (*p).s {
-   				tree.pathRight(&p, &i) // RLR
-   			} else {
-   				tree.pathLeft(&p) // RLL
-   			}
-   		}
-   	}
+            // (j) Node z is a 0,0-node and a 1-child, and exactly one of y and z is a left child: promote z, do a double
+            //            //rotate step, replace w by whichever of x and y is on the search path from z after the rotations, and replace x
+            //            //by the child of the new w on the search path.
+            tree.rotateRL(p)
+            tree.promote(*p)
+            //
+            // "If a double rotation is done, take one further step down the
+            //  search path after the rotation. Ths completes the step."
+            //
+            if i > (*p).s {
+               tree.pathRight(&p, &i) // RLR
+            } else {
+               tree.pathLeft(&p) // RLL
+            }
+         }
+      }
    }
 }
 
@@ -292,12 +292,12 @@ func (tree *RedBlackRelaxedTopDown) Insert(i Position, x Data) {
 
 func (tree *RedBlackRelaxedTopDown) Join(other List) List {
    return &RedBlackRelaxedTopDown{
-   	tree.RedBlackRelaxed.Join(other.(*RedBlackRelaxedTopDown).RedBlackRelaxed),
+      tree.RedBlackRelaxed.Join(other.(*RedBlackRelaxedTopDown).RedBlackRelaxed),
    }
 }
 
 func (tree *RedBlackRelaxedTopDown) Split(i Position) (List, List) {
    l, r := tree.RedBlackRelaxed.Split(i)
    return &RedBlackRelaxedTopDown{l},
-   	&RedBlackRelaxedTopDown{r}
+      &RedBlackRelaxedTopDown{r}
 }

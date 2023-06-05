@@ -1,6 +1,6 @@
 package binarytree
 
-// TODO: just inline all of this ?
+// TODO: just inline all of this ? then remove the rank_balanced filename prefix?
 
 type RankBalanced struct {
 }
@@ -8,6 +8,7 @@ type RankBalanced struct {
 func (RankBalanced) rank(p *Node) int {
    return p.rank()
 }
+
 func (RankBalanced) promote(p *Node){
    p.y++
 }

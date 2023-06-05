@@ -14,11 +14,11 @@ func (AVLRelaxedTopDown) New() List {
 
 func (tree *AVLRelaxedTopDown) Clone() List {
    return &AVLRelaxedTopDown{
-   	AVLWeakTopDown: AVLWeakTopDown{
-   		WAVL: WAVL{
-   			Tree: tree.Tree.Clone(),
-   		},
-   	},
+      AVLWeakTopDown: AVLWeakTopDown{
+         WAVL: WAVL{
+            Tree: tree.Tree.Clone(),
+         },
+      },
    }
 }
 
@@ -29,7 +29,7 @@ func (tree AVLRelaxedTopDown) Verify() {
 
 func (tree AVLRelaxedTopDown) verifyValidRankDiffs(p *Node) {
    if p == nil {
-   	return
+      return
    }
    invariant(tree.rank(p) >= p.height())
    invariant(tree.rank(p) > tree.rank(p.l))
@@ -59,16 +59,16 @@ func (tree *AVLRelaxedTopDown) Delete(i Position) Data {
 
 func (tree AVLRelaxedTopDown) join(l, r *Node, sl Size) (p *Node) {
    if l == nil {
-   	return r
+      return r
    }
    if r == nil {
-   	return l
+      return l
    }
 
    if tree.rank(l) <= tree.rank(r) {
-   	return tree.build(l, tree.deleteMin(&r), r, sl)
+      return tree.build(l, tree.deleteMin(&r), r, sl)
    } else {
-   	return tree.build(l, tree.deleteMax(&l), r, sl-1)
+      return tree.build(l, tree.deleteMax(&l), r, sl-1)
    }
 }
 
@@ -89,5 +89,5 @@ func (tree AVLRelaxedTopDown) Split(i Position) (List, List) {
    l, r := JoinBased{Tree: tree.Tree, Joiner: tree}.split(tree.root, i, tree.size)
 
    return &AVLRelaxedTopDown{AVLWeakTopDown: AVLWeakTopDown{WAVL: WAVL{Tree: Tree{arena: tree.arena, root: l, size: i}}}},
-   	&AVLRelaxedTopDown{AVLWeakTopDown: AVLWeakTopDown{WAVL: WAVL{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}}}
+      &AVLRelaxedTopDown{AVLWeakTopDown: AVLWeakTopDown{WAVL: WAVL{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}}}
 }

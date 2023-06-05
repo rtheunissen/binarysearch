@@ -14,7 +14,7 @@ func (tree *LBSTJoinBased) Clone() List {
    return &LBSTJoinBased{
       LBST: LBST{
          Tree: tree.Tree.Clone(),
-   	},
+      },
    }
 }
 
@@ -59,7 +59,7 @@ func (tree LBSTJoinBased) Split(i Position) (List, List) {
    l, r := JoinBased{Tree: tree.Tree, Joiner: tree}.splitToBST(tree.root, i, tree.size)
 
    return &LBSTJoinBased{LBST{l}},
-   	&LBSTJoinBased{LBST{r}}
+      &LBSTJoinBased{LBST{r}}
 }
 
 func (tree LBSTJoinBased) Join(that List) List {
@@ -68,12 +68,12 @@ func (tree LBSTJoinBased) Join(that List) List {
    tree.share(l.root)
    tree.share(r.root)
    return &LBSTJoinBased{
-   	LBST{
-   		Tree: Tree{
-   			arena: tree.arena,
-   			root:  tree.join2(l.root, r.root, l.size, r.size),
-   			size:  l.size + r.size,
-   		},
-   	},
+      LBST{
+         Tree: Tree{
+            arena: tree.arena,
+            root:  tree.join2(l.root, r.root, l.size, r.size),
+            size:  l.size + r.size,
+         },
+      },
    }
 }

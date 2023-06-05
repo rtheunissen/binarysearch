@@ -230,11 +230,11 @@ func TestInsertDeletePersistent(t *testing.T, impl List, size Size, position dis
    ref := Reference{}
    for ref.Len() < size {
       testInsertPersistent(&ref, seq, position)
-   	testInsertPersistent(&ref, seq, position)
-   	testInsertPersistent(&ref, seq, position)
+      testInsertPersistent(&ref, seq, position)
+      testInsertPersistent(&ref, seq, position)
 
-   	testPersistentDelete(&ref, seq, &distribution.Uniform{random.Uniform()}) // TODO: simplify this
-   	testPersistentDelete(&ref, seq, &distribution.Uniform{random.Uniform()}) // TODO: simplify this
+      testPersistentDelete(&ref, seq, &distribution.Uniform{random.Uniform()}) // TODO: simplify this
+      testPersistentDelete(&ref, seq, &distribution.Uniform{random.Uniform()}) // TODO: simplify this
    }
    seq.Free()
 }
@@ -245,64 +245,64 @@ func TestJoinFromSplit(t *testing.T, impl List, size Size, distribution distribu
 
    for i := Size(0); i < size; i++ {
 
-   	// Split the sequence and reference.
-   	L, R := instance.Split(i)
+      // Split the sequence and reference.
+      L, R := instance.Split(i)
 
-   	// Join again, in various combinations.
-   	LL := L.Join(L)
-   	LR := L.Join(R)
-   	RL := R.Join(L)
-   	RR := R.Join(R)
+      // Join again, in various combinations.
+      LL := L.Join(L)
+      LR := L.Join(R)
+      RL := R.Join(L)
+      RR := R.Join(R)
 
-   	// Check invariants.
-   	LL.Verify()
-   	LR.Verify()
-   	RL.Verify()
-   	RR.Verify()
+      // Check invariants.
+      LL.Verify()
+      LR.Verify()
+      RL.Verify()
+      RR.Verify()
 
-   	// Check each join against a reference.
-   	_L, _R := reference.Split(i)
+      // Check each join against a reference.
+      _L, _R := reference.Split(i)
 
-   	assertList(_L.Join(_L), LL)
-   	assertList(_L.Join(_R), LR)
-   	assertList(_R.Join(_L), RL)
-   	assertList(_R.Join(_R), RR)
+      assertList(_L.Join(_L), LL)
+      assertList(_L.Join(_R), LR)
+      assertList(_R.Join(_L), RL)
+      assertList(_R.Join(_R), RR)
    }
    instance.Free()
 }
 
 func TestJoin(t *testing.T, impl List, size Size, distribution distribution.Distribution) {
    if size == 0 {
-   	return
+      return
    }
    for i := Size(0); i < size; i++ {
-   	L := insertToSize(impl, random.Uint64()%size, distribution)
-   	R := insertToSize(impl, random.Uint64()%size, distribution)
+      L := insertToSize(impl, random.Uint64()%size, distribution)
+      R := insertToSize(impl, random.Uint64()%size, distribution)
 
-   	// Check each join against a reference.
-   	_L := referenceFor(L)
-   	_R := referenceFor(R)
+      // Check each join against a reference.
+      _L := referenceFor(L)
+      _R := referenceFor(R)
 
-   	LL := L.Join(L)
-   	LR := L.Join(R)
-   	RL := R.Join(L)
-   	RR := R.Join(R)
+      LL := L.Join(L)
+      LR := L.Join(R)
+      RL := R.Join(L)
+      RR := R.Join(R)
 
-   	assertList(_L.Join(_L), LL)
-   	assertList(_L.Join(_R), LR)
-   	assertList(_R.Join(_L), RL)
-   	assertList(_R.Join(_R), RR)
+      assertList(_L.Join(_L), LL)
+      assertList(_L.Join(_R), LR)
+      assertList(_R.Join(_L), RL)
+      assertList(_R.Join(_R), RR)
 
-   	LL.Verify()
-   	LR.Verify()
-   	RL.Verify()
-   	RR.Verify()
+      LL.Verify()
+      LR.Verify()
+      RL.Verify()
+      RR.Verify()
 
-   	L.Verify()
-   	R.Verify()
+      L.Verify()
+      R.Verify()
 
-   	L.Free()
-   	R.Free()
+      L.Free()
+      R.Free()
    }
 }
 
@@ -316,33 +316,33 @@ func TestJoinAfterInsertDelete(t *testing.T, impl List, size Size, distribution 
 
    for _L.Size() < size {
 
-   	testInsertInPlace(_L, L, distribution)
-   	testInsertInPlace(_L, L, distribution)
-   	testDeleteInPlace(_L, L, distribution)
+      testInsertInPlace(_L, L, distribution)
+      testInsertInPlace(_L, L, distribution)
+      testDeleteInPlace(_L, L, distribution)
 
-   	testInsertInPlace(_R, R, distribution)
-   	testInsertInPlace(_R, R, distribution)
-   	testDeleteInPlace(_R, R, distribution)
+      testInsertInPlace(_R, R, distribution)
+      testInsertInPlace(_R, R, distribution)
+      testDeleteInPlace(_R, R, distribution)
 
-   	LL := L.Join(L)
-   	LR := L.Join(R)
-   	RL := R.Join(L)
-   	RR := R.Join(R)
+      LL := L.Join(L)
+      LR := L.Join(R)
+      RL := R.Join(L)
+      RR := R.Join(R)
 
-   	// Check each join against a reference.
-   	assertList(_L.Join(_L), LL)
-   	assertList(_L.Join(_R), LR)
-   	assertList(_R.Join(_L), RL)
-   	assertList(_R.Join(_R), RR)
+      // Check each join against a reference.
+      assertList(_L.Join(_L), LL)
+      assertList(_L.Join(_R), LR)
+      assertList(_R.Join(_L), RL)
+      assertList(_R.Join(_R), RR)
 
-   	// Check invariants.
-   	L.Verify()
-   	R.Verify()
+      // Check invariants.
+      L.Verify()
+      R.Verify()
 
-   	LL.Verify()
-   	LR.Verify()
-   	RL.Verify()
-   	RR.Verify()
+      LL.Verify()
+      LR.Verify()
+      RL.Verify()
+      RR.Verify()
    }
    L.Free()
    R.Free()
@@ -354,33 +354,33 @@ func TestSplit(t *testing.T, impl List, size Size, position distribution.Distrib
 
    for i := Size(0); i <= reference.Size(); i++ {
 
-   	// Split
-   	L, R := instance.Split(i)
+      // Split
+      L, R := instance.Split(i)
 
-   	// Check invariants.
-   	instance.Verify()
-   	L.Verify()
-   	R.Verify()
+      // Check invariants.
+      instance.Verify()
+      L.Verify()
+      R.Verify()
 
-   	// Compare against a reference.
-   	_L, _R := reference.Split(i)
-   	assertList(_L, L)
-   	assertList(_R, R)
-   	assertList(reference, instance)
+      // Compare against a reference.
+      _L, _R := reference.Split(i)
+      assertList(_L, L)
+      assertList(_R, R)
+      assertList(reference, instance)
 
-   	L.Verify()
-   	R.Verify()
+      L.Verify()
+      R.Verify()
 
-   	// Delete all values from L and R after the split.
-   	for L.Size() > 0 {
-   		L.Delete(0)
-   	}
-   	for R.Size() > 0 {
-   		R.Delete(0)
-   	}
+      // Delete all values from L and R after the split.
+      for L.Size() > 0 {
+         L.Delete(0)
+      }
+      for R.Size() > 0 {
+         R.Delete(0)
+      }
 
-   	instance.Verify()
-   	assertList(reference, instance)
+      instance.Verify()
+      assertList(reference, instance)
    }
    instance.Free()
 }
@@ -390,21 +390,21 @@ func TestSelect(t *testing.T, impl List, size Size, distribution distribution.Di
    seq := fromReference(impl, *ref)
 
    for s := size; s > 0; s-- {
-   	i := distribution.LessThan(ref.Size())
+      i := distribution.LessThan(ref.Size())
 
-   	tmp := seq.Clone()
+      tmp := seq.Clone()
 
-   	assertEqual(ref.Select(i), tmp.Select(i))
-   	seq.Verify()
-   	tmp.Verify()
+      assertEqual(ref.Select(i), tmp.Select(i))
+      seq.Verify()
+      tmp.Verify()
 
-   	ref.Select(i)
+      ref.Select(i)
 
-   	assertEqual(ref.Select(i), seq.Select(i))
-   	seq.Verify()
-   	tmp.Verify()
+      assertEqual(ref.Select(i), seq.Select(i))
+      seq.Verify()
+      tmp.Verify()
 
-   	seq = tmp
+      seq = tmp
    }
    seq.Free()
 }
@@ -413,11 +413,11 @@ func TestSelectAfterInsert(t *testing.T, impl List, scale Size, distribution dis
    instance := impl.New()
    reference := referenceFor(instance)
    for reference.Size() < scale {
-   	testInsertInPlace(reference, instance, distribution)
+      testInsertInPlace(reference, instance, distribution)
 
-   	i := distribution.LessThan(reference.Size())
-   	assertEqual(reference.Select(i), instance.Select(i))
-   	instance.Verify()
+      i := distribution.LessThan(reference.Size())
+      assertEqual(reference.Select(i), instance.Select(i))
+      instance.Verify()
    }
    instance.Free()
 }
@@ -426,11 +426,11 @@ func TestSelectAfterInsertPersistent(t *testing.T, impl List, scale Size, distri
    instance := impl.New()
    reference := referenceFor(instance)
    for reference.Size() < scale {
-   	testInsertPersistent(reference, instance, distribution)
+      testInsertPersistent(reference, instance, distribution)
 
-   	i := distribution.LessThan(reference.Size())
-   	assertEqual(reference.Select(i), instance.Select(i))
-   	instance.Verify()
+      i := distribution.LessThan(reference.Size())
+      assertEqual(reference.Select(i), instance.Select(i))
+      instance.Verify()
    }
    instance.Free()
 }
@@ -440,12 +440,12 @@ func TestUpdate(t *testing.T, impl List, size Size, distribution distribution.Di
    ref := referenceFor(seq)
 
    for s := size; s > 0; s-- {
-   	i := distribution.LessThan(ref.Size())
-   	x := random.Uint64()
+      i := distribution.LessThan(ref.Size())
+      x := random.Uint64()
 
-   	seq.Update(i, x)
-   	ref.Update(i, x)
-   	seq.Verify()
+      seq.Update(i, x)
+      ref.Update(i, x)
+      seq.Verify()
    }
    seq.Free()
 }
@@ -455,16 +455,16 @@ func TestUpdatePersistent(t *testing.T, impl List, size Size, distribution distr
    seq := fromReference(impl, *ref)
 
    for s := size; s > 0; s-- {
-   	x := distribution.LessThan(ref.Size())
-   	v := random.Uint64()
+      x := distribution.LessThan(ref.Size())
+      v := random.Uint64()
 
-   	tmp := seq.Clone()
-   	tmp.Update(x, v)
-   	seq.Verify()
+      tmp := seq.Clone()
+      tmp.Update(x, v)
+      seq.Verify()
 
-   	ref.Update(x, v)
-   	tmp.Verify()
-   	seq = tmp
+      ref.Update(x, v)
+      tmp.Verify()
+      seq = tmp
    }
    seq.Free()
 }

@@ -18,8 +18,8 @@ func (TreapFingerTree) New() List {
 
 func (tree *TreapFingerTree) Clone() List {
    return &TreapFingerTree{
-   	Tree:   tree.Tree.Clone(),
-   	Source: tree.Source,
+      Tree:   tree.Tree.Clone(),
+      Source: tree.Source,
    }
 }
 
@@ -41,30 +41,30 @@ func (tree *TreapFingerTree) Clone() List {
 func (tree *TreapFingerTree) reverseL(p *Node, g *Node, s Size) *Node {
    // assert(s == p.size())
    for {
-   	if p == nil {
-   		return g
-   	}
-   	tree.copy(&p)
-   	sl := p.s
-   	p.s = s - p.s - 1
-   	l := p.l
-   	p.l = g
-   	g = p
-   	p = l
-   	s = sl
+      if p == nil {
+         return g
+      }
+      tree.copy(&p)
+      sl := p.s
+      p.s = s - p.s - 1
+      l := p.l
+      p.l = g
+      g = p
+      p = l
+      s = sl
    }
 }
 
 func (tree *TreapFingerTree) reverseR(p *Node, g *Node) *Node {
    for {
-   	if p == nil {
-   		return g
-   	}
-   	tree.copy(&p)
-   	r := p.r
-   	p.r = g
-   	g = p
-   	p = r
+      if p == nil {
+         return g
+      }
+      tree.copy(&p)
+      r := p.r
+      p.r = g
+      g = p
+      p = r
    }
 }
 
@@ -150,77 +150,77 @@ func (tree *TreapFingerTree) rotateLeftIntoRoot(r *Node) {
 
 func (tree *TreapFingerTree) rotateUpR(p *Node) *Node {
    for {
-   	if p.r == nil {
-   		if p.y > tree.root.y {
-   			tree.rotateLeftIntoRoot(p)
-   			return nil
-   		}
-   	} else {
-   		if p.y > p.r.y {
-   			tree.rotateParentLeftOnRightSpine(p)
-   			continue
-   		}
-   	}
-   	return p
+      if p.r == nil {
+         if p.y > tree.root.y {
+            tree.rotateLeftIntoRoot(p)
+            return nil
+         }
+      } else {
+         if p.y > p.r.y {
+            tree.rotateParentLeftOnRightSpine(p)
+            continue
+         }
+      }
+      return p
    }
 }
 
 func (tree *TreapFingerTree) rotateUpL(p *Node) *Node {
    for {
-   	if p.l == nil {
-   		if p.y > tree.root.y {
-   			tree.rotateRightIntoRoot(p)
-   			return nil
-   		}
-   	} else {
-   		if p.y > p.l.y {
-   			tree.rotateParentRightOnLeftSpine(p)
-   			continue
-   		}
-   	}
-   	return p
+      if p.l == nil {
+         if p.y > tree.root.y {
+            tree.rotateRightIntoRoot(p)
+            return nil
+         }
+      } else {
+         if p.y > p.l.y {
+            tree.rotateParentRightOnLeftSpine(p)
+            continue
+         }
+      }
+      return p
    }
 }
 
 func (tree *TreapFingerTree) rotateDownL(p *Node) {
    for p.r != nil && p.r.y > p.y {
-   	tree.copy(&p.r)
-   	r := p.r
-   	p.r = r.l
-   	r.l = p.l
-   	p.l = r
-   	r.s = p.s - r.s - 1
-   	p.s = p.s - r.s - 1
+      tree.copy(&p.r)
+      r := p.r
+      p.r = r.l
+      r.l = p.l
+      p.l = r
+      r.s = p.s - r.s - 1
+      p.s = p.s - r.s - 1
    }
    // measurement(&rotations, 1)
 }
 
 func (tree *TreapFingerTree) rotateDownR(p *Node) {
    for p.l != nil && p.l.y > p.y {
-   	tree.copy(&p.l)
-   	l := p.l
-   	p.l = l.r
-   	l.r = p.r
-   	p.r = l
-   	p.s = p.s - l.s - 1
+      tree.copy(&p.l)
+      l := p.l
+      p.l = l.r
+      l.r = p.r
+      p.r = l
+      p.s = p.s - l.s - 1
    }
    // measurement(&rotations, 1)
 }
 
-//	func (tree *TreapFingerTree) setRoot(p *Node) {
-//	  tree.root = p
-//	}
+//   func (tree *TreapFingerTree) setRoot(p *Node) {
+//     tree.root = p
+//   }
 func (tree *TreapFingerTree) setHead(p *Node) {
    tree.root.l = p
 }
 
-//	func (tree *TreapFingerTree) setSize(s Size) {
-//	  tree.size = s
-//	}
+//   func (tree *TreapFingerTree) setSize(s Size) {
+//     tree.size = s
+//   }
 //
-//	func (tree *TreapFingerTree) setHeadSize(s Size) {
-//	  tree.root.i = s
-//	}
+//   func (tree *TreapFingerTree) setHeadSize(s Size) {
+//     tree.root.i = s
+//   }
 func (tree *TreapFingerTree) setTail(p *Node) {
    tree.root.r = p
 }
@@ -254,11 +254,11 @@ func (tree TreapFingerTree) Select(i Position) Data {
    // assert(i < tree.Size())
    switch {
    case i < tree.root.s:
-   	return tree.accessFromHead(i)
+      return tree.accessFromHead(i)
    case i > tree.root.s:
-   	return tree.accessFromTail(tree.size - i - 1)
+      return tree.accessFromTail(tree.size - i - 1)
    default:
-   	return tree.root.x
+      return tree.root.x
    }
 }
 
@@ -266,27 +266,27 @@ func (tree *TreapFingerTree) Update(i Position, x Data) {
    // assert(i < tree.Size())
    switch {
    case i < tree.root.s:
-   	tree.updateFromHead(x, i)
+      tree.updateFromHead(x, i)
    case i > tree.root.s:
-   	tree.updateFromTail(x, tree.size-i-1)
+      tree.updateFromTail(x, tree.size-i-1)
    default:
-   	tree.copy(&tree.root)
-   	tree.root.x = x
+      tree.copy(&tree.root)
+      tree.root.x = x
    }
 }
 
 func (tree TreapFingerTree) accessFromHead(i Position) Data {
    p := tree.getHead()
    for {
-   	if i == 0 {
-   		return p.x
-   	}
-   	if i > p.s {
-   		i = i - p.s - 1
-   		p = p.l
-   	} else {
-   		return tree.lookup(p.r, i-1)
-   	}
+      if i == 0 {
+         return p.x
+      }
+      if i > p.s {
+         i = i - p.s - 1
+         p = p.l
+      } else {
+         return tree.lookup(p.r, i-1)
+      }
    }
 }
 
@@ -296,19 +296,19 @@ func (tree *TreapFingerTree) updateFromTail(x Data, i Position) {
 
    p := tree.root.r
    for {
-   	if i == 0 {
-   		p.x = x
-   		return
-   	}
-   	if i > p.s {
-   		tree.copy(&p.r)
-   		i = i - p.s - 1
-   		p = p.r
-   	} else {
-   		tree.copy(&p.l)
-   		tree.update(p.l, p.s-i, x)
-   		return
-   	}
+      if i == 0 {
+         p.x = x
+         return
+      }
+      if i > p.s {
+         tree.copy(&p.r)
+         i = i - p.s - 1
+         p = p.r
+      } else {
+         tree.copy(&p.l)
+         tree.update(p.l, p.s-i, x)
+         return
+      }
    }
 }
 
@@ -318,55 +318,55 @@ func (tree *TreapFingerTree) updateFromHead(x Data, i Position) {
 
    p := tree.root.l
    for {
-   	if i == 0 {
-   		p.x = x
-   		return
-   	}
-   	if i > p.s {
-   		tree.copy(&p.l)
-   		i = i - p.s - 1
-   		p = p.l
-   	} else {
-   		tree.copy(&p.r)
-   		tree.update(p.r, i-1, x)
-   		return
-   	}
+      if i == 0 {
+         p.x = x
+         return
+      }
+      if i > p.s {
+         tree.copy(&p.l)
+         i = i - p.s - 1
+         p = p.l
+      } else {
+         tree.copy(&p.r)
+         tree.update(p.r, i-1, x)
+         return
+      }
    }
 }
 
 func (tree TreapFingerTree) accessFromTail(i Position) Data {
    p := tree.getTail()
    for {
-   	if i == 0 {
-   		return p.x
-   	}
-   	if i > p.s {
-   		i = i - p.s - 1
-   		p = p.r
-   	} else {
-   		return tree.lookup(p.l, p.s-i)
-   	}
+      if i == 0 {
+         return p.x
+      }
+      if i > p.s {
+         i = i - p.s - 1
+         p = p.r
+      } else {
+         return tree.lookup(p.l, p.s-i)
+      }
    }
 }
 
 func (tree *TreapFingerTree) insert(p **Node, i Position, n *Node) {
    for {
-   	if *p == nil {
-   		*p = n
-   		return
-   	}
-   	if (*p).y <= n.y {
-   		n.l, n.r = tree.Tree.split(*p, i)
-   		n.s = i
-   		*p = n
-   		return
-   	}
-   	tree.copy(p)
-   	if i <= (*p).s {
-   		p = insertL(*p)
-   	} else {
-   		p = insertR(*p, &i)
-   	}
+      if *p == nil {
+         *p = n
+         return
+      }
+      if (*p).y <= n.y {
+         n.l, n.r = tree.Tree.split(*p, i)
+         n.s = i
+         *p = n
+         return
+      }
+      tree.copy(p)
+      if i <= (*p).s {
+         p = insertL(*p)
+      } else {
+         p = insertR(*p, &i)
+      }
    }
 }
 
@@ -379,26 +379,26 @@ func (tree *TreapFingerTree) insertFromHead(x Data, i Position) {
    n := tree.allocate(Node{x: x, y: tree.randomRank()})
    p := tree.root.l
    for {
-   	//
-   	if i > p.s {
-   		tree.copy(&p.l)
-   		i = i - p.s - 1
-   		p = p.l
-   		continue
-   	}
-   	//
-   	if rank(n) > rank(p) {
-   		p.r, n.r = tree.Tree.split(p.r, i)
-   		n.s = p.s - i
-   		p.s = i
-   		n.l = p.l
-   		p.l = tree.rotateUpL(n)
-   		return
-   	}
-   	//
-   	p.s++
-   	tree.insert(&p.r, i, n)
-   	return
+      //
+      if i > p.s {
+         tree.copy(&p.l)
+         i = i - p.s - 1
+         p = p.l
+         continue
+      }
+      //
+      if rank(n) > rank(p) {
+         p.r, n.r = tree.Tree.split(p.r, i)
+         n.s = p.s - i
+         p.s = i
+         n.l = p.l
+         p.l = tree.rotateUpL(n)
+         return
+      }
+      //
+      p.s++
+      tree.insert(&p.r, i, n)
+      return
    }
 }
 
@@ -406,17 +406,17 @@ func (tree TreapFingerTree) split(i Position) (Tree, Tree) {
    // assert(i <= tree.size)
    tree.share(tree.root)
    if i == 0 {
-   	return Tree{arena: tree.arena},
-   		Tree{arena: tree.arena, root: tree.root, size: tree.size}
+      return Tree{arena: tree.arena},
+         Tree{arena: tree.arena, root: tree.root, size: tree.size}
    }
    if i == tree.size {
-   	return Tree{arena: tree.arena, root: tree.root, size: tree.size},
-   		Tree{arena: tree.arena}
+      return Tree{arena: tree.arena, root: tree.root, size: tree.size},
+         Tree{arena: tree.arena}
    }
    if i <= tree.root.s {
-   	return tree.splitFromHead(i)
+      return tree.splitFromHead(i)
    } else {
-   	return tree.splitFromTail(i)
+      return tree.splitFromTail(i)
    }
 }
 
@@ -424,7 +424,7 @@ func (tree TreapFingerTree) Split(i Position) (List, List) {
    // assert(i <= tree.size)
    l, r := tree.split(i)
    return &TreapFingerTree{Tree: l, Source: tree.Source},
-   	&TreapFingerTree{Tree: r, Source: tree.Source}
+      &TreapFingerTree{Tree: r, Source: tree.Source}
 }
 
 func (tree TreapFingerTree) splitFromHead(i Position) (Tree, Tree) {
@@ -440,9 +440,9 @@ func (tree TreapFingerTree) splitFromHead(i Position) (Tree, Tree) {
    p := tree.root
    d := i
    for d > (p.l.s + 1) {
-   	d = d - (p.l.s + 1)
-   	tree.copy(&p.l)
-   	p = p.l
+      d = d - (p.l.s + 1)
+      tree.copy(&p.l)
+      p = p.l
    }
    tree.copy(&p.l)
    g := p.l
@@ -479,9 +479,9 @@ func (tree TreapFingerTree) splitFromTail(i Position) (Tree, Tree) {
    d := tree.size - i
 
    for d > (p.r.s + 1) {
-   	d = d - (p.r.s + 1)
-   	tree.copy(&p.r)
-   	p = p.r
+      d = d - (p.r.s + 1)
+      tree.copy(&p.r)
+      p = p.r
    }
    tree.copy(&p.r)
    g := p.r
@@ -524,53 +524,53 @@ func (tree *TreapFingerTree) insertFromTail(x Data, i Position) {
    n := tree.allocate(Node{x: x, y: tree.randomRank()})
    p := tree.root.r
    for {
-   	//
-   	if i > p.s {
-   		tree.copy(&p.r)
-   		i = i - p.s - 1
-   		p = p.r
-   		continue
-   	}
-   	//
-   	if rank(n) > rank(p) {
+      //
+      if i > p.s {
+         tree.copy(&p.r)
+         i = i - p.s - 1
+         p = p.r
+         continue
+      }
+      //
+      if rank(n) > rank(p) {
 
-   		n.l, p.l = tree.Tree.split(p.l, p.s-i)
-   		n.s = p.s - i
-   		p.s = i
-   		n.r = p.r
-   		p.r = tree.rotateUpR(n)
-   		return
-   	}
-   	//
-   	p.s++
-   	tree.insert(&p.l, p.s-i-1, n)
-   	return
+         n.l, p.l = tree.Tree.split(p.l, p.s-i)
+         n.s = p.s - i
+         p.s = i
+         n.r = p.r
+         p.r = tree.rotateUpR(n)
+         return
+      }
+      //
+      p.s++
+      tree.insert(&p.l, p.s-i-1, n)
+      return
    }
 }
 
 // create new node with random rank
 // if this rank is less than the root's rank, we need a new root node and the
 //
-//	old root node will
+//   old root node will
 func (tree *TreapFingerTree) Insert(i Position, x Data) {
    // assert(i <= tree.Size())
    if tree.root == nil {
-   	tree.root = tree.allocate(Node{x: x, y: tree.randomRank()})
-   	tree.size = 1
-   	return
+      tree.root = tree.allocate(Node{x: x, y: tree.randomRank()})
+      tree.size = 1
+      return
    }
    if i <= tree.root.s {
-   	if i == 0 {
-   		tree.insertAsFirst(x)
-   	} else {
-   		tree.insertFromHead(x, i-1)
-   	}
+      if i == 0 {
+         tree.insertAsFirst(x)
+      } else {
+         tree.insertFromHead(x, i-1)
+      }
    } else {
-   	if i == tree.size {
-   		tree.insertAsLast(x)
-   	} else {
-   		tree.insertFromTail(x, tree.size-i-1)
-   	}
+      if i == tree.size {
+         tree.insertAsLast(x)
+      } else {
+         tree.insertFromTail(x, tree.size-i-1)
+      }
    }
 }
 
@@ -717,44 +717,44 @@ func (tree *TreapFingerTree) deleteLast(x *Data) {
 }
 func (tree TreapFingerTree) delete(p **Node, i Position, x *Data) {
    for {
-   	if i == (*p).s {
-   		*x = (*p).x
-   		if (*p).l == nil && (*p).r == nil {
-   			*p = nil
-   		} else {
-   			tree.copy(p) // TODO: should we instead share the left and right here?
-   			//defer tree.release(*p)
-   			*p = tree.join((*p).l, (*p).r, (*p).s)
-   		}
-   		return
-   	}
-   	tree.copy(p)
-   	if i < (*p).s {
-   		p = deleteL(*p)
-   	} else {
-   		p = deleteR(*p, &i)
-   	}
+      if i == (*p).s {
+         *x = (*p).x
+         if (*p).l == nil && (*p).r == nil {
+            *p = nil
+         } else {
+            tree.copy(p) // TODO: should we instead share the left and right here?
+            //defer tree.release(*p)
+            *p = tree.join((*p).l, (*p).r, (*p).s)
+         }
+         return
+      }
+      tree.copy(p)
+      if i < (*p).s {
+         p = deleteL(*p)
+      } else {
+         p = deleteR(*p, &i)
+      }
    }
 }
 func (tree *TreapFingerTree) deleteFromHead(i Position, x *Data) {
    //println("deleteFromHead")
    if i == 0 {
-   	tree.deleteFirst(x)
-   	return
+      tree.deleteFirst(x)
+      return
    }
    tree.copy(&tree.root)
    tree.copy(&tree.root.l)
    tree.root.s--
    p := tree.root.l
    for i > p.s+1 {
-   	tree.copy(&p.l)
-   	i = i - p.s - 1
-   	p = p.l
+      tree.copy(&p.l)
+      i = i - p.s - 1
+      p = p.l
    }
    if i < p.s+1 {
-   	tree.delete(&p.r, i-1, x)
-   	p.s--
-   	return
+      tree.delete(&p.r, i-1, x)
+      p.s--
+      return
    }
    tree.copy(&p.l)
    g := p.l
@@ -770,51 +770,51 @@ func (tree *TreapFingerTree) join(l, r *Node, sl Size) (root *Node) {
    // assert(sl == l.size())
    p := &root
    for {
-   	if l == nil {
-   		*p = r
-   		return
-   	}
-   	if r == nil {
-   		*p = l
-   		return
-   	}
-   	if l.y >= r.y {
-   		tree.copy(&l)
-   		sl = sl - l.s - 1
-   		*p = l
-   		p = &l.r
-   		l = *p
-   	} else {
-   		tree.copy(&r)
-   		r.s = r.s + sl
-   		*p = r
-   		p = &r.l
-   		r = *p
-   	}
+      if l == nil {
+         *p = r
+         return
+      }
+      if r == nil {
+         *p = l
+         return
+      }
+      if l.y >= r.y {
+         tree.copy(&l)
+         sl = sl - l.s - 1
+         *p = l
+         p = &l.r
+         l = *p
+      } else {
+         tree.copy(&r)
+         r.s = r.s + sl
+         *p = r
+         p = &r.l
+         r = *p
+      }
    }
 }
 
 func (tree *TreapFingerTree) deleteFromTail(i Position, x *Data) {
    //println("deleteFromTail")
    if i == tree.size-1 {
-   	tree.deleteLast(x)
-   	return
+      tree.deleteLast(x)
+      return
    }
    i = tree.size - i - 1
    tree.copy(&tree.root)
    tree.copy(&tree.root.r)
    p := tree.root.r
    for i > p.s+1 {
-   	tree.copy(&p.r) // TODO I think this could be nulll?
-   	i = i - p.s - 1
-   	p = p.r
+      tree.copy(&p.r) // TODO I think this could be nulll?
+      i = i - p.s - 1
+      p = p.r
    }
    //println("found inflection", p.s)
    if i < p.s+1 {
-   	//println("descend")
-   	tree.delete(&p.l, p.s-i, x)
-   	p.s--
-   	return
+      //println("descend")
+      tree.delete(&p.l, p.s-i, x)
+      p.s--
+      return
    }
    //println("delete on the right spine")
    tree.copy(&p.r)
@@ -840,16 +840,16 @@ func (tree *TreapFingerTree) deleteFromTail(i Position, x *Data) {
 func (tree *TreapFingerTree) reverseL2(p *Node, g *Node) *Node {
    s := Size(0)
    for {
-   	if p == nil {
-   		return g
-   	}
-   	tree.copy(&p)
-   	s = s + p.s + 1
-   	p.s = s - p.s - 1
-   	l := p.l
-   	p.l = g
-   	g = p
-   	p = l
+      if p == nil {
+         return g
+      }
+      tree.copy(&p)
+      s = s + p.s + 1
+      p.s = s - p.s - 1
+      l := p.l
+      p.l = g
+      g = p
+      p = l
    }
 }
 func (tree *TreapFingerTree) deleteRoot(v *Data) {
@@ -865,7 +865,7 @@ func (tree *TreapFingerTree) deleteRoot(v *Data) {
    tree.root = tree.join(tree.root.l, tree.root.r, tree.root.s)
 
    if tree.root == nil {
-   	return
+      return
    }
    // To finger tree
    //tree.pathcopy(&tree.root)
@@ -877,14 +877,14 @@ func (tree *TreapFingerTree) Delete(i Position) (v Data) {
    // assert(i < tree.size)
    switch {
    case i < tree.root.s:
-   	tree.deleteFromHead(i, &v)
-   	tree.size--
+      tree.deleteFromHead(i, &v)
+      tree.size--
    case i > tree.root.s:
-   	tree.deleteFromTail(i, &v)
-   	tree.size--
+      tree.deleteFromTail(i, &v)
+      tree.size--
    default:
-   	tree.deleteRoot(&v)
-   	tree.size--
+      tree.deleteRoot(&v)
+      tree.size--
    }
    return
 }
@@ -999,68 +999,68 @@ func (tree *TreapFingerTree) joinUp(o *TreapFingerTree) *Node {
 
    var p *Node
    for {
-   	if r == nil {
-   		tree.root.r = o.root.r
-   		o.root.l = p
-   		o.root.r = l
-   		o.root.s = s
+      if r == nil {
+         tree.root.r = o.root.r
+         o.root.l = p
+         o.root.r = l
+         o.root.s = s
 
-   		tree.appendR(&tree.root.r, tree.rotateUpR(o.root))
-   		return tree.root
-   	}
-   	if l == nil {
-   		o.root.l = tree.root.l
-   		o.root.s = tree.size + o.root.s
-   		tree.root.l = r
-   		tree.root.r = p
-   		tree.root.s = s
+         tree.appendR(&tree.root.r, tree.rotateUpR(o.root))
+         return tree.root
+      }
+      if l == nil {
+         o.root.l = tree.root.l
+         o.root.s = tree.size + o.root.s
+         tree.root.l = r
+         tree.root.r = p
+         tree.root.s = s
 
-   		tree.appendL(&o.root.l, tree.rotateUpL(tree.root))
-   		return o.root
-   	}
-   	if l.y < r.y { // TODO: how does <= affect things? Should we prefer larger size?
-   		tree.copy(&l)
-   		s = s + l.s + 1
-   		g := l.r
-   		l.r = p
-   		p = l
-   		l = g
-   	} else {
-   		tree.copy(&r)
-   		s = s + r.s + 1
-   		r.s = s - r.s - 1
-   		g := r.l
-   		r.l = p
-   		p = r
-   		r = g
-   	}
+         tree.appendL(&o.root.l, tree.rotateUpL(tree.root))
+         return o.root
+      }
+      if l.y < r.y { // TODO: how does <= affect things? Should we prefer larger size?
+         tree.copy(&l)
+         s = s + l.s + 1
+         g := l.r
+         l.r = p
+         p = l
+         l = g
+      } else {
+         tree.copy(&r)
+         s = s + r.s + 1
+         r.s = s - r.s - 1
+         g := r.l
+         r.l = p
+         p = r
+         r = g
+      }
    }
 }
 
 func (tree *TreapFingerTree) Join(that List) List {
    if tree.Size() == 0 {
-   	return that.Clone()
+      return that.Clone()
    } // TODO: can we avoid this?
    if that.Size() == 0 {
-   	return tree.Clone()
+      return tree.Clone()
    } // TODO: can we avoid this?
 
    l := tree.Clone().(*TreapFingerTree) // TODO: can we avoid this?
    r := that.Clone().(*TreapFingerTree) // TODO: can we avoid this?
 
    return &TreapFingerTree{
-   	Tree: Tree{
-   		arena: tree.arena,
-   		root:  l.joinUp(r),
-   		size:  l.size + r.size,
-   	},
-   	Source: tree.Source,
+      Tree: Tree{
+         arena: tree.arena,
+         root:  l.joinUp(r),
+         size:  l.size + r.size,
+      },
+      Source: tree.Source,
    }
 }
 
 func (tree TreapFingerTree) eachFromHead(p *Node, visit func(Data)) {
    if p == nil {
-   	return
+      return
    }
    visit(p.x)
    p.r.inorder(visit)
@@ -1069,7 +1069,7 @@ func (tree TreapFingerTree) eachFromHead(p *Node, visit func(Data)) {
 
 func (tree TreapFingerTree) eachFromTail(p *Node, visit func(Data)) {
    if p == nil {
-   	return
+      return
    }
    tree.eachFromTail(p.r, visit)
    p.l.inorder(visit)
@@ -1086,7 +1086,7 @@ func (tree TreapFingerTree) eachFromTail(p *Node, visit func(Data)) {
 
 func (tree TreapFingerTree) inorder(p *Node, visit func(Data)) {
    if p == nil {
-   	return
+      return
    }
    tree.eachFromHead(p.l, visit)
    visit(p.x)
@@ -1117,19 +1117,19 @@ func (tree TreapFingerTree) Each(visit func(Data)) {
 
 func (tree TreapFingerTree) verifyRanks() {
    if tree.root == nil {
-   	return
+      return
    }
    l := tree.root.l
    r := tree.root.r
    for ; l != nil; l = l.l {
-   	TreapTopDown{}.verifyMaxRankHeap(l.r)
-   	invariant(rank(l) >= rank(l.r))
-   	invariant(rank(l) <= rank(l.l) || l.l == nil)
+      TreapTopDown{}.verifyMaxRankHeap(l.r)
+      invariant(rank(l) >= rank(l.r))
+      invariant(rank(l) <= rank(l.l) || l.l == nil)
    }
    for ; r != nil; r = r.r {
-   	TreapTopDown{}.verifyMaxRankHeap(r.l)
-   	invariant(rank(r) >= rank(r.l))
-   	invariant(rank(r) <= rank(r.r) || r.r == nil)
+      TreapTopDown{}.verifyMaxRankHeap(r.l)
+      invariant(rank(r) >= rank(r.l))
+      invariant(rank(r) <= rank(r.r) || r.r == nil)
    }
    invariant(rank(tree.root) >= rank(l))
    invariant(rank(tree.root) >= rank(r))
@@ -1137,17 +1137,17 @@ func (tree TreapFingerTree) verifyRanks() {
 
 func (tree TreapFingerTree) verifyPositions() {
    if tree.root == nil {
-   	return
+      return
    }
    // The root's size must be equal to the size of the left subtree.
    invariant(tree.root.s == tree.getHead().size())
 
    // Verify internal positions along the spines.
    for l := tree.getHead(); l != nil; l = l.l {
-   	tree.verifySize(l.r, l.s)
+      tree.verifySize(l.r, l.s)
    }
    for r := tree.getTail(); r != nil; r = r.r {
-   	tree.verifySize(r.l, r.s)
+      tree.verifySize(r.l, r.s)
    }
 }
 

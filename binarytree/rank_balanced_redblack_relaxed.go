@@ -90,11 +90,7 @@ func (tree RedBlackRelaxed) Join(other RedBlackRelaxed) RedBlackRelaxed {
 func (tree RedBlackRelaxed) fixL(p *Node) *Node {
    if isZeroChild(p, p.l) {
       if isZeroChild(p, p.r) {
-         if isZeroChild(p.l, p.l.l) {
-            promote(p)
-            return p
-         }
-         if isZeroChild(p.l, p.l.r) {
+         if isZeroChild(p.l, p.l.l) || isZeroChild(p.l, p.l.r) {
             promote(p)
             return p
          }
@@ -113,13 +109,8 @@ func (tree RedBlackRelaxed) fixL(p *Node) *Node {
 func (tree RedBlackRelaxed) fixR(p *Node) *Node {
    if isZeroChild(p, p.r) {
       if isZeroChild(p, p.l) {
-         if isZeroChild(p.r, p.r.r) {
+         if isZeroChild(p.r, p.r.r) || isZeroChild(p.r, p.r.l) {
             promote(p)
-            return p
-         }
-         if isZeroChild(p.r, p.r.l) {
-            promote(p)
-            return p
          }
       } else {
          if isZeroChild(p.r, p.r.r) {

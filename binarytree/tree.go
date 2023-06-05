@@ -109,20 +109,20 @@ func (tree Tree) Free() {
 func (tree *Tree) insert(p **Node, s list.Size, i list.Position, x list.Data) {
    for {
       if *p == nil {
-   		*p = tree.allocate(Node{x: x})
-   		return
-   	}
-   	tree.copy(p)
-   	sl := (*p).s
-   	sr := s - (*p).s - 1
+         *p = tree.allocate(Node{x: x})
+         return
+      }
+      tree.copy(p)
+      sl := (*p).s
+      sr := s - (*p).s - 1
 
-   	if i > sl {
-   		p = insertR(*p, &i)
-   		s = sr
-   	} else {
-   		p = insertL(*p)
-   		s = sl
-   	}
+      if i > sl {
+         p = insertR(*p, &i)
+         s = sr
+      } else {
+         p = insertL(*p)
+         s = sl
+      }
    }
 }
 
@@ -160,15 +160,15 @@ func (tree Tree) Root() *Node {
 
 func (tree Tree) lookup(p *Node, i list.Size) list.Data {
    for {
-   	if i == p.s {
-   		return p.x
-   	}
-   	if i < p.s {
-   		p = p.l
-   	} else {
-   		i = i - p.s - 1
-   		p = p.r
-   	}
+      if i == p.s {
+         return p.x
+      }
+      if i < p.s {
+         p = p.l
+      } else {
+         i = i - p.s - 1
+         p = p.r
+      }
    }
 }
 
@@ -232,45 +232,45 @@ func (tree Tree) Each(visit func(list.Data)) {
 func (tree *Tree) dissolve(p *Node, s list.Size) *Node {
    defer tree.release(p)
    if p.l == nil {
-   	return p.r
+      return p.r
    }
    if p.r == nil {
-   	return p.l
+      return p.l
    }
    if p.sizeL() <= p.sizeR(s) {
-   	r := tree.deleteMin(&p.r)
-   	r.l = p.l
-   	r.r = p.r
-   	r.s = p.s
-   	r.y = p.y
-   	return r
+      r := tree.deleteMin(&p.r)
+      r.l = p.l
+      r.r = p.r
+      r.s = p.s
+      r.y = p.y
+      return r
    } else {
-   	l := tree.deleteMax(&p.l)
-   	l.r = p.r
-   	l.l = p.l
-   	l.s = p.s - 1
-   	l.y = p.y
-   	return l
+      l := tree.deleteMax(&p.l)
+      l.r = p.r
+      l.l = p.l
+      l.s = p.s - 1
+      l.y = p.y
+      return l
    }
 }
 
 func (tree *Tree) delete(p **Node, s list.Size, i list.Size) (x list.Data) {
    for {
-   	tree.copy(p)
-   	if i == (*p).s {
-   		x := (*p).x
-   		*p = tree.dissolve(*p, s)
-   		return x
-   	}
-   	if i < (*p).s {
-   		s = (*p).s
-   		(*p).s = (*p).s - 1
-   		p = &(*p).l
-   	} else {
-   		i = i - (*p).s - 1
-   		s = s - (*p).s - 1
-   		p = &(*p).r
-   	}
+      tree.copy(p)
+      if i == (*p).s {
+         x := (*p).x
+         *p = tree.dissolve(*p, s)
+         return x
+      }
+      if i < (*p).s {
+         s = (*p).s
+         (*p).s = (*p).s - 1
+         p = &(*p).l
+      } else {
+         i = i - (*p).s - 1
+         s = s - (*p).s - 1
+         p = &(*p).r
+      }
    }
 }
 
@@ -304,57 +304,57 @@ func (tree Tree) verifySizes() {
 
 func (tree Tree) InteriorHeightsAlongTheSpines() (h [2][]int) {
    if tree.root == nil {
-   	return
+      return
    }
    //
    for l := tree.root.l; l != nil; l = l.l {
-   	h[0] = append(h[0], l.r.height()+1)
+      h[0] = append(h[0], l.r.height()+1)
    }
    for r := tree.root.r; r != nil; r = r.r {
-   	h[1] = append(h[1], r.l.height()+1)
+      h[1] = append(h[1], r.l.height()+1)
    }
 
    // Reverse the left spine.
    i := 0
    j := len(h[0]) - 1
    for i < j {
-   	h[0][i], h[0][j] = h[0][j], h[0][i]
-   	i++
-   	j--
+      h[0][i], h[0][j] = h[0][j], h[0][i]
+      i++
+      j--
    }
    return
 }
 
 func (tree Tree) ExteriorHeightsAlongTheSpines() (h [2][]int) {
    if tree.root == nil {
-   	return
+      return
    }
    //
    for l := tree.root.l; l != nil; l = l.l {
-   	h[0] = append(h[0], l.height())
+      h[0] = append(h[0], l.height())
    }
    for r := tree.root.r; r != nil; r = r.r {
-   	h[1] = append(h[1], r.height())
+      h[1] = append(h[1], r.height())
    }
 
    // Reverse the left spine.
    i := 0
    j := len(h[0]) - 1
    for i < j {
-   	h[0][i], h[0][j] = h[0][j], h[0][i]
-   	i++
-   	j--
+      h[0][i], h[0][j] = h[0][j], h[0][i]
+      i++
+      j--
    }
    return
 }
 
 func (tree Tree) countNodesPerLevel(p *Node, counter *[]list.Size, level int) {
    if p == nil {
-   	return
+      return
    }
    // Add more levels to the counter as needed on the way down.
    if len(*counter) <= level {
-   	*counter = append(*counter, 0)
+      *counter = append(*counter, 0)
    }
    (*counter)[level]++
    tree.countNodesPerLevel(p.l, counter, level+1)
@@ -363,7 +363,7 @@ func (tree Tree) countNodesPerLevel(p *Node, counter *[]list.Size, level int) {
 
 func (tree Tree) SymmetricWeightPerLevel() (weights [2][]list.Size) {
    if tree.root == nil {
-   	return
+      return
    }
    tree.countNodesPerLevel(tree.root.l, &weights[0], 0)
    tree.countNodesPerLevel(tree.root.r, &weights[1], 0)

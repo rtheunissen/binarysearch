@@ -60,5 +60,5 @@ func (tree *RedBlackRelaxedBottomUp) Join(other List) List {
 func (tree *RedBlackRelaxedBottomUp) Split(i Position) (List, List) {
    l, r := tree.RedBlackRelaxed.Split(i)
    return &RedBlackRelaxedBottomUp{l},
-      &RedBlackRelaxedBottomUp{r}
+          &RedBlackRelaxedBottomUp{r}
 }

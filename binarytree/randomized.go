@@ -32,8 +32,8 @@ func (Randomized) New() List {
 
 func (tree *Randomized) Clone() List {
    return &Randomized{
-   	Tree:   tree.Tree.Clone(),
-   	Source: tree.Source, // TODO: a copy method? or clone?
+      Tree:   tree.Tree.Clone(),
+      Source: tree.Source, // TODO: a copy method? or clone?
    }
 }
 
@@ -46,23 +46,23 @@ func (tree *Randomized) Insert(i Position, x Data) {
    s := tree.size
    tree.size++
    for {
-   	if random.LessThan(s+1, tree.Source) == s {
-   		n := tree.allocate(Node{x: x})
-   		tree.splitInto(*p, i, &n.l, &n.r)
-   		n.s = i
-   		*p = n
-   		return
-   	}
-   	tree.copy(p)     //
-   	if i <= (*p).s { //
-   		s = (*p).s  //
-   		(*p).s++    //
-   		p = &(*p).l //
-   	} else {
-   		s -= (*p).s + 1 //
-   		i -= (*p).s + 1 //
-   		p = &(*p).r     //
-   	}
+      if random.LessThan(s+1, tree.Source) == s {
+         n := tree.allocate(Node{x: x})
+         tree.splitInto(*p, i, &n.l, &n.r)
+         n.s = i
+         *p = n
+         return
+      }
+      tree.copy(p)     //
+      if i <= (*p).s { //
+         s = (*p).s  //
+         (*p).s++    //
+         p = &(*p).l //
+      } else {
+         s -= (*p).s + 1 //
+         i -= (*p).s + 1 //
+         p = &(*p).r     //
+      }
    }
 }
 
@@ -72,51 +72,51 @@ func (tree *Randomized) Delete(i Position) Data {
    s := tree.size
    tree.size--
    for {
-   	tree.copy(p)
-   	if i == (*p).s {
-   		defer tree.release(*p)
-   		x := (*p).x
-   		*p = tree.join2((*p).l, (*p).r, (*p).s, s-(*p).s-1)
-   		return x
-   	}
-   	if i < (*p).s {
-   		s = (*p).s
-   		(*p).s--
-   		p = &(*p).l
-   	} else {
-   		s -= (*p).s + 1
-   		i -= (*p).s + 1
-   		p = &(*p).r
-   	}
+      tree.copy(p)
+      if i == (*p).s {
+         defer tree.release(*p)
+         x := (*p).x
+         *p = tree.join2((*p).l, (*p).r, (*p).s, s-(*p).s-1)
+         return x
+      }
+      if i < (*p).s {
+         s = (*p).s
+         (*p).s--
+         p = &(*p).l
+      } else {
+         s -= (*p).s + 1
+         i -= (*p).s + 1
+         p = &(*p).r
+      }
    }
 }
 
 func (tree *Randomized) join2(l *Node, r *Node, sl, sr Size) (root *Node) {
    p := &root
    for {
-   	if l == nil {
-   		*p = r
-   		return
-   	}
-   	if r == nil {
-   		*p = l
-   		return
-   	}
+      if l == nil {
+         *p = r
+         return
+      }
+      if r == nil {
+         *p = l
+         return
+      }
 
-   	if random.LessThan(sl+sr, tree.Source) < sl {
-   		tree.copy(&l)
-   		sl = sl - l.s - 1
-   		*p = l
-   		p = &l.r
-   		l = *p
-   	} else {
-   		tree.copy(&r)
-   		sr = r.s
-   		r.s = r.s + sl
-   		*p = r
-   		p = &r.l
-   		r = *p
-   	}
+      if random.LessThan(sl+sr, tree.Source) < sl {
+         tree.copy(&l)
+         sl = sl - l.s - 1
+         *p = l
+         p = &l.r
+         l = *p
+      } else {
+         tree.copy(&r)
+         sr = r.s
+         r.s = r.s + sl
+         *p = r
+         p = &r.l
+         r = *p
+      }
    }
 }
 
@@ -133,18 +133,18 @@ func (tree *Randomized) Update(i Size, x Data) {
 
 func (tree *Randomized) splitInto(p *Node, i uint64, l, r **Node) {
    for p != nil {
-   	tree.copy(&p)
-   	if i <= p.s {
-   		*r = p
-   		p.s = p.s - i
-   		r = &p.l
-   		p = p.l
-   	} else {
-   		*l = p
-   		i = i - p.s - 1
-   		l = &p.r
-   		p = p.r
-   	}
+      tree.copy(&p)
+      if i <= p.s {
+         *r = p
+         p.s = p.s - i
+         r = &p.l
+         p = p.l
+      } else {
+         *l = p
+         i = i - p.s - 1
+         l = &p.r
+         p = p.r
+      }
    }
    *l = nil
    *r = nil
@@ -157,13 +157,13 @@ func (tree *Randomized) split(i Size) (Tree, Tree) {
    tree.splitInto(tree.root, i, &l, &r)
 
    return Tree{arena: tree.arena, root: l, size: i},
-   	Tree{arena: tree.arena, root: r, size: tree.size - i}
+      Tree{arena: tree.arena, root: r, size: tree.size - i}
 }
 
 func (tree *Randomized) Split(i Position) (List, List) {
    l, r := tree.split(i)
    return &Randomized{l, tree.Source},
-   	&Randomized{r, tree.Source}
+      &Randomized{r, tree.Source}
 }
 
 // TODO check that the random source is independent
@@ -173,12 +173,12 @@ func (tree *Randomized) Join(that List) List { // TODO check if benchmarks are a
    tree.share(l.root)
    tree.share(r.root)
    return &Randomized{
-   	Tree{
-   		arena: tree.arena,
-   		root:  l.join2(l.root, r.root, l.size, r.size),
-   		size:  l.size + r.size,
-   	},
-   	tree.Source,
+      Tree{
+         arena: tree.arena,
+         root:  l.join2(l.root, r.root, l.size, r.size),
+         size:  l.size + r.size,
+      },
+      tree.Source,
    }
 }
 

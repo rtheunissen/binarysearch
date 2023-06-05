@@ -13,17 +13,17 @@ type TreapJoinBased struct {
 func (TreapJoinBased) New() List {
    return &TreapJoinBased{
       TreapTopDown{
-      	Source: random.New(random.Uint64()),
-   	},
+         Source: random.New(random.Uint64()),
+      },
    }
 }
 
 func (tree *TreapJoinBased) Clone() List {
    return &TreapJoinBased{
-   	TreapTopDown{
-   		Tree:   tree.Tree.Clone(),
-   		Source: tree.Source,
-   	},
+      TreapTopDown{
+         Tree:   tree.Tree.Clone(),
+         Source: tree.Source,
+      },
    }
 }
 
@@ -45,7 +45,7 @@ func (tree TreapJoinBased) Split(i Position) (List, List) {
    l, r := JoinBased{Tree: tree.Tree, Joiner: &tree}.splitToBST(tree.root, i, tree.size)
 
    return &TreapJoinBased{TreapTopDown{l, tree.Source}}, // TODO consider merging Treap and Treap??
-   	&TreapJoinBased{TreapTopDown{r, tree.Source}}
+      &TreapJoinBased{TreapTopDown{r, tree.Source}}
 }
 
 func (tree TreapJoinBased) Join(that List) List {
@@ -54,14 +54,14 @@ func (tree TreapJoinBased) Join(that List) List {
    tree.share(l.root)
    tree.share(r.root)
    return &TreapJoinBased{
-   	TreapTopDown{
-   		Source: tree.Source,
-   		Tree: Tree{
-   			arena: tree.arena,
-   			root:  tree.join(l.root, r.root, l.size),
-   			size:  l.size + r.size,
-   		},
-   	},
+      TreapTopDown{
+         Source: tree.Source,
+         Tree: Tree{
+            arena: tree.arena,
+            root:  tree.join(l.root, r.root, l.size),
+            size:  l.size + r.size,
+         },
+      },
    }
 }
 

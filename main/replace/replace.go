@@ -25,11 +25,11 @@ func main() {
 }
 
 func directoryFindReplace(directory, find, replace string) error {
-   return filepath.WalkDir(directory, func(path string, info fs.DirEntry, err error) error {
+   return filepath.WalkDir(directory, func(path string, file fs.DirEntry, err error) error {
       if err != nil {
          return err
       }
-      matched, err := filepath.Match("*.go", info.Name())
+      matched, err := filepath.Match("*.go", file.Name())
       if err != nil {
          return err
       }

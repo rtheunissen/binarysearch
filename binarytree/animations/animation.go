@@ -73,40 +73,40 @@ func (animation *BinaryTreeAnimation) Update() {
 
    // " → " increases the draw offset of the image within the viewport.
    case keyboard.KeyArrowRight:
-   	animation.Offset = int(math.Min(float64(+animation.Height/2), float64(animation.Offset+1)))
+      animation.Offset = int(math.Min(float64(+animation.Height/2), float64(animation.Offset+1)))
 
    // " ↑ " increases the height of the viewport.
    case keyboard.KeyArrowUp:
-   	animation.Height = animation.Height + 1
+      animation.Height = animation.Height + 1
 
    // " ↓ " Decreases the height of the viewport.
    case keyboard.KeyArrowDown:
-   	animation.Height = int(math.Max(0, float64(animation.Height-1)))
+      animation.Height = int(math.Max(0, float64(animation.Height-1)))
 
-   	// Exit
+      // Exit
    case keyboard.KeyCtrlC:
-   	fallthrough
+      fallthrough
    case keyboard.KeyCtrlD:
-   	fallthrough
+      fallthrough
    case keyboard.KeyCtrlZ:
-   	fallthrough
+      fallthrough
    case keyboard.KeyCtrlQ:
-   	fallthrough
+      fallthrough
    case keyboard.KeyEsc:
-   	animation.Close()
+      animation.Close()
    default:
-   	for animation.Valid() {
-   		animation.List, animation.Position = animation.Operation.Update(animation.List, animation.Distribution)
-   		if animation.shouldRenderFrame() {
-   			animation.Frame++
-   			return
-   		}
-   	}
+      for animation.Valid() {
+         animation.List, animation.Position = animation.Operation.Update(animation.List, animation.Distribution)
+         if animation.shouldRenderFrame() {
+            animation.Frame++
+            return
+         }
+      }
    }
 }
 
-//	  1 to   100 : Render every page
-//	100 to  1000 : Render every 10th
+//     1 to   100 : Render every page
+//   100 to  1000 : Render every 10th
 //
 // 1000 to 10000 : Render every 100th etc.
 func (animation *BinaryTreeAnimation) shouldRenderFrame() bool {

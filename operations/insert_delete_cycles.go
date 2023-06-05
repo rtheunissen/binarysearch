@@ -22,13 +22,7 @@ func (operation *InsertDeleteCycles) Setup(strategy list.List, scale list.Size) 
    operation.cycles = 10
    operation.scale = scale / operation.cycles
    operation.Source = random.New(scale)
-
-   // Insert to half.
-   instance := strategy.New()
-   for instance.Size() < (operation.scale / 2) {
-      instance.Insert(random.LessThan(instance.Size()+1, operation.Source), 0)
-   }
-   return instance
+   return strategy.New() // TODO: do any operations actually use the strategy? Maybe new is worthless and we just seed random as needed in the lists
 }
 
 func (operation *InsertDeleteCycles) Update(instance list.List, dist distribution.Distribution) (list.List, list.Position) {
@@ -50,6 +44,9 @@ func (operation *InsertDeleteCycles) Update(instance list.List, dist distributio
    if operation.inserting == false && instance.Size() <= operation.scale/2 {
       operation.inserting = true
    }
+   //
+   //
+   //
    var i list.Position
    if operation.inserting {
       //
@@ -59,9 +56,9 @@ func (operation *InsertDeleteCycles) Update(instance list.List, dist distributio
       instance.Insert(i, 0)
    } else {
       //
-      // Delete uniformly.
+      // Delete by reflection of the access distribution.
       //
-      i = random.LessThan(instance.Size(), operation.Source)
+      i = instance.Size() - dist.LessThan(instance.Size()) - 1
       instance.Delete(i)
    }
    return instance, i

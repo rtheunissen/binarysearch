@@ -62,17 +62,17 @@ benchmarks: operation-benchmarks balancer-benchmarks
 measurements: operation-measurements balancer-measurements
 
 balancer-measurements: assertions-off measurements-on
-	${GO} run benchmarks/main/balancer_measurements.go > benchmarks/data/measurements/Balance
+	${GO} run benchmarks/main/balancer_measurements.go
 
 balancer-benchmarks: assertions-off measurements-off
-	${GO} run benchmarks/main/balancer_benchmarks.go > benchmarks/data/Balance
+	${GO} run benchmarks/main/balancer_benchmarks.go
 
 
 
 
 
 define benchmark-operation
-	${GO} run benchmarks/main/operation_benchmarks.go -operation $(1) > benchmarks/data/$(1)
+	${GO} run benchmarks/main/operation_benchmarks.go -operation $(1)
 endef
 
 operation-benchmarks: assertions-off measurements-off
@@ -82,23 +82,24 @@ operation-benchmarks: assertions-off measurements-off
 	$(call benchmark-operation,InsertDeletePersistent)
 	$(call benchmark-operation,InsertDeleteCycles)
 	$(call benchmark-operation,InsertDeleteCyclesPersistent)
-	$(call benchmark-operation,SplitJoin)
+	#$(call benchmark-operation,SplitJoin)
 
 
 
 
 
-operation-measurements: assertions-off measurements-on \
-	operation-measurement-insert \
-	operation-measurement-insert-persistent \
-	operation-measurement-insert-delete \
-	operation-measurement-insert-delete-persistent \
-	operation-measurement-swell \
-	operation-measurement-swell-persistent \
-	operation-measurement-split-join \
+operation-measurements: assertions-off measurements-on
+	$(MAKE) -j \
+		operation-measurement-insert \
+		operation-measurement-insert-persistent \
+		operation-measurement-insert-delete \
+		operation-measurement-insert-delete-persistent \
+		operation-measurement-insert-delete-cycles \
+		operation-measurement-insert-delete-cycles-persistent \
+		operation-measurement-split-join \
 
 define measure-operation
-	${GO} run benchmarks/main/operation_measurements.go -operation $(1) > benchmarks/data/measurements/$(1)
+	${GO} run benchmarks/main/operation_measurements.go -operation $(1)
 endef
 
 operation-measurement-insert:
@@ -113,10 +114,10 @@ operation-measurement-insert-delete:
 operation-measurement-insert-delete-persistent:
 	$(call measure-operation,InsertDeletePersistent)
 
-operation-measurement-swell:
+operation-measurement-insert-delete-cycles:
 	$(call measure-operation,InsertDeleteCycles)
 
-operation-measurement-swell-persistent:
+operation-measurement-insert-delete-cycles-persistent:
 	$(call measure-operation,InsertDeleteCyclesPersistent)
 
 operation-measurement-split-join:
@@ -134,18 +135,29 @@ operation-measurement-split-join:
 
 
 plot-index:
-	${GO} run benchmarks/main/index.go < benchmarks/index.html
+	${GO} run benchmarks/main/index.go < benchmarks/svg/index.html
 
 plot: plot-balancers plot-operations
 
-plot-balancers:
-	gnuplot benchmarks/plot/balancers.gnuplot
+plot-balancers: \
+	plot-balancer-measurements \
+	plot-balancer-benchmarks
 
-plot-operations:
-	gnuplot benchmarks/plot/operations.gnuplot
+plot-balancer-measurements:
+	gnuplot benchmarks/plot/balancers/balancer_measurements.gnuplot
 
+plot-balancer-benchmarks:
+	gnuplot benchmarks/plot/balancers/balancer_benchmarks.gnuplot
 
-# make measurements -j && make benchmarks && make plot -j
+plot-operations: \
+	plot-operation-benchmarks \
+	plot-operation-measurements \
+
+plot-operation-benchmarks:
+	gnuplot benchmarks/plot/operation_benchmarks.gnuplot
+
+plot-operation-measurements:
+	gnuplot benchmarks/plot/operation_measurements.gnuplot
 
 overnight:
 	$(MAKE) operation-measurements balancer-measurements -j

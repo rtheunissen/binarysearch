@@ -145,7 +145,7 @@ func rank(p *Node) uint64 {
    if p == nil {
       return 0
    } else {
-   	return p.y
+      return p.y
    }
 }
 
@@ -165,7 +165,7 @@ func (p *Node) MaximumPathLength() int {
 
 func (p *Node) height() int {
    if p == nil {
-   	return -1
+      return -1
    }
    return 1 + utility.Max(p.l.height(), p.r.height())
 }
@@ -173,9 +173,9 @@ func (p *Node) height() int {
 // Counts the number of nodes reachable from p*, including itself.
 func (p *Node) size() Size {
    if p == nil {
-   	return 0
+      return 0
    } else {
-   	return 1 + p.l.size() + p.r.size()
+      return 1 + p.l.size() + p.r.size()
    }
 }
 
@@ -212,7 +212,7 @@ func (p *Node) sizeR(s Size) Size {
 
 func (p *Node) inorder(visit func(Data)) {
    if p == nil {
-   	return
+      return
    }
    p.l.inorder(visit)
    visit(p.x)
@@ -336,7 +336,7 @@ func (p *Node) rotateRL() *Node {
 
 func (tree Tree) verifySize(p *Node, s Size) Size {
    if p == nil {
-   	return 0
+      return 0
    }
    sl := tree.verifySize(p.l, p.sizeL())
    sr := tree.verifySize(p.r, p.sizeR(s))
@@ -480,42 +480,42 @@ func (tree *Tree) deleteMin2(p *Node) (root *Node, deleted *Node) {
    n := Node{}
    l := &n
    for {
-   	tree.copy(&p)
-   	if p.l == nil {
-   		l.l = p.r
-   		break
-   	}
-   	p.s = p.s - 1
-   	l.l = p
-   	l = l.l
-   	p = p.l
+      tree.copy(&p)
+      if p.l == nil {
+         l.l = p.r
+         break
+      }
+      p.s = p.s - 1
+      l.l = p
+      l = l.l
+      p = p.l
    }
    return n.l, p
 }
 
 func (tree *Tree) deleteMin(p **Node) *Node {
    for {
-   	tree.copy(p)
-   	if (*p).l == nil {
-   		r := *p
-   		*p = (*p).r
-   		return r
-   	}
-   	(*p).s--
-   	p = &(*p).l
+      tree.copy(p)
+      if (*p).l == nil {
+         r := *p
+         *p = (*p).r
+         return r
+      }
+      (*p).s--
+      p = &(*p).l
    }
 }
 
 func (tree *Tree) deleteMax(p **Node) *Node {
    for {
-   	if (*p).r == nil {
-   		tree.copy(p)
-   		l := *p
-   		*p = (*p).l
-   		return l
-   	}
-   	tree.copy(p)
-   	p = &(*p).r
+      if (*p).r == nil {
+         tree.copy(p)
+         l := *p
+         *p = (*p).l
+         return l
+      }
+      tree.copy(p)
+      p = &(*p).r
    }
 }
 
@@ -551,18 +551,18 @@ func (tree *Tree) deleteMax(p **Node) *Node {
 
 func (tree *Tree) update(p *Node, i Position, x Data) {
    for {
-   	if i == p.s {
-   		p.x = x
-   		return
-   	}
-   	if i < p.s {
-   		tree.copy(&p.l)
-   		p = p.l
-   	} else {
-   		tree.copy(&p.r)
-   		i = i - p.s - 1
-   		p = p.r
-   	}
+      if i == p.s {
+         p.x = x
+         return
+      }
+      if i < p.s {
+         tree.copy(&p.l)
+         p = p.l
+      } else {
+         tree.copy(&p.r)
+         i = i - p.s - 1
+         p = p.r
+      }
    }
 }
 
@@ -935,26 +935,26 @@ func (tree Tree) rotateLR(p **Node) {
 // // Creates a new path starting at p* by descending to the left until there is
 // // no further left child, returning a pointer to the last node on that path.
 //
-//	func followL(p **Node) **Node {
-//	   if *p != nil {
-//	      for (*p).hasL() {
-//	         p = &(shadow(p)).l
-//	      }
-//	   }
-//	   return p
-//	}
+//   func followL(p **Node) **Node {
+//      if *p != nil {
+//         for (*p).hasL() {
+//            p = &(shadow(p)).l
+//         }
+//      }
+//      return p
+//   }
 //
 // // Creates a new path starting at p* by descending to the right until there is
 // // no further right child, returning a pointer to the last node on that path.
 //
-//	func followR(p **Node) **Node {
-//	   if *p != nil {
-//	      for (*p).hasR() {
-//	         p = &(shadow(p)).r
-//	      }
-//	   }
-//	   return p
-//	}
+//   func followR(p **Node) **Node {
+//      if *p != nil {
+//         for (*p).hasR() {
+//            p = &(shadow(p)).r
+//         }
+//      }
+//      return p
+//   }
 //
 // // Creates a new path starting at p* by descending to the right until there is
 // // no right child, then appends n* to the right of the last node on the path.
@@ -964,8 +964,8 @@ func (tree Tree) rotateLR(p **Node) {
 // //
 func (tree *Tree) appendR(p **Node, n *Node) {
    for *p != nil {
-   	tree.copy(p)
-   	p = &(*p).r
+      tree.copy(p)
+      p = &(*p).r
    }
    *p = n
 }
@@ -974,8 +974,8 @@ func (tree *Tree) appendR(p **Node, n *Node) {
 // // no left child, then appends n* to the left of the last node on the path.
 func (tree *Tree) appendL(p **Node, n *Node) {
    for *p != nil {
-   	tree.copy(p)
-   	p = &(*p).l
+      tree.copy(p)
+      p = &(*p).l
    }
    *p = n
 }

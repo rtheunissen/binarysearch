@@ -76,25 +76,25 @@ func (tree *Splay) splay(p *Node, i Position) *Node {
    for i != p.s {
       if i < p.s {
          if i < p.l.s {
-      		p, r, i = tree.linkL(tree.rotateR(p), r, i)
-   		} else if i > p.l.s {
-   			p, r, i = tree.linkL(p, r, i)
-   			p, l, i = tree.linkR(p, l, i)
-   		} else {
-   			p, r, i = tree.linkL(p, r, i)
-   			break
-   		}
-   	} else {
-   		if i > p.s+p.r.s+1 {
-   			p, l, i = tree.linkR(tree.rotateL(p), l, i)
-   		} else if i < p.s+p.r.s+1 {
-   			p, l, i = tree.linkR(p, l, i)
-   			p, r, i = tree.linkL(p, r, i)
-   		} else {
-   			p, l, i = tree.linkR(p, l, i)
-   			break
-   		}
-   	}
+            p, r, i = tree.linkL(tree.rotateR(p), r, i)
+         } else if i > p.l.s {
+            p, r, i = tree.linkL(p, r, i)
+            p, l, i = tree.linkR(p, l, i)
+         } else {
+            p, r, i = tree.linkL(p, r, i)
+            break
+         }
+      } else {
+         if i > p.s+p.r.s+1 {
+            p, l, i = tree.linkR(tree.rotateL(p), l, i)
+         } else if i < p.s+p.r.s+1 {
+            p, l, i = tree.linkR(p, l, i)
+            p, r, i = tree.linkL(p, r, i)
+         } else {
+            p, l, i = tree.linkR(p, l, i)
+            break
+         }
+      }
    }
    l.r = p.l
    r.l = p.r
@@ -138,9 +138,9 @@ func (tree *Splay) Insert(i Position, x Data) {
    //
    //
    if i == tree.size {
-   	tree.root = tree.allocate(Node{x: x, s: tree.size, l: tree.splayMax(tree.root)})
-   	tree.size++
-   	return
+      tree.root = tree.allocate(Node{x: x, s: tree.size, l: tree.splayMax(tree.root)})
+      tree.size++
+      return
    }
    l, r := tree.split(tree.root, tree.size, i)
    tree.root = tree.allocate(Node{x: x, s: i, l: l, r: r})
@@ -154,7 +154,7 @@ func (tree *Splay) Delete(i Position) (x Data) {
    // assert(i < tree.Size())
 
    tree.Splay(i)
-   defer tree.release(tree.root)
+   defer tree.release(tree.root) // TODO: defer is difficult to translate, avoid it.
    x = tree.root.x
    tree.root = tree.join(tree.root.l, tree.root.r)
    tree.size--
@@ -166,15 +166,15 @@ func (tree *Splay) Split(i Position) (List, List) {
    tree.share(tree.root)
 
    if i == tree.size {
-   	return &Splay{Tree{arena: tree.arena, root: tree.root, size: tree.size}},
-   		&Splay{Tree{arena: tree.arena, root: nil, size: 0}}
+      return &Splay{Tree{arena: tree.arena, root: tree.root, size: tree.size}},
+         &Splay{Tree{arena: tree.arena, root: nil, size: 0}}
    }
    //
    //
    l, r := tree.split(tree.root, tree.size, i)
 
    return &Splay{Tree{arena: tree.arena, root: l, size: i}},
-   	&Splay{Tree{arena: tree.arena, root: r, size: tree.size - i}}
+      &Splay{Tree{arena: tree.arena, root: r, size: tree.size - i}}
 }
 
 // 1. Splay the node at `i`.
@@ -198,19 +198,19 @@ func (tree *Splay) Join(that List) List { // TODO check if benchmarks are affect
 
 func (tree *Splay) splayMax(l *Node) *Node {
    if l == nil { // TODO is this ever nil?
-   	return nil
+      return nil
    }
    tree.copy(&l)
    for l.r != nil {
-   	if l.r.r != nil {
-   		tree.copy(&l.r)
-   		tree.copy(&l.r.r)
-   		l.r = l.r.rotateL()
-   		l = l.rotateL()
-   	} else {
-   		tree.copy(&l.r)
-   		l = l.rotateL()
-   	}
+      if l.r.r != nil {
+         tree.copy(&l.r)
+         tree.copy(&l.r.r)
+         l.r = l.r.rotateL()
+         l = l.rotateL()
+      } else {
+         tree.copy(&l.r)
+         l = l.rotateL()
+      }
    }
    return l
 }
@@ -220,7 +220,7 @@ func (tree *Splay) splayMax(l *Node) *Node {
 // 3. Return the splayed node.
 func (tree *Splay) join(l *Node, r *Node) *Node {
    if l == nil {
-   	return r
+      return r
    }
    l = tree.splayMax(l)
    l.r = r

@@ -13,14 +13,14 @@ func (AVLJoinBased) New() List {
 func (tree *AVLJoinBased) Clone() List {
    return &AVLJoinBased{
       AVL: AVL{
-   		Tree: tree.Tree.Clone(),
-   	},
+         Tree: tree.Tree.Clone(),
+      },
    }
 }
 
 func (tree *AVLJoinBased) insert(p *Node, i Position, s Size, x *Node) *Node {
    if p == nil {
-   	return x
+      return x
    }
    tree.copy(&p)
 
@@ -28,10 +28,10 @@ func (tree *AVLJoinBased) insert(p *Node, i Position, s Size, x *Node) *Node {
    sr := s - p.s - 1
 
    if i <= p.s {
-   	p.s++
-   	return tree.build(tree.insert(p.l, i, sl, x), p, p.r, sl+1)
+      p.s++
+      return tree.build(tree.insert(p.l, i, sl, x), p, p.r, sl+1)
    } else {
-   	return tree.build(p.l, p, tree.insert(p.r, i-sl-1, sr, x), sl)
+      return tree.build(p.l, p, tree.insert(p.r, i-sl-1, sr, x), sl)
    }
 }
 
@@ -48,15 +48,15 @@ func (tree AVLJoinBased) delete(p *Node, i Position, s Size, x *Data) *Node {
    sr := s - p.s - 1
 
    if i == p.s {
-   	*x = p.x
-   	defer tree.release(p)
-   	return tree.join(p.l, p.r, sl)
+      *x = p.x
+      defer tree.release(p)
+      return tree.join(p.l, p.r, sl)
    }
    if i < p.s {
-   	p.s--
-   	return tree.build(tree.delete(p.l, i, sl, x), p, p.r, sl-1)
+      p.s--
+      return tree.build(tree.delete(p.l, i, sl, x), p, p.r, sl-1)
    } else {
-   	return tree.build(p.l, p, tree.delete(p.r, i-sl-1, sr, x), sl)
+      return tree.build(p.l, p, tree.delete(p.r, i-sl-1, sr, x), sl)
    }
 }
 
@@ -74,5 +74,5 @@ func (tree *AVLJoinBased) Join(other List) List {
 func (tree *AVLJoinBased) Split(i Position) (List, List) {
    l, r := tree.AVL.Split(i)
    return &AVLJoinBased{l},
-   	&AVLJoinBased{r}
+      &AVLJoinBased{r}
 }

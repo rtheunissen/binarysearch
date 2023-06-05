@@ -19,8 +19,8 @@ func (Zip) New() List {
 
 func (tree *Zip) Clone() List {
    return &Zip{
-   	Tree:   tree.Tree.Clone(),
-   	Source: tree.Source, // TODO: copy?
+      Tree:   tree.Tree.Clone(),
+      Source: tree.Source, // TODO: copy?
    }
 }
 
@@ -31,18 +31,18 @@ func (tree *Zip) randomRank() uint64 {
 func (tree *Zip) unzip(p *Node, i Position, l, r **Node) {
    //p.partition(i, &l, &r)
    for p != nil {
-   	tree.copy(&p)
-   	if i <= p.s {
-   		*r = p
-   		p.s = p.s - i
-   		r = &p.l
-   		p = *r
-   	} else {
-   		*l = p
-   		i = i - p.s - 1
-   		l = &p.r
-   		p = *l
-   	}
+      tree.copy(&p)
+      if i <= p.s {
+         *r = p
+         p.s = p.s - i
+         r = &p.l
+         p = *r
+      } else {
+         *l = p
+         i = i - p.s - 1
+         l = &p.r
+         p = *l
+      }
    }
    *l = nil
    *r = nil
@@ -53,13 +53,13 @@ func (tree *Zip) unzip(p *Node, i Position, l, r **Node) {
 //
 // Otherwise, the new rank is less than or equal to the current rank.
 //
-//	When branching LEFT: if the ranks are equal, a split at the current
-//	node would make it the right child of the new node, where an equal
-//	rank would be valid. Keep searching if the new rank is less than.
+//   When branching LEFT: if the ranks are equal, a split at the current
+//   node would make it the right child of the new node, where an equal
+//   rank would be valid. Keep searching if the new rank is less than.
 //
-//	When branching RIGHT: if the ranks are equal, a split at the current
-//	node would make it the left child of the new node, where an equal
-//	rank would NOT be valid.
+//   When branching RIGHT: if the ranks are equal, a split at the current
+//   node would make it the left child of the new node, where an equal
+//   rank would NOT be valid.
 func (tree *Zip) Insert(i Position, x Data) {
    tree.size++
 
@@ -67,21 +67,21 @@ func (tree *Zip) Insert(i Position, x Data) {
    n := tree.allocate(Node{x: x, y: tree.randomRank()}) // new node
 
    for *p != nil {
-   	if n.y > (*p).y { // New rank is greater, insert here.
-   		break
-   	}
-   	if i <= (*p).s {
-   		if n.y == (*p).y { // Branching left and ranks are equal.
-   			break
-   		}
-   		tree.copy(p)
-   		(*p).s = (*p).s + 1 // Increase the size of the left subtree.
-   		p = &(*p).l         // Path left.
-   	} else {
-   		tree.copy(p)
-   		i = i - ((*p).s + 1) // Skip the current node and left subtree.
-   		p = &(*p).r          // Path right.
-   	}
+      if n.y > (*p).y { // New rank is greater, insert here.
+         break
+      }
+      if i <= (*p).s {
+         if n.y == (*p).y { // Branching left and ranks are equal.
+            break
+         }
+         tree.copy(p)
+         (*p).s = (*p).s + 1 // Increase the size of the left subtree.
+         p = &(*p).l         // Path left.
+      } else {
+         tree.copy(p)
+         i = i - ((*p).s + 1) // Skip the current node and left subtree.
+         p = &(*p).r          // Path right.
+      }
    }
    // assert(rank(n) >= rank(*p))
    tree.unzip(*p, i, &n.l, &n.r) // Unzip the path into the new node.
@@ -93,28 +93,28 @@ func (tree *Zip) zip(l, r *Node, sl Size) (root *Node) {
    // assert(sl == l.size())
    p := &root
    for {
-   	if l == nil {
-   		*p = r
-   		return
-   	}
-   	if r == nil {
-   		*p = l
-   		return
-   	}
+      if l == nil {
+         *p = r
+         return
+      }
+      if r == nil {
+         *p = l
+         return
+      }
 
-   	if rank(l) >= rank(r) {
-   		tree.copy(&l)
-   		sl = sl - l.s - 1 //l.sizeR(sl)
-   		*p = l
-   		p = &l.r
-   		l = *p
-   	} else {
-   		tree.copy(&r)
-   		r.s = r.s + sl
-   		*p = r
-   		p = &r.l
-   		r = *p
-   	}
+      if rank(l) >= rank(r) {
+         tree.copy(&l)
+         sl = sl - l.s - 1 //l.sizeR(sl)
+         *p = l
+         p = &l.r
+         l = *p
+      } else {
+         tree.copy(&r)
+         r.s = r.s + sl
+         *p = r
+         p = &r.l
+         r = *p
+      }
    }
 }
 
@@ -176,28 +176,28 @@ func (tree *Zip) zip(l, r *Node, sl Size) (root *Node) {
 
 func (tree *Zip) delete(p **Node, i Position, x *Data) {
    for {
-   	if i == (*p).s {
-   		//
-   		// Found the node to delete.
-   		//
-   		defer tree.release(*p)
-   		*x = (*p).x
-   		if (*p).l == nil && (*p).r == nil {
-   			*p = nil
-   		} else {
-   			tree.copy(p)
-   			*p = tree.zip((*p).l, (*p).r, (*p).s)
-   		}
-   		return
-   	}
-   	tree.copy(p)
-   	if i < (*p).s {
-   		(*p).s = (*p).s - 1 // Decrease the size of the left subtree.
-   		p = &(*p).l         // Path left.
-   	} else {
-   		i = i - ((*p).s + 1) // Skip the current node and left subtree.
-   		p = &(*p).r          // Path right.
-   	}
+      if i == (*p).s {
+         //
+         // Found the node to delete.
+         //
+         defer tree.release(*p)
+         *x = (*p).x
+         if (*p).l == nil && (*p).r == nil {
+            *p = nil
+         } else {
+            tree.copy(p)
+            *p = tree.zip((*p).l, (*p).r, (*p).s)
+         }
+         return
+      }
+      tree.copy(p)
+      if i < (*p).s {
+         (*p).s = (*p).s - 1 // Decrease the size of the left subtree.
+         p = &(*p).l         // Path left.
+      } else {
+         i = i - ((*p).s + 1) // Skip the current node and left subtree.
+         p = &(*p).r          // Path right.
+      }
    }
 }
 
@@ -216,14 +216,14 @@ func (tree Zip) split(i Size) (Tree, Tree) {
    l, r := tree.Tree.split(tree.root, i)
 
    return Tree{arena: tree.arena, root: l, size: i},
-   	Tree{arena: tree.arena, root: r, size: tree.size - i}
+      Tree{arena: tree.arena, root: r, size: tree.size - i}
 }
 
 func (tree *Zip) Split(i Position) (List, List) {
    l, r := tree.split(i)
 
    return &Zip{l, tree.Source},
-   	&Zip{r, tree.Source}
+      &Zip{r, tree.Source}
 }
 
 func (tree *Zip) Select(i Size) Data {
@@ -249,7 +249,7 @@ func (tree *Zip) Join(that List) List {
 
 func (tree *Zip) verifyRanks(p *Node) {
    if p == nil {
-   	return
+      return
    }
    invariant(p.l == nil || p.y > p.l.y)
    invariant(p.r == nil || p.y > p.r.y || p.y == p.r.y)

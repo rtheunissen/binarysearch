@@ -1,5 +1,10 @@
 package binarytree
 
+import (
+   . "binarysearch/abstract/list"
+   "os"
+)
+
 func init() {
    //spew.Config.Indent = "       "
 }
@@ -138,19 +143,41 @@ func init() {
 
 func Sandbox() {
 
+   tree := &Splay{}
+
+   for i := 0; i < 100; i++ {
+      tree.Insert(Position(i), Data(i))
+   }
+
+   Weight{}.Restore(tree.Tree).Draw(os.Stdout)
+
+
+
+   //t := time.Now()
+   //for j := 0; j < 100; j++ {
+   //   tree := &LBSTRelaxed{}
+   //   for i := 0; i < 1000000; i++ {
+   //      tree.Insert(random.Uint64() % (tree.Size() + 1), Data(i))
+   //   }
+   //   tree.Free()
+   //}
+   //fmt.Println(time.Since(t))
+   //
+   //
+
    //for seed := uint64(time.Now().UnixNano()); ; seed++ {
    //   t := LBSTTopDown{}.New()
-   //	r := random.New(seed)
-   //	fmt.Println(seed, "---")
-   //	for i := uint64(1); i <= 16; i++ {
-   //		j := random.LessThan(t.Size()+1, r)
-   //		fmt.Println(j)
-   //		t.(*LBSTTopDown).Draw(os.Stderr)
-   //		t.Insert(j, 0)
-   //		t.(*LBSTTopDown).Draw(os.Stderr)
-   //		t.Verify()
-   //	}
-   //	t.Free()
+   //   r := random.New(seed)
+   //   fmt.Println(seed, "---")
+   //   for i := uint64(1); i <= 16; i++ {
+   //      j := random.LessThan(t.Size()+1, r)
+   //      fmt.Println(j)
+   //      t.(*LBSTTopDown).Draw(os.Stderr)
+   //      t.Insert(j, 0)
+   //      t.(*LBSTTopDown).Draw(os.Stderr)
+   //      t.Verify()
+   //   }
+   //   t.Free()
    //}
 
    //
