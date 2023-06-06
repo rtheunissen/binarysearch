@@ -18,12 +18,12 @@ func (tree *LBSTTopDown) Clone() List {
 }
 
 func (tree *LBSTTopDown) Select(i Size) Data {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    return tree.lookup(tree.root, i)
 }
 
 func (tree *LBSTTopDown) Update(i Size, x Data) {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    tree.copy(&tree.root)
    tree.update(tree.root, i, x)
 }
@@ -63,8 +63,8 @@ func (tree *LBSTTopDown) Verify() {
 }
 
 func (tree *LBSTTopDown) insert(p **Node, s Size, i Position, x Data) {
-   assert(i <= s)
-   assert(s == (*p).size())
+   // assert(i <= s)
+   // assert(s == (*p).size())
    for {
       if *p == nil {
          *p = tree.allocate(Node{x: x})
@@ -75,8 +75,8 @@ func (tree *LBSTTopDown) insert(p **Node, s Size, i Position, x Data) {
       sl := (*p).sizeL()
       sr := (*p).sizeR(s)
 
-      assert(tree.isBalanced(sr, sl))
-      assert(tree.isBalanced(sl, sr))
+      // assert(tree.isBalanced(sr, sl))
+      // assert(tree.isBalanced(sl, sr))
 
       if i <= (*p).s {
          if tree.isBalanced(sr, sl+1) {
@@ -181,16 +181,16 @@ func (tree *LBSTTopDown) insert(p **Node, s Size, i Position, x Data) {
 }
 
 func (tree *LBSTTopDown) delete(p **Node, s Size, i Position) (deleted *Node) {
-   assert(i < s)
-   assert(s == (*p).size())
+   // assert(i < s)
+   // assert(s == (*p).size())
    for {
       tree.copy(p)
 
       sl := (*p).s
       sr := s - (*p).s - 1
 
-      assert(tree.isBalanced(sl, sr))
-      assert(tree.isBalanced(sr, sl))
+      // assert(tree.isBalanced(sl, sr))
+      // assert(tree.isBalanced(sr, sl))
 
       if i == (*p).s {
          defer tree.release(*p)
@@ -289,13 +289,13 @@ func (tree *LBSTTopDown) deleteR(p ***Node, s *Size, i *Position) {
 }
 
 func (tree *LBSTTopDown) Insert(i Position, x Data) {
-   assert(i <= tree.Size())
+   // assert(i <= tree.Size())
    tree.insert(&tree.root, tree.size, i, x)
    tree.size++
 }
 
 func (tree *LBSTTopDown) Delete(i Position) (x Data) {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    x = tree.delete(&tree.root, tree.size, i).x
    tree.size--
    return
@@ -382,7 +382,7 @@ func (tree *LBSTTopDown) assembleRL(p *Node, l, r *Node, sl, sr Size) *Node {
 }
 
 func (tree *LBSTTopDown) Split(i Position) (List, List) {
-   assert(i <= tree.Size())
+   // assert(i <= tree.Size())
    tree.share(tree.root)
    l, r := JoinBased{Tree: tree.Tree, Joiner: tree}.splitToBST(tree.root, i, tree.size)
    return &LBSTTopDown{LBST{l}},

@@ -31,8 +31,8 @@ func (strategy Partition) balance(tree *Tree, p *Node, s Size) *Node {
    sl := p.sizeL()
    sr := p.sizeR(s)
 
-   assert(strategy.isBalanced(sl, sr) || sl < sr)
-   assert(strategy.isBalanced(sr, sl) || sr < sl)
+   // assert(strategy.isBalanced(sl, sr) || sl < sr)
+   // assert(strategy.isBalanced(sr, sl) || sr < sl)
 
    // Replace `p` by its underlying median if not balanced.
    if !strategy.isBalanced(sl, sr) || !strategy.isBalanced(sr, sl) {
@@ -66,18 +66,18 @@ func (strategy Partition) Verify(tree Tree) {
 
 
 
-type Log struct{}
+type LogWeight struct{}
 
-func (balancer Log) Restore(tree Tree) Tree {
+func (balancer LogWeight) Restore(tree Tree) Tree {
    return Partition{balancer}.Restore(tree)
 }
 
-func (balancer Log) Verify(tree Tree) {
+func (balancer LogWeight) Verify(tree Tree) {
    balancer.verify(tree.root, tree.size)
 }
 
 // -1 <= ⌊log₂(L)⌋ - ⌊log₂(R)⌋ <= 1
-func (balancer Log) verify(p *Node, s Size) {
+func (balancer LogWeight) verify(p *Node, s Size) {
    if p == nil {
       return
    }
@@ -87,25 +87,25 @@ func (balancer Log) verify(p *Node, s Size) {
    balancer.verify(p.r, p.sizeR(s))
 }
 
-func (Log) isBalanced(x, y Size) bool {
+func (LogWeight) isBalanced(x, y Size) bool {
    return !SmallerMSB(x+1, (y+1) >> 1)
 }
 
 
 
 
-type Constant struct{}
+type HalfWeight struct{}
 
-func (balancer Constant) Restore(tree Tree) Tree {
+func (balancer HalfWeight) Restore(tree Tree) Tree {
    return Partition{balancer}.Restore(tree)
 }
 
-func (balancer Constant) Verify(tree Tree) {
+func (balancer HalfWeight) Verify(tree Tree) {
    balancer.verify(tree.root, tree.size)
 }
 
 // -1 <= ⌊log₂(L)⌋ - ⌊log₂(R)⌋ <= 1
-func (balancer Constant) verify(p *Node, s Size) {
+func (balancer HalfWeight) verify(p *Node, s Size) {
    if p == nil {
       return
    }
@@ -115,25 +115,52 @@ func (balancer Constant) verify(p *Node, s Size) {
    balancer.verify(p.r, p.sizeR(s))
 }
 
-func (Constant) isBalanced(x, y Size) bool {
+func (HalfWeight) isBalanced(x, y Size) bool {
    return !(x+1 < (y+1) >> 1)
 }
 
 
+type HalfSize struct{}
 
-
-type Weight struct{}
-
-func (balancer Weight) Restore(tree Tree) Tree {
+func (balancer HalfSize) Restore(tree Tree) Tree {
    return Partition{balancer}.Restore(tree)
 }
 
-func (balancer Weight) Verify(tree Tree) {
+func (balancer HalfSize) Verify(tree Tree) {
    balancer.verify(tree.root, tree.size)
 }
 
 // -1 <= ⌊log₂(L)⌋ - ⌊log₂(R)⌋ <= 1
-func (balancer Weight) verify(p *Node, s Size) {
+func (balancer HalfSize) verify(p *Node, s Size) {
+   if p == nil {
+      return
+   }
+   //invariant(Difference(Log2(p.sizeL()), Log2(p.sizeR(s))) <= 1)
+
+   balancer.verify(p.l, p.sizeL())
+   balancer.verify(p.r, p.sizeR(s))
+}
+
+func (HalfSize) isBalanced(x, y Size) bool {
+   return !(x < y >> 1)
+}
+
+
+
+
+
+type LogSize struct{}
+
+func (balancer LogSize) Restore(tree Tree) Tree {
+   return Partition{balancer}.Restore(tree)
+}
+
+func (balancer LogSize) Verify(tree Tree) {
+   balancer.verify(tree.root, tree.size)
+}
+
+// -1 <= ⌊log₂(L)⌋ - ⌊log₂(R)⌋ <= 1
+func (balancer LogSize) verify(p *Node, s Size) {
    if p == nil {
       return
    }
@@ -143,7 +170,7 @@ func (balancer Weight) verify(p *Node, s Size) {
    balancer.verify(p.r, p.sizeR(s))
 }
 
-func (Weight) isBalanced(x, y Size) bool {
+func (LogSize) isBalanced(x, y Size) bool {
    return !SmallerMSB(x, y >> 1)
 }
 
@@ -555,7 +582,7 @@ func (Tree) Vine(size Size) Tree {
 }
 
 func (Tree) WorstCaseMedianVine(size Size) Tree {
-   assert(size > 0)
+   // assert(size > 0)
    t := Tree{}
    n := Node{}
    p := &n
@@ -634,7 +661,7 @@ func (tree Tree) Randomize(access distribution.Distribution) Tree {
 }
 
 func (tree Tree) randomize(access distribution.Distribution, p *Node, s Size) *Node {
-   assert(p.size() == s)
+   // assert(p.size() == s)
    if p == nil {
       return nil
    }

@@ -149,7 +149,7 @@ func Sandbox() {
       tree.Insert(Position(i), Data(i))
    }
 
-   Weight{}.Restore(tree.Tree).Draw(os.Stdout)
+   LogSize{}.Restore(tree.Tree).Draw(os.Stdout)
 
 
 
@@ -1098,8 +1098,8 @@ func Sandbox() {
 //   //    }
 //   //    p := l.Join(r)
 //   //    p.Verify()
-//   //    assert(p.Size() == l.Size() + r.Size())
-//   //    assert(p.Size() == p.(*WAVL).root.count())
+//   //    // assert(p.Size() == l.Size() + r.Size())
+//   //    // assert(p.Size() == p.(*WAVL).root.count())
 //   //    print(".")
 //   // }
 //}

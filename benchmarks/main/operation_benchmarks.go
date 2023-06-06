@@ -114,9 +114,9 @@ func (benchmark TreeBenchmark) Run() {
          //
          stderr([]any{
             time.Now().Format(time.RFC822),
-            alignL(utility.NameOf(benchmark.Operation)),
-            alignL(utility.NameOf(strategy)),
-            alignR(fmt.Sprint(iteration, "/", benchmark.Iterations)),
+            utility.NameOf(benchmark.Operation),
+            utility.NameOf(strategy),
+            fmt.Sprint(iteration, "/", benchmark.Iterations),
          }...)
 
          //

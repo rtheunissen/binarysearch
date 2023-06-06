@@ -1,9 +1,9 @@
-load "benchmarks/plot/style.gnuplot"
+load "benchmarks/plot/graph.gnuplot"
 load "benchmarks/plot/functions.gnuplot"
 
-set tmargin 8
-
-set bmargin 4
+set tmargin 10
+set bmargin 5
+set lmargin 0
 
 svg = "benchmarks/svg/balancers/".GROUP."/".MEASUREMENT."__".smooth."__lines.svg"
 

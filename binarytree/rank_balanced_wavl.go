@@ -136,11 +136,11 @@ func (tree WAVL) rebalanceOnDelete(p *Node) *Node {
          promote(p)
          demote(p.r)
 
-         assert(isTwoChild(p, p.l))
-         assert(isOneChild(p, p.r))
+         // assert(isTwoChild(p, p.l))
+         // assert(isOneChild(p, p.r))
 
          if p.r.l == nil {
-            assert(isTwoTwo(p.r))
+            // assert(isTwoTwo(p.r))
             demote(p.r)
          }
       } else {
@@ -151,8 +151,8 @@ func (tree WAVL) rebalanceOnDelete(p *Node) *Node {
          demote(p.r)
          demote(p.r)
 
-         assert(isTwoChild(p, p.l))
-         assert(isTwoChild(p, p.r))
+         // assert(isTwoChild(p, p.l))
+         // assert(isTwoChild(p, p.r))
       }
    } else if isThreeChild(p, p.l) {
       if isTwoChild(p, p.r) {
@@ -167,11 +167,11 @@ func (tree WAVL) rebalanceOnDelete(p *Node) *Node {
          promote(p)
          demote(p.l)
 
-         assert(isOneChild(p, p.l))
-         assert(isTwoChild(p, p.r))
+         // assert(isOneChild(p, p.l))
+         // assert(isTwoChild(p, p.r))
 
          if p.l.r == nil {
-            assert(isTwoTwo(p.l))
+            // assert(isTwoTwo(p.l))
             demote(p.l)
          }
       } else {
@@ -182,8 +182,8 @@ func (tree WAVL) rebalanceOnDelete(p *Node) *Node {
          demote(p.l)
          demote(p.r)
 
-         assert(isTwoChild(p, p.l))
-         assert(isTwoChild(p, p.r))
+         // assert(isTwoChild(p, p.l))
+         // assert(isTwoChild(p, p.r))
       }
    }
    return p

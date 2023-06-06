@@ -11,24 +11,24 @@ func (AVLWeakJoinBased) New() List {
 }
 
 func (tree *AVLWeakJoinBased) Select(i Size) Data {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    return tree.lookup(tree.root, i)
 }
 
 func (tree *AVLWeakJoinBased) Update(i Size, x Data) {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    tree.copy(&tree.root)
    tree.update(tree.root, i, x)
 }
 
 func (tree *AVLWeakJoinBased) Insert(i Position, x Data) {
-   assert(i <= tree.Size())
+   // assert(i <= tree.Size())
    tree.root = JoinBased{Tree: tree.Tree, Joiner: tree}.insert(tree.root, i, tree.size, tree.allocate(Node{x: x}))
    tree.size++
 }
 
 func (tree *AVLWeakJoinBased) Delete(i Position) (x Data) {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    tree.root = JoinBased{Tree: tree.Tree, Joiner: tree}.delete(tree.root, i, tree.size, &x)
    tree.size--
    return
@@ -43,7 +43,7 @@ func (tree *AVLWeakJoinBased) Clone() List {
 }
 
 func (tree AVLWeakJoinBased) Split(i Position) (List, List) {
-   assert(i <= tree.Size())
+   // assert(i <= tree.Size())
    tree.share(tree.root)
    l, r := JoinBased{Tree: tree.Tree, Joiner: tree}.splitToBST(tree.root, i, tree.size)
    return &AVLWeakJoinBased{WAVL{Tree: l}},

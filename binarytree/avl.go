@@ -80,12 +80,12 @@ func (tree *AVL) balance(p *Node) *Node {
 }
 
 func (tree *AVL) Select(i list.Size) list.Data {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    return tree.lookup(tree.root, i)
 }
 
 func (tree *AVL) Update(i list.Size, x list.Data) {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    tree.copy(&tree.root)
    tree.update(tree.root, i, x)
 }
@@ -207,7 +207,7 @@ func (tree *AVL) split(p *Node, i, s list.Size) (l, r *Node) {
 }
 
 func (tree *AVL) Split(i list.Position) (AVL, AVL) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.share(tree.root)
 
    l, r := tree.split(tree.root, i, tree.size)

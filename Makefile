@@ -61,8 +61,22 @@ benchmarks: operation-benchmarks balancer-benchmarks
 
 measurements: operation-measurements balancer-measurements
 
+
+BALANCERS := \
+	Median \
+	Height \
+	HalfSize \
+	LogSize \
+	HalfWeight \
+	LogWeight \
+	Cost \
+	DSW
+
+balancer-measurements-%:
+	${GO} run benchmarks/main/balancer_measurements.go -strategy $*
+
 balancer-measurements: assertions-off measurements-on
-	${GO} run benchmarks/main/balancer_measurements.go
+	$(MAKE) -j $(foreach balancer,$(BALANCERS),balancer-measurements-$(balancer))
 
 balancer-benchmarks: assertions-off measurements-off
 	${GO} run benchmarks/main/balancer_benchmarks.go

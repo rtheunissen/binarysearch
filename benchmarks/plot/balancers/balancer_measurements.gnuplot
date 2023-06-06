@@ -1,10 +1,4 @@
-array Partition[6] = [ "Median", "Height", "Weight", "Cost", "Log", "Constant" ]
-
-array All[7] = [ "Median", "Height", "Weight", "Cost", "DSW", "Log", "Constant" ]
-
-array Groups[2] = [ "Partition", "All" ]
-
-array Distributions[1] = [ "Uniform" ]
+load "benchmarks/plot/balancers.gnuplot"
 
 do for [Group=1:|Groups|] {
 

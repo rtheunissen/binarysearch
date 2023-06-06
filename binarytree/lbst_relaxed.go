@@ -110,12 +110,12 @@ func (LBSTRelaxed) New() List {
 }
 
 func (tree *LBSTRelaxed) Select(i Size) Data {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    return tree.lookup(tree.root, i)
 }
 
 func (tree *LBSTRelaxed) Update(i Size, x Data) {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    tree.copy(&tree.root)
    tree.update(tree.root, i, x)
 }
@@ -128,7 +128,7 @@ func (tree *LBSTRelaxed) Clone() List {
 
 // Inserts a value `s` at position `i` in the tree.
 func (tree *LBSTRelaxed) Insert(i Position, x Data) {
-   assert(i <= tree.Size())
+   // assert(i <= tree.Size())
 
    var unbalancedNode **Node // An unbalanced node along the insertion path.
    var unbalancedSize Size   // The size of the unbalanced node.
@@ -211,7 +211,7 @@ func (tree *LBSTRelaxed) partition(p *Node, i uint64, l, r **Node) {
 }
 
 func (tree *LBSTRelaxed) moveToRoot(p *Node, i Position) *Node {
-   assert(i < p.size())
+   // assert(i < p.size())
    n := Node{s: i}
    l := &n
    r := &n
@@ -244,8 +244,8 @@ func (tree LBSTRelaxed) balance(p *Node, s Size) *Node {
    sl := p.sizeL()
    sr := s - p.s - 1
 
-   assert(tree.isBalanced(sl, sr) || sl < sr)
-   assert(tree.isBalanced(sr, sl) || sr < sl)
+   // assert(tree.isBalanced(sl, sr) || sl < sr)
+   // assert(tree.isBalanced(sr, sl) || sr < sl)
    if !tree.isBalanced(sl, sr) || !tree.isBalanced(sr, sl) {
       p = tree.moveToRoot(p, s>>1)
    }
@@ -265,13 +265,13 @@ func (tree *LBSTRelaxed) delete(p **Node, s Size, i Size) (x Data) {
 // Deletes the node at position `i` from the tree.
 // Returns the data that was in the deleted value.
 func (tree *LBSTRelaxed) Delete(i Position) Data {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    x := tree.delete(&tree.root, tree.size, i)
    tree.size--
    return x
 }
 func (tree *LBSTRelaxed) Split(i Size) (List, List) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
 
    var l, r *Node
    tree.share(tree.root)

@@ -28,11 +28,12 @@ func main() {
       Strategies: []binarytree.Balancer{
          &binarytree.Median{},
          &binarytree.Height{},
-         &binarytree.Weight{},
+         &binarytree.HalfSize{},
+         &binarytree.LogSize{},
+         &binarytree.HalfWeight{},
+         &binarytree.LogWeight{},
          &binarytree.Cost{},
          &binarytree.DSW{},
-         &binarytree.Log{},
-         &binarytree.Constant{},
       },
    }.Run()
 }
@@ -81,11 +82,11 @@ func (benchmark BalancerBenchmark) Run() {
 
          instance := binarytree.Splay{}.New().(*binarytree.Splay)
 
-         fmt.Fprintln(os.Stderr, []any{
-            time.Now().Format(time.RFC822),
+         fmt.Fprintf(os.Stderr, "%s %-10s %10d/%d\n",
+            time.Now().Format(time.TimeOnly),
             utility.NameOf(strategy),
-            fmt.Sprint(iteration, "/", benchmark.Iterations),
-         }...)
+            iteration,
+            benchmark.Iterations)
 
          for position := step; position <= benchmark.Scale; position += step {
 

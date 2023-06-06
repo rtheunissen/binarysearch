@@ -12,7 +12,7 @@ func TestBalancers(t *testing.T) {
    balancers := []Balancer{
       &Median{},
       &Height{},
-      &Weight{},
+      &LogSize{},
       &DSW{},
    }
    distributions := []distribution.Distribution{

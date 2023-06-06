@@ -68,14 +68,14 @@ func (tree AVLWeakBottomUp) delete(p *Node, i Position, x *Data) *Node {
 }
 
 func (tree *AVLWeakBottomUp) Delete(i Position) (x Data) {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    tree.root = tree.delete(tree.root, i, &x)
    tree.size = tree.size - 1
    return
 }
 
 func (tree *AVLWeakBottomUp) Insert(i Position, x Data) {
-   assert(i <= tree.Size())
+   // assert(i <= tree.Size())
    tree.size = tree.size + 1
    tree.root = tree.insert(tree.root, i, x)
 }
@@ -125,12 +125,12 @@ func (tree AVLWeakBottomUp) join(l, r *Node, sl Size) (p *Node) {
 }
 
 func (tree *AVLWeakBottomUp) Select(i Size) Data {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    return tree.lookup(tree.root, i)
 }
 
 func (tree *AVLWeakBottomUp) Update(i Size, x Data) {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    tree.copy(&tree.root)
    tree.update(tree.root, i, x)
 }
@@ -150,7 +150,7 @@ func (tree AVLWeakBottomUp) Join(that List) List {
 }
 
 func (tree AVLWeakBottomUp) Split(i Position) (List, List) {
-   assert(i <= tree.Size())
+   // assert(i <= tree.Size())
    tree.share(tree.root)
    l, r := JoinBased{Tree: tree.Tree, Joiner: tree}.split(tree.root, i, tree.size)
 
