@@ -26,12 +26,11 @@ func main() {
          &distribution.Uniform{},
       },
       Strategies: []binarytree.Balancer{
-         //&binarytree.Median{},
-         //&binarytree.Height{},
-         //&binarytree.Weight{},
-         //&binarytree.Cost{},
-         //&binarytree.DSW{},
-
+         &binarytree.Median{},
+         &binarytree.Height{},
+         &binarytree.Weight{},
+         &binarytree.Cost{},
+         &binarytree.DSW{},
          &binarytree.Log{},
          &binarytree.Constant{},
       },
@@ -98,7 +97,7 @@ func (benchmark BalancerBenchmark) Run() {
             for _, random := range benchmark.Distributions {
 
                // Randomize the tree.
-               instance.Tree = instance.Tree.Randomize(random.New(uint64(iteration)))
+               instance.Tree = instance.Tree.Randomize(random.New(uint64(position)))
 
                start := time.Now()
 

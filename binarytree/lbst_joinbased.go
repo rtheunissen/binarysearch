@@ -19,18 +19,18 @@ func (tree *LBSTJoinBased) Clone() List {
 }
 
 func (tree *LBSTJoinBased) Select(i Size) Data {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    return tree.lookup(tree.root, i)
 }
 
 func (tree *LBSTJoinBased) Update(i Size, x Data) {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    tree.copy(&tree.root)
    tree.update(tree.root, i, x)
 }
 
 func (tree *LBSTJoinBased) Insert(i Position, x Data) {
-   // assert(i <= tree.Size())
+   assert(i <= tree.Size())
    tree.root = JoinBased{Tree: tree.Tree, Joiner: tree}.insert(tree.root, i, tree.size, tree.allocate(Node{x: x}))
    tree.size++
 }
@@ -48,7 +48,7 @@ func (tree *LBSTJoinBased) Insert(i Position, x Data) {
 //}
 
 func (tree *LBSTJoinBased) Delete(i Position) (x Data) {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    tree.root = JoinBased{Tree: tree.Tree, Joiner: tree}.delete(tree.root, i, tree.size, &x)
    tree.size--
    return

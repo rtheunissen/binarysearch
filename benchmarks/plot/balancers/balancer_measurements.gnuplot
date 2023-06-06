@@ -1,4 +1,4 @@
-array Partition[4] = [ "Median", "Height", "Weight", "Cost" ]
+array Partition[6] = [ "Median", "Height", "Weight", "Cost", "Log", "Constant" ]
 
 array All[7] = [ "Median", "Height", "Weight", "Cost", "DSW", "Log", "Constant" ]
 
@@ -19,7 +19,7 @@ do for [Group=1:|Groups|] {
 
     MEASUREMENT = "PartitionCount"
 
-    set xlabel "{Size × 10^5}"
+    set xlabel "{Size × 10^4}"
     set ylabel ""
 
     set title "{/:Bold Partition Count} / Size"
@@ -43,7 +43,7 @@ do for [Group=1:|Groups|] {
 
     MEASUREMENT = "TotalPartitionDepth"
 
-    set xlabel "{Size × 10^5}"
+    set xlabel "{Size × 10^4}"
     set ylabel ""
 
     set title "{/:Bold Partition Depth} / Size"
@@ -67,7 +67,7 @@ do for [Group=1:|Groups|] {
 
     MEASUREMENT = "AveragePartitionDepth"
 
-    set xlabel "{Size × 10^5}"
+    set xlabel "{Size × 10^4}"
     set ylabel ""
 
     set title "{/:Bold Partition Depth } / Partition Count"
@@ -91,7 +91,7 @@ do for [Group=1:|Groups|] {
 
     MEASUREMENT = "Rotations"
 
-    set xlabel "{Size × 10^5}"
+    set xlabel "{Size × 10^4}"
     set ylabel ""
 
     set title "{/:Bold Rotations}"
@@ -115,7 +115,7 @@ do for [Group=1:|Groups|] {
 
     MEASUREMENT = "MaximumPathLength"
 
-    set xlabel "Size × 10^5"
+    set xlabel "Size × 10^4"
     set ylabel ""
 
     set title "{/:Bold Maximum Path Length } / log_2Size"
@@ -139,7 +139,7 @@ do for [Group=1:|Groups|] {
 
     MEASUREMENT = "AveragePathLength"
 
-    set xlabel "Size × 10^5"
+    set xlabel "Size × 10^4"
     set ylabel ""
 
     set title "{/:Bold Average Path Length } / log_2Size"

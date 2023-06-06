@@ -36,7 +36,7 @@ func (tree *AVLJoinBased) insert(p *Node, i Position, s Size, x *Node) *Node {
 }
 
 func (tree *AVLJoinBased) Insert(i Position, x Data) {
-   // assert(i <= tree.size)
+   assert(i <= tree.size)
    tree.root = tree.insert(tree.root, i, tree.size, tree.allocate(Node{x: x}))
    tree.size++
 }
@@ -61,7 +61,7 @@ func (tree AVLJoinBased) delete(p *Node, i Position, s Size, x *Data) *Node {
 }
 
 func (tree *AVLJoinBased) Delete(i Position) (x Data) {
-   // assert(i < tree.size)
+   assert(i < tree.size)
    tree.root = tree.delete(tree.root, i, tree.size, &x)
    tree.size--
    return

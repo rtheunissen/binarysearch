@@ -51,11 +51,11 @@ func (LBST) isBalanced(x, y Size) bool {
    //
    // Complexity: O(1)
    //
-   return !utility.SmallerLog2(x, y>>1)
+   return !utility.SmallerMSB(x, y>>1)
 }
 
 func (LBST) singleRotation(x, y Size) bool {
-   return !utility.SmallerLog2(x, y)
+   return !utility.SmallerMSB(x, y)
 }
 
 func (tree LBST) join2(l *Node, r *Node, sl, sr Size) (k *Node) {

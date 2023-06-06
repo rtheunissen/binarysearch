@@ -31,12 +31,12 @@ func (tree *RedBlackBottomUp) Clone() List {
 }
 
 func (tree *RedBlackBottomUp) Select(i Size) Data {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    return tree.lookup(tree.root, i)
 }
 
 func (tree *RedBlackBottomUp) Update(i Size, x Data) {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    tree.copy(&tree.root)
    tree.update(tree.root, i, x)
 }
@@ -46,7 +46,7 @@ func (tree *RedBlackBottomUp) rank(p *Node) int {
 }
 
 func (tree *RedBlackBottomUp) Delete(i Position) (x Data) {
-   // assert(i < tree.size)
+   assert(i < tree.size)
    tree.size = tree.size - 1
    tree.root = tree.delete(tree.root, i, &x)
    return x
@@ -85,7 +85,7 @@ func (tree *RedBlackBottomUp) insert(p *Node, i Position, x Data) *Node {
 }
 
 func (tree *RedBlackBottomUp) Insert(i Position, x Data) {
-   // assert(i <= tree.size)
+   assert(i <= tree.size)
    tree.size = tree.size + 1
    tree.root = tree.insert(tree.root, i, x)
    return
@@ -111,7 +111,7 @@ func (tree RedBlackBottomUp) split(p *Node, i, s Size) (l, r *Node) {
 }
 
 func (tree RedBlackBottomUp) Split(i Position) (List, List) {
-   // assert(i <= tree.Size())
+   assert(i <= tree.Size())
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
    return &RedBlackBottomUp{Tree: Tree{arena: tree.arena, root: l, size: i}},

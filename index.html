@@ -7,23 +7,43 @@
 
         html, body {
             background-color: #ffffff;
+            margin: 0;
         }
 
         body {
-            display: flex;
+            /*display: flex;*/
+            max-width: 800px;
+            /*min-width: 600px;*/
+            margin: auto;
+        }
+
+        hr {
+            margin: 2em 0;
+            opacity: 0.25;
         }
 
         section {
-            margin-top: 2em;
+            margin: 2em 0 2em 0;
+        }
+
+
+        h1, h2, h3, h4 {
+            margin: 0 0 1em 0;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 3em 0 2em 0;
+            text-transform: uppercase;
         }
 
         article {
             font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
             line-height: 1.5;
-            width: 100%;
+            /*width: 100%;*/
             display: block;
-            max-width: 800px;
-            margin: 0 auto;
+            /*max-width: 800px;*/
+            /*margin: 0 auto;*/
             font-size: 1em;
             overflow: hidden;
             padding: 1em;
@@ -36,7 +56,7 @@
 
         pre {
             font-family: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
-            margin: 0 0;
+            margin: 0;
         }
 
         .math {
@@ -49,12 +69,20 @@
             padding: 2px 0;
         }
 
-        mark.info {
-            background-color: rgba(0, 0, 255, 0.05);
+        mark.red {
+            background-color: rgba(255, 20, 150, 0.10);
         }
 
-        mark.oc {
+        mark.yellow {
+            background-color: rgba(255, 255, 0, 0.15);
+        }
+
+        mark.green {
             background-color: rgba(0, 255, 0, 0.10);
+        }
+
+        mark.blue {
+            background-color: rgba(0, 0, 255, 0.05);
         }
 
         .code {
@@ -100,27 +128,30 @@
             top: 0.4em;
         }
 
-        h1, h2, h3, h4, a, p, li, ul {
-
-        }
-
 
         .graphs {
-            margin: 20px 0;
-            flex-wrap: wrap;
-            width: 100%;
-            display: flex;
-            justify-content: left;
+            font-size: 0;
         }
 
         .graphs img {
-            margin: 1em 0;
-            display: flex;
-            flex-direction: column;
-            flex: 0;
+            width: 50%; /* Display images side-by-side */
+            max-width: 100%; /* Limit image width to its intrinsic size */
+            margin: 20px 0;
             padding: 0;
-            box-sizing: border-box;
-            width: 50%;
+            display: inline-block; /* Display images as inline blocks */
+            box-sizing: border-box; /* Include border and padding in the width calculation */
+            vertical-align: top; /* Align images to the top */
+        }
+
+        .graphs img:only-child {
+            width: 100% !important;
+        }
+
+        /* Media query for screens with a maximum width of 400px */
+        @media (max-width: 800px) {
+            .graphs img {
+                width: 100%; /* Display images in full-width */
+            }
         }
 
     </style>
@@ -136,17 +167,17 @@
 
     <section id="abstract">
         <p>
-            The study of <em>binary search trees</em> is an actively-researched topic in computer science going back over 60 years, and most computer science courses on data structures still include them, including
+            The study of <em>binary search trees</em> has been an active research topic in computer science for over 60 years, and most courses on data structures still include them, including
             <a href="http://web.stanford.edu/class/cs166/">Stanford</a> and <a href="https://sp23.datastructur.es/">UC Berkeley</a>.
-            Many tree algorithms have been proposed over the years, but only a few are usually found in common textbooks and in practice.
-            Some algorithms are more intuitive and more efficient, but reference implementations are difficult to find and therefore difficult to teach.
-            Students often miss the opportunity to practice algorithm design and explore creatively because they are so distracted by seemingly arbitrary invariants and acronyms.
-            What does the field of candidates look like?
-            Are these some trees
-            <br>
-            <br>
-            As a complement to the theory applied here, this project focuses more on implementation, experimentation and observation.
-            The goal is to produce a reference that is easy to study, translate, and contribute to.
+            Many binary search tree algorithms have been proposed over the years, but only a few usual suspects are usually found in the wild.
+        </p>
+        <p>
+            Some algorithms are both more intuitive and more efficient, but good reference implementations are often difficult to find and therefore difficult to teach and apply.
+            Students often miss an opportunity to explore and practice algorithm design creatively because they are so distracted by seemingly arbitrary invariants and acronyms.
+        </p>
+        <p>
+            The goal of this project is to produce a reference that is easy to study and translate, focusing on practical experimentation and measurements to apply and complement published theory.
+            Many of the algorithms implemented and tested herein are presented as such for the first time, to be best of my knowledge at the time of this writing, which includes a handful of original contributions.
         </p>
     </section>
 
@@ -157,7 +188,7 @@
     </section>
 
     <section id="introduction">
-        <h2>Introduction </h2>
+        <h2>Part 1<br><br>Introduction</h2>
 
         <section id="memory">
             <h3>Abstract memory</h3>
@@ -166,7 +197,7 @@
             </p>
             <p>
                 A computer program can use memory to keep information in hand while working on a problem.
-                When more memory is needed, the program can ask an <em>allocator</em> to reserve some and in return receive an address by which to access that particular piece of memory.
+                When more memory is needed, a program can ask an <em>allocator</em> to reserve some and in return receive an address by which to access that particular piece of memory.
                 Memory allocated by a program is usually freed by the time the program exits, but during its lifetime there can be many requests to allocate and free individual pieces of memory.
             </p>
             <p>
@@ -516,7 +547,7 @@
                 For this to be efficient, a data structure must be <em>cheap to copy</em> and implicitly share memory between versions over time.
             </p>
 
-            https://en.wikipedia.org/wiki/Persistent<em>data</em>structure
+<!--            https://en.wikipedia.org/wiki/Persistent<em>data</em>structure-->
 
             <section id="reference-counting">
                 <h4>Reference counting</h4>
@@ -532,10 +563,10 @@
                     There is now one fewer tree depending on that node specifically, and because the reference count of the new node is zero, the program can make changes to it as needed.
                 </p>
 
-                https://en.wikipedia.org/wiki/Copy-on-write
-                https://en.wikipedia.org/wiki/Reference_counting
-                https://en.wikipedia.org/wiki/Immutable_object
-
+<!--                https://en.wikipedia.org/wiki/Copy-on-write-->
+<!--                https://en.wikipedia.org/wiki/Reference_counting-->
+<!--                https://en.wikipedia.org/wiki/Immutable_object-->
+<!---->
             </section>
 
 
@@ -552,7 +583,7 @@
                     Every node has a unique path from the root, so for any operation we can mark the nodes that would need to be modified and trace their paths back up to the root;
                     it is these paths that would need to be copied so that they all belong to the same, new version of the tree that includes those modifications.
                 </p>
-                https://en.wikipedia.org/wiki/Persistent<em>data</em>structure#:~:text=in%20the%20array.-,Path%20copying,-%5Bedit%5D
+<!--                https://en.wikipedia.org/wiki/Persistent<em>data</em>structure#:~:text=in%20the%20array.-,Path%20copying,-%5Bedit%5D-->
             </section>
 
 
@@ -593,12 +624,10 @@
         </section>
     </section>
 
-    <hr>
-
     <section id="strategies-to-restore-balance">
-        <h2>2. Strategies to restore balance to an existing tree</h2>
+        <h2>Part 2<br><br>Strategies to restore balance</h2>
         <p>
-            Consider then what would happen to the structure of the tree if we repeatedly inserted many nodes at the end of the sequence.
+            Consider what happens to the structure of the tree if we repeatedly inserted many nodes at the end of the sequence.
             Eventually, the tree structure becomes <em>unbalanced</em>, where too many branches are too far from the median of their sequence.
             Starting from an empty tree, always inserting at the end of the sequence would create precisely a linked list.
             Over time, even a perfectly balanced tree might become unbalanced when nodes are inserted, deleted, split, and joined.
@@ -698,6 +727,13 @@
 
 
             <pre>
+
+                TODO: Drawing of an example of partitioning.
+
+            </pre>
+
+
+            <pre>
         func partition(p *Node, i uint64) *Node {
            n := Node{s: i}
            l := &n
@@ -775,7 +811,7 @@
             </p>
 
             <pre>
-      <mark>MedianBalanced(x, y) := (x+1) ≥ y</mark>
+      <mark class="yellow">MedianBalanced(x, y) := (x+1) ≥ y</mark>
         </pre>
 
             <p>
@@ -830,13 +866,13 @@
 
             <p>
 
-                We can continue to use the same partition-based balancing algorithm, but change the definition of balance to <mark>only partition if the node is not height-balanced</mark>.
+                We can continue to use the same partition-based balancing algorithm, but change the definition of balance to <mark class="yellow">only partition if the node is not height-balanced</mark>.
                 Any node that is not height-balanced is partitioned to become median-balanced, which results in a height-balanced tree.
 
             </p>
 
             <p>
-                The problem to solve is <mark class="info">to determine whether a node is height-balanced using only subtree size</mark>.
+                The problem to solve is <mark class="blue">to determine whether a node is height-balanced using only subtree size</mark>.
                 Ivo Muusse solves this in [] by using a stricter definition of height-balance where both the minimum and maximum path lengths of two subtrees differ by no more than one.
                 Then, by pretending that both subtrees are already strictly height-balanced, we can compare their minimum and maximum heights.
             <p>
@@ -873,7 +909,7 @@
             </pre>
 
             <p>
-                This function, as presented above and by Muusse in [], <mark class="oc">can be simplified using an identity of log₂</mark> where <span class="math">⌈log₂(n+1)⌉ ≡ ⌊log₂(n)⌋+1</span>.
+                This function, as presented above and by Muusse in [], <mark class="green">can be simplified using an identity of log₂</mark> where <span class="math">⌈log₂(n+1)⌉ ≡ ⌊log₂(n)⌋+1</span>.
                 The result is the same whether you complete the bottom level with <em>ceil</em>, or empty the bottom level with <em>floor</em> and add 1.
             </p>
             <pre>
@@ -913,41 +949,12 @@
                 Using this information, we can determine whether a node is height-balanced by comparing the MSB of <span class="math">x+1</span> and <span class="math">y</span>.
                 This allows us to determine height-balance without the need to actually calculate either logarithm, which would require slow floating-point calculations to first calculate each logarithm and then floor them.
             </p>
-            <p>
-                More generally, we need to compare the MSB of one integer to the MSB of another.
-            </p>
             <pre>
                 
-        HeightBalanced(x,y) := ⌊log₂(x+1)⌋ ≥ ⌊log₂(y)⌋
-
-        HeightBalanced(x,y) := MSB(x+1) ≥ MSB(y)
-
-            </pre>
-            <p>
-                By inverting the inequality we can instead determine if the MSB of one integer is <em>less than</em> then MSB of another, or in other words <em>not</em> greater than or equal to.
-                There are a handful of clever ways to calculate this using bitwise operations [][][].
-            </p>
-
-            <pre>
-
-        SmallerMSB(x, y) := x < y && ((x & y) << 1) < y    Roura, S.
-        SmallerMSB(x, y) := x < y && x < (x ^ y)           Chan, T.M.
-        SmallerMSB(x, y) := x < (~x & y)                   Warren, H.S.
+                <mark class="yellow">HeightBalanced(x,y) := MSB(x+1) ≥ MSB(y)</mark>
 
             </pre>
 
-<!--          Roura, S. (2001). A New Method for Balancing Binary Search Trees. I-->
-<!--          Chan, T.M. (2002). Closest-point problems simplified on the RAM. SO-->
-<!--          Warren, H.S. (2002). Hacker's Delight. 2nd Edition, section 5-3.-->
-
-            <p>
-                Using the third approach by Warren involves only one inequality and benchmarks slightly faster than the others.
-                Putting it all together, we can use the following expression to determine if a node with two strictly height-balanced subtrees is height-balanced:
-            </p>
-
-            <pre>
-        <mark>HeightBalanced(x, y) := (x+1) ≥ ~(x+1) & y</mark>
-            </pre>
 
             
         </section>
@@ -955,30 +962,78 @@
         <section id="weight-balance">
             <h3>Weight balance</h3>
 <!--            https://yoichihirai.com/bst.pdf-->
-           <p>
-               Originally invented as <em>trees of bounded balance</em> by Nievergelt and Reingold in 1973 [], a node is considered weight-balanced if the size of one subtree is within a constant factor of the other.
-               For example, we can say that a node is balanced if the size of one subtree is no more than twice the size of the other.
-               While this seems like a simple and somewhat obvious approach, using this strategy has a few drawbacks:
-           </p>
-            <ul>
-                <li>Multiplying by a constant factor creates the potential for integer overflow at very large sizes.</li>
-                <li>Some suggested constant factors are irrational, which can be expensive to calculate.</li>
-                <li>Given the choice of a constant factor introduces consideration and subjectivity.</li>
-            </ul>
+            <p>
+                Originally introduced by Nievergelt and Reingold in 1973 as <em>binary search trees of bounded balance</em> [], a node is considered weight-balanced if the size of one subtree is within a constant factor of the other.
+                Keeping to the binary theme, we can choose 2 as the constant factor to only partition if the weight of one subtree is more than twice the weight of the other.
+            </p>
 
             <p>
-                An alternative approach to weight-balance was introduced by Salvador Roura in 2001 [], which compares the binary logarithm of the left and right subtree sizes.
-                This definition of balance is more relaxed, with a maximum height of <span class="math">2×⌊log₂(n)⌋</span>.
+                The classic weight-balance theory uses <em>weight</em> to mean the size + 1, which effectively balances not by subtree size but instead by the number of empty subtrees or nil pointers, which is always size + 1.
+                This distinction actually makes a significant difference when balancing by partition.
+                For large sizes, a small +1 is insignificant because the weight would need to be very close to the boundary for the +1 to push it into unbalanced territory.
+                However, consider what happens in the common case of a subtree of size 3 with height 2:
+            </p>
+            <pre>
+
+                        TREE                LEFT               RIGHT
+
+          ·              Height : 2          Height : 0         Height : 1
+        ╱   ╲            Size   : 3          Size   : 0         Size   : 2
+       x     ·           Weight : 4          Weight : 1         Weight : 3
+           ╱   ╲
+          x     ·
+              ╱   ╲
+             x     x
+
+            </pre>
+
+            <p>
+                The empty left subtree has a size of 0 and the right subtree has a size of 2.
+                When we define weight as subtree size with a constant balancing factor of 2, this node is <em>not</em> balanced because half of 2 is 1 which is greater than 0.
+                In this case, a partition would occur to make the middle node the root and the height would decrease to 1.
+                When we instead define weight as subtree size + 1, or equivalently as the number of empty subtrees, we get 1 for the left subtree and 3 for the right which is balanced because 3/2 is 1 using integer division.
+                Since this case is very common due to most nodes occurring at the lower levels of the tree, we get a significant reduction in partitioning at the cost of a slightly higher average path length - a good trade.
+            </p>
+
+            <p>
+                <span class="underline">Definition:</span><br>
+                <span class="indent">The weight of a node is the number of underlying empty subtrees or nil pointers, equal to its size + 1.</span>
             </p>
 
             <p class="definition">
                 <span class="underline">Definition:</span><br>
-                <span class="indent">A node is logarithmically weight-balanced if the MSB of the size of the left subtree and the MSB of the size of the right subtree differ by no more than 1.</span>
+                <span class="indent">A node is weight-balanced if the weight of one subtree is no more than twice the weight of the other.</span>
+            </p>
+
+            <p class="definition">
+                <span class="underline">Definition:</span><br>
+                <span class="indent">A tree is weight-balanced when all of its nodes are weight-balanced.</span>
+            </p>
+
+            <pre>
+
+      <mark class="yellow">SizeBalanced(x, y) := x ≥ y >> 1</mark>
+
+      <mark class="yellow">WeightBalanced(x, y) := (x + 1) ≥ (y + 1) >> 1</mark>
+
+            </pre>
+
+            <p>
+                A somewhat overlooked variant of weight-balance was introduced by Salvador Roura in 2001 [], which directly compares the binary logarithm of the left and right subtree sizes.
+                This definition of balance is more relaxed with a maximum height of <span class="math">2×⌊log₂(n)⌋</span>, and fits naturally into the framework of balancing by partition.
+                While most of that paper uses subtree size rather than weight, Roura mentions in the final remarks that "it is possible to use the number of [empty subtrees] instead of the number of [nodes] as balancing information".
+                This suggestion, alongside the classic weight-balanced trees using size + 1, as well as the fact that log is undefined for 0, suggests that using weight instead of size is likely to yield good results.
+            </p>
+
+            <p class="definition">
+                <span class="underline">Definition:</span><br>
+                <span class="indent">A node is <em>logarithmically</em> weight-balanced if the MSB of the weight of its subtrees differ by no more than 1.</span>
             </p>
 
             <p>
                 For example, a node with subtree sizes 17 and 8 is balanced, but 17 and 7 is <em>not</em> balanced because the most positions of their most-significant bits are too far apart.
             </p>
+
             <pre>
 
          ↓↓                    ↓ ↓
@@ -991,112 +1046,177 @@
 
             <p>
                 Assuming <span class="math">x < y</span>, the MSB of <span class="math">y</span> is either at the same position as the MSB of <span class="math">x</span> or further to the left.
-                Shifting all the bits of <span class="math">y</span> one step to the right then either aligns the MSB of <span class="math">y</span> with the MSB of <span class="math">x</span>, or moves it one step to the right of the MSB of <span class="math">x</span> (if they were already aligned).
+                Shifting all the bits of <span class="math">y</span> one step to the right (dividing by 2) then either aligns the MSB of <span class="math">y</span> with the MSB of <span class="math">x</span>, or moves it one step to the right of the MSB of <span class="math">x</span> (if they were already aligned).
                 After the shift, if the MSB of <span class="math">y</span> is still to the left of the MSB of <span class="math">x</span> it indicates that the MSB of <span class="math">y</span> was more than one step away and therefore not balanced.
-                Balance is therefore met if the MSB of <span class="math">y</span> shifted to the right by one step is less than or equal to the MSB of <span class="math">x</span>.
                 Balance is therefore met if the MSB of <span class="math">x</span> is greater than or equal to the MSB of <span class="math">y</span> shifted to the right by one step.
+                Substituting <span class="math">x+1</span> and <span class="math">y+1</span> yields an expression for logarithmic weight-balance.
             </p>
 
             <pre>
 
-      WeightBalanced(x, y) :=  MSB(x) ≥ MSB(y >> 1)
+        <mark class="yellow">LogSizeBalanced(x, y) :=  MSB(x) ≥ MSB(y >> 1)</mark>
 
-      <mark>WeightBalanced(x, y) := x ≥ ~x & (y >> 1)</mark>
-
+        <mark class="yellow">LogWeightBalanced(x, y) :=  MSB(x + 1) ≥ MSB((y + 1) >> 1)</mark>
             </pre>
 
+            <hr>
 
+            <p>
+                We now have 6 definitions of balance in terms of the left and right subtree sizes to balance by partition:
+            </p>
 
+            <pre>
+          Median(x, y) :=    (<mark class="blue">x + 1</mark>) ≥     <mark class="blue">y</mark>
+          Height(x, y) := MSB(<mark class="blue">x + 1</mark>) ≥ MSB(<mark class="blue">y</mark>)
+            Size(x, y) :=        (<mark class="red">x</mark>) ≥    (<mark class="red">y >> 1</mark>)
+         LogSize(x, y) :=     MSB(<mark class="red">x</mark>) ≥ MSB(<mark class="red">y >> 1</mark>)
+          Weight(x, y) :=    (<mark class="green">x + 1</mark>) ≥     <mark class="green">(y + 1) >> 1</mark>
+       LogWeight(x, y) := MSB(<mark class="green">x + 1</mark>) ≥ MSB(<mark class="green">(y + 1) >> 1</mark>)
+            </pre>
+            <p>
+                There appears to be a pattern where a stricter definition of balance is relaxed by using the MSB of the same terms.
+                The problem to solve now is how to actually compare the MSB of one integer to the MSB of another.
+            </p>
+            <p>
+                There are a handful of clever ways to do this using bitwise operations [][][]:
+            </p>
+
+            <pre>
+        MSB(x) ≥ MSB(y) := x ≥ y || ((x & y) << 1) ≥ y    Roura, S.
+        MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
+        MSB(x) ≥ MSB(y) := x ≥ (~x & y)                   Warren, H.S.
+            </pre>
+
+            <!--          Roura, S. (2001). A New Method for Balancing Binary Search Trees. I-->
+            <!--          Chan, T.M. (2002). Closest-point problems simplified on the RAM. SO-->
+            <!--          Warren, H.S. (2002). Hacker's Delight. 2nd Edition, section 5-3.-->
 
         </section>
+
+
+
+        <section id="cost-balance">
+            <h3>Optimizing search cost with weight-balance</h3>
+            <p>
+                There is one other design candidate that does not follow the same pattern.
+                Cho and Sahni introduced the idea of <em>cost optimized search trees</em> in 2000,
+                where the total search cost of the tree can not be reduced by a rotation anywhere in the tree,
+                even if some nodes are not strictly weight-balanced by the classic definition.
+            </p>
+            <p>
+                Even though their definition considers rotations specifically, we can apply this concept to partition-based balancing without the need to consider rotations at all.
+                In this context, the only determination to make is whether a node is balanced or not, with no concern for how to restore that balance locally, given that the algorithm uses median-partitioning generally.
+                To determine whether a node is cost-optimized by weight, we need to compare two levels of subtree sizes.
+            </p>
+
+            <p class="definition">
+                <span class="underline">Definition:</span><br>
+                <span class="indent">A node is cost-optimized if the size of each subtree is greater than or equal to the size of both subtrees of the other subtree.</span>
+            </p>
+
+            <pre>
+
+        (sl ≥ srl && sl ≥ srr) && (sr ≥ sll && sr ≥ slr)
+            </pre>
+
+        </section>
+
+        <hr>
 
         <section id="balancer-analysis">
             <h3>Analysis</h3>
             <p>
-                We now have three definitions of balance: (i) median, (ii) height and (iii) weight.
+                How do these strategies compare in practice?
+            </p>
+
+            <p>
+                10,000 trees were created in size increments of 10.
+                At every step, a tree is grown, uniformly randomized, and balanced.
+                All measurements should match exactly across systems because they measure the structure of the balanced tree, which is consistent given the same source of randomness.
             </p>
             <p>
-                10,000 trees are created in size increments of 100 up to 1,000,000.
-                At every increment, a tree is grown, uniformly randomized, balanced and measured.
-                Randomization uses the size as the seed at each step, so every strategy gets the same exact tree to balance.
-                All measurements should match exactly across systems because they measure the structure of the trees, which under the same randomness every time produces the same results.
+                100 trees were also created in size increments of 10,000 to measure the amount of time it takes for each strategy to balance the randomized tree at each step.
+                Duration is often used by benchmarks as the one metric to rule them all because it practically evaluates the cost of memory interaction as well as the overhead of the algorithm itself.
+                There is often a structural measurement that correlates strongly with duration, but this is not always the case.
+                Keep in mind however that duration-based benchmarks are system-dependent and the results could be entirely different on other machines.
             </p>
-            <div class="graphs">
-                <img src="benchmarks/svg/balancers/Partition/Uniform/PartitionCount__sbezier__lines.svg">
-                <img src="benchmarks/svg/balancers/Partition/Uniform/TotalPartitionDepth__sbezier__lines.svg">
-                <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePartitionDepth__sbezier__lines.svg">
-                <img src="benchmarks/svg/balancers/Partition/Uniform/Duration__sbezier__lines.svg">
-                <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePathLength__unique__dots.svg">
-                <img src="benchmarks/svg/balancers/Partition/Uniform/MaximumPathLength__unique__dots.svg">
-            </div>
+            <p>
+                The result set used by this project was generated on an Intel i5 13600K with 32GB of DDR5 memory.
+            </p>
+
+
+
+<!--            <div class="graphs">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/PartitionCount__sbezier__lines.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/TotalPartitionDepth__sbezier__lines.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePartitionDepth__sbezier__lines.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/Duration__sbezier__lines.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePathLength__sbezier__lines.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/MaximumPathLength__sbezier__lines.svg">-->
+<!--            </div>-->
+
 
             <section id="partition-count">
                 <h4>Partition count</h4>
+
                 <p>
                     Partition count is the number of times the balancing algorithm decided to partition a node.
-                    This number is simply the total number of calls to <span class="code">partition</span> to balance a tree.
+                    This number is simply the total number of calls to <em>partition</em> to balance a random tree of some size.
                     Dividing this number by the size of the tree at each step gives us the average partition count per node.
-                    Lower is better because partitioning involves memory interaction, however it is possible for a strategy balance parts of the tree incidentally.
-                    so
+                    A straight horizontal line indicates that partition count increases linearly in the size of the tree.
                 </p>
                 <p>
-                    The results show <mark>height-balance partitions more nodes than median-balance</mark>, which is unexpected.
-                    The entire introduction of height-balance as an alternative to median-balance in [] was to avoid redundant partitioning.
-                    Comparisons were not made there between the two, only between height-balance and DSW, as reference.
+                    The results show that <mark class="red">height-balance partitions more nodes than median-balance, which is unexpected</mark>.
+                    The entire idea behind height-balance as an alternative to strict median-balance was to avoid redundant partitioning.
                 </p>
                 <p>
-                    On the other hand, weight-balance appears to consistently partition ~0.23 times per node with very little variance.
-                    The results suggest that all of these strategies partition linearly in the size of the tree.
+                    On the other hand, the constant and logarithmic weight-balance strategies appear to consistently partition linearly in the size of the tree with very little variance.
+                    Cost-optimized balance is somewhere in-between, overall less than median-balance and height-balance but more than weight-balance.
                 </p>
+                <p>
+                    We can see clearly the effect of weight-balance relative to size-balance:
+                    the overall partition count drops substantially by allowing branches to terminate with two nodes in the same direction, as expected.
+                    Logarithmic weight-balance partitions the least often overall, though only slightly less often than constant weight-balance.
+                </p>
+                <div class="graphs">
+                    <img src="benchmarks/svg/balancers/Partition/Uniform/PartitionCount__sbezier__lines.svg">
+                </div>
             </section>
 
             <section id="partition-depth">
                 <h4>Partition depth</h4>
                 <p>
-                    We have not yet considered what happens comparatively during each partition.
-                    Partition depth is the number of links followed during partition, also the path length to the median, or simply <em>the amount of work done during partition</em>.
-                    When we sum all partitioning depths and divide by the size of the tree, we get the average number of links followed during partition, per node.
+                    Partition depth is the number of links that were followed during each partition, also the path length to each respective median, or simply <em>the amount of work done during partitioning</em>.
+                </p>
+                <p>
+                    When we sum all partition depths and divide by the size of the tree, we get the average partition depth.
                     The shape of this plot matches what Muusse labels in Figure 5.3 of [] as <em>node visits divided by N</em>.
                 </p>
                 <p>
-                    A more direct evaluation of partition depth and count can be made by plotting the total partition depth against the total partition count, which is then the average depth per partition.
-                    This is slightly different from plotting partition depth against size because it normalizes instead against the partition count, which is different between strategies.
-                    The results show that <mark>height-balance consistently has the smallest average partition depth</mark>, while also consistently partitioning the most often.
+                    A more direct evaluation of partition depth can be made by comparing partition depth to partition count, which is then the average depth per call to partition.
+                    This is slightly different from comparing partition depth to tree size because it normalizes instead against the partition count, which is different between strategies.
+                </p>
+                <p>
+                    The results show that <mark class="yellow">height-balance consistently has the lowest average partition depth</mark>, which relieves some anxiety from the unexpected discovery that height-balance partitions more often than median-balance.
+                </p>
+                <p>
+                    This presents an interesting competition of which is more efficient: to partition more often with shorter paths, or to partition less often with longer paths.
                 </p>
 
+                <div class="graphs">
+                    <img src="benchmarks/svg/balancers/Partition/Uniform/TotalPartitionDepth__sbezier__lines.svg">-->
+                </div>
+                <div class="graphs">
+                    <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePartitionDepth__sbezier__lines.svg">
+                </div>
             </section>
 
-            <section id="duration">
-                <h4>Duration</h4>
-                <p>
-                    100 trees are also created in size increments of 10,000 up to 1,000,000.
-                    At every increment, a tree is grown, uniformly randomized, balanced and timed in milliseconds.
-                    Duration is then averaged over 100 iterations to smooth out random blips that occur during such small durations.
-                    DSW is also included in the benchmark as a standard reference of tree balancing in optimal space and time [].
-                    Keep in mind that duration-based benchmarks are system-dependent and the results could be entirely different on other machines.
-                </p>
-                <p>
-                    The result set used by this project was generated on an Intel i5 13600K with 32GB of DDR5 memory.
-                </p>
-                <p>
-                    Which is more efficient: (i) to partition more often but lower in the tree, or (ii) to partition less often but higher up in the tree, or somewhere in the middle?
-                    The results indicate a correlation between duration and partition count, because <mark>median-balance is more efficient than height-balance</mark>, which is unexpected.
-                    The average depth per partition is effectively the cost of partitioning, and the measurements show that the average cost is around 3.
-                    Therefore, the cost of more frequent partitioning is greater than the benefits of slightly shorter partitioning paths.
-                </p>
-                <p>
-                    Using <mark>weight-balance is faster than median-balance and height-balance.</mark>
-                </p>
-                <p>
-                    DSW is consistently slower than all three partition-based strategies.
-                </p>
-            </section>
 
             <section id="average-path-length">
                 <h4>Average path length</h4>
                 <p>
-                    The total path length of a binary tree is the sum of the path lengths from every node to the root of the tree, and the average path length is that sum divided by the number of nodes.
-                    This measurement can be thought of as the average depth of the tree, search cost, or simply a measure of how well-balanced it is.
+                    The total path length of a binary tree is the sum of the path length to every node from the root of the tree, and the average path length is that sum divided by the number of nodes.
+                    This measurement can be thought of as the average search cost, or simply a measure of how balanced a tree is.
                 </p>
                 <p>
                     The results show that the average path length after balancing generally appears to approach the binary log of the size as size increases.
@@ -1105,6 +1225,10 @@
                     This is all expected because we are choosing to give up <em>some</em> balance to partition less.
                     Doing so appears to be a productive trade because weight-balance is ~10% faster but the average path length is only ~3% more.
                 </p>
+                <div class="graphs">
+                    <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePathLength__sbezier__lines.svg">
+                </div>
+
             </section>
 
             <section id="maximum-path-length">
@@ -1119,11 +1243,30 @@
                     Average path length is a much better indicator of search cost because it would be accurate for most operations and does incorporate the effect of some unusually long paths.
                 </p>
             </section>
+
+            <section id="duration">
+                <h4>Duration</h4>
+
+                <p>
+                    Which is more efficient: (i) to partition more often but lower in the tree, or (ii) to partition less often but higher up in the tree, or somewhere in the middle?
+                    The results indicate a correlation between duration and partition count, because <mark class="yellow">median-balance is more efficient than height-balance</mark>, which is unexpected.
+                    The average depth per partition is effectively the cost of partitioning, and the measurements show that the average cost is around 3.
+                    Therefore, the cost of more frequent partitioning is greater than the benefits of slightly shorter partitioning paths.
+                </p>
+                <p>
+                    Using <mark class="yellow">weight-balance is faster than median-balance and height-balance.</mark>
+                </p>
+                <p>
+                    DSW is consistently slower than all three partition-based strategies.
+                </p>
+            </section>
+
             </p>
+
 
             <p>
                 Overall, balancing binary search trees by selective median partitioning is conceptually intuitive and viable in practice.
-                The results suggest that <mark>balancing randomized trees by partition is linear in the size of the tree</mark>.
+                The results suggest that <mark class="yellow">balancing randomized trees by partition is linear in the size of the tree</mark>.
             </p>
 
         </section>
@@ -1133,7 +1276,7 @@
 
 
 
-    The reason to balance a tree is to reduce the average path length in order to minimize search cost.
+<!--    The reason to balance a tree is to reduce the average path length in order to minimize search cost.-->
 
 
 
@@ -1191,7 +1334,7 @@
                 Comparatively, AVL trees are more balanced but rotate more often to maintain that balance.
                 A common response to the recurring question of <em>should I use an AVL tree or a red-black tree</em> is to use an AVL tree when mostly searching because the average path length is shorter, but to use red-black trees when mostly inserting and deleting because they require fewer rotations. [][]
                 This is however a misconception, because to insert a node we must first search all the way down the tree, which is affected by path length all the same.
-                The benchmarks confirm this, showing that <mark>red-black trees are slower than an AVL trees, even though red-black trees use fewer rotations</mark>.
+                The benchmarks confirm this, showing that <mark class="yellow">red-black trees are slower than an AVL trees, even though red-black trees use fewer rotations</mark>.
                 When inserting and deleting in cycles, we can see the path length of red-black trees slowly getting worse over time, which correlates with a decrease in performance.
 
             </p>
@@ -1226,12 +1369,12 @@
                 to yield AVL trees, red-black trees, and others.
                 A new strategy emerged from this framework: the <em>weak AVL tree</em>,
                 which practically combines the insertion of AVL trees with the deletion of red-black trees,
-                such that <mark>the height bound degrades gracefully from that of an AVL tree as the number of deletions increases, and is never worse than that of a red-black tree</mark>.
+                such that <mark class="yellow">the height bound degrades gracefully from that of an AVL tree as the number of deletions increases, and is never worse than that of a red-black tree</mark>.
                 Insertion and deletion in a weak AVL tree both require at most 2 rotations, which is fewer than both AVL and red-black trees.
             </p>
             <p>
                 Concurrency is well-supported in weak AVL trees because
-                <mark>insertion and deletion can be implemented purely top-down</mark>,
+                <mark class="yellow">insertion and deletion can be implemented purely top-down</mark>,
                 with no need to return back to the root at the end of either operation.
                 The top-down algorithms are more complex and result in slightly different trees in some cases,
                 but are nonetheless valid weak AVL trees.

@@ -1,4 +1,4 @@
-array Partition[5] = [ "Median", "Height", "Weight", "Cost", "Log" ]
+array Partition[6] = [ "Median", "Height", "Weight", "Cost", "Log", "Constant" ]
 
 array All[7] = [ "Median", "Height", "Weight", "Cost", "DSW", "Log", "Constant" ]
 
