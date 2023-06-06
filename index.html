@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title></title>
     <style>
         
@@ -25,7 +27,7 @@
         }
 
         article {
-            font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+            font-family: sans-serif;
             display: block;
             margin: auto;
             overflow: hidden;
@@ -50,31 +52,36 @@
 
         #author {
             font-style: italic;
-            margin-top: 16px;
+            margin: 12px 0 0 0;
         }
 
-        h1 {
-            font-size: 24px;
-            margin: 16px 0 0 0;
-        }
+        h1 { font-size: 24px; }
+        h2 { font-size: 20px; }
+        h3 { font-size: 18px; }
+        h4 { font-size: 16px; }
+
+
+        h1 { margin: 16px 0 0 0; }
+        h2 { margin: 48px 0 48px 0; }
+        h3 { margin: 16px 0 0 0; }
+        h4 { margin: 16px 0 0 0; }
+        p  { margin: 0 0 16px 0; }
+
 
         h2 {
             text-align: center;
-            margin: 48px 0 32px 0;
             text-transform: uppercase;
         }
 
-        p {
-            margin: 0 0 16px 0;
-        }
+
 
         pre {
-            font-family: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
+            font-family: monospace;
             margin: 32px 0 16px 32px;
         }
 
         .math {
-            font-family: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
+            font-family: monospace;
         }
 
         mark {
@@ -170,7 +177,7 @@
 <body>
 <article>
 
-    <h1 id="title">Exploring the design space of binary search trees</h1>
+    <h1>Exploring the design space of binary search trees</h1>
 
     <p id="author">Rudi Theunissen, June 2023</p>
 
