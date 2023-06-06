@@ -4,69 +4,73 @@
     <meta charset="UTF-8">
     <title></title>
     <style>
-
-        html, body {
-            background-color: #ffffff;
+        
+        * {
+            padding: 0;
             margin: 0;
         }
 
+        article, p, a, pre {
+            font-size: 16px;
+        }
+
+
+        a {
+            color: #000;
+        }
+
+
         body {
-            /*display: flex;*/
-            max-width: 800px;
-            /*min-width: 600px;*/
-            margin: auto;
-        }
 
-        hr {
-            margin: 2em 0;
-            opacity: 0.25;
-        }
-
-        section {
-            margin: 2em 0 2em 0;
-        }
-
-
-        h1, h2, h3, h4 {
-            margin: 0 0 1em 0;
-        }
-
-        #author {
-            font-style: italic;
-            margin-top: 1em;
-        }
-
-        h1 {
-            font-size: 2em;
-            margin: 1em 0 0 0;
-        }
-
-        h2 {
-            text-align: center;
-            margin: 3em 0 2em 0;
-            text-transform: uppercase;
         }
 
         article {
             font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
-            line-height: 1.5;
-            /*width: 100%;*/
             display: block;
-            /*max-width: 800px;*/
-            /*margin: 0 auto;*/
-            font-size: 1em;
+            margin: auto;
             overflow: hidden;
-            padding: 0.5em;
+            max-width: 800px;
+            line-height: 1.5;
+            padding: 8px;
+        }
 
+        hr {
+            margin: 32px 0;
+            opacity: 0.25;
+        }
+
+        section {
+            margin: 32px 0 32px 0;
+        }
+
+
+        h1, h2, h3, h4 {
+            margin: 0 0 16px 0;
+        }
+
+        #author {
+            font-style: italic;
+            margin-top: 16px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin: 16px 0 0 0;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 48px 0 32px 0;
+            text-transform: uppercase;
         }
 
         p {
-            margin: 0 0 1em 0;
+            margin: 0 0 16px 0;
         }
 
         pre {
             font-family: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
-            margin: 2em 0 1em 2em;
+            margin: 32px 0 16px 32px;
         }
 
         .math {
@@ -95,19 +99,8 @@
             background-color: rgba(0, 0, 255, 0.05);
         }
 
-        .code {
-            background-color: #eee;
-            padding: 2px 5px;
-            border-radius: 5px;
-        }
-
         blockquote {
 
-        }
-
-        a {
-            color: #000;
-            font-size: 1em;
         }
 
         .underline, a {
@@ -119,7 +112,7 @@
 
 
         .definition {
-            margin: 2em 0;
+            margin: 32px 0;
         }
 
         .definition .underline {
@@ -129,7 +122,7 @@
 
         .indent {
             display: inline-block;
-            margin-left: 2em;
+            margin-left: 32px;
         }
 
         .subscript {
