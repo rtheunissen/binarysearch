@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title></title>
+    <title>Exploring the design space of binary search trees</title>
     <style>
         
         * {
@@ -176,6 +176,10 @@
     <h1>Exploring the design space of binary search trees</h1>
 
     <p id="author">Rudi Theunissen, June 2023</p>
+
+    <small>
+        This project is still a work in progress.
+    </small>
 
     <section id="abstract">
         <p>
@@ -500,9 +504,10 @@ type Node struct {
                 </p>
                 <p>
                     This last approach is rare but not unheard of.
-                    In 2004, Jörg Schmücker proposed a list implementation using this exact approach to the Apache Commons Collections library in 2004 [https://markmail.org/message/43ux2i3rbsigtotu?q=TreeList+list:org%2Eapache%2Ecommons%2Edev/&page=4#query:TreeList%20list%3Aorg.apache.commons.dev%2F+page:4+mid:mv2nw4ajw2kywmku+state:results],
-                    which is still part of the main branch at the time of this writing [https://github.com/apache/commons-collections/blob/3a5c5c2838d0dacbed2722c4f860d36d0c32f325/src/main/java/org/apache/commons/collections4/list/TreeList.java].
-
+                    In 2004, Jörg Schmücker proposed a list implementation using this exact approach to the Apache Commons Collections library in 2004 [],
+                    which is still part of the main branch at the time of this writing [].
+<!--                    https://markmail.org/message/43ux2i3rbsigtotu?q=TreeList+list:org%2Eapache%2Ecommons%2Edev/&page=4#query:TreeList%20list%3Aorg.apache.commons.dev%2F+page:4+mid:mv2nw4ajw2kywmku+state:results-->
+<!--                    https://github.com/apache/commons-collections/blob/3a5c5c2838d0dacbed2722c4f860d36d0c32f325/src/main/java/org/apache/commons/collections4/list/TreeList.java-->
                 </p>
                 <p>
                     In 1997, in section 6.3 of [Randomized Binary Search Trees], Martinez and Roura describe the use of an "orientation bit" in every node to indicate which of the two subtrees the size field is referring to.
@@ -1374,16 +1379,16 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
                 When inserting and deleting in cycles, we can see the path length of red-black trees slowly getting worse over time, which correlates with a decrease in performance.
 
             </p>
-            <div class="graphs">
-                <img src="benchmarks/svg/operations/Insert/AVLRedBlack/Duration__sbezier__lines.svg">
-                <img src="benchmarks/svg/operations/Insert/AVLRedBlack/Rotations__sbezier__lines.svg">
+<!--            <div class="graphs">-->
+<!--                <img src="benchmarks/svg/operations/Insert/AVLRedBlack/Duration__sbezier__lines.svg">-->
+<!--                <img src="benchmarks/svg/operations/Insert/AVLRedBlack/Rotations__sbezier__lines.svg">-->
 
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/AveragePathLength__sbezier__lines.svg">
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/MaximumPathLength__sbezier__lines.svg">
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/AveragePathLength__sbezier__lines.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/MaximumPathLength__sbezier__lines.svg">-->
 
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Duration__sbezier__lines.svg">
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Rotations__sbezier__lines.svg">
-            </div>
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Duration__sbezier__lines.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Rotations__sbezier__lines.svg">-->
+<!--            </div>-->
 
 <!--                https://www.codingninjas.com/codestudio/library/red-black-tree-vs-avl-tree#:~:text=Since%20the%20AVL%20tree%20is%20more%20balanced%2C%20it%20provides%20faster%20searching.%20But%20when%20we%20want%20to%20prioritize%20the%20insertion%20and%20deletion%20operations%20more%2C%20we%20should%20go%20for%20the%20red%2Dblack%20tree%20because%20of%20its%20less%20number%20of%20rotations.-->
 <!--                https://stackoverflow.com/a/23277366/828867-->
@@ -1408,13 +1413,13 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
                 such that <mark class="yellow">the height bound degrades gracefully from that of an AVL tree as the number of deletions increases, and is never worse than that of a red-black tree</mark>.
                 Insertion and deletion in a weak AVL tree both require at most 2 rotations, which is fewer than both AVL and red-black trees.
             </p>
-            <p>
-                Concurrency is well-supported in weak AVL trees because
-                <mark class="yellow">insertion and deletion can be implemented purely top-down</mark>,
-                with no need to return back to the root at the end of either operation.
-                The top-down algorithms are more complex and result in slightly different trees in some cases,
-                but are nonetheless valid weak AVL trees.
-            </p>
+<!--            <p>-->
+<!--                Concurrency is well-supported in weak AVL trees because-->
+<!--                <mark class="yellow">insertion and deletion can be implemented purely top-down</mark>,-->
+<!--                with no need to return back to the root at the end of either operation.-->
+<!--                The top-down algorithms are more complex and result in slightly different trees in some cases,-->
+<!--                but are nonetheless valid weak AVL trees.-->
+<!--            </p>-->
             <p>
                 Benchmarks show that weak AVL trees are faster than both AVL trees and red-black trees when
                 only inserting, which is interesting considering that weak AVL trees have the exact same structure as AVL trees when no deletions occur.
@@ -1424,22 +1429,22 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
                 Notice how slowly the average path length worsens compared to red-black trees.
             </p>
 
-            <div class="graphs">
-                <img src="benchmarks/svg/operations/Insert/AVLWeak/Uniform/Duration__sbezier__lines.svg">
-                <img src="benchmarks/svg/operations/Insert/AVLWeak/Uniform/Rotations__sbezier__lines.svg">
+<!--            <div class="graphs">-->
+<!--                <img src="benchmarks/svg/operations/Insert/AVLWeak/Uniform/Duration__sbezier__lines.svg">-->
+<!--                <img src="benchmarks/svg/operations/Insert/AVLWeak/Uniform/Rotations__sbezier__lines.svg">-->
 
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Uniform/Duration__sbezier__lines.svg">
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Uniform/Rotations__sbezier__lines.svg">
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Uniform/Duration__sbezier__lines.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Uniform/Rotations__sbezier__lines.svg">-->
 
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Uniform/AveragePathLength__sbezier__lines.svg">
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Uniform/MaximumPathLength__sbezier__lines.svg">
-            </div>
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Uniform/AveragePathLength__sbezier__lines.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Uniform/MaximumPathLength__sbezier__lines.svg">-->
+<!--            </div>-->
 
 
 
 
             <p>
-                Following on from this work in ????, Sen, Tarjan and Kim introduced the idea of a
+                Following on from this work in 2018 Sen, Tarjan and Kim introduced the idea of a
                 <em>relaxed rank-balanced tree</em> where balancing is only done after insertion,
                 not deletion. Relaxed variants of both AVL trees and red-black trees are described
                 in [] and implemented here, both bottom-up and purely top-down.
@@ -1453,94 +1458,95 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
             </p>
 
 
-            avl
-            conc
+<!--            avl-->
+<!--            conc-->
 
-            wavl bu
-            wavl td
+<!--            wavl bu-->
+<!--            wavl td-->
 
-            ravl bu
-            ravl td
+<!--            ravl bu-->
+<!--            ravl td-->
 
-            redblack bu
-            redblack td
-        </section>
-        <section id="weight-balanced-trees">
-            lbst bu
-            lbst td
-            lbst rel
-        </section>
-        <section id="random-balanced-trees">
-            randomized
-            treaptopdown
-            treapfingertree
-            zip
-        </section>
-        <section id="self-adjusting-trees">
-            splay
-            *winners*
-        </section>
-        <section id="join-based-trees">
-            abl bu
-            avl jb
-            lbst bu
-            lbst jb
-        </section>
+<!--            redblack bu-->
+<!--            redblack td-->
+<!--        </section>-->
+<!--        <section id="weight-balanced-trees">-->
+<!--            lbst bu-->
+<!--            lbst td-->
+<!--            lbst rel-->
+<!--        </section>-->
+<!--        <section id="random-balanced-trees">-->
+<!--            randomized-->
+<!--            treaptopdown-->
+<!--            treapfingertree-->
+<!--            zip-->
+<!--        </section>-->
+<!--        <section id="self-adjusting-trees">-->
+<!--            splay-->
+<!--            *winners*-->
+<!--        </section>-->
+<!--        <section id="join-based-trees">-->
+<!--            abl bu-->
+<!--            avl jb-->
+<!--            lbst bu-->
+<!--            lbst jb-->
+<!--        </section>-->
     </section>
-    <pre>
-        1. Introduction
-            - Giving semantic meaning to abstract memory
-            - Linear lists
-                - List operations
-                - Dynamic arrays
-                - Linked lists
-            - Binary search trees
-                - Relative position
-                - Node structure
-                - Traversal
-                - Balance
-                - Rotations
-            - Persistence
-                - Structural sharing
-                - Immutability
-                - Parent pointers
-            - Concurrency
-                - Contention
-                - Recursion
-            - Benchmarking
-                - Access distributions
-                - Operations
-        2. Strategies to restore balance
-            - Balancing by rotation
-                - Day-Stout-Warren
-            - Balancing by recursive median partitioning
-                - Height balance
-                - Weight balance
-        3. Strategies to maintain balance
-            - Join-based implementations
-            - Rank-balanced trees
-            - Weight-balanced trees
-            - Randomly-balanced trees
-            - Self-adjusting trees
-            - Height-balanced trees
-        4. Evaluation
-            5. Measurements
-            6. Evaluation criteria
-            5. Benchmarks
-            7. Conclusions
-               Source code
-            9. Repository
-            10. Animations
-            11. Contributing
-                -. Open problems
-            - Missing proofs of correctness
-            - Complexity of balancing by median partitioning
-            - Similar analysis for set data structures
-            - Translation to another language, perhaps Rust
-            - Comparisons to other list data structures
-              Notes
-              References
-        </pre>
+<!--    <pre>-->
+<!--        1. Introduction-->
+<!--            - Giving semantic meaning to abstract memory-->
+<!--            - Linear lists-->
+<!--                - List operations-->
+<!--                - Dynamic arrays-->
+<!--                - Linked lists-->
+<!--            - Binary search trees-->
+<!--                - Relative position-->
+<!--                - Node structure-->
+<!--                - Traversal-->
+<!--                - Balance-->
+<!--                - Rotations-->
+<!--            - Persistence-->
+<!--                - Structural sharing-->
+<!--                - Immutability-->
+<!--                - Parent pointers-->
+<!--            - Concurrency-->
+<!--                - Contention-->
+<!--                - Recursion-->
+<!--            - Benchmarking-->
+<!--                - Access distributions-->
+<!--                - Operations-->
+<!--        2. Strategies to restore balance-->
+<!--            - Balancing by rotation-->
+<!--                - Day-Stout-Warren-->
+<!--            - Balancing by recursive median partitioning-->
+<!--                - Height balance-->
+<!--                - Weight balance-->
+<!--        3. Strategies to maintain balance-->
+<!--            - Join-based implementations-->
+<!--            - Rank-balanced trees-->
+<!--            - Weight-balanced trees-->
+<!--            - Randomly-balanced trees-->
+<!--            - Self-adjusting trees-->
+<!--            - Height-balanced trees-->
+<!--        4. Evaluation-->
+<!--            5. Measurements-->
+<!--            6. Evaluation criteria-->
+<!--            5. Benchmarks-->
+<!--            7. Conclusions-->
+<!--               Source code-->
+<!--            9. Repository-->
+<!--            10. Animations-->
+<!--            11. Contributing-->
+<!--                -. Open problems-->
+<!--            - Missing proofs of correctness-->
+<!--            - Complexity of balancing by median partitioning-->
+<!--            - Similar analysis for set data structures-->
+<!--            - Translation to another language, perhaps Rust-->
+<!--            - Comparisons to other list data structures-->
+<!--              Notes-->
+<!--              References-->
+<!--        </pre>-->
+    </section>
 </article>
 <!--https://read.seas.harvard.edu/~kohler/notes/llrb.html-->
 <!--https://web.archive.org/web/20131106123552/http://t-t-travails.blogspot.com/2008/04/left-leaning-red-black-trees-are-hard.html-->
