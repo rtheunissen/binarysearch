@@ -15,15 +15,12 @@ import (
 
 func main() {
    operation := flag.String("operation", "", "")
-   iterations := flag.Int("iterations", 10, "")
-   samples := flag.Int("samples", 1000, "") // ==1000
-   scale := flag.Int("scale", 1_000_000, "")
    flag.Parse()
 
    TreeBenchmark{
-      Scale:      *scale,
-      Samples:    *samples,
-      Iterations: *iterations,
+      Scale:      1_000_000,
+      Samples:    1000,
+      Iterations: 10,
       Operation: utility.Resolve(*operation, []list.Operation{
          &operations.Insert{},
          &operations.InsertPersistent{},
@@ -42,25 +39,25 @@ func main() {
       },
       Strategies: []list.List{
          &binarytree.AVLBottomUp{},
-         //&binarytree.AVLJoinBased{},
+         &binarytree.AVLJoinBased{},
          &binarytree.AVLWeakTopDown{},
          &binarytree.AVLWeakBottomUp{},
-         //&binarytree.AVLWeakJoinBased{},
+         &binarytree.AVLWeakJoinBased{},
          &binarytree.AVLRelaxedTopDown{},
          &binarytree.AVLRelaxedBottomUp{},
          &binarytree.RedBlackBottomUp{},
          &binarytree.RedBlackRelaxedBottomUp{},
          &binarytree.RedBlackRelaxedTopDown{},
-         //&binarytree.LBSTBottomUp{},
-         //&binarytree.LBSTTopDown{},
-         //&binarytree.LBSTJoinBased{},
-         //&binarytree.LBSTRelaxed{},
-         //&binarytree.TreapTopDown{},
-         //&binarytree.TreapJoinBased{},
-         //&binarytree.TreapFingerTree{},
-         //&binarytree.Randomized{},
-         //&binarytree.Zip{},
-         //&binarytree.Splay{},
+         &binarytree.LBSTBottomUp{},
+         &binarytree.LBSTTopDown{},
+         &binarytree.LBSTJoinBased{},
+         &binarytree.LBSTRelaxed{},
+         &binarytree.TreapTopDown{},
+         &binarytree.TreapJoinBased{},
+         &binarytree.TreapFingerTree{},
+         &binarytree.Randomized{},
+         &binarytree.Zip{},
+         &binarytree.Splay{},
          &binarytree.Conc{},
       },
    }.Run()
@@ -82,7 +79,7 @@ func (benchmark TreeBenchmark) Run() {
    for _, strategy := range benchmark.Strategies {
 
       path := fmt.Sprintf(
-         "benchmarks/csv/operations/benchmarks/%s/%s",
+         "benchmarks/data/operations/benchmarks/%s/%s",
          utility.NameOf(benchmark.Operation),
          utility.NameOf(strategy),
       )

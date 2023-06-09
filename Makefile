@@ -144,24 +144,18 @@ operation-measurement-split-join:
 
 
 
-
+plot-optimize:
+	npx --yes svgo --recursive --folder "benchmarks/svg"
 
 
 
 plot-index:
-	${GO} run benchmarks/main/index.go < benchmarks/svg/index.html
+	${GO} run benchmarks/main/index.go < benchmarks/index.html
 
-plot: plot-balancers plot-operations
+plot: balancer-plots plot-operations
 
-plot-balancers: \
-	plot-balancer-measurements \
-	plot-balancer-benchmarks
-
-plot-balancer-measurements:
-	gnuplot benchmarks/plot/balancers/balancer_measurements.gnuplot
-
-plot-balancer-benchmarks:
-	gnuplot benchmarks/plot/balancers/balancer_benchmarks.gnuplot
+balancer-plots:
+	gnuplot benchmarks/plot/balancers.gnuplot
 
 plot-operations: \
 	plot-operation-benchmarks \

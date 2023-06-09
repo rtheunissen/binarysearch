@@ -12,8 +12,12 @@
             margin: 0;
         }
 
-        article, p, a, pre {
+        article, p, a {
             font-size: 16px;
+        }
+
+        pre {
+            font-size: 14px;
         }
 
         a {
@@ -143,15 +147,20 @@
         }
 
         .graphs img {
-            width: 100%; /* Display images side-by-side */
+            /*width: 100%;*/
+            /*width: 50%; !* Display images side-by-side *!*/
             /*max-width: 100%; !* Limit image width to its intrinsic size *!*/
             /*margin: 20px 0;*/
-            max-width: 800px;
-            margin: 20px 0;
-            padding: 0 20px;
+            max-width: 100%;
+            margin: 16px 0;
+            /*padding: 0 20px;*/
             display: inline-block; /* Display images as inline blocks */
             box-sizing: border-box; /* Include border and padding in the width calculation */
             vertical-align: top; /* Align images to the top */
+        }
+
+        .graphs img:only-child {
+            /*width: 100%;*/
         }
 
         .graphs img + img {
@@ -717,38 +726,6 @@ a  b  c         a  b  c           a  b  c
                 In 1980, Stephenson [] presented an algorithm that always inserts a new node at the root of the tree by splitting the tree in two: nodes that occur before the new node and nodes that occur after, then setting those two trees as the left and right subtrees of the new node.
                 A variation of this algorithm is called <em>partition</em>, which moves the node at a given position to the root of its tree in a single top-down pass:
             </p>
-            <pre>
-Allocate two nodes, L and R.
-
-Start a binary search with the root of the tree as P.
-
-When the search position is equal to the position of P:
-   The node to become the root has been found.
-   Append the left subtree of P to the right of L.
-   Append the right subtree of P to the left of R.
-   Set the left link of P to L.
-   Set the right link of P to R.
-   Set the position of P to the initial search position.
-   Done.
-
-When the search branches left:
-   Append P to left of R.
-   Reduce the position of P by the search position + 1.
-   Follow P left.
-
-When the search branches right:
-   Append P to the right of L.
-   Reduce the search position by the position of P + 1.
-   Follow P right.
-            </pre>
-
-
-            <pre>
-
-                TODO: Drawing of an example of partitioning.
-
-            </pre>
-
 
             <pre>
 func partition(p *Node, i uint64) *Node {
@@ -1178,7 +1155,7 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
                     Logarithmic weight-balance partitions the least often overall, though only slightly less often than constant weight-balance.
                 </p>
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/Partition/Uniform/PartitionCount__sbezier__lines.svg">
+                    <img src="benchmarks/svg/balancers/Partition/Uniform/PartitionCount__sbezier.svg">
                 </div>
             </section>
 
@@ -1193,7 +1170,7 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
                 </p>
 
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/Partition/Uniform/TotalPartitionDepth__sbezier__lines.svg">-->
+                    <img src="benchmarks/svg/balancers/Partition/Uniform/TotalPartitionDepth__sbezier.svg">-->
                 </div>
                 <p>
                     A more direct evaluation of partition depth can be made by plotting partition depth against partition count, which is then the average depth per call to partition.
@@ -1204,7 +1181,7 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
                     This presents an interesting competition of which is more efficient: to partition more often with shorter paths, or to partition less often with longer paths.
                 </p>
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePartitionDepth__sbezier__lines.svg">
+                    <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePartitionDepth__sbezier.svg">
                 </div>
 
             </section>
@@ -1229,7 +1206,7 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
                     As expected, we can see that the cost of using weight to allow branches to terminate with two nodes in the same direction has very little impact on average path length.
                 </p>
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/All/Uniform/AveragePathLength__sbezier__lines.svg">
+                    <img src="benchmarks/svg/balancers/All/Uniform/AveragePathLength__sbezier.svg">
                 </div>
 
             </section>
@@ -1249,7 +1226,8 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
                 </p>
 
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/All/Uniform/MaximumPathLength__sbezier__lines.svg">
+                    <img src="benchmarks/svg/balancers/All/Uniform/AveragePathLength__sbezier.svg">
+                    <img src="benchmarks/svg/balancers/All/Uniform/MaximumPathLength__sbezier.svg">
                 </div>
             </section>
 
@@ -1277,12 +1255,12 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
                 </p>
 
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/Partition/Uniform/Duration__sbezier__lines.svg">
+                    <img src="benchmarks/svg/balancers/Partition/Uniform/Duration__sbezier.svg">
                 </div>
 
 
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/Limited/Uniform/Duration__sbezier__lines.svg">
+                    <img src="benchmarks/svg/balancers/Limited/Uniform/Duration__unique.svg">
                 </div>
 
 

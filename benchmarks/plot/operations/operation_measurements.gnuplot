@@ -22,7 +22,7 @@ do for [Operation=1:|Operations|] {
 
     OPERATION = Operations[Operation]
 
-    csv = sprintf("benchmarks/csv/measurements/%s/", OPERATION)
+    DATA = sprintf("benchmarks/data/measurements/%s/", OPERATION)
 
     do for [Group=1:|Groups|] {
 

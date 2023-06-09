@@ -17,7 +17,7 @@ print svg
 
 set table $TEMP
 
-eval "plot for [i=1:|".GROUP."|] csv.".GROUP."[i] using (".x."):(".y.") smooth ".smooth
+eval "plot for [i=1:|".GROUP."|] DATA.".GROUP."[i] using (".x."):(".y.") smooth ".smooth
 
 unset table
 
@@ -41,7 +41,7 @@ do for [Distribution=1:|Distributions|] {
 
     set table $TEMP
 
-    eval "plot for [i=1:|".GROUP."|]  csv.".GROUP."[i] using (".x."):(stringcolumn('Distribution') eq '".DISTRIBUTION."' ? (".y.") : NaN) smooth ".smooth
+    eval "plot for [i=1:|".GROUP."|]  DATA.".GROUP."[i] using (".x."):(stringcolumn('Distribution') eq '".DISTRIBUTION."' ? (".y.") : NaN) smooth ".smooth
 
     unset table
 

@@ -12,7 +12,7 @@ func FuncName(test interface{}) string {
    return base[len(base) - 1]
 }
 
-func NameOf(v interface{}) string {
+func NameOf(v any) string {
    t := reflect.TypeOf(v)
    if t == nil {
       return "<nil>"

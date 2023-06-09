@@ -32,7 +32,7 @@ func (measurement OperationMeasurement) Run() {
    for _, strategy := range measurement.Strategies {
 
       path := fmt.Sprintf(
-         "benchmarks/csv/operations/measurements/%s/%s",
+         "benchmarks/data/operations/measurements/%s/%s",
          utility.NameOf(measurement.Operation),
          utility.NameOf(strategy),
       )
