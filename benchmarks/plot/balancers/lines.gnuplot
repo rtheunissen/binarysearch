@@ -3,7 +3,7 @@ load "benchmarks/plot/functions.gnuplot"
 
 set tmargin 10
 set bmargin 5
-set lmargin 0
+set lmargin 1
 
 SVG = sprintf("benchmarks/svg/balancers/%s/%s__%s.svg", GROUP, MEASUREMENT, SMOOTH)
 system mkdir(SVG)
@@ -31,14 +31,14 @@ do for [DISTRIBUTION in DISTRIBUTIONS] {
     print SVG
 
     set table $TABLE
-    plot for [BALANCER in @GROUP] DATA.'/'.BALANCER using (@x):(filter('Distribution', DISTRIBUTION, @y)) smooth unique
+    plot for [BALANCER in @GROUP] DATA.'/'.BALANCER using (@x):(filter('Distribution', DISTRIBUTION, @y)) smooth sbezier
     unset table
 
     plot for [i=1:words(@GROUP)] $TABLE \
         index (i-1) \
         using 1:2 \
         axes x1y2 \
-        smooth @SMOOTH \
+        smooth mcsplines \
         with linespoints \
         linestyle value(word(@GROUP,i)) \
         title word(@GROUP,i)
