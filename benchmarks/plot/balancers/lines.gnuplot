@@ -31,7 +31,7 @@ do for [DISTRIBUTION in DISTRIBUTIONS] {
     print SVG
 
     set table $TABLE
-    plot for [BALANCER in @GROUP] DATA.'/'.BALANCER using (@x):(filter('Distribution', DISTRIBUTION, @y)) smooth sbezier
+    plot for [BALANCER in @GROUP] DATA.'/'.BALANCER using (@x):(filter('Distribution', DISTRIBUTION, @y)) smooth @SMOOTH
     unset table
 
     plot for [i=1:words(@GROUP)] $TABLE \

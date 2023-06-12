@@ -76,7 +76,7 @@ func (benchmark BalancerBenchmark) Run() {
 
      for position := step; position <= benchmark.Scale; position += step {
 
-        fmt.Fprintf(os.Stderr, "%s %-10s %10d/%d\n",
+        fmt.Printf("%s %-10s %10d/%d\n",
            time.Now().Format(time.TimeOnly),
            utility.NameOf(strategy),
            position,

@@ -96,7 +96,7 @@ func (measurement BalancerMeasurement) Run() {
       //
       //
       if position % (measurement.Scale / step) == 0 {
-         fmt.Fprintf(os.Stderr, "%s %-10s %10d/%d\n",
+         fmt.Printf("%s %-10s %10d/%d\n",
             time.Now().Format(time.TimeOnly),
             utility.NameOf(measurement.Strategy),
             position,

@@ -7,9 +7,9 @@ set border 6 front lc '#000000' lt 1 lw 0
 DEFAULT_FONT = ",16"
 HEADER_FONT = ",20"
 
-set style line 1000 dashtype 1 lw 1 pt 1 ps 0 lc "#EEEEEE"
+set style line 1000 dashtype 1 lw 1 pt 1 ps 0 lc "#EEAAAAAA"
 
-set grid y2tics back linestyle 1000
+#set grid y2tics back linestyle 1000
 set grid xtics back linestyle 1000
 
 set title font HEADER_FONT

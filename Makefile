@@ -84,90 +84,41 @@ balancer-benchmarks: assertions-off measurements-off
 
 
 
+OPERATIONS := \
+	Insert \
+	InsertPersistent \
+	InsertDelete \
+	InsertDeletePersistent \
+	InsertDeleteCycles \
+	InsertDeleteCyclesPersistent \
+	SplitJoin \
 
-define benchmark-operation
+
+operation-benchmarks-%:
 	${GO} run benchmarks/main/operation_benchmarks.go -operation $(1)
-endef
 
 operation-benchmarks: assertions-off measurements-off
-	$(call benchmark-operation,Insert)
-	$(call benchmark-operation,InsertPersistent)
-	$(call benchmark-operation,InsertDelete)
-	$(call benchmark-operation,InsertDeletePersistent)
-	$(call benchmark-operation,InsertDeleteCycles)
-	$(call benchmark-operation,InsertDeleteCyclesPersistent)
-	#$(call benchmark-operation,SplitJoin)
+	$(MAKE) -j $(foreach operation,$(OPERATIONS),operation-benchmarks-$(operation))
 
-
-
-
+operation-measurements-%:
+	${GO} run benchmarks/main/operation_measurements.go -operation $(1)
 
 operation-measurements: assertions-off measurements-on
-	$(MAKE) -j \
-		operation-measurement-insert \
-		operation-measurement-insert-persistent \
-		operation-measurement-insert-delete \
-		operation-measurement-insert-delete-persistent \
-		operation-measurement-insert-delete-cycles \
-		operation-measurement-insert-delete-cycles-persistent \
-		operation-measurement-split-join \
-
-define measure-operation
-	${GO} run benchmarks/main/operation_measurements.go -operation $(1)
-endef
-
-operation-measurement-insert:
-	$(call measure-operation,Insert)
-
-operation-measurement-insert-persistent:
-	$(call measure-operation,InsertPersistent)
-
-operation-measurement-insert-delete:
-	$(call measure-operation,InsertDelete)
-
-operation-measurement-insert-delete-persistent:
-	$(call measure-operation,InsertDeletePersistent)
-
-operation-measurement-insert-delete-cycles:
-	$(call measure-operation,InsertDeleteCycles)
-
-operation-measurement-insert-delete-cycles-persistent:
-	$(call measure-operation,InsertDeleteCyclesPersistent)
-
-operation-measurement-split-join:
-	$(call measure-operation,SplitJoin)
+	$(MAKE) -j $(foreach operation,$(OPERATIONS),operation-measurements-$(operation))
 
 
 
 
 
 
-
-
-plot-optimize:
+optimized-plots:
 	npx --yes svgo --recursive --folder "benchmarks/svg"
-
-
 
 plot-index:
 	${GO} run benchmarks/main/index.go < benchmarks/index.html
 
-plot: balancer-plots plot-operations
-
 balancer-plots:
 	gnuplot benchmarks/plot/balancers.gnuplot
 
-plot-operations: \
-	plot-operation-benchmarks \
-	plot-operation-measurements \
-
-plot-operation-benchmarks:
-	gnuplot benchmarks/plot/operation_benchmarks.gnuplot
-
-plot-operation-measurements:
-	gnuplot benchmarks/plot/operation_measurements.gnuplot
-
-overnight:
-	$(MAKE) operation-measurements balancer-measurements -j
-	$(MAKE) operation-benchmarks
-	$(MAKE) balancer-benchmarks
+operation-plots:
+	gnuplot benchmarks/plot/operations.gnuplot

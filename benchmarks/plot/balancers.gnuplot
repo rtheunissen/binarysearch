@@ -15,14 +15,14 @@ LogWeight   = 6
 Cost        = 7
 DSW         = 8
 
-set style line Median      dashtype 1  ps 2 lw 2 pt  11 pn 2 lc rgb COLOR_BLACK
-set style line Height      dashtype 4  ps 2 lw 2 pt  10 pn 2 lc rgb COLOR_BROWN
-set style line HalfSize    dashtype 1  ps 2 lw 2 pt   9 pn 2 lc rgb COLOR_RED
-set style line LogSize     dashtype 1  ps 2 lw 2 pt   8 pn 2 lc rgb COLOR_YELLOW
-set style line HalfWeight  dashtype 1  ps 2 lw 2 pt  13 pn 2 lc rgb COLOR_BLUE
-set style line LogWeight   dashtype 1  ps 2 lw 2 pt  12 pn 2 lc rgb COLOR_CYAN
-set style line Cost        dashtype 1  ps 2 lw 2 pt  14 pn 2 lc rgb COLOR_GREEN
-set style line DSW         dashtype 1  ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_PINK
+set style line Median      dashtype 1 ps 2 lw 2 pt  11 pn 2 lc rgb COLOR_BLACK
+set style line Height      dashtype 4 ps 2 lw 2 pt  10 pn 2 lc rgb COLOR_GREEN
+set style line HalfSize    dashtype 1 ps 2 lw 2 pt   9 pn 2 lc rgb COLOR_RED
+set style line LogSize     dashtype 5 ps 2 lw 2 pt   8 pn 2 lc rgb COLOR_YELLOW
+set style line HalfWeight  dashtype 1 ps 2 lw 2 pt  13 pn 2 lc rgb COLOR_BLUE
+set style line LogWeight   dashtype 5 ps 2 lw 2 pt  12 pn 2 lc rgb COLOR_CYAN
+set style line Cost        dashtype 1 ps 2 lw 2 pt  14 pn 2 lc rgb COLOR_BROWN 
+set style line DSW         dashtype 1 ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_PINK
 
 ##################################################################
 #
@@ -32,7 +32,7 @@ set style line DSW         dashtype 1  ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_PINK
 
 Partition = "Median Height HalfSize LogSize HalfWeight LogWeight Cost"
 All       = "Median Height HalfSize LogSize HalfWeight LogWeight Cost DSW"
-Limited   = "Median Height DSW"
+Limited   = "Median Height HalfWeight DSW"
 
 GROUPS = "Partition All Limited"
 

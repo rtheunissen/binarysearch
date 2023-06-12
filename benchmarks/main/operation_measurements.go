@@ -23,6 +23,66 @@ type OperationMeasurement struct {
    Measurements  []binarytree.Measurement
 }
 
+func main() {
+   operation := flag.String("operation", "", "")
+   samples := flag.Int("samples", 1_000, "")
+   scale := flag.Int("scale", 1_000_000, "")
+   flag.Parse()
+
+   OperationMeasurement{
+      Scale:   *scale,
+      Samples: *samples,
+      Operation: utility.Resolve(*operation, []list.Operation{
+         &operations.Insert{},
+         &operations.InsertPersistent{},
+         &operations.InsertDelete{},
+         &operations.InsertDeletePersistent{},
+         &operations.InsertDeleteCycles{},
+         &operations.InsertDeleteCyclesPersistent{},
+         &operations.SplitJoin{},
+      }),
+      Measurements: []binarytree.Measurement{
+         &binarytree.PartitionCount{},
+         &binarytree.PartitionDepth{},
+         &binarytree.AveragePathLength{},
+         &binarytree.MaximumPathLength{},
+         &binarytree.Rotations{},
+         &binarytree.Allocations{},
+      },
+      Distributions: []distribution.Distribution{
+         &distribution.Uniform{},
+         &distribution.Normal{},
+         &distribution.Skewed{},
+         &distribution.Zipf{},
+         &distribution.Maximum{},
+      },
+      Strategies: []list.List{
+         &binarytree.AVLBottomUp{},
+         &binarytree.AVLJoinBased{},
+         &binarytree.AVLWeakTopDown{},
+         &binarytree.AVLWeakBottomUp{},
+         &binarytree.AVLWeakJoinBased{},
+         &binarytree.AVLRelaxedTopDown{},
+         &binarytree.AVLRelaxedBottomUp{},
+         &binarytree.RedBlackBottomUp{},
+         &binarytree.RedBlackRelaxedTopDown{},
+         &binarytree.RedBlackRelaxedBottomUp{},
+         &binarytree.LBSTBottomUp{},
+         &binarytree.LBSTTopDown{},
+         &binarytree.LBSTJoinBased{},
+         &binarytree.LBSTRelaxed{},
+         &binarytree.TreapTopDown{},
+         &binarytree.TreapJoinBased{},
+         &binarytree.TreapFingerTree{},
+         &binarytree.Randomized{},
+         &binarytree.Zip{},
+         &binarytree.Splay{},
+         &binarytree.Conc{},
+      },
+   }.Run()
+}
+
+
 func (measurement OperationMeasurement) Run() {
    if measurement.Operation == nil {
       return
@@ -64,8 +124,7 @@ func (measurement OperationMeasurement) Run() {
       for _, distribution := range measurement.Distributions {
          //
          //
-         // TODO: some pass this as []any
-         stderr(
+         fmt.Printf("%s %-32s %-32s %-32s\n",
             time.Now().Format(time.RFC822),
             utility.NameOf(measurement.Operation),
             utility.NameOf(strategy),
@@ -108,64 +167,4 @@ func (measurement OperationMeasurement) Run() {
          instance.Free()
       }
    }
-}
-
-
-func main() {
-   operation := flag.String("operation", "", "")
-   samples := flag.Int("samples", 1_000, "")
-   scale := flag.Int("scale", 1_000_000, "")
-   flag.Parse()
-
-   OperationMeasurement{
-      Scale:   *scale,
-      Samples: *samples,
-      Operation: utility.Resolve(*operation, []list.Operation{
-         &operations.Insert{},
-         &operations.InsertPersistent{},
-         &operations.InsertDelete{},
-         &operations.InsertDeletePersistent{},
-         &operations.InsertDeleteCycles{},
-         &operations.InsertDeleteCyclesPersistent{},
-         &operations.SplitJoin{},
-      }),
-      Measurements: []binarytree.Measurement{
-         &binarytree.PartitionCount{},
-         &binarytree.PartitionDepth{},
-         &binarytree.AveragePathLength{},
-         &binarytree.MaximumPathLength{},
-         &binarytree.Rotations{},
-         &binarytree.Allocations{},
-      },
-      Distributions: []distribution.Distribution{
-         &distribution.Uniform{},
-         &distribution.Normal{},
-         &distribution.Skewed{},
-         &distribution.Zipf{},
-         &distribution.Maximum{},
-      },
-      Strategies: []list.List{
-         &binarytree.AVLBottomUp{},
-         //&binarytree.AVLJoinBased{},
-         &binarytree.AVLWeakTopDown{},
-         &binarytree.AVLWeakBottomUp{},
-         //&binarytree.AVLWeakJoinBased{},
-         &binarytree.AVLRelaxedTopDown{},
-         &binarytree.AVLRelaxedBottomUp{},
-         &binarytree.RedBlackBottomUp{},
-         &binarytree.RedBlackRelaxedTopDown{},
-         &binarytree.RedBlackRelaxedBottomUp{},
-         //&binarytree.LBSTBottomUp{},
-         //&binarytree.LBSTTopDown{},
-         //&binarytree.LBSTJoinBased{},
-         //&binarytree.LBSTRelaxed{},
-         //&binarytree.TreapTopDown{},
-         //&binarytree.TreapJoinBased{},
-         //&binarytree.TreapFingerTree{},
-         //&binarytree.Randomized{},
-         //&binarytree.Zip{},
-         //&binarytree.Splay{},
-         &binarytree.Conc{},
-      },
-   }.Run()
 }

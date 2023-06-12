@@ -6,26 +6,65 @@
 
     <title>Exploring the design space of binary search trees</title>
     <style>
-        
+
         * {
             padding: 0;
             margin: 0;
         }
 
-        article, p, a {
-            font-size: 16px;
+        /**
+         * FONTS
+         */
+        h1  { font-size: 20px; }
+        h2  { font-size: 18px; font-weight: normal; }
+        h3  { font-size: 18px; }
+        h4  { font-size: 16px; }
+        p   { font-size: 16px; }
+        a   { font-size: 16px; }
+        pre { font-size: 14px; }
+
+
+        p  { margin: 0 0 16px 0; }
+        h1 { margin: 16px 0 16px 0; }
+        h2 { margin: 64px 0 32px 0; }
+        h3 { margin: 64px 0 16px 0; }
+        h4 { margin: 16px 0 8px 0; }
+
+
+        article {
+            font-family: system-ui, sans-serif;
         }
 
-        pre {
-            font-size: 12px;
+        pre, .math {
+            font-family: Monaco, Menlo, monospace;
         }
+
+        h2 {
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+
+
+
+        pre.code {
+            background-color: #fafafa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-left: 0;
+        }
+
 
         a {
             color: #000;
         }
 
         article {
-            font-family: sans-serif;
             display: block;
             margin: auto;
             max-width: 800px;
@@ -43,72 +82,32 @@
         }
 
 
-        h1, h2, h3, h4 {
-            margin: 0 0 16px 0;
-        }
-
         #author {
             font-style: italic;
             margin: 12px 0 0 0;
         }
 
-        h1 { font-size: 20px; }
-        h2 { font-size: 20px; }
-        h3 { font-size: 18px; }
-        h4 { font-size: 16px; }
-
-        h1 { margin: 16px 0 0 0; }
-        h2 { margin: 48px 0; }
-        h3 { margin: 16px 0 16px 0; }
-        h4 { margin: 16px 0 8px 0; }
-        p  { margin: 0 0 16px 0; }
 
         ul {
             margin-left: 32px;
+            margin-bottom: 16px;
         }
-
-
-        h2 {
-            text-align: center;
-            text-transform: uppercase;
-        }
-
-
 
         pre {
-            font-family: monospace;
             margin: 32px 0 16px 32px;
         }
 
-        .math {
-            font-family: monospace;
-        }
 
         mark {
             border-radius: 3px;
             background-color: rgba(255, 255, 0, 0.15);
             padding: 2px 0;
         }
+        mark.red     { background-color: rgba(255, 20, 150, 0.10) }
+        mark.yellow  { background-color: rgba(255, 255, 0, 0.15) }
+        mark.green   { background-color: rgba(0, 255, 0, 0.10) }
+        mark.blue    { background-color: rgba(0, 0, 255, 0.05) }
 
-        mark.red {
-            background-color: rgba(255, 20, 150, 0.10);
-        }
-
-        mark.yellow {
-            background-color: rgba(255, 255, 0, 0.15);
-        }
-
-        mark.green {
-            background-color: rgba(0, 255, 0, 0.10);
-        }
-
-        mark.blue {
-            background-color: rgba(0, 0, 255, 0.05);
-        }
-
-        blockquote {
-
-        }
 
         .underline, a {
             display: inline-block;
@@ -116,6 +115,14 @@
             text-underline-offset: 2px;
             text-decoration-thickness: 2px;
         }
+
+        em.quote:before {
+            content: "“"
+        }
+        em.quote:after {
+            content: "”"
+        }
+
 
 
         .definition {
@@ -153,7 +160,7 @@
             /*margin: 20px 0;*/
             max-width: 100%;
             margin: 16px 0;
-            /*padding: 0 20px;*/
+            padding: 0 64px;
             display: inline-block; /* Display images as inline blocks */
             box-sizing: border-box; /* Include border and padding in the width calculation */
             vertical-align: top; /* Align images to the top */
@@ -174,6 +181,16 @@
                 /*width: 100%; !* Display images in full-width *!*/
             }
         }
+
+        .rb-red {
+            color: red;
+            font-weight: bold;
+        }
+        .rb-black {
+            font-weight: bold;
+            color: black;
+        }
+
 
     </style>
 
@@ -197,20 +214,16 @@
             Over the years, many binary search tree algorithms have been proposed but only a few variants are commonly found in the wild.
         </p>
         <p>
-            Some algorithms are both more intuitive and more efficient, but good reference implementations are often difficult to find and therefore difficult to teach and apply.
-            Students often miss an opportunity to creatively explore and practice algorithm design because they are so distracted by seemingly arbitrary invariants and acronyms.
+            Some algorithms are both more intuitive and more efficient, but good implementation references are often difficult to find and therefore difficult to teach and apply.
+            Students often miss the opportunity to creatively explore and practice algorithm design because they are distracted by seemingly arbitrary rules and acronyms.
         </p>
         <p>
-            The goal of this project is to produce a reference that is easy to study and translate, focusing on experimentation and measurement to apply and complement published theory.
+            The goal of this project is to produce an empirical reference that is easy to study and translate, focusing on experimentation and measurement in an attempt to apply and complement published theory.
             Some of the algorithms implemented and tested herein are presented as such for the first time, which includes a handful of original contributions.
         </p>
     </section>
 
-
-    <section id="table-of-contents">
-        <h2></h2>
-
-    </section>
+    
 
     <section id="introduction">
         <h2>Part 1<br><br>Introduction</h2>
@@ -276,11 +289,7 @@
                 This project explores specifically the implementation of linear lists, which are discrete and dynamic ordered sequences.
                 Sequences are a fundamental and ubiquitous data type in algorithm design — search results, events occurring over time, DNA, etc.
                 This article itself is a sequence of characters that form a document which might be part of a list of posts somewhere.
-                There is no conceptual limit to the size of a list, as long as there is enough memory available to store it or space to render it, depending on the context.
-            </p>
-            <p>
-                For a data structure to qualify as a list, it must support every behavior of a list.
-                A program using a structure as a list might not know exactly how the list works internally, only that its abstract behavior is that of a list.
+                There is no conceptual limit to the size of a sequence, as long as there is enough memory available to store it or space to render it, depending on the context.
             </p>
             <p>
                 The following operations describe the list data type used in this project:
@@ -291,6 +300,10 @@
                 <li><strong>Insert</strong> adds a new value at a given position.</li>
                 <li><strong>Delete</strong> removes the value at a given position.</li>
             </ul>
+            <p>
+                For a data structure to qualify as a linear list it must support the behaviors that describe the list data type.
+                A program using a structure as a list might not know exactly how the structure works internally, only that its abstract behavior is that of a list.
+            </p>
 
             <section id="dynamic-arrays">
                 <h4>Dynamic arrays</h4>
@@ -341,6 +354,9 @@
                     At this point, we can insert a new value by allocating a new node for it, pointing the current node to that node, and the new node to the previous next node of the current node.
                     Deleting a node is similar: adjust the link from the node pointing to the node to be deleted to the next node after it, thereby removing that node from the sequence of nodes reachable from the root.
                 </p>
+                <pre>
+                    (a) -> (b) -> (c) -> (d) -> (e)
+                </pre>
                 <p>
                     Many of the operations of a linked list require that we follow a number of links equal to the target position and is therefore <em>linear</em> in the size of the list: the number of memory interactions grows at the same rate as the size of the list.
                     The maximum path length is equal to the size of the list.
@@ -510,13 +526,11 @@ type Node struct {
                 </p>
                 <p>
                     This last approach is rare but not unheard of.
-                    In 2004, Jörg Schmücker proposed a list implementation using this exact approach to the Apache Commons Collections library in 2004 [],
-                    which is still part of the main branch at the time of this writing [].
-<!--                    https://markmail.org/message/43ux2i3rbsigtotu?q=TreeList+list:org%2Eapache%2Ecommons%2Edev/&page=4#query:TreeList%20list%3Aorg.apache.commons.dev%2F+page:4+mid:mv2nw4ajw2kywmku+state:results-->
-<!--                    https://github.com/apache/commons-collections/blob/3a5c5c2838d0dacbed2722c4f860d36d0c32f325/src/main/java/org/apache/commons/collections4/list/TreeList.java-->
+                    In 2004, Jörg Schmücker <a href="https://markmail.org/message/43ux2i3rbsigtotu?q=TreeList+list:org%2Eapache%2Ecommons%2Edev/&page=4#query:TreeList%20list%3Aorg.apache.commons.dev%2F+page:4+mid:mv2nw4ajw2kywmku+state:results">proposed a list implementation</a> using this exact approach to the Apache Commons Collections library in 2004 [],
+                    which is still part of the <a href="https://github.com/apache/commons-collections/blob/3a5c5c2838d0dacbed2722c4f860d36d0c32f325/src/main/java/org/apache/commons/collections4/list/TreeList.java">source</a> at the time of this writing.
                 </p>
                 <p>
-                    In 1997, in section 6.3 of [Randomized Binary Search Trees], Martinez and Roura describe the use of an "orientation bit" in every node to indicate which of the two subtrees the size field is referring to.
+                    In 1997, in section 6.3 of <em>Randomized Binary Search Trees</em>, Martinez and Roura describe the use of an "orientation bit" in every node to indicate which of the two subtrees the size field is referring to.
                     They suggest to flip the orientation at every step along the search path as needed to always store the size of the subtree <em>not</em> increasing in size, thereby leaving behind valid size information in the wake of a failure.
                     Leonor Frias Moya used the bit-orientation technique in [].
                 </p>
@@ -576,7 +590,7 @@ func search(p *Node, i uint64) *Node {
                 <h4>Reference counting</h4>
                 <p>
                     To avoid copying all the nodes when copying a tree, we allow trees to share common subtrees in memory over time.
-                    Sme tree far in the future might still point to a node that was allocated in a much earlier version.
+                    Some tree far in the future might still point to a node that was allocated in a much earlier version.
                     We need to keep track of these references, so we store in every node a <em>reference count</em> indicating the number of other trees that also reference that node.
                     When the reference count of a node is zero, it suggests that no other trees are aware of that node, so the program can modify it without the need to copy it first.
                     No copying will occur and all modifications will be in-place if a tree never shares a node with another tree.
@@ -646,6 +660,8 @@ func search(p *Node, i uint64) *Node {
             </section>
         </section>
     </section>
+
+    
 
     <section id="strategies-to-restore-balance">
         <h2>Part 2<br><br>Strategies to restore balance</h2>
@@ -802,7 +818,7 @@ func partition(p *Node, i uint64) *Node {
             </p>
 
             <pre>
-<mark class="yellow">MedianBalanced(x, y) := (x+1) ≥ y</mark>
+<mark class="yellow">Median(x, y) := (x+1) ≥ y</mark>
         </pre>
 
             <p>
@@ -887,14 +903,14 @@ func partition(p *Node, i uint64) *Node {
                 We can then determine if the height difference is greater than 1 by comparing these heights:
             </p>
             <pre>
-HeightBalanced(x,y) := ⌈log₂(max(x,y)+1)⌉ - ⌊log₂(min(x,y)+1)⌋ ≤ 1
+Height(x,y) := ⌈log₂(max(x,y)+1)⌉ - ⌊log₂(min(x,y)+1)⌋ ≤ 1
             </pre>
             <p>
                 Without loss of generality, assume that <span class="math">x < y</span>:
             </p>
 
             <pre>
-HeightBalanced(x,y) := ⌈log₂(y+1)⌉ - ⌊log₂(x+1)⌋ ≤ 1
+Height(x,y) := ⌈log₂(y+1)⌉ - ⌊log₂(x+1)⌋ ≤ 1
             </pre>
 
             <p>
@@ -902,9 +918,9 @@ HeightBalanced(x,y) := ⌈log₂(y+1)⌉ - ⌊log₂(x+1)⌋ ≤ 1
                 The result is the same whether you complete the bottom level with <em>ceil</em>, or empty the bottom level with <em>floor</em> and add 1.
             </p>
             <pre>
-HeightBalanced(x,y) := ⌊log₂(y)⌋ - ⌊log₂(x+1)⌋ ≤ 0
+Height(x,y) := ⌊log₂(y)⌋ - ⌊log₂(x+1)⌋ ≤ 0
 
-HeightBalanced(x,y) := ⌊log₂(x+1)⌋ ≥ ⌊log₂(y)⌋
+Height(x,y) := ⌊log₂(x+1)⌋ ≥ ⌊log₂(y)⌋
             </pre>
 
             <p>
@@ -937,11 +953,9 @@ HeightBalanced(x,y) := ⌊log₂(x+1)⌋ ≥ ⌊log₂(y)⌋
             </p>
 
             <pre>
-<mark class="yellow">HeightBalanced(x,y) := MSB(x+1) ≥ MSB(y)</mark>
+<mark class="yellow">Height(x,y):= MSB(x+1) ≥ MSB(y)</mark>
             </pre>
 
-
-            
         </section>
 
         <section id="weight-balance">
@@ -993,9 +1007,9 @@ x     ·           Weight : 4          Weight : 1         Weight : 3
             </p>
 
             <pre>
-  <mark class="yellow">HalfSizeBalanced(x, y) := x ≥ y >> 1</mark>
+  <mark class="yellow">HalfSize(x, y) := x ≥ y >> 1</mark>
 
-<mark class="yellow">HalfWeightBalanced(x, y) := (x + 1) ≥ (y + 1) >> 1</mark>
+<mark class="yellow">HalfWeight(x, y) := (x + 1) ≥ (y + 1) >> 1</mark>
             </pre>
 
             <p>
@@ -1032,26 +1046,24 @@ BALANCED              NOT BALANCED
 
             <pre>
 
-  <mark class="yellow">LogSizeBalanced(x, y) :=  MSB(x) ≥ MSB(y >> 1)</mark>
+  <mark class="yellow">LogSize(x, y) := MSB(x) ≥ MSB(y >> 1)</mark>
 
-<mark class="yellow">LogWeightBalanced(x, y) :=  MSB(x + 1) ≥ MSB((y + 1) >> 1)</mark>
+<mark class="yellow">LogWeight(x, y) := MSB(x + 1) ≥ MSB((y + 1) >> 1)</mark>
             </pre>
-
-            <hr>
 
             <p>
                 We now have 6 definitions of balance in terms of the left and right subtree sizes to balance by partition:
             </p>
 
             <pre>
-    HeightBalanced(x, y) := MSB(<mark class="blue">x + 1</mark>) ≥ MSB(<mark class="blue">y</mark>)
-    MedianBalanced(x, y) :=    (<mark class="blue">x + 1</mark>) ≥    (<mark class="blue">y</mark>)
+    Height(x, y) := MSB(<mark class="blue">x + 1</mark>) ≥ MSB(<mark class="blue">y</mark>)
+    Median(x, y) :=    (<mark class="blue">x + 1</mark>) ≥    (<mark class="blue">y</mark>)
 
-   LogSizeBalanced(x, y) := MSB(<mark class="red">x</mark>) ≥ MSB(<mark class="red">y >> 1</mark>)
-  HalfSizeBalanced(x, y) :=    (<mark class="red">x</mark>) ≥    (<mark class="red">y >> 1</mark>)
+   LogSize(x, y) := MSB(<mark class="red">x</mark>) ≥ MSB(<mark class="red">y >> 1</mark>)
+  HalfSize(x, y) :=    (<mark class="red">x</mark>) ≥    (<mark class="red">y >> 1</mark>)
 
- LogWeightBalanced(x, y) := MSB(<mark class="green">x + 1</mark>) ≥ MSB(<mark class="green">(y + 1) >> 1</mark>)
-HalfWeightBalanced(x, y) :=    (<mark class="green">x + 1</mark>) ≥    (<mark class="green">(y + 1) >> 1</mark>)
+ LogWeight(x, y) := MSB(<mark class="green">x + 1</mark>) ≥ MSB(<mark class="green">(y + 1) >> 1</mark>)
+HalfWeight(x, y) :=    (<mark class="green">x + 1</mark>) ≥    (<mark class="green">(y + 1) >> 1</mark>)
             </pre>
 
             <p>
@@ -1065,7 +1077,7 @@ HalfWeightBalanced(x, y) :=    (<mark class="green">x + 1</mark>) ≥    (<mark 
             <pre>
 MSB(x) ≥ MSB(y) := x ≥ y || ((x & y) << 1) ≥ y    Roura, S.
 MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
-<mark class="yellow">MSB(x) ≥ MSB(y) := x ≥ (~x & y)</mark>                   Warren, H.S.
+<mark class="yellow">MSB(x) ≥ MSB(y) := x ≥ (~x & y)</mark>                  Warren, H.S.
             </pre>
 
             <!--          Roura, S. (2001). A New Method for Balancing Binary Search Trees. I-->
@@ -1095,13 +1107,11 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
             </p>
 
             <pre>
- CostBalanced(sl, sr, sll, slr, srl, srr) := (sl ≥ srl && sl ≥ srr) &&
-                                             (sr ≥ sll && sr ≥ slr)
+ Cost(sl, sr, sll, slr, srl, srr) := (sl ≥ srl && sl ≥ srr) &&
+                                     (sr ≥ sll && sr ≥ slr)
             </pre>
 
         </section>
-
-        <hr>
 
         <section id="balancer-analysis">
             <h3>Analysis</h3>
@@ -1224,7 +1234,6 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
                 </p>
 
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/All/Uniform/AveragePathLength__sbezier.svg">
                     <img src="benchmarks/svg/balancers/All/Uniform/MaximumPathLength__sbezier.svg">
                 </div>
             </section>
@@ -1258,113 +1267,105 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
 
 
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/Limited/Uniform/Duration__unique.svg">
+                    <img src="benchmarks/svg/balancers/Limited/Uniform/Duration__sbezier.svg">
                 </div>
 
 
                 <p>
                     DSW is significantly slower than all partition-based strategies when the trees become large, but performs well when running the benchmarks on a smaller scale.
-                    This is an interesting result since DSW runs in O(n) and partition-based balancing is technically O(n log n).
+                    This is an interesting result since DSW is linear in time compared to partition-based balancing which is technically <a href="https://en.wikipedia.org/wiki/Time_complexity#Quasilinear_time">linearithmic</a>.
                 </p>
                 <p>
                     Even though DSW appears to be slower to balance large random trees, the algorithm has some clear advantages over partition-based balancing and should not be discounted from the outset.
-                </p>
-                <p>
                     A 2002 article by Timothy J. Rolfe brought attention back to the DSW algorithm, stating one advantage as being "pedagogically valuable within a course on data structures where one progresses from the binary search tree into self-adjusting trees, since it gives a first exposure to doing rotations within a binary search tree."
-                </p>
-                <p>
-                    The two phases of DSW are also individually useful procedures: (i) to convert any binary search tree into a linked list, and (ii) to convert a linked list into a balanced tree, both in linear time and constant space.
+                    The two phases of DSW are also useful procedures individually: (i) to convert any binary search tree into a linked list, and (ii) to convert a linked list into a balanced tree, both in linear time and constant space.
+                    Another consideration is that DSW does not require awareness of subtree size information which may not be available in some cases.
                 </p>
             </section>
 
             <section id="balancer-conclusions">
                 <h4>Conclusions</h4>
                 <p>
-                    We can safely say that all the strategies explored here are viable in practice to balance an existing random binary search tree.
-                    The trade-offs are subtle, and no clear winner emerges from the results.
-                    Comparing relative balance and average path length seems to suggest that half-weight balance is a solid choice because it achieves good balance and is among the fastest.
-                    When perfect balance is a requirement, the results suggest that median-balance is the best choice for random trees, or DSW for small trees or trees that have the potential to already be a linked list.
+                    We can safely say that all strategies explored here are viable in practice to balance a random binary search tree.
+                    Generally, balancing by partition is an excellent strategy when trees are already at least somewhat-balanced.
+                    The weight-based strategies are the fastest and incur only a slight relative increase in average path length, which is likely to be a good trade in practice.
+                    The size-based strategies do more work than their weight-based counterparts but achieve slightly better balance.
+                    Surprisingly, the benchmarks suggest that <mark>median-balance is the best choice for random trees when strict height-balance is a requirement</mark>.
+                    DSW is the best choice to balance trees that are likely to be linear lists, or when subtree size information is not available.
                 </p>
             </section>
         </section>
     </section>
 
+    
 
-
-
-
-<!--    The reason to balance a tree is to reduce the average path length in order to minimize search cost.-->
-
-
-
-
-
-
-
-
-
-    <hr>
 
     <section id="strategies-to-maintain-balance-over-time">
-        <h2>Part 3<br><br>Strategies to maintain balance over time</h2>
+        <h2>Part 3<br><br>Strategies to maintain balance</h2>
+
         <p>
-            Restoring balance to an entire tree is powerful but expensive because the entire tree must be traversed.
-            There is also the question of <em>when</em> to balance to avoid balancing too often or not balancing often enough.
-            Consider then, instead of balancing the entire tree or not balancing at all, to balance incrementally and thereby spread the balancing cost across updates.
+            Restoring balance to an entire tree is powerful but often disproportionately expensive because the entire tree must be traversed.
+            There is also the question of <em>when</em> to balance to avoid balancing too often or to not balance often enough.
+            Instead of either balancing the entire tree or not not balance at all, we can restore balance incrementally and thereby spread the balancing costs across updates.
+            For example, an algorithm can make structural adjustments along the search path during an update to restore balance locally.
+            A valid balancing algorithm does not change the ordering of the nodes and always returns the tree in a balanced state.
+            A program can then <em>know</em> that a given tree is balanced because it is always balanced.
         </p>
-        <p>
-            During an update, an algorithm can make local structural changes along the search path to maintain tree overall balance.
-            A valid balancing algorithm is one that (i) does not change the ordering of the nodes, and (ii) always returns the tree in a balanced state.
-            A program can then <em>know</em> that a given tree is balanced because it is always balanced, by definition.
-            Some strategies make many structural changes while others are more selective.
+            This section explores various strategies to maintain balance over time and the algorithms to apply them.
+            Some strategies make many structural changes while others are more selective; some maintain strict balance while others are entirely arbitrary.
+            Our evaluation is to determine which strategies are likely to be a good choice in a particular context, generally considering the nature of balance and the work done to maintain it.
         </p>
 
         <section id="height-balanced-trees">
             <h3>Height-balanced trees</h3>
             <p>
-                The classic self-balancing binary search tree is the <strong>AVL tree</strong> [], invented in 1962 by Adelson, Velski and Landis to... ?
-                AVL trees store the height of each node as part of the node structure and uses rotations to adjust path length to maintain height-balance.
-                Insert is implemented in two phases: a top-down search, followed by a bottom-up maintenance phase that follows the search path back up to the root, fixing height-balance with at most 2 rotations per insertion, as needed.
-                Delete is implemented similarly, but may require a rotation at every node along the search path in some cases.
+                The original self-balancing binary search tree was published in 1962 as <em>an algorithm for the organization of information</em> by <strong>A</strong>delson-<strong>V</strong>elsky and <strong>L</strong>andis.
+                <a href="https://en.wikipedia.org/wiki/AVL_tree">AVL trees</a> store the height of each node as part of the node structure and uses rotations based on these heights to maintain height-balance.
+                Balancing after an insertion requires at most 2 rotations, but deletion may require a rotation at every node along the search path.
             </p>
             <p>
-                Persistence is well-supported because all modifications are local to the search path, copying a logarithmic number nodes for every persistent update.
+                All operations on an AVL tree start from the root, descend down the tree, then ascend back up to the root along the search path.
+                Concurrency is therefore not viable because another operation would need to wait for the current operation to return to the root to potentially adjust it in some way.
+                Generally, in an AVL tree only one operation can be performed at a time due to the recursive bottom-up nature of its algorithms.
             </p>
             <p>
-                Concurrency is not well-supported because the operations of an AVL tree walk back up along the search path to the root of the tree.
-                Given that a concurrent operation can not access a node until the previous operation is done modifying it, an AVL tree operation would have to wait for the entire duration and therefore does not benefit from concurrency.
+                An AVL tree is always height-balanced, so the maximum path length is always logarithmic in the size of the tree.
+                Recall that a persistent update requires that we copy all paths that lead to a modification.
+                Since all structural adjustments on an AVL tree are local to the search path, a persistent update would need to copy all nodes along the search path.
+                Persistence is therefore well-supported by AVL trees because a persistent update would only need to copy a logarithmic number of nodes.
             </p>
             <p>
-                Since the invention of AVL trees, many self-balancing strategies have been proposed, the most common alternative being the <strong>red-black trees</strong> of Leo Guibas and Robert Sedgewick in 1978 [].
-                Instead of directly storing the height of every node, red-black trees use a color field to track whether a node is red or black.
-                A set of rules based on these colors then determine where and when to make rotations to maintain balance.
-                Inserting into a red-black tree requires at most 2 rotations, and deletion at most 3.
+                Since the invention of AVL trees, many self-balancing strategies have been proposed, the most common being the <a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree">red-black trees</a> of Guibas and Sedgewick in 1978.
+                Instead of directly storing the height of every node as in AVL trees, red-black trees use a color field in the node structure to track whether a node is <span class="rb-red">red</span> or <span class="rb-black">black</span>.
+                The color red was chosen because it was the best-looking color produced by the laser printer available to the authors at the time.
+                A set of rules based on these colors are used determine where to make rotations during an update to maintain balance.
             </p>
             <p>
+                Inserting into a red-black tree requires at most 2 rotations and deletion at most 3.
                 The primary advantage of red-black trees is that the balancing overhead per operation is constant, i.e. not proportional to the size of the tree as is the case with deletion in AVL trees.
             </p>
             <p>
                 Red-black trees are not strictly height-balanced because the heights of two subtrees can differ by more than 1 in some cases.
-                The color-based rules do however impose an upper-bound on the height of a red-black tree, which is at most twice the log of its size.
+                The color-based rules do however impose an upper-bound on the height of a red-black tree, which is at most twice the log<span class="subscript">2</span> of its size.
             </p>
             <p>
                 Comparatively, AVL trees are more balanced but rotate more often to maintain that balance.
-                A common response to the recurring question of <em>should I use an AVL tree or a red-black tree</em> is to use an AVL tree when mostly searching because the average path length is shorter, but to use red-black trees when mostly inserting and deleting because they require fewer rotations. [][]
+                A common response to the recurring question of <em class="quote">should I use an AVL tree or a red-black tree</em> is to use an AVL tree when mostly searching because the average path length is shorter, but to use red-black trees when mostly inserting and deleting because they require fewer rotations. [][]
                 This is however a misconception, because to insert a node we must first search all the way down the tree, which is affected by path length all the same.
-                The benchmarks confirm this, showing that <mark class="yellow">red-black trees are slower than an AVL trees, even though red-black trees use fewer rotations</mark>.
-                When inserting and deleting in cycles, we can see the path length of red-black trees slowly getting worse over time, which correlates with a decrease in performance.
+                The benchmarks below confirm this, showing that <mark class="yellow">red-black trees are generally slower than an AVL trees</mark> even though they use fewer rotations on average.
+                When inserting and deleting in cycles, we see the path length of red-black trees slowly getting worse over time which correlates with a decrease in performance.
 
             </p>
-<!--            <div class="graphs">-->
-<!--                <img src="benchmarks/svg/operations/Insert/AVLRedBlack/Duration__sbezier__lines.svg">-->
-<!--                <img src="benchmarks/svg/operations/Insert/AVLRedBlack/Rotations__sbezier__lines.svg">-->
+            <div class="graphs">
+                <img src="benchmarks/svg/b /Insert/AVLRedBlack/Duration__sbezier__lines.svg">
+                <img src="benchmarks/svg/operations/Insert/AVLRedBlack/Rotations__sbezier__lines.svg">
 
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/AveragePathLength__sbezier__lines.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/MaximumPathLength__sbezier__lines.svg">-->
+                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/AveragePathLength__sbezier__lines.svg">
+                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/MaximumPathLength__sbezier__lines.svg">
 
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Duration__sbezier__lines.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Rotations__sbezier__lines.svg">-->
-<!--            </div>-->
+                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Duration__sbezier__lines.svg">
+                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Rotations__sbezier__lines.svg">
+            </div>
 
 <!--                https://www.codingninjas.com/codestudio/library/red-black-tree-vs-avl-tree#:~:text=Since%20the%20AVL%20tree%20is%20more%20balanced%2C%20it%20provides%20faster%20searching.%20But%20when%20we%20want%20to%20prioritize%20the%20insertion%20and%20deletion%20operations%20more%2C%20we%20should%20go%20for%20the%20red%2Dblack%20tree%20because%20of%20its%20less%20number%20of%20rotations.-->
 <!--                https://stackoverflow.com/a/23277366/828867-->

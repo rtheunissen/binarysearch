@@ -19,8 +19,8 @@ func main() {
 
    TreeBenchmark{
       Scale:      1_000_000,
-      Samples:    1000,
-      Iterations: 10,
+      Samples:         1000,
+      Iterations:        10,
       Operation: utility.Resolve(*operation, []list.Operation{
          &operations.Insert{},
          &operations.InsertPersistent{},
@@ -115,6 +115,13 @@ func (benchmark TreeBenchmark) Run() {
             utility.NameOf(strategy),
             fmt.Sprint(iteration, "/", benchmark.Iterations),
          }...)
+
+         fmt.Printf("%s %-32s %-32s %10d/%d\n",
+            time.Now().Format(time.RFC822),
+            utility.NameOf(benchmark.Operation),
+            utility.NameOf(strategy),
+            iteration,
+            benchmark.Iterations)
 
          //
          for _, random := range benchmark.Distributions {
