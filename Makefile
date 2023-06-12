@@ -98,7 +98,7 @@ operation-benchmarks-%:
 	${GO} run benchmarks/main/operation_benchmarks.go -operation $*
 
 operation-benchmarks: assertions-off measurements-off
-	$(MAKE) -j $(foreach operation,$(OPERATIONS),operation-benchmarks-$(operation))
+	$(MAKE) $(foreach operation,$(OPERATIONS),operation-benchmarks-$(operation))
 
 operation-measurements-%:
 	${GO} run benchmarks/main/operation_measurements.go -operation $*
