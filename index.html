@@ -116,10 +116,13 @@
             text-decoration-thickness: 2px;
         }
 
-        em.quote:before {
+        span.quote {
+            font-style: italic;
+        }
+        span.quote:before {
             content: "“"
         }
-        em.quote:after {
+        span.quote:after {
             content: "”"
         }
 
@@ -147,37 +150,55 @@
         }
 
 
-        /* TODO: dissolve this */
         .graphs {
+            /*gap: 40px 40px;*/
+            /*justify-content: space-between;*/
+            /*align-items: flex-start;*/
+            /*align-content: space-between;*/
             font-size: 0;
-            text-align: center;                 
+            margin-top: 32px;
+            margin-bottom: 0px;
+        }
+
+        .graphs img:nth-child(even) {
+            padding-left: 16px;
+        }
+        .graphs img:nth-child(odd) {
+            padding-right: 16px;
         }
 
         .graphs img {
-            /*width: 100%;*/
+            width: 50%;
+            margin-bottom: 64px;
             /*width: 50%; !* Display images side-by-side *!*/
             /*max-width: 100%; !* Limit image width to its intrinsic size *!*/
             /*margin: 20px 0;*/
-            max-width: 100%;
-            margin: 16px 0;
-            padding: 0 64px;
-            display: inline-block; /* Display images as inline blocks */
-            box-sizing: border-box; /* Include border and padding in the width calculation */
-            vertical-align: top; /* Align images to the top */
+            /*max-width: 50%;*/
+            box-sizing: border-box;
+            /*gap: 40px 40px;*/
+            /*flex-grow: 0;*/
+            /*width: 50%;*/
+            /*padding: 40px;*/
+            /*flex-shrink: 1;*/
+            /*padding: 0 64px;*/
+            /*display: inline-block; !* Display images as inline blocks *!*/
+            /*box-sizing: border-box; !* Include border and padding in the width calculation *!*/
+            /*vertical-align: top; !* Align images to the top *!*/
         }
 
         .graphs img:only-child {
-            /*width: 100%;*/
+            width: 100%;
+            padding: 0 64px;
         }
 
         .graphs img + img {
-            margin-top: 40px;
+            /*margin-top: 40px;*/
         }
 
         /* Media query for screens with a maximum width of 400px */
         @media (max-width: 800px) {
             .graphs img {
-                padding: 0;
+                /*padding: 0;*/
                 /*width: 100%; !* Display images in full-width *!*/
             }
         }
@@ -1021,7 +1042,7 @@ x     ·           Weight : 4          Weight : 1         Weight : 3
 
             <p class="definition">
                 <span class="underline">Definition:</span><br>
-                <span class="indent">A node is <em>logarithmically</em> weight-balanced if the MSB of the weight of its subtrees differ by no more than 1.</span>
+                <span class="indent">A node is logarithmically weight-balanced if the MSB of the weight of its subtrees differ by no more than 1.</span>
             </p>
 
             <p>
@@ -1131,12 +1152,12 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
 
 
 <!--            <div class="graphs">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/PartitionCount__sbezier__lines.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/TotalPartitionDepth__sbezier__lines.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePartitionDepth__sbezier__lines.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/Duration__sbezier__lines.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePathLength__sbezier__lines.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/MaximumPathLength__sbezier__lines.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/PartitionCount__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/TotalPartitionDepth__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePartitionDepth__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/Duration__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePathLength__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/MaximumPathLength__sbezier.svg">-->
 <!--            </div>-->
 
 
@@ -1335,11 +1356,12 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
                 Persistence is therefore well-supported by AVL trees because a persistent update would only need to copy a logarithmic number of nodes.
             </p>
             <p>
-                Since the invention of AVL trees, many self-balancing strategies have been proposed, the most common being the <a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree">red-black trees</a> of Guibas and Sedgewick in 1978.
+                Since the invention of AVL trees, many self-balancing strategies have been proposed, the most common being the <a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree">red-black tree</a> of Guibas and Sedgewick in 1978.
                 Instead of directly storing the height of every node as in AVL trees, red-black trees use a color field in the node structure to track whether a node is <span class="rb-red">red</span> or <span class="rb-black">black</span>.
-                The color red was chosen because it was the best-looking color produced by the laser printer available to the authors at the time.
-                A set of rules based on these colors are used determine where to make rotations during an update to maintain balance.
+                The color red was chosen because it was the best-looking color produced by the laser printer available to the authors at the time, and they also used red and black pens to draw trees by hand.
+                A set of rules based on these colors are used determine where to make rotations during an update to maintain balance: (i) a red node cannot link to other red nodes, and every path must have the same number of black nodes.
             </p>
+
             <p>
                 Inserting into a red-black tree requires at most 2 rotations and deletion at most 3.
                 The primary advantage of red-black trees is that the balancing overhead per operation is constant, i.e. not proportional to the size of the tree as is the case with deletion in AVL trees.
@@ -1349,90 +1371,121 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
                 The color-based rules do however impose an upper-bound on the height of a red-black tree, which is at most twice the log<span class="subscript">2</span> of its size.
             </p>
             <p>
-                Comparatively, AVL trees are more balanced but rotate more often to maintain that balance.
-                A common response to the recurring question of <em class="quote">should I use an AVL tree or a red-black tree</em> is to use an AVL tree when mostly searching because the average path length is shorter, but to use red-black trees when mostly inserting and deleting because they require fewer rotations. [][]
+                Compared to red-black trees, AVL trees are more balanced but rotate more often to maintain that balance.
+                A <a href="https://stackoverflow.com/questions/13852870/red-black-tree-over-avl-tree/23277366#23277366">common response</a> to the recurring question of <span class="quote">should I use an AVL tree or a red-black tree</span> is to use an AVL tree when mostly searching because the average path length is shorter, but to use red-black trees when mostly inserting and deleting because they require fewer rotations.
                 This is however a misconception, because to insert a node we must first search all the way down the tree, which is affected by path length all the same.
-                The benchmarks below confirm this, showing that <mark class="yellow">red-black trees are generally slower than an AVL trees</mark> even though they use fewer rotations on average.
-                When inserting and deleting in cycles, we see the path length of red-black trees slowly getting worse over time which correlates with a decrease in performance.
-
+                There is a trade-off between the cost of doing more rotations and the cost of traversing and therefore copying longer paths.
+                The benchmarks below confirm this, showing that <mark class="yellow">AVL trees are generally faster than an red-black trees</mark> even though they require more rotations on average.
+                When inserting and deleting in cycles, the path length of red-black trees slowly gets worse over time which correlates with a decrease in performance.
             </p>
+
             <div class="graphs">
-                <img src="benchmarks/svg/b /Insert/AVLRedBlack/Duration__sbezier__lines.svg">
-                <img src="benchmarks/svg/operations/Insert/AVLRedBlack/Rotations__sbezier__lines.svg">
+                <img src="benchmarks/svg/operations/Insert/AVLRedBlack/Duration__sbezier.svg">
+                <img src="benchmarks/svg/operations/Insert/AVLRedBlack/Rotations__sbezier.svg">
 
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/AveragePathLength__sbezier__lines.svg">
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/MaximumPathLength__sbezier__lines.svg">
+                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Duration__unique.svg">
+                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Rotations__unique.svg">
 
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Duration__sbezier__lines.svg">
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Rotations__sbezier__lines.svg">
+                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/AveragePathLength__unique.svg">
+                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/MaximumPathLength__unique.svg">
             </div>
 
-<!--                https://www.codingninjas.com/codestudio/library/red-black-tree-vs-avl-tree#:~:text=Since%20the%20AVL%20tree%20is%20more%20balanced%2C%20it%20provides%20faster%20searching.%20But%20when%20we%20want%20to%20prioritize%20the%20insertion%20and%20deletion%20operations%20more%2C%20we%20should%20go%20for%20the%20red%2Dblack%20tree%20because%20of%20its%20less%20number%20of%20rotations.-->
-<!--                https://stackoverflow.com/a/23277366/828867-->
-<!--                https://www.quora.com/Whats-the-difference-between-AVL-trees-and-Red-Black-trees#:~:text=In%20short%2C%20AVL%20performs%20better%20when%20you%20look%20up%20more%20often%20than%20insertion/deletion.%20Red%2Dblack%20is%20better%20when%20you%20are%20inserting/deleting%20more%20often%20than%20searching.-->
-<!---->
-<!--                Java-->
-<!--                https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/TreeMap.html#:~:text=A-,Red%2DBlack%20tree,-based%20NavigableMap%20implementation-->
-
-<!--                C++ STL (in most implementations): map, multimap, multiset-->
-<!--                https://stackoverflow.com/questions/26550276/does-any-stdset-implementation-not-use-a-red-black-tree-->
-
-<!--                Linux kernel: completely fair scheduler, linux/rbtree.h-->
-<!--                https://github.com/torvalds/linux/blob/master/include/linux/rbtree.h-->
-
             <p>
-                In 2013, Bernhard Haeupler, Siddhartha Sen & Robert Tarjan introduced <strong>rank-balanced trees</strong>
-                which unify many height-based balanced trees under a single framework.
-                Rank-balanced trees store in each node an integer rank and uses various rank-based rules
-                to yield AVL trees, red-black trees, and others.
-                A new strategy emerged from this framework: the <em>weak AVL tree</em>,
-                which practically combines the insertion of AVL trees with the deletion of red-black trees,
-                such that <mark class="yellow">the height bound degrades gracefully from that of an AVL tree as the number of deletions increases, and is never worse than that of a red-black tree</mark>.
-                Insertion and deletion in a weak AVL tree both require at most 2 rotations, which is fewer than both AVL and red-black trees.
+                Red-black trees are very common in lecture notes and in practice.
+                Many of the C++ standard library <span class="code">set</span> implementations use red-black trees, as well as Java's <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/TreeMap.html#:~:text=A-,Red%2DBlack%20tree,-based%20NavigableMap%20implementation">TreeMap</a>, and parts of the <a href="https://github.com/torvalds/linux/blob/master/include/linux/rbtree.h">Linux kernel</a>.
+                They are generally considered to be a decent all-rounder when it comes to self-balancing binary search trees, but attempting to implement them often results in frustration.
+                At various stages throughout this project, especially when implementing the deletion algorithm without parent pointers, there was a sense of <span class="quote">this can't be it</span>.
             </p>
-<!--            <p>-->
-<!--                Concurrency is well-supported in weak AVL trees because-->
-<!--                <mark class="yellow">insertion and deletion can be implemented purely top-down</mark>,-->
-<!--                with no need to return back to the root at the end of either operation.-->
-<!--                The top-down algorithms are more complex and result in slightly different trees in some cases,-->
-<!--                but are nonetheless valid weak AVL trees.-->
-<!--            </p>-->
             <p>
-                Benchmarks show that weak AVL trees are faster than both AVL trees and red-black trees when
-                only inserting, which is interesting considering that weak AVL trees have the exact same structure as AVL trees when no deletions occur.
+                A well-known <a href="https://web.archive.org/web/20190207151651/http://www.eternallyconfuzzled.com/tuts/datastructures/jsw_tut_rbtree.aspx">blog post</a> about red-black trees by Julienne Walker describes them as <span class="quote">very tricky</span>, <span class="quote">a pain in the ass</span>, that they <span class="quote">cut themselves on the sharp edges of the algorithms</span> and <span class="quote">wept from frustration trying to get them to work</span>.
+                Reading through the Wikipedia page for <a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree">red-black trees</a> gives a good idea of the inherent complexity by which this strategy is often presented.
+                The popularity of this strategy seems come from a place of <span class="quote">good enough</span>, where perhaps many lecture notes and textbooks reference them simply because so many others also do.
+            </p>
+
+            <p>
+                In 2013, Haeupler, Sen & Tarjan introduced <a href="https://en.wikipedia.org/wiki/WAVL_tree">rank-balanced trees</a> which unify many height-based balanced trees under a single framework.
+                Rank-balanced trees store in each node an integer rank and use various rank-based rules to yield simple implementations of AVL trees, red-black trees, and others.
+                A new strategy emerged from this framework: the <em>weak AVL tree</em>, which effectively combines the insertion of AVL trees with the deletion of red-black trees such that <mark class="yellow">the height bound degrades gracefully from that of an AVL tree as the number of deletions increase, and is never worse than that of a red-black tree</mark>.
+                Insertion and deletion in a weak AVL tree both require at most 2 rotations, which is fewer than AVL trees and red-black trees.
+            </p>
+            <p>
+                Unlike AVL trees, concurrency is well-supported by weak AVL trees because both <mark class="yellow">insertion and deletion can be implemented purely top-down</mark> with no need to return back to the root.
+                The top-down algorithms are more complex and result in slightly different trees in some cases, but nonetheless produce valid weak AVL trees.
+            </p>
+
+            <p>
+                Benchmarks show that weak AVL trees are faster than both AVL trees and red-black trees when only inserting, which is interesting because weak AVL trees have the exact same structure as AVL trees when no deletions occur.
                 Notice that the number of rotations when inserting is exactly the same between AVL trees and weak AVL trees.
                 This suggests that the weak AVL insertion algorithm itself is more efficient, likely due to fewer interactions with memory along the way.
                 Going through cycles of inserting and deleting show that weak AVL trees are consistently faster than AVL trees and maintain an average path length only slightly higher than AVL trees.
                 Notice how slowly the average path length worsens compared to red-black trees.
             </p>
 
-<!--            <div class="graphs">-->
-<!--                <img src="benchmarks/svg/operations/Insert/AVLWeak/Uniform/Duration__sbezier__lines.svg">-->
-<!--                <img src="benchmarks/svg/operations/Insert/AVLWeak/Uniform/Rotations__sbezier__lines.svg">-->
+            <div class="graphs">
+                <img src="benchmarks/svg/operations/Insert/AVLWeak/Duration__sbezier.svg">
+                <img src="benchmarks/svg/operations/Insert/AVLWeak/Rotations__sbezier.svg">
 
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Uniform/Duration__sbezier__lines.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Uniform/Rotations__sbezier__lines.svg">-->
+                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Duration__sbezier.svg">
+                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Rotations__sbezier.svg">
 
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Uniform/AveragePathLength__sbezier__lines.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Uniform/MaximumPathLength__sbezier__lines.svg">-->
-<!--            </div>-->
-
-
+                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/AveragePathLength__sbezier.svg">
+                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/MaximumPathLength__sbezier.svg">
+            </div>
 
 
             <p>
-                Following on from this work in 2018 Sen, Tarjan and Kim introduced the idea of a
-                <em>relaxed rank-balanced tree</em> where balancing is only done after insertion,
-                not deletion. Relaxed variants of both AVL trees and red-black trees are described
-                in [] and implemented here, both bottom-up and purely top-down.
+                Following on from this work in 2018, Sen, Tarjan & Kim introduced <a href="http://sidsen.azurewebsites.net//papers/ravl-trees-journal.pdf">relaxed rank-balanced trees</a> in which balancing is only done after insertion, not deletion.
+                The balance of relaxed rank-balanced trees improves as nodes are inserted, and degrades very slowly as nodes are deleted.
+                A subtle difference is that the height bound of a relaxed rank-balanced tree is proportional not to the size of the tree, which is often the case, but instead proportional to the number of insertions specifically.
+                Relaxed variants of AVL trees and red-black trees are described in their paper and implemented here, both bottom-up and purely top-down.
             </p>
+
+            <div class="graphs">
+                <img src="benchmarks/svg/operations/Insert/AVLRelaxed/Duration__sbezier.svg">
+                <img src="benchmarks/svg/operations/Insert/AVLRelaxed/Rotations__sbezier.svg">
+
+                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/Duration__sbezier.svg">
+                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/Rotations__sbezier.svg">
+
+                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/AveragePathLength__sbezier.svg">
+                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/MaximumPathLength__sbezier.svg">
+            </div>
+
             <p>
-                The balance of relaxed rank-balanced trees improves as nodes are inserted,
-                and becomes worse very slowly as nodes are deleted. (TODO do the plots show this?).
-                A subtle difference is that the height bound of a relaxed rank-balanced tree is proportional
-                not to the size of the tree, which is usually the case, but instead proportional to the
-                total number of insertions.
+                On a completely different track, Prokopec and Odersky presented <a href="https://en.wikipedia.org/wiki/Conc-tree_list">conc-tree lists</a> in 2017, where nodes either have two subtrees or no subtrees.
+                Nodes with subtrees are used only for routing purposes, and nodes without subtrees contain the values of the sequence.
+                Additionally, like in AVL trees, every node stores its height and the height difference between two nodes differ by no more than 1.
             </p>
+            <pre>
+            <>                      <>  =  routing node, no value
+          /    \                    ()  =  no subtrees, has value
+         <>    (c)
+        /  \
+      (a)  (b)
+            </pre>
+            <p>
+                Conc-trees are very simple to implement and do not use rotations or explicit copying.
+                Instead, they make use of functional composition and smart constructors, where rather than copying and modifying an existing node it allocates and composes a new node by combining properties of other nodes.
+                Conceptually, conc-trees <em>construct</em> the resulting path more than they modify the existing one.
+            </p>
+
+            <div class="graphs">
+                <img src="benchmarks/svg/operations/InsertPersistent/Other/Duration__sbezier.svg">
+
+                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/Other/Duration__sbezier.svg">
+
+                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/Other/AveragePathLength__sbezier.svg">
+                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/Other/MaximumPathLength__sbezier.svg">
+            </div>
+
+        </section>
+
+        <section id="weight-balanced-trees">
+            <h3>Weight-balanced trees</h3>
+
+        </section>
+
+
 
 
 <!--            avl-->

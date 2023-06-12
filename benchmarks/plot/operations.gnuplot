@@ -1,5 +1,11 @@
 load "benchmarks/plot/colors.gnuplot"
 
+##################################################################
+#
+#           STRATEGIES
+#
+##################################################################
+
 AVLBottomUp                = 1
 AVLJoinBased               = 2
 AVLWeakTopDown             = 3
@@ -26,7 +32,7 @@ RedBlackBottomUp           = 21
 set style line AVLBottomUp                  dashtype 1 ps 2 lw 2 pt   1 pn 2 lc rgb COLOR_BLACK
 set style line AVLJoinBased                 dashtype 1 ps 2 lw 2 pt   2 pn 2 lc rgb COLOR_CYAN
 set style line AVLWeakBottomUp              dashtype 1 ps 2 lw 2 pt   4 pn 2 lc rgb COLOR_BLUE
-set style line AVLWeakTopDown               dashtype 1 ps 2 lw 2 pt   3 pn 2 lc rgb COLOR_RED
+set style line AVLWeakTopDown               dashtype 1 ps 2 lw 2 pt   3 pn 2 lc rgb COLOR_GREEN
 set style line AVLWeakJoinBased             dashtype 1 ps 2 lw 2 pt   5 pn 2 lc rgb COLOR_CYAN
 set style line AVLRelaxedTopDown            dashtype 1 ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_BLUE
 set style line AVLRelaxedBottomUp           dashtype 1 ps 2 lw 2 pt   7 pn 2 lc rgb COLOR_YELLOW
@@ -46,35 +52,35 @@ set style line Splay                        dashtype 1 ps 2 lw 2 pt  19 pn 2 lc 
 set style line Conc                         dashtype 1 ps 2 lw 2 pt  20 pn 2 lc rgb COLOR_PURPLE
 
 
-array AVLRedBlack[2]            = [ "AVLBottomUp", "RedBlackBottomUp" ]
-array AVLWeak[4]                = [ "AVLBottomUp", "RedBlackBottomUp", "AVLWeakBottomUp", "AVLWeakTopDown" ]
-array AVLRelaxed[4]             = [ "AVLRelaxedBottomUp", "AVLRelaxedTopDown", "RedBlackRelaxedBottomUp", "RedBlackRelaxedTopDown" ]
-array RankBalanced[4]           = [ "AVLWeakBottomUp", "AVLWeakTopDown", "AVLRelaxedBottomUp", "RedBlackRelaxedTopDown" ]
-array WeightBalanced[4]         = [ "LBSTBottomUp", "LBSTTopDown", "LBSTJoinBased", "LBSTRelaxed" ]
-array Probabilistic[4]          = [ "TreapTopDown", "TreapFingerTree", "Randomized", "Zip" ]
-array Other[2]                  = [ "AVLBottomUp", "Conc" ]
-array Combination[4]            = [ "AVLRelaxedBottomUp", "AVLWeakBottomUp", "LBSTBottomUp", "TreapTopDown" ]
-array CombinationSplay[5]       = [ "AVLRelaxedBottomUp", "AVLWeakBottomUp", "LBSTBottomUp", "TreapTopDown", "Splay" ]
-array SizeOnly[4]               = [ "LBSTBottomUp", "LBSTRelaxed", "Randomized", "Splay" ]
-array RedBlack[6]               = [ "AVLBottomUp", "AVLWeakBottomUp", "LBSTBottomUp", "RedBlackBottomUp", "RedBlackRelaxedBottomUp", "RedBlackRelaxedTopDown" ]
+##################################################################
+#
+#           GROUPS
+#
+##################################################################
 
-array Groups[2] = [ "AVLRedBlack",  "AVLWeak" ]
+AVLRedBlack            = "AVLBottomUp RedBlackBottomUp"
+AVLWeak                = "AVLBottomUp AVLWeakJoinBased AVLWeakBottomUp AVLWeakTopDown"
+AVLRelaxed             = "AVLRelaxedBottomUp AVLRelaxedTopDown RedBlackRelaxedBottomUp RedBlackRelaxedTopDown"
+RankBalanced           = "AVLWeakBottomUp AVLWeakTopDown AVLRelaxedBottomUp RedBlackRelaxedTopDown"
 
-array Operations[7] = [ "Insert", "InsertPersistent", "InsertDelete", "InsertDeletePersistent", "InsertDeleteCycles", "InsertDeleteCyclesPersistent", "SplitJoin" ]
-array Operations[5] = [ "Insert",  "InsertDelete", "InsertDeletePersistent", "InsertDeleteCycles", "InsertDeleteCyclesPersistent" ]
+WeightBalanced         = "LBSTBottomUp LBSTTopDown LBSTJoinBased LBSTRelaxed"
+Probabilistic          = "TreapTopDown TreapFingerTree Randomized Zip"
+Other                  = "AVLBottomUp Conc"
+Combination            = "AVLRelaxedBottomUp AVLWeakBottomUp LBSTBottomUp TreapTopDown"
+CombinationSplay       = "AVLRelaxedBottomUp AVLWeakBottomUp LBSTBottomUp TreapTopDown Splay"
+SizeOnly               = "LBSTBottomUp LBSTRelaxed Randomized Splay"
+RedBlack               = "AVLBottomUp AVLWeakBottomUp RedBlackBottomUp RedBlackRelaxedBottomUp RedBlackRelaxedTopDown"
 
-array Distributions[5] = [ "Uniform", "Normal", "Skewed", "Zipf", "Maximum" ]
+GROUPS = "AVLRedBlack AVLWeak AVLRelaxed RankBalanced RedBlack Other"
+
+OPERATIONS = "Insert InsertPersistent InsertDelete InsertDeletePersistent InsertDeleteCycles InsertDeleteCyclesPersistent"
+
+DISTRIBUTIONS = "Uniform Normal Skewed Zipf Maximum"
 
 
-do for [Operation=1:|Operations|] {
+do for [OPERATION in OPERATIONS] {
 
-    OPERATION = Operations[Operation]
-
-    DATA = sprintf("benchmarks/data/operations/measurements/%s/", OPERATION)
-
-    do for [Group=1:|Groups|] {
-
-        GROUP = Groups[Group]
+    do for [GROUP in GROUPS] {
 
         ##################################################################
         #
@@ -87,15 +93,17 @@ do for [Operation=1:|Operations|] {
         set xlabel "Operations × 10^5"
         set ylabel "{/:Bold Allocations } / log_2Size"
 
+        DATA = sprintf("benchmarks/data/operations/measurements/%s", OPERATION)
+
         x = "column('Position')/(column('Scale')/10)"
         y = "column('Allocations')/column('Step')/log2(column('Size'))"
 
         set format y2 "%.2f"
 
-        smooth = "sbezier"
+        SMOOTH = "sbezier"
         load "benchmarks/plot/operations/lines.gnuplot"
 
-        smooth = "unique"
+        SMOOTH = "unique"
         load "benchmarks/plot/operations/lines.gnuplot"
 
         ##################################################################
@@ -112,12 +120,14 @@ do for [Operation=1:|Operations|] {
         x = "column('Position')/(column('Scale')/10)"
         y = "column('MaximumPathLength')/log2(column('Size'))"
 
+        DATA = sprintf("benchmarks/data/operations/measurements/%s", OPERATION)
+
         set format y2 "%.2f"
 
-        smooth = "sbezier"
+        SMOOTH = "sbezier"
         load "benchmarks/plot/operations/lines.gnuplot"
 
-        smooth = "unique"
+        SMOOTH = "unique"
         load "benchmarks/plot/operations/lines.gnuplot"
 
         ##################################################################
@@ -131,15 +141,17 @@ do for [Operation=1:|Operations|] {
         set xlabel "Operations × 10^5"
         set ylabel "{/:Bold Average Path Length } / log_2Size"
 
+        DATA = sprintf("benchmarks/data/operations/measurements/%s", OPERATION)
+
         set format y2 "%.2f"
 
         x = "column('Position')/(column('Scale')/10)"
         y = "column('AveragePathLength')/log2(column('Size'))"
 
-        smooth = "sbezier"
+        SMOOTH = "sbezier"
         load "benchmarks/plot/operations/lines.gnuplot"
 
-        smooth = "unique"
+        SMOOTH = "unique"
         load "benchmarks/plot/operations/lines.gnuplot"
 
         ##################################################################
@@ -156,12 +168,14 @@ do for [Operation=1:|Operations|] {
         x = "column('Position')/(column('Scale')/10)"
         y = "column('Rotations')/column('Step')"
 
+        DATA = sprintf("benchmarks/data/operations/measurements/%s", OPERATION)
+
         set format y2 "%.2f"
 
-        smooth = "sbezier"
+        SMOOTH = "sbezier"
         load "benchmarks/plot/operations/lines.gnuplot"
 
-        smooth = "unique"
+        SMOOTH = "unique"
         load "benchmarks/plot/operations/lines.gnuplot"
 
         ##################################################################
@@ -180,15 +194,15 @@ do for [Operation=1:|Operations|] {
 
         set format y2 "%.2f"
 
-        DATA = sprintf("benchmarks/data/operations/benchmarks/%s/", OPERATION)
+        DATA = sprintf("benchmarks/data/operations/benchmarks/%s", OPERATION)
 
-        smooth = "sbezier"
+        SMOOTH = "sbezier"
         load "benchmarks/plot/operations/lines.gnuplot"
 
-        smooth = "unique"
+        SMOOTH = "unique"
         load "benchmarks/plot/operations/lines.gnuplot"
 
-        smooth = "cumulative"
+        SMOOTH = "cumulative"
         load "benchmarks/plot/operations/lines.gnuplot"
     }
 }
