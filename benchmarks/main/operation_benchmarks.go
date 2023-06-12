@@ -108,14 +108,6 @@ func (benchmark TreeBenchmark) Run() {
       //
       for iteration := 1; iteration <= benchmark.Iterations; iteration++ {
 
-         //
-         stderr([]any{
-            time.Now().Format(time.RFC822),
-            utility.NameOf(benchmark.Operation),
-            utility.NameOf(strategy),
-            fmt.Sprint(iteration, "/", benchmark.Iterations),
-         }...)
-
          fmt.Printf("%s %-32s %-32s %10d/%d\n",
             time.Now().Format(time.RFC822),
             utility.NameOf(benchmark.Operation),

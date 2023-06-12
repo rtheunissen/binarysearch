@@ -1,12 +1,10 @@
 package main
 
 import (
-   "fmt"
    "os"
    "path"
    "io"
    "strings"
-   "strconv"
    "text/template"
 )
 
@@ -65,21 +63,7 @@ func Index(directory string, tmpl *template.Template) {
    }
 }
 
-func formatFloat(f float64) string {
-   return strconv.FormatFloat(f, 'f', -1, 64)
-}
 
-func stderr(args ...any) {
-   if _, err := fmt.Fprintln(os.Stderr, args...); err != nil {
-      panic(err)
-   }
-}
-
-func output(args ...any) {
-   if _, err := fmt.Fprintln(os.Stdout, args...); err != nil {
-      panic(err)
-   }
-}
 //
 //func alignL(value string) string {
 //   return utility.PadRight(value, 24)
