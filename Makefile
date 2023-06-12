@@ -95,13 +95,13 @@ OPERATIONS := \
 
 
 operation-benchmarks-%:
-	${GO} run benchmarks/main/operation_benchmarks.go -operation $(1)
+	${GO} run benchmarks/main/operation_benchmarks.go -operation $*
 
 operation-benchmarks: assertions-off measurements-off
 	$(MAKE) -j $(foreach operation,$(OPERATIONS),operation-benchmarks-$(operation))
 
 operation-measurements-%:
-	${GO} run benchmarks/main/operation_measurements.go -operation $(1)
+	${GO} run benchmarks/main/operation_measurements.go -operation $*
 
 operation-measurements: assertions-off measurements-on
 	$(MAKE) -j $(foreach operation,$(OPERATIONS),operation-measurements-$(operation))

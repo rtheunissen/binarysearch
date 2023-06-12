@@ -25,13 +25,11 @@ type OperationMeasurement struct {
 
 func main() {
    operation := flag.String("operation", "", "")
-   samples := flag.Int("samples", 1_000, "")
-   scale := flag.Int("scale", 1_000_000, "")
    flag.Parse()
 
    OperationMeasurement{
-      Scale:   *scale,
-      Samples: *samples,
+      Scale:   1_000_000,
+      Samples: 1_000,
       Operation: utility.Resolve(*operation, []list.Operation{
          &operations.Insert{},
          &operations.InsertPersistent{},
