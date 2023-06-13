@@ -6,9 +6,9 @@ set border 6 front lc '#000000' lt 1 lw 0
 
 DEFAULT_FONT = ",16"
 HEADER_FONT = ",20"
-LABEL_FONT = ",24"
+LABEL_FONT = ",20"
 
-set style line 1000 dashtype 1 lw 1 pt 1 ps 0 lc "#EE777777"
+set style line 1000 dashtype 1 lw 1 pt 1 ps 0 lc "#DD777777"
 
 #set grid y2tics back linestyle 1000
 set grid xtics back linestyle 1000
@@ -26,7 +26,7 @@ set key samplen 4
 set key reverse Left
 set key horizontal outside center top
 set key font DEFAULT_FONT
-set key at graph 0.5, screen 0.86
+set key at graph 0.5, screen 0.88
 
 #set autoscale xfix
 
@@ -43,7 +43,7 @@ unset x2tics
 unset y2tics
 
 set xtics font DEFAULT_FONT offset 0,-0.5
-set xrange [0.5:*]
+set xrange [0.1:*]
 
 unset y2tics
 set y2tics autofreq font DEFAULT_FONT offset 1,0

@@ -22,7 +22,7 @@ set style line LogSize     dashtype 5 ps 2 lw 2 pt   8 pn 2 lc rgb COLOR_YELLOW
 set style line HalfWeight  dashtype 1 ps 2 lw 2 pt  13 pn 2 lc rgb COLOR_BLUE
 set style line LogWeight   dashtype 5 ps 2 lw 2 pt  12 pn 2 lc rgb COLOR_CYAN
 set style line Cost        dashtype 1 ps 2 lw 2 pt  14 pn 2 lc rgb COLOR_BROWN 
-set style line DSW         dashtype 1 ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_PINK
+set style line DSW         dashtype 3 ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_PINK
 
 ##################################################################
 #

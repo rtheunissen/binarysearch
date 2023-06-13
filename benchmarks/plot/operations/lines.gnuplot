@@ -2,8 +2,8 @@ load "benchmarks/plot/graph.gnuplot"
 load "benchmarks/plot/functions.gnuplot"
 
 set tmargin 9
-set bmargin 4
-set lmargin 9
+set bmargin 5
+set lmargin 5
 
 SVG = sprintf("benchmarks/svg/operations/%s/%s/%s__%s.svg", OPERATION, GROUP, MEASUREMENT, SMOOTH)
 system mkdir(SVG)

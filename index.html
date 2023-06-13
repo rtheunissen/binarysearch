@@ -32,7 +32,8 @@
 
 
         article {
-            font-family: system-ui, sans-serif;
+            font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
+            /*font-family: system-ui, sans-serif;*/
         }
 
         pre, .math {
@@ -156,8 +157,8 @@
             /*align-items: flex-start;*/
             /*align-content: space-between;*/
             font-size: 0;
-            margin-top: 32px;
-            margin-bottom: 0px;
+            margin-top: 0;
+            margin-bottom: 0;
         }
 
         .graphs img:nth-child(even) {
@@ -169,7 +170,8 @@
 
         .graphs img {
             width: 50%;
-            margin-bottom: 64px;
+            margin-top: 32px;
+            margin-bottom: 32px;
             /*width: 50%; !* Display images side-by-side *!*/
             /*max-width: 100%; !* Limit image width to its intrinsic size *!*/
             /*margin: 20px 0;*/
@@ -367,7 +369,7 @@
             <section id="linked-lists">
                 <h4>Linked lists</h4>
                 <p>
-                    Found somewhere in every textbook on algorithms and data structures are <a href="https://en.wikipedia.org/wiki/Linked_list">linked lists</a>, which consist of <em>nodes</em> that each contain a value and a pointer to the next node in the list.
+                    Found in every textbook on algorithms and data structures are <a href="https://en.wikipedia.org/wiki/Linked_list">linked lists</a>, which consist of <em>nodes</em> that each contain a value and a pointer to the next node in the list.
                     The data structure itself keeps a pointer to the first node of the sequence, here referred to as the "root" node, as well as a counter of the total number of linked nodes in its sequence to support the <em>size</em> operation.
                     The last node of the list points to nothing because there is no next value after it in the sequence.
                     A pointer to nothing is a <em>nil</em> pointer or <em>nil</em> in some languages.
@@ -376,7 +378,7 @@
                     Deleting a node is similar: adjust the link from the node pointing to the node to be deleted to the next node after it, thereby removing that node from the sequence of nodes reachable from the root.
                 </p>
                 <pre>
-                    (a) -> (b) -> (c) -> (d) -> (e)
+(a) -> (b) -> (c) -> (d) -> (e) -> nil
                 </pre>
                 <p>
                     Many of the operations of a linked list require that we follow a number of links equal to the target position and is therefore <em>linear</em> in the size of the list: the number of memory interactions grows at the same rate as the size of the list.
@@ -426,10 +428,10 @@
                 </p>
                 <pre>
 type Node struct {
+   x Data
+   s Size
    l *Node
    r *Node
-   s uint64
-   x any
 }
                     </pre>
             </section>
@@ -460,7 +462,7 @@ type Node struct {
                 <p>
                     The discrete binary log is frequently encountered in computer science and information theory because it relates so closely to binary numbers.
                     For example, the number of bits required to encode some integer <span class="math">N</span> in binary is <span class="math">⌊log<span class="subscript">2</span>(N)⌋+1</span>.
-                    The same reasoning applies to decimal numbers: the number of digits required to represent a decimal integer <span class="math">N</span> is <span class="math">⌊log<span class="subscript">10</span>(N)⌋</span>, or the number of times we can divide by 10 before we get to 1.
+                    The same reasoning applies to decimal numbers: the number of digits required to represent a decimal integer <span class="math">N</span> is <span class="math">⌊log<span class="subscript">10</span>(N)⌋+1</span>, or the number of times we can divide by 10 before we get to 1.
                 </p>
                 <p>
                     When we divide a decimal number by 10, the representation shortens by 1 digit.
@@ -958,7 +960,6 @@ Height(x,y) := ⌊log₂(x+1)⌋ ≥ ⌊log₂(y)⌋
      MSB at position 4
 
         log₂(13) ≈ 3.7, so ⌊log₂(13)⌋+1 = 4
-        The number of bits required to encode the number 13 in binary is 4
 
 
  00010001 = 17, because 16 + 0 + 0 + 0 + 1 = 17
@@ -1098,7 +1099,7 @@ HalfWeight(x, y) :=    (<mark class="green">x + 1</mark>) ≥    (<mark class="g
             <pre>
 MSB(x) ≥ MSB(y) := x ≥ y || ((x & y) << 1) ≥ y    Roura, S.
 MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
-<mark class="yellow">MSB(x) ≥ MSB(y) := x ≥ (~x & y)</mark>                  Warren, H.S.
+MSB(x) ≥ MSB(y) := x ≥ (~x & y)                   Warren, H.S.
             </pre>
 
             <!--          Roura, S. (2001). A New Method for Balancing Binary Search Trees. I-->
@@ -1109,7 +1110,7 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
 
 
         <section id="cost-balance">
-            <h3>Optimizing search cost with weight-balance</h3>
+            <h3>Cost-optimized weight-balance</h3>
             <p>
                 There is one other design candidate that does not follow the same pattern.
                 Cho and Sahni introduced the idea of <em>cost optimized search trees</em> in 2000,
@@ -1128,8 +1129,8 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
             </p>
 
             <pre>
- Cost(sl, sr, sll, slr, srl, srr) := (sl ≥ srl && sl ≥ srr) &&
-                                     (sr ≥ sll && sr ≥ slr)
+    Cost() := (sl ≥ srl && sl ≥ srr) &&
+              (sr ≥ sll && sr ≥ slr)
             </pre>
 
         </section>
@@ -1137,16 +1138,12 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
         <section id="balancer-analysis">
             <h3>Analysis</h3>
             <p>
-                How do these strategies compare in practice?
-            </p>
-
-            <p>
                 10,000 trees were created in size increments of 10.
                 At every step, a tree is grown, uniformly randomized, and balanced.
                 All measurements should match exactly across systems because they measure the structure of the balanced tree, which is consistent given the same source of randomness.
             </p>
             <p>
-                The results rendered here were generated on an Intel i5 13600K with 32GB of DDR5 memory.
+                The results were generated on an Intel i5 13600K with 32GB of DDR5 memory.
             </p>
 
 
@@ -1279,18 +1276,11 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
                 </p>
                 <p>
                     The size-balanced strategies are consistently ~20% faster than cost-optimized weight-balance, and <mark class="green">the weight-balanced strategies are ~30% faster</mark> respectively.
-                    In both cases, the logarithmic variants are marginally faster than comparing the size and weight directly and follows the same contour exactly.
                 </p>
 
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/Partition/Uniform/Duration__sbezier.svg">
+                    <img src="benchmarks/svg/balancers/All/Uniform/Duration__sbezier.svg">
                 </div>
-
-
-                <div class="graphs">
-                    <img src="benchmarks/svg/balancers/Limited/Uniform/Duration__sbezier.svg">
-                </div>
-
 
                 <p>
                     DSW is significantly slower than all partition-based strategies when the trees become large, but performs well when running the benchmarks on a smaller scale.
@@ -1332,6 +1322,7 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
             A valid balancing algorithm does not change the ordering of the nodes and always returns the tree in a balanced state.
             A program can then <em>know</em> that a given tree is balanced because it is always balanced.
         </p>
+        <p>
             This section explores various strategies to maintain balance over time and the algorithms to apply them.
             Some strategies make many structural changes while others are more selective; some maintain strict balance while others are entirely arbitrary.
             Our evaluation is to determine which strategies are likely to be a good choice in a particular context, generally considering the nature of balance and the work done to maintain it.
@@ -1372,23 +1363,23 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
             </p>
             <p>
                 Compared to red-black trees, AVL trees are more balanced but rotate more often to maintain that balance.
-                A <a href="https://stackoverflow.com/questions/13852870/red-black-tree-over-avl-tree/23277366#23277366">common response</a> to the recurring question of <span class="quote">should I use an AVL tree or a red-black tree</span> is to use an AVL tree when mostly searching because the average path length is shorter, but to use red-black trees when mostly inserting and deleting because they require fewer rotations.
-                This is however a misconception, because to insert a node we must first search all the way down the tree, which is affected by path length all the same.
-                There is a trade-off between the cost of doing more rotations and the cost of traversing and therefore copying longer paths.
-                The benchmarks below confirm this, showing that <mark class="yellow">AVL trees are generally faster than an red-black trees</mark> even though they require more rotations on average.
-                When inserting and deleting in cycles, the path length of red-black trees slowly gets worse over time which correlates with a decrease in performance.
+                A <a href="https://stackoverflow.com/questions/13852870/red-black-tree-over-avl-tree/23277366#23277366">common response</a> to the recurring question of <span class="quote">should I use an AVL tree or a red-black tree</span> is to use an AVL tree when mostly searching because the average path length is lower, but to use red-black trees when mostly inserting and deleting because they require fewer rotations.
+                This is however a misconception, because inserting and deleting both include searching, which is affected by path length all the same.
+                There is a trade-off between the cost of doing more rotations and the cost of traversing longer paths.
+<!--                The benchmarks confirm this, showing that <mark class="yellow">AVL trees are generally faster than an red-black trees</mark> even though they require more rotations on average.-->
+<!--                When inserting and deleting in cycles, the path length of red-black trees slowly gets worse over time which correlates with a decrease in performance.-->
             </p>
 
-            <div class="graphs">
-                <img src="benchmarks/svg/operations/Insert/AVLRedBlack/Duration__sbezier.svg">
-                <img src="benchmarks/svg/operations/Insert/AVLRedBlack/Rotations__sbezier.svg">
+<!--            <div class="graphs">-->
+<!--                <img src="benchmarks/svg/operations/Insert/AVLRedBlack/Duration__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/Insert/AVLRedBlack/Rotations__sbezier.svg">-->
 
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Duration__unique.svg">
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Rotations__unique.svg">
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Duration__unique.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Rotations__unique.svg">-->
 
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/AveragePathLength__unique.svg">
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/MaximumPathLength__unique.svg">
-            </div>
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/AveragePathLength__unique.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/MaximumPathLength__unique.svg">-->
+<!--            </div>-->
 
             <p>
                 Red-black trees are very common in lecture notes and in practice.
@@ -1398,8 +1389,8 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
             </p>
             <p>
                 A well-known <a href="https://web.archive.org/web/20190207151651/http://www.eternallyconfuzzled.com/tuts/datastructures/jsw_tut_rbtree.aspx">blog post</a> about red-black trees by Julienne Walker describes them as <span class="quote">very tricky</span>, <span class="quote">a pain in the ass</span>, that they <span class="quote">cut themselves on the sharp edges of the algorithms</span> and <span class="quote">wept from frustration trying to get them to work</span>.
-                Reading through the Wikipedia page for <a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree">red-black trees</a> gives a good idea of the inherent complexity by which this strategy is often presented.
-                The popularity of this strategy seems come from a place of <span class="quote">good enough</span>, where perhaps many lecture notes and textbooks reference them simply because so many others also do.
+                Scrolling through the Wikipedia page for <a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree">red-black trees</a> gives a good idea of the inherent complexity by which this strategy is often presented.
+                The popularity of this strategy seems come from a place of <span class="quote">good enough</span>, where many lecture notes and textbooks perhaps reference them simply because so many others also do.
             </p>
 
             <p>
@@ -1413,24 +1404,37 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
                 The top-down algorithms are more complex and result in slightly different trees in some cases, but nonetheless produce valid weak AVL trees.
             </p>
 
-            <p>
-                Benchmarks show that weak AVL trees are faster than both AVL trees and red-black trees when only inserting, which is interesting because weak AVL trees have the exact same structure as AVL trees when no deletions occur.
-                Notice that the number of rotations when inserting is exactly the same between AVL trees and weak AVL trees.
-                This suggests that the weak AVL insertion algorithm itself is more efficient, likely due to fewer interactions with memory along the way.
-                Going through cycles of inserting and deleting show that weak AVL trees are consistently faster than AVL trees and maintain an average path length only slightly higher than AVL trees.
-                Notice how slowly the average path length worsens compared to red-black trees.
-            </p>
+<!--            <p>-->
+<!--                Benchmarks show that weak AVL trees are faster than both AVL trees and red-black trees when only inserting, which is interesting because weak AVL trees have the exact same structure as AVL trees when no deletions occur.-->
+<!--                Notice that the number of rotations when inserting is exactly the same between bottom-up AVL trees and bottom-up weak AVL trees.-->
+<!--                This suggests that the weak AVL insertion algorithm itself is more efficient, likely due to fewer interactions with memory along the way.-->
+<!--                Going through cycles of inserting and deleting show that weak AVL trees are consistently faster than AVL trees and maintain an average path length only slightly higher than AVL trees.-->
+<!--                Notice how slowly the average path length worsens compared to red-black trees.-->
+<!--            </p>-->
 
-            <div class="graphs">
-                <img src="benchmarks/svg/operations/Insert/AVLWeak/Duration__sbezier.svg">
-                <img src="benchmarks/svg/operations/Insert/AVLWeak/Rotations__sbezier.svg">
 
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Duration__sbezier.svg">
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Rotations__sbezier.svg">
+<!--            <div class="graphs">-->
+<!--                <img src="benchmarks/svg/operations/Insert/AVLWeakRedBlack/Duration__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/Insert/AVLWeakRedBlack/Rotations__sbezier.svg">-->
 
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/AveragePathLength__sbezier.svg">
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/MaximumPathLength__sbezier.svg">
-            </div>
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/Duration__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/Rotations__sbezier.svg">-->
+
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/AveragePathLength__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/MaximumPathLength__sbezier.svg">-->
+<!--            </div>-->
+
+<!--            -->
+<!--            <div class="graphs">-->
+<!--                <img src="benchmarks/svg/operations/Insert/AVLWeak/Duration__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/Insert/AVLWeak/Rotations__sbezier.svg">-->
+
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Duration__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Rotations__sbezier.svg">-->
+
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/AveragePathLength__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/MaximumPathLength__sbezier.svg">-->
+<!--            </div>-->
 
 
             <p>
@@ -1440,16 +1444,16 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
                 Relaxed variants of AVL trees and red-black trees are described in their paper and implemented here, both bottom-up and purely top-down.
             </p>
 
-            <div class="graphs">
-                <img src="benchmarks/svg/operations/Insert/AVLRelaxed/Duration__sbezier.svg">
-                <img src="benchmarks/svg/operations/Insert/AVLRelaxed/Rotations__sbezier.svg">
+<!--            <div class="graphs">-->
+<!--                <img src="benchmarks/svg/operations/Insert/AVLRelaxed/Duration__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/Insert/AVLRelaxed/Rotations__sbezier.svg">-->
 
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/Duration__sbezier.svg">
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/Rotations__sbezier.svg">
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/Duration__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/Rotations__sbezier.svg">-->
 
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/AveragePathLength__sbezier.svg">
-                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/MaximumPathLength__sbezier.svg">
-            </div>
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/AveragePathLength__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/MaximumPathLength__sbezier.svg">-->
+<!--            </div>-->
 
             <p>
                 On a completely different track, Prokopec and Odersky presented <a href="https://en.wikipedia.org/wiki/Conc-tree_list">conc-tree lists</a> in 2017, where nodes either have two subtrees or no subtrees.
@@ -1457,11 +1461,11 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
                 Additionally, like in AVL trees, every node stores its height and the height difference between two nodes differ by no more than 1.
             </p>
             <pre>
-            <>                      <>  =  routing node, no value
-          /    \                    ()  =  no subtrees, has value
-         <>    (c)
-        /  \
-      (a)  (b)
+        <>          <>  =  routing node, no value
+      /    \        ()  =  no subtrees, has value
+     <>    (c)
+    /  \
+  (a)  (b)
             </pre>
             <p>
                 Conc-trees are very simple to implement and do not use rotations or explicit copying.
@@ -1469,14 +1473,14 @@ MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
                 Conceptually, conc-trees <em>construct</em> the resulting path more than they modify the existing one.
             </p>
 
-            <div class="graphs">
-                <img src="benchmarks/svg/operations/InsertPersistent/Other/Duration__sbezier.svg">
+<!--            <div class="graphs">-->
+<!--                <img src="benchmarks/svg/operations/InsertPersistent/AVLConc/Duration__sbezier.svg">-->
 
-                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/Other/Duration__sbezier.svg">
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/AVLConc/Duration__sbezier.svg">-->
 
-                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/Other/AveragePathLength__sbezier.svg">
-                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/Other/MaximumPathLength__sbezier.svg">
-            </div>
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/AVLConc/AveragePathLength__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/AVLConc/MaximumPathLength__sbezier.svg">-->
+<!--            </div>-->
 
         </section>
 

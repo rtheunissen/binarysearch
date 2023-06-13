@@ -1,7 +1,7 @@
 load "benchmarks/plot/graph.gnuplot"
 load "benchmarks/plot/functions.gnuplot"
 
-set tmargin 10
+set tmargin 9
 set bmargin 5
 set lmargin 1
 

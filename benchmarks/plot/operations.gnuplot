@@ -30,26 +30,26 @@ RedBlackBottomUp           = 21
 
 
 set style line AVLBottomUp                  dashtype 1 ps 2 lw 2 pt   1 pn 2 lc rgb COLOR_BLACK
-set style line AVLJoinBased                 dashtype 1 ps 2 lw 2 pt   2 pn 2 lc rgb COLOR_CYAN
+set style line AVLJoinBased                 dashtype 3 ps 2 lw 2 pt   2 pn 2 lc rgb COLOR_CYAN
 set style line AVLWeakBottomUp              dashtype 1 ps 2 lw 2 pt   4 pn 2 lc rgb COLOR_BLUE
-set style line AVLWeakTopDown               dashtype 1 ps 2 lw 2 pt   3 pn 2 lc rgb COLOR_GREEN
-set style line AVLWeakJoinBased             dashtype 1 ps 2 lw 2 pt   5 pn 2 lc rgb COLOR_CYAN
-set style line AVLRelaxedTopDown            dashtype 1 ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_BLUE
+set style line AVLWeakTopDown               dashtype 5 ps 2 lw 2 pt   3 pn 2 lc rgb COLOR_GREEN
+set style line AVLWeakJoinBased             dashtype 3 ps 2 lw 2 pt   5 pn 2 lc rgb COLOR_CYAN
+set style line AVLRelaxedTopDown            dashtype 5 ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_BLUE
 set style line AVLRelaxedBottomUp           dashtype 1 ps 2 lw 2 pt   7 pn 2 lc rgb COLOR_YELLOW
 set style line RedBlackBottomUp             dashtype 1 ps 2 lw 2 pt  12 pn 2 lc rgb COLOR_RED
 set style line RedBlackRelaxedBottomUp      dashtype 1 ps 2 lw 2 pt   8 pn 2 lc rgb COLOR_GREEN
-set style line RedBlackRelaxedTopDown       dashtype 1 ps 2 lw 2 pt   9 pn 2 lc rgb COLOR_CYAN
+set style line RedBlackRelaxedTopDown       dashtype 5 ps 2 lw 2 pt   9 pn 2 lc rgb COLOR_CYAN
 set style line LBSTBottomUp                 dashtype 1 ps 2 lw 2 pt  10 pn 2 lc rgb COLOR_GREEN
-set style line LBSTTopDown                  dashtype 1 ps 2 lw 2 pt  11 pn 2 lc rgb COLOR_BLUE
-set style line LBSTJoinBased                dashtype 1 ps 2 lw 2 pt  12 pn 2 lc rgb COLOR_YELLOW
+set style line LBSTTopDown                  dashtype 5 ps 2 lw 2 pt  11 pn 2 lc rgb COLOR_BLUE
+set style line LBSTJoinBased                dashtype 3 ps 2 lw 2 pt  12 pn 2 lc rgb COLOR_YELLOW
 set style line LBSTRelaxed                  dashtype 1 ps 2 lw 2 pt  13 pn 2 lc rgb COLOR_RED
-set style line TreapTopDown                 dashtype 1 ps 2 lw 2 pt  14 pn 2 lc rgb COLOR_RED
-set style line TreapJoinBased               dashtype 1 ps 2 lw 2 pt  15 pn 2 lc rgb COLOR_CYAN
+set style line TreapTopDown                 dashtype 5 ps 2 lw 2 pt  14 pn 2 lc rgb COLOR_RED
+set style line TreapJoinBased               dashtype 3 ps 2 lw 2 pt  15 pn 2 lc rgb COLOR_CYAN
 set style line TreapFingerTree              dashtype 1 ps 2 lw 2 pt  16 pn 2 lc rgb COLOR_BLUE
 set style line Randomized                   dashtype 1 ps 2 lw 2 pt  17 pn 2 lc rgb COLOR_YELLOW
 set style line Zip                          dashtype 1 ps 2 lw 2 pt  18 pn 2 lc rgb COLOR_GREEN
 set style line Splay                        dashtype 1 ps 2 lw 2 pt  19 pn 2 lc rgb COLOR_PINK
-set style line Conc                         dashtype 1 ps 2 lw 2 pt  20 pn 2 lc rgb COLOR_PURPLE
+set style line Conc                         dashtype 3 ps 2 lw 2 pt  20 pn 2 lc rgb COLOR_PURPLE
 
 
 ##################################################################
@@ -59,28 +59,30 @@ set style line Conc                         dashtype 1 ps 2 lw 2 pt  20 pn 2 lc 
 ##################################################################
 
 AVLRedBlack            = "AVLBottomUp RedBlackBottomUp"
+AVLWeakRedBlack        = "AVLBottomUp RedBlackBottomUp AVLWeakBottomUp AVLWeakTopDown"
 AVLWeak                = "AVLBottomUp AVLWeakJoinBased AVLWeakBottomUp AVLWeakTopDown"
+AVLConc                = "AVLBottomUp AVLWeakBottomUp AVLWeakTopDown AVLRelaxedTopDown AVLRelaxedBottomUp Conc"
 AVLRelaxed             = "AVLRelaxedBottomUp AVLRelaxedTopDown RedBlackRelaxedBottomUp RedBlackRelaxedTopDown"
+
+RedBlack               = "AVLBottomUp AVLWeakBottomUp RedBlackBottomUp RedBlackRelaxedBottomUp RedBlackRelaxedTopDown"
 RankBalanced           = "AVLWeakBottomUp AVLWeakTopDown AVLRelaxedBottomUp RedBlackRelaxedTopDown"
+HeightBalanced         = "AVLBottomUp RedBlackBottomUp AVLWeakBottomUp AVLRelaxedBottomUp Conc"
 
 WeightBalanced         = "LBSTBottomUp LBSTTopDown LBSTJoinBased LBSTRelaxed"
 Probabilistic          = "TreapTopDown TreapFingerTree Randomized Zip"
-Other                  = "AVLBottomUp Conc"
 Combination            = "AVLRelaxedBottomUp AVLWeakBottomUp LBSTBottomUp TreapTopDown"
 CombinationSplay       = "AVLRelaxedBottomUp AVLWeakBottomUp LBSTBottomUp TreapTopDown Splay"
 SizeOnly               = "LBSTBottomUp LBSTRelaxed Randomized Splay"
-RedBlack               = "AVLBottomUp AVLWeakBottomUp RedBlackBottomUp RedBlackRelaxedBottomUp RedBlackRelaxedTopDown"
 
-GROUPS = "AVLRedBlack AVLWeak AVLRelaxed RankBalanced RedBlack Other"
+GROUPS = "AVLConc AVLWeakRedBlack AVLRelaxed"
 
-OPERATIONS = "Insert InsertPersistent InsertDelete InsertDeletePersistent InsertDeleteCycles InsertDeleteCyclesPersistent"
+OPERATIONS = "InsertPersistent InsertDeleteCyclesPersistent Insert InsertDeleteCycles InsertDelete InsertDeletePersistent InsertDeleteCycles"
 
 DISTRIBUTIONS = "Uniform Normal Skewed Zipf Maximum"
 
+do for [GROUP in GROUPS] {
 
-do for [OPERATION in OPERATIONS] {
-
-    do for [GROUP in GROUPS] {
+    do for [OPERATION in OPERATIONS] {
 
         ##################################################################
         #
