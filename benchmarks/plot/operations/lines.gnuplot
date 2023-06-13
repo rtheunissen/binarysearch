@@ -1,43 +1,49 @@
 load "benchmarks/plot/graph.gnuplot"
 load "benchmarks/plot/functions.gnuplot"
 
-set tmargin 8
-
+set tmargin 9
 set bmargin 4
+set lmargin 9
 
-svg = "benchmarks/svg/operations/".OPERATION."/".GROUP."/".MEASUREMENT."__".smooth."__lines.svg"
+SVG = sprintf("benchmarks/svg/operations/%s/%s/%s__%s.svg", OPERATION, GROUP, MEASUREMENT, SMOOTH)
+system mkdir(SVG)
+set output SVG
+print SVG
 
-system mkdir(svg)
-
-set output svg
-
-print svg
-
-set table $TEMP
-
-eval "plot for [i=1:|".GROUP."|] DATA.".GROUP."[i] using (".x."):(".y.") smooth ".smooth
-
+set table $TABLE
+plot for [STRATEGY in @GROUP] DATA.'/'.STRATEGY using (@x):(@y) smooth @SMOOTH
 unset table
 
-eval "plot for [i=1:|".GROUP."|] $TEMP index (i-1) using 1:2 smooth ".smooth." axes x1y2 with lp ls value(".GROUP."[i]) title ".GROUP."[i]"
+set title "{/:Bold ".OPERATION."}"
 
-do for [Distribution=1:|Distributions|] {
+plot for [i=1:words(@GROUP)] $TABLE \
+    index (i-1) \
+    using 1:2 \
+    axes x1y2 \
+    smooth @SMOOTH \
+    with linespoints \
+    linestyle value(word(@GROUP,i)) \
+    title word(@GROUP,i)
 
-    DISTRIBUTION = Distributions[Distribution]
+do for [DISTRIBUTION in DISTRIBUTIONS] {
 
-    svg = "benchmarks/svg/operations/".OPERATION."/".GROUP."/".DISTRIBUTION."/".MEASUREMENT."__".smooth."__lines.svg"
+    SVG = sprintf("benchmarks/svg/operations/%s/%s/%s/%s__%s.svg", OPERATION, GROUP, DISTRIBUTION, MEASUREMENT, SMOOTH)
+    system mkdir(SVG)
+    set output SVG
+    print SVG
 
-    system mkdir(svg)
-
-    set output svg
-
-    print svg
-
-    set table $TEMP
-
-    eval "plot for [i=1:|".GROUP."|]  DATA.".GROUP."[i] using (".x."):(stringcolumn('Distribution') eq '".DISTRIBUTION."' ? (".y.") : NaN) smooth ".smooth
-
+    set table $TABLE
+    plot for [STRATEGY in @GROUP] DATA.'/'.STRATEGY using (@x):(filter('Distribution', DISTRIBUTION, @y)) smooth @SMOOTH
     unset table
 
-    eval "plot for [i=1:|".GROUP."|] $TEMP index (i-1) using 1:2 smooth ".smooth." axes x1y2 with lp ls value(".GROUP."[i]) title ".GROUP."[i]"
+    set title OPERATION." - ".DISTRIBUTION
+
+    plot for [i=1:words(@GROUP)] $TABLE \
+        index (i-1) \
+        using 1:2 \
+        axes x1y2 \
+        smooth mcsplines \
+        with linespoints \
+        linestyle value(word(@GROUP,i)) \
+        title word(@GROUP,i)
 }

@@ -1,4 +1,4 @@
-set terminal svg size 800,500
+set terminal svg size 800,500 dynamic round
 
 set samples 1000
 
@@ -6,8 +6,9 @@ set border 6 front lc '#000000' lt 1 lw 0
 
 DEFAULT_FONT = ",16"
 HEADER_FONT = ",20"
+LABEL_FONT = ",24"
 
-set style line 1000 dashtype 1 lw 1 pt 1 ps 0 lc "#EEAAAAAA"
+set style line 1000 dashtype 1 lw 1 pt 1 ps 0 lc "#EE777777"
 
 #set grid y2tics back linestyle 1000
 set grid xtics back linestyle 1000
@@ -15,8 +16,8 @@ set grid xtics back linestyle 1000
 set title font HEADER_FONT
 set title offset 0,6
 
-set xlabel  font DEFAULT_FONT offset 0,-1
-set ylabel  font DEFAULT_FONT offset -1,0
+set xlabel  font LABEL_FONT offset 0,-1
+set ylabel  font LABEL_FONT offset -1,0
 
 set key width 0
 set key height 0
