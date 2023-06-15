@@ -40,7 +40,7 @@ func (tree *AVLWeakTopDown) insert(p **Node, i Position, x Data) {
    //  *p is a non-nil node that is not a 1,1-node."
    //
    for {
-      // assert(!isOneOne(*p))
+      assert(!isOneOne(*p))
 
       // "From *p, take one step down the search path..."
       //
@@ -75,7 +75,7 @@ func (tree *AVLWeakTopDown) insert(p **Node, i Position, x Data) {
          }
          // "In the remaining cases, the next node is a 1,1-node and a 1-child."
          //
-         // assert(isOneOne((*p).l) && isOneChild(*p, (*p).l))
+         assert(isOneOne((*p).l) && isOneChild(*p, (*p).l))
          //
          // "From this node, take one further step down the search path..."
          //
@@ -246,24 +246,24 @@ func (tree *AVLWeakTopDown) dissolve(p **Node, x *Data) {
 }
 
 func (tree *AVLWeakTopDown) Update(i Size, x Data) {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    tree.copy(&tree.root)
    tree.update(tree.root, i, x)
 }
 
 func (tree *AVLWeakTopDown) Select(i Size) Data {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    return tree.lookup(tree.root, i)
 }
 
 func (tree *AVLWeakTopDown) Insert(i Position, x Data) {
-   // assert(i <= tree.Size())
+   assert(i <= tree.Size())
    tree.size++
    tree.insert(&tree.root, i, x)
 }
 
 func (tree *AVLWeakTopDown) Delete(i Position) (x Data) {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    x = tree.delete(&tree.root, i)
    tree.size--
    return
@@ -309,7 +309,7 @@ func (tree AVLWeakTopDown) Join(other List) List {
 }
 
 func (tree AVLWeakTopDown) Split(i Position) (List, List) {
-   // assert(i <= tree.Size())
+   assert(i <= tree.Size())
    tree.share(tree.root)
    l, r := JoinBased{Tree: tree.Tree, Joiner: tree}.splitToBST(tree.root, i, tree.size)
 
@@ -328,14 +328,14 @@ func (tree AVLWeakTopDown) resetSafeNode(p *Node) bool {
       return true
    }
    if isTwoChild(p, p.l) && isTwoTwo(p.r) {
-      // assert(isOneChild(p, p.r))
+      assert(isOneChild(p, p.r))
       tree.copy(&p.r)
       demote(p)
       demote(p.r)
       return true
    }
    if isTwoChild(p, p.r) && isTwoTwo(p.l) {
-      // assert(isOneChild(p, p.l))
+      assert(isOneChild(p, p.l))
       tree.copy(&p.l)
       demote(p)
       demote(p.l)

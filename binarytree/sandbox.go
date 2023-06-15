@@ -1,7 +1,8 @@
 package binarytree
 
 import (
-   . "binarysearch/abstract/list"
+   "fmt"
+   "binarysearch/random"
    "os"
 )
 
@@ -142,14 +143,112 @@ func init() {
 //}
 
 func Sandbox() {
+   //for {
+   //   fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+   //   a := &RedBlackBottomUp{}
+   //   b := &RedBlackBottomUp{}
+   //
+   //   for i, n := uint64(0), random.LessThan(64, random.Uniform()) + 1; i < n; i++ {
+   //      a.Insert(random.LessThan(a.Size()+1, random.Uniform()), i)
+   //   }
+   //   for i, n := uint64(0), random.LessThan(64, random.Uniform()) + 1; i < n; i++ {
+   //      b.Insert(random.LessThan(b.Size()+1, random.Uniform()), i)
+   //   }
+   //
+   //   a.Draw(os.Stdout)
+   //   b.Draw(os.Stdout)
+   //
+   //   c := a.Join(b).(*RedBlackBottomUp)
+   //
+   //   c.Draw(os.Stdout)
+   //   c.Verify()
+   //
+   //   c.Free()
+   //}
 
-   tree := &Splay{}
+   for {
+     fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+     tree := &RedBlackBottomUp{}
+     size := random.LessThan(100, random.Uniform()) + 1
+     for i := uint64(0); i < size; i++ {
+        tree.Insert(random.LessThan(tree.Size()+1, random.Uniform()), i)
+     }
 
-   for i := 0; i < 100; i++ {
-      tree.Insert(Position(i), Data(i))
+     tree.Draw(os.Stdout)
+     for tree.root != nil {
+        fmt.Println()
+        fmt.Println()
+        fmt.Println("before deleting =====================")
+
+        //tree.Verify()
+        //tree.Draw(os.Stdout)
+
+        fmt.Println("deleting")
+        i := random.LessThan(tree.Size(), random.Uniform())
+        fmt.Println(i)
+        tree.Delete(i)
+        fmt.Println("after deleting: ---------------")
+        //tree.Draw(os.Stdout)
+        tree.Verify()
+     }
+     tree.Free()
    }
 
-   LogSize{}.Restore(tree.Tree).Draw(os.Stdout)
+
+
+   //for {
+   //   fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+   //   tree := &RedBlackBottomUp{}
+   //   size := random.LessThan(32, random.Uniform()) + 1
+   //   for i := uint64(0); i < size; i++ {
+   //      tree.Insert(random.LessThan(tree.Size()+1, random.Uniform()), i)
+   //   }
+   //
+   //   tree.Draw(os.Stdout)
+   //   for tree.root != nil {
+   //      fmt.Println()
+   //      fmt.Println()
+   //      fmt.Println("before deleting min =====================")
+   //
+   //      tree.Verify()
+   //      tree.Draw(os.Stdout)
+   //
+   //      fmt.Println("deleting min")
+   //      i := uint64(0)
+   //      fmt.Println(i)
+   //      tree.Delete(i)
+   //      fmt.Println("after deleting min: ---------------")
+   //      tree.Draw(os.Stdout)
+   //      tree.Verify()
+   //   }
+   //   tree.Free()
+   //}
+
+
+   //for {
+   //   fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+   //   tree := &RedBlackBottomUp{}
+   //   size := random.LessThan(13, random.Uniform()) + 1
+   //   for i := uint64(0); i < size; i++ {
+   //      tree.Insert(random.LessThan(tree.Size()+1, random.Uniform()), i)
+   //   }
+   //   fmt.Println("start deleting =====================")
+   //   tree.Draw(os.Stdout)
+   //   for tree.root.r != nil {
+   //      fmt.Println()
+   //      fmt.Println(" deleting p.r, which is currently: ---------------")
+   //      tree.Verify()
+   //      tree.Draw(os.Stdout)
+   //      i := tree.root.s + tree.root.r.s + 1
+   //      fmt.Println(i)
+   //      tree.Delete(i)
+   //      fmt.Println(" after deleting p.r: ---------------")
+   //      tree.Draw(os.Stdout)
+   //      tree.Verify()
+   //   }
+   //   tree.Free()
+   //}
+
 
 
 
@@ -1098,8 +1197,8 @@ func Sandbox() {
 //   //    }
 //   //    p := l.Join(r)
 //   //    p.Verify()
-//   //    // assert(p.Size() == l.Size() + r.Size())
-//   //    // assert(p.Size() == p.(*WAVL).root.count())
+//   //    assert(p.Size() == l.Size() + r.Size())
+//   //    assert(p.Size() == p.(*WAVL).root.count())
 //   //    print(".")
 //   // }
 //}

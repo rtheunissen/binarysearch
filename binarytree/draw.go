@@ -116,7 +116,7 @@ drawing:
          //       | |
          //
          for i, node := range level {
-            if i%2 == 0 {
+            if i % 2 == 0 {
                //
                // Left node.
                //
@@ -221,7 +221,7 @@ drawing:
             // When the node to draw is NOT nil, we center the node's value (x)
             // within a cell of 3-characters and prefix it with node separation.
             //
-            value := Centered(String(node.s), " ", 3)
+            value := Centered(String(node.y), " ", 3)
             Fprint(writer, Repeat(" ", spacing-len(value)+1))
             Fprint(writer, value)
 

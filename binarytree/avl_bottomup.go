@@ -51,7 +51,7 @@ func (tree *AVLBottomUp) delete(p *Node, i list.Position, x *list.Data) *Node {
 }
 
 func (tree *AVLBottomUp) Delete(i list.Position) (x list.Data) {
-   // assert(i < tree.size)
+   assert(i < tree.size)
    tree.root = tree.delete(tree.root, i, &x)
    tree.size--
    return

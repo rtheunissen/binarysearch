@@ -15,41 +15,29 @@
         /**
          * FONTS
          */
-        h1  { font-size: 20px; }
-        h2  { font-size: 18px; font-weight: normal; }
+        h1  { font-size: 24px; }
+        h2  { font-size: 32px; }
         h3  { font-size: 18px; }
         h4  { font-size: 16px; }
         p   { font-size: 16px; }
         a   { font-size: 16px; }
         pre { font-size: 14px; }
 
-
-        p  { margin: 0 0 16px 0; }
-        h1 { margin: 16px 0 16px 0; }
-        h2 { margin: 64px 0 32px 0; }
-        h3 { margin: 64px 0 16px 0; }
-        h4 { margin: 16px 0 8px 0; }
-
-        h1, h2, h3, h4, h5 {
-            font-family: system-ui, sans-serif;
-        }
-
-        p, a, ul, li {
-            font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
-        }
-
-
-        article {
-            /*font-family: system-ui, sans-serif;*/
-        }
-
-        pre, .math {
-            font-family: Monaco, Menlo, monospace;
+        /* TITLE */
+        #title {
+            /*text-align: center;*/
         }
 
         h2 {
+            /*padding: 32px 0;*/
             text-align: center;
+        }
+
+        h2 span {
+            display: block;
+            font-size: 16px;
             text-transform: uppercase;
+            font-weight: normal;
         }
 
         h3 {
@@ -58,15 +46,42 @@
         }
 
 
-
-
-        pre.code {
-            background-color: #fafafa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-left: 0;
+        #author {
+            font-style: italic;
         }
 
+
+
+        p  { margin:  0   0 16px 0 }
+        h1 { margin: 16px 0  8px 0 }
+        h2 { margin: 64px 0 32px 0 }
+        h3 { margin: 64px 0 16px 0 }
+        h4 { margin: 16px 0  8px 0 }
+
+
+        /*h1, h2, h3, h4, h5 {*/
+        /*    font-family: system-ui, sans-serif;*/
+        /*}*/
+
+        /*p, a, ul, li {*/
+        /*    font-family: system-ui, sans-serif;*/
+        /*}*/
+
+        article {
+            font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif; /* Transitional */
+            /*font-family: system-ui, sans-serif;*/
+        }
+
+        pre, .math {
+            font-family: ui-monospace, monospace;
+        }
+
+        /*pre.code {*/
+        /*    background-color: #fafafa;*/
+        /*    border-radius: 8px;*/
+        /*    padding: 20px;*/
+        /*    margin-left: 0;*/
+        /*}*/
 
         a {
             color: #000;
@@ -88,13 +103,6 @@
         section {
             margin: 32px 0 32px 0;
         }
-
-
-        #author {
-            font-style: italic;
-            margin: 12px 0 0 0;
-        }
-
 
         ul {
             margin-left: 32px;
@@ -229,7 +237,7 @@
 <body>
 <article>
 
-    <h1>Exploring the design space of binary search trees</h1>
+    <h1 id="title">Exploring the design space of binary search trees</h1>
 
     <p id="author">Rudi Theunissen, June 2023</p>
 
@@ -256,7 +264,7 @@
     
 
     <section id="introduction">
-        <h2>Part 1<br><br>Introduction</h2>
+        <h2><span>Part 1</span>Introduction</h2>
 
         <section id="memory">
             <h3>Abstract memory</h3>
@@ -694,7 +702,7 @@ func search(p *Node, i uint64) *Node {
     
 
     <section id="strategies-to-restore-balance">
-        <h2>Part 2<br><br>Strategies to restore balance</h2>
+        <h2><span>Part 2</span>Strategies to Restore Balance</h2>
         <p>
             Consider what happens to the structure of the tree if we repeatedly inserted many nodes at the end of the sequence.
             Eventually, the tree structure becomes <em>unbalanced</em>, where too many branches are too far from the median of their sequence.
@@ -1318,8 +1326,8 @@ MSB(x) ≥ MSB(y) := x ≥ (~x & y)                   Warren, H.S.
     
 
 
-    <section id="strategies-to-maintain-balance-over-time">
-        <h2>Part 3<br><br>Strategies to maintain balance</h2>
+    <section id="strategies-to-maintain-balance">
+        <h2>Part 3<br><br>Strategies to Maintain balance</h2>
 
         <p>
             Restoring balance to an entire tree is powerful but often disproportionately expensive because the entire tree must be traversed.
@@ -1338,7 +1346,7 @@ MSB(x) ≥ MSB(y) := x ≥ (~x & y)                   Warren, H.S.
         <section id="height-balanced-trees">
             <h3>Height-balanced trees</h3>
             <p>
-                The original self-balancing binary search tree was published in 1962 as <em>an algorithm for the organization of information</em> by <strong>A</strong>delson-<strong>V</strong>elsky and <strong>L</strong>andis.
+                The original self-balancing binary search tree was published in 1962 as <em>an algorithm for the organization of information</em> by <strong>A</strong>del'son-<strong>V</strong>el'skii and <strong>L</strong>andis.
                 <a href="https://en.wikipedia.org/wiki/AVL_tree">AVL trees</a> store the height of each node as part of the node structure and uses rotations based on these heights to maintain height-balance.
                 Balancing after an insertion requires at most 2 rotations, but deletion may require a rotation at every node along the search path.
             </p>
@@ -1494,6 +1502,27 @@ MSB(x) ≥ MSB(y) := x ≥ (~x & y)                   Warren, H.S.
         <section id="weight-balanced-trees">
             <h3>Weight-balanced trees</h3>
 
+            <p>
+                Implementing a linear list using a binary search tree requires that we track the size of each subtree along the search path.
+                It seems ideal then to use this information for balancing, rather than heights or ranks stored additionally in each node.
+                The original paper by Nievergelt & Reingold in 1972 introduced weight-balanced trees as <em>trees of bounded balance</em> or BB[<span class="math">α</span>] trees, where <span class="math">α</span> is a parameter <span class="math">0 ≤ α ≤ ½</span> which can be varied as a trade-off between better balance and fewer rotations.
+                Many other papers on weight-balanced trees since then use two parameters: <span class="math">Δ</span> to determine if a node is balanced, and <span class="math">Γ</span> to determine whether one or two rotations are required to restore balance.
+                The valid range for these parameters are complex, involving either fractional arithmetic or multiplication with the potential for integer overflow.
+            </p>
+            <p>
+                The logarithmic weight-balance strategy suggested by Roura in 2001 avoids both fractional arithmetic and integer overflow, using only simple bitwise operations to determine weight-balance.
+                Another benefit of this strategy is that the worst-case maximum path length is <span class="math">2×⌊log₂(n)⌋</span>, which is slightly better than red-black trees.
+                Hirai & Yamamoto published a rigorous investigation of weight-balanced trees in 2011, which included a short section on logarithmic weight-balance stating that <span class="quote">for mathematical reliability, logarithmic weight-balanced trees are simpler</span>, and measured their performance to be equivalent to parameter-based weight-balance.
+                Bath & Wagner published <em>engineering top-down weight-balanced trees</em> in 2019, wherein they evaluate viable parameters to implement weight-balanced trees purely top-down, but only mention logarithmic weight-balance in the introduction without further evaluation.
+            </p>
+            <p>
+                The involvement of the binary log in the context of binary trees seems more natural than a complex set of balancing parameters.
+
+
+            </p>
+            <p>
+
+            </p>
         </section>
 
 
@@ -1533,6 +1562,14 @@ MSB(x) ≥ MSB(y) := x ≥ (~x & y)                   Warren, H.S.
 <!--            lbst jb-->
 <!--        </section>-->
     </section>
+
+    <section id="references">
+        <h2>References</h2>
+        <ol>
+            <li></li>
+        </ol>
+    </section>
+
 <!--    <pre>-->
 <!--        1. Introduction-->
 <!--            - Giving semantic meaning to abstract memory-->
@@ -1587,7 +1624,7 @@ MSB(x) ≥ MSB(y) := x ≥ (~x & y)                   Warren, H.S.
 <!--              Notes-->
 <!--              References-->
 <!--        </pre>-->
-    </section>
+<!--    </section>-->
 </article>
 <!--https://read.seas.harvard.edu/~kohler/notes/llrb.html-->
 <!--https://web.archive.org/web/20131106123552/http://t-t-travails.blogspot.com/2008/04/left-leaning-red-black-trees-are-hard.html-->

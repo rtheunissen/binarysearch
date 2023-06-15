@@ -40,18 +40,18 @@ func (tree AVLRelaxedTopDown) verifyValidRankDiffs(p *Node) {
 }
 
 func (tree *AVLRelaxedTopDown) Select(i Size) Data {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    return tree.lookup(tree.root, i)
 }
 
 func (tree *AVLRelaxedTopDown) Update(i Size, x Data) {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    tree.copy(&tree.root)
    tree.update(tree.root, i, x)
 }
 
 func (tree *AVLRelaxedTopDown) Delete(i Position) Data {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    x := tree.Tree.delete(&tree.root, tree.size, i)
    tree.size--
    return x
@@ -84,7 +84,7 @@ func (tree AVLRelaxedTopDown) Join(other List) List {
 }
 
 func (tree AVLRelaxedTopDown) Split(i Position) (List, List) {
-   // assert(i <= tree.Size())
+   assert(i <= tree.Size())
    tree.share(tree.root)
    l, r := JoinBased{Tree: tree.Tree, Joiner: tree}.split(tree.root, i, tree.size)
 

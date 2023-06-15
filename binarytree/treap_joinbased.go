@@ -28,19 +28,19 @@ func (tree *TreapJoinBased) Clone() List {
 }
 
 func (tree *TreapJoinBased) Insert(i Position, x Data) {
-   // assert(i <= tree.Size())
+   assert(i <= tree.Size())
    tree.root = JoinBased{Tree: tree.Tree, Joiner: tree}.insert(tree.root, i, tree.size, tree.allocate(Node{x: x, y: tree.Source.Uint64()}))
    tree.size++
 }
 func (tree *TreapJoinBased) Delete(i Position) (x Data) {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    tree.root = JoinBased{Tree: tree.Tree, Joiner: tree}.delete(tree.root, i, tree.size, &x)
    tree.size--
    return
 }
 
 func (tree TreapJoinBased) Split(i Position) (List, List) {
-   // assert(i <= tree.Size())
+   assert(i <= tree.Size())
    tree.share(tree.root)
    l, r := JoinBased{Tree: tree.Tree, Joiner: &tree}.splitToBST(tree.root, i, tree.size)
 

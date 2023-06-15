@@ -5,6 +5,7 @@ import (
    "binarysearch/utility"
 )
 
+// TODO what about a rank-balanced AVL?
 type AVL struct {
    Tree
 }
@@ -80,12 +81,12 @@ func (tree *AVL) balance(p *Node) *Node {
 }
 
 func (tree *AVL) Select(i list.Size) list.Data {
-   // assert(i < tree.size)
+   assert(i < tree.size)
    return tree.lookup(tree.root, i)
 }
 
 func (tree *AVL) Update(i list.Size, x list.Data) {
-   // assert(i < tree.size)
+   assert(i < tree.size)
    tree.copy(&tree.root)
    tree.update(tree.root, i, x)
 }
@@ -147,7 +148,7 @@ func (tree *AVL) build(l, p, r *Node, sl list.Size) *Node {
 }
 
 func (tree *AVL) joinL(l, r *Node, sl list.Size) (p *Node) {
-   if tree.height(l)-tree.height(r) <= 1 {
+   if tree.height(l) - tree.height(r) <= 1 {
       return tree.build(tree.deleteMax(l, &p), p, r, sl-1)
    }
    tree.copy(&l)
@@ -207,7 +208,7 @@ func (tree *AVL) split(p *Node, i, s list.Size) (l, r *Node) {
 }
 
 func (tree *AVL) Split(i list.Position) (AVL, AVL) {
-   // assert(i <= tree.size)
+   assert(i <= tree.size)
    tree.share(tree.root)
 
    l, r := tree.split(tree.root, i, tree.size)

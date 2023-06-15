@@ -18,12 +18,12 @@ func (tree *LBSTTopDown) Clone() List {
 }
 
 func (tree *LBSTTopDown) Select(i Size) Data {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    return tree.lookup(tree.root, i)
 }
 
 func (tree *LBSTTopDown) Update(i Size, x Data) {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    tree.copy(&tree.root)
    tree.update(tree.root, i, x)
 }
@@ -36,35 +36,9 @@ func (tree *LBSTTopDown) singleRotation(x, y Size) bool {
    return tree.LBST.singleRotation(x+1, y+1)
 }
 
-// -1 <= ⌊log₂(L + 1)⌋ - ⌊log₂(R + 1)⌋ <= 1
-func (tree *LBSTTopDown) verifyBalance(p *Node, s Size) {
-   if p == nil {
-      return
-   }
-   invariant(utility.Difference(utility.Log2(p.sizeL()+1), utility.Log2(p.sizeR(s)+1)) <= 1)
-
-   tree.verifyBalance(p.l, p.sizeL())
-   tree.verifyBalance(p.r, p.sizeR(s))
-}
-
-func (tree *LBSTTopDown) verifyHeight(root *Node, size Size) {
-   invariant(root.height() <= int(2*utility.Log2(size)))
-}
-
-// "the height of an LBST with n 􏰥 􏰅 keys is never larger than 􏰅 log􏰅 n"
-func (tree *LBSTTopDown) verify(root *Node, size Size) {
-   tree.verifySizes()
-   tree.verifyBalance(root, size)
-   tree.verifyHeight(root, size)
-}
-
-func (tree *LBSTTopDown) Verify() {
-   tree.verify(tree.root, tree.size)
-}
-
 func (tree *LBSTTopDown) insert(p **Node, s Size, i Position, x Data) {
-   // assert(i <= s)
-   // assert(s == (*p).size())
+   assert(i <= s)
+   assert(s == (*p).size())
    for {
       if *p == nil {
          *p = tree.allocate(Node{x: x})
@@ -75,8 +49,8 @@ func (tree *LBSTTopDown) insert(p **Node, s Size, i Position, x Data) {
       sl := (*p).sizeL()
       sr := (*p).sizeR(s)
 
-      // assert(tree.isBalanced(sr, sl))
-      // assert(tree.isBalanced(sl, sr))
+      assert(tree.isBalanced(sr, sl))
+      assert(tree.isBalanced(sl, sr))
 
       if i <= (*p).s {
          if tree.isBalanced(sr, sl+1) {
@@ -181,16 +155,16 @@ func (tree *LBSTTopDown) insert(p **Node, s Size, i Position, x Data) {
 }
 
 func (tree *LBSTTopDown) delete(p **Node, s Size, i Position) (deleted *Node) {
-   // assert(i < s)
-   // assert(s == (*p).size())
+   assert(i < s)
+   assert(s == (*p).size())
    for {
       tree.copy(p)
 
       sl := (*p).s
       sr := s - (*p).s - 1
 
-      // assert(tree.isBalanced(sl, sr))
-      // assert(tree.isBalanced(sr, sl))
+      assert(tree.isBalanced(sl, sr))
+      assert(tree.isBalanced(sr, sl))
 
       if i == (*p).s {
          defer tree.release(*p)
@@ -289,13 +263,13 @@ func (tree *LBSTTopDown) deleteR(p ***Node, s *Size, i *Position) {
 }
 
 func (tree *LBSTTopDown) Insert(i Position, x Data) {
-   // assert(i <= tree.Size())
+   assert(i <= tree.Size())
    tree.insert(&tree.root, tree.size, i, x)
    tree.size++
 }
 
 func (tree *LBSTTopDown) Delete(i Position) (x Data) {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    x = tree.delete(&tree.root, tree.size, i).x
    tree.size--
    return
@@ -382,9 +356,33 @@ func (tree *LBSTTopDown) assembleRL(p *Node, l, r *Node, sl, sr Size) *Node {
 }
 
 func (tree *LBSTTopDown) Split(i Position) (List, List) {
-   // assert(i <= tree.Size())
+   assert(i <= tree.Size())
    tree.share(tree.root)
    l, r := JoinBased{Tree: tree.Tree, Joiner: tree}.splitToBST(tree.root, i, tree.size)
    return &LBSTTopDown{LBST{l}},
       &LBSTTopDown{LBST{r}}
+}
+
+
+func (tree LBSTTopDown) verifyBalance(p *Node, s Size) {
+   if p == nil {
+      return
+   }
+   sl := p.sizeL()
+   sr := p.sizeR(s)
+
+   invariant(utility.Difference(utility.Log2(sl + 1), utility.Log2(sr + 1)) <= 1)
+
+   tree.verifyBalance(p.l, sl)
+   tree.verifyBalance(p.r, sr)
+}
+
+func (tree LBSTTopDown) verifyHeight(root *Node, size Size) {
+   invariant(root.height() <= int(2*utility.Log2(size)))
+}
+
+func (tree LBSTTopDown) Verify() {
+   tree.verifySizes()
+   tree.verifyBalance(tree.root, tree.size)
+   tree.verifyHeight(tree.root, tree.size)
 }

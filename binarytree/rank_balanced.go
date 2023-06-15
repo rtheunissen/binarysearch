@@ -13,7 +13,7 @@ func (RankBalanced) promote(p *Node){
    p.y++
 }
 
-// Deprecated
+// Deprecated, why? use tree.rank
 func (p *Node) rank() int {
    if p == nil {
       return -1
@@ -43,7 +43,7 @@ func isTwoTwo(p *Node) bool {
 }
 
 func rankDifference(parent, child *Node) int {
-   // assert(parent.rank() >= child.rank())
+   assert(parent.rank() >= child.rank())
    return parent.rank() - child.rank()
 }
 
