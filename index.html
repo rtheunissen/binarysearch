@@ -12,16 +12,27 @@
             margin: 0;
         }
 
+        html {
+            font-size: 16px;
+        }
+
         /**
          * FONTS
          */
-        h1  { font-size: 24px; }
-        h2  { font-size: 32px; }
-        h3  { font-size: 18px; }
-        h4  { font-size: 16px; }
-        p   { font-size: 16px; }
-        a   { font-size: 16px; }
-        pre { font-size: 14px; }
+        h1  { font-size: 1.6rem }
+        h2  { font-size: 2.0rem }
+        h3  { font-size: 1.2rem }
+        h4  { font-size: 1.0rem }
+        p   { font-size: 1.0rem }
+        a   { font-size: 1.0rem }
+        pre { font-size: 0.8rem }
+
+        h2 span {
+            display: block;
+            font-size: 1.0rem;
+            text-transform: uppercase;
+            font-weight: normal;
+        }
 
         /* TITLE */
         #title {
@@ -33,39 +44,20 @@
             text-align: center;
         }
 
-        h2 span {
-            display: block;
-            font-size: 16px;
-            text-transform: uppercase;
-            font-weight: normal;
-        }
-
         h3 {
             text-align: center;
             text-transform: uppercase;
         }
 
-
         #author {
             font-style: italic;
         }
 
-
-
-        p  { margin:  0   0 16px 0 }
-        h1 { margin: 16px 0  8px 0 }
-        h2 { margin: 64px 0 32px 0 }
-        h3 { margin: 64px 0 16px 0 }
-        h4 { margin: 16px 0  8px 0 }
-
-
-        /*h1, h2, h3, h4, h5 {*/
-        /*    font-family: system-ui, sans-serif;*/
-        /*}*/
-
-        /*p, a, ul, li {*/
-        /*    font-family: system-ui, sans-serif;*/
-        /*}*/
+        p  { margin:   0    0 1.0rem 0 }
+        h1 { margin: 2.0rem 0 0.5rem 0 }
+        h2 { margin: 4.0rem 0 2.0rem 0 }
+        h3 { margin: 4.0rem 0 1.0rem 0 }
+        h4 { margin: 1.0rem 0 0.5rem 0 }
 
         article {
             font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif; /* Transitional */
@@ -90,27 +82,27 @@
         article {
             display: block;
             margin: auto;
-            max-width: 800px;
-            line-height: 1.5;
-            padding: 0 16px;
+            max-width: 720px;
+            line-height: 1.4;
+            padding: 0 1rem;
         }
 
         hr {
-            margin: 32px 0;
+            margin: 2rem 0;
             opacity: 0.25;
         }
 
         section {
-            margin: 32px 0 32px 0;
+            margin: 2rem 0 2rem 0;
         }
 
         ul {
-            margin-left: 32px;
-            margin-bottom: 16px;
+            margin-left: 2rem;
+            margin-bottom: 1rem;
         }
 
         pre {
-            margin: 32px 0 16px 32px;
+            margin: 2rem 0 1rem 2rem;
         }
 
 
@@ -145,7 +137,7 @@
 
 
         .definition {
-            margin: 32px 0;
+            margin: 2rem 0;
         }
 
         .definition .underline {
@@ -155,14 +147,14 @@
 
         .indent {
             display: inline-block;
-            margin-left: 32px;
+            margin-left: 2rem;
         }
 
         .subscript {
             font-size: 70%;
             padding-left: 1px;
             position: relative;
-            top: 0.4em;
+            top: 0.4rem;
         }
 
 
@@ -177,16 +169,16 @@
         }
 
         .graphs img:nth-child(even) {
-            padding-left: 16px;
+            padding-left: 1rem;
         }
         .graphs img:nth-child(odd) {
-            padding-right: 16px;
+            padding-right: 1rem;
         }
 
         .graphs img {
             width: 50%;
-            margin-top: 32px;
-            margin-bottom: 32px;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
             /*width: 50%; !* Display images side-by-side *!*/
             /*max-width: 100%; !* Limit image width to its intrinsic size *!*/
             /*margin: 20px 0;*/
@@ -205,21 +197,16 @@
 
         .graphs img:only-child {
             width: 100%;
-            padding: 0 64px;
-        }
-
-        .graphs img + img {
-            /*margin-top: 40px;*/
+            /*padding: 0 4rem;*/
         }
 
         /* Media query for screens with a maximum width of 400px */
-        @media (max-width: 800px) {
+        @media (max-width: 720px) {
             .graphs img {
-                /*padding: 0;*/
+                padding: 0;
                 /*width: 100%; !* Display images in full-width *!*/
             }
         }
-
         .rb-red {
             color: red;
             font-weight: bold;
@@ -702,7 +689,7 @@ func search(p *Node, i uint64) *Node {
     
 
     <section id="strategies-to-restore-balance">
-        <h2><span>Part 2</span>Strategies to Restore Balance</h2>
+        <h2><span>Part 2</span>Restoring Balance</h2>
         <p>
             Consider what happens to the structure of the tree if we repeatedly inserted many nodes at the end of the sequence.
             Eventually, the tree structure becomes <em>unbalanced</em>, where too many branches are too far from the median of their sequence.
@@ -1327,7 +1314,7 @@ MSB(x) ≥ MSB(y) := x ≥ (~x & y)                   Warren, H.S.
 
 
     <section id="strategies-to-maintain-balance">
-        <h2>Part 3<br><br>Strategies to Maintain balance</h2>
+        <h2><span>Part 3</span>Maintaining Balance</h2>
 
         <p>
             Restoring balance to an entire tree is powerful but often disproportionately expensive because the entire tree must be traversed.
@@ -1402,12 +1389,6 @@ MSB(x) ≥ MSB(y) := x ≥ (~x & y)                   Warren, H.S.
                 They are generally considered to be a decent all-rounder when it comes to self-balancing binary search trees, but attempting to implement them often results in frustration.
                 At various stages throughout this project, especially when implementing the deletion algorithm without parent pointers, there was a sense of <span class="quote">this can't be it</span>.
             </p>
-            <p>
-                A well-known <a href="https://web.archive.org/web/20190207151651/http://www.eternallyconfuzzled.com/tuts/datastructures/jsw_tut_rbtree.aspx">blog post</a> about red-black trees by Julienne Walker describes them as <span class="quote">very tricky</span>, <span class="quote">a pain in the ass</span>, that they <span class="quote">cut themselves on the sharp edges of the algorithms</span> and <span class="quote">wept from frustration trying to get them to work</span>.
-                Scrolling through the Wikipedia page for <a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree">red-black trees</a> gives a good idea of the inherent complexity by which this strategy is often presented.
-                The popularity of this strategy seems come from a place of <span class="quote">good enough</span>, where many lecture notes and textbooks perhaps reference them simply because so many others also do.
-            </p>
-
             <p>
                 In 2013, Haeupler, Sen & Tarjan introduced <a href="https://en.wikipedia.org/wiki/WAVL_tree">rank-balanced trees</a> which unify many height-based balanced trees under a single framework.
                 Rank-balanced trees store in each node an integer rank and use various rank-based rules to yield simple implementations of AVL trees, red-black trees, and others.

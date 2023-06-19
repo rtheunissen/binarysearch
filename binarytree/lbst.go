@@ -17,19 +17,15 @@ func (LBST) singleRotation(x, y Size) bool {
    return !utility.SmallerMSB(x, y)
 }
 
-func (tree LBST) join2(l *Node, r *Node, sl, sr Size) (k *Node) {
-   if l == nil {
-      return r
-   }
-   if r == nil {
-      return l
-   }
+func (tree LBST) join(l *Node, r *Node, sl, sr Size) (k *Node) {
+   if l == nil { return r }
+   if r == nil { return l }
    if sl <= sr {
       r = tree.extractMin(r, sr, &k)
-      return tree.join3(l, k, r, sl, sr-1)
+      return tree.build(l, k, r, sl, sr-1)
    } else {
       l = tree.extractMax(l, sl, &k)
-      return tree.join3(l, k, r, sl-1, sr)
+      return tree.build(l, k, r, sl-1, sr)
    }
 }
 
@@ -88,22 +84,21 @@ func (tree LBST) Join(that LBST) LBST {
    return LBST{
       Tree{
          arena: tree.arena,
-         root:  tree.join2(l.root, r.root, l.size, r.size),
+         root:  tree.join(l.root, r.root, l.size, r.size),
          size:  l.size + r.size,
       },
    }
 }
 
-func (tree LBST) join3(l, k, r *Node, sl, sr Size) *Node {
-   //tree.pathcopy(&k) // optional?
-   if sl <= sr {
-      return tree.assembleRL(k, l, r, sl, sr)
+func (tree LBST) build(l, p, r *Node, sl, sr Size) *Node {
+   if sl <= sr { // TODO: consider == here?
+      return tree.buildR(p, l, r, sl, sr)
    } else {
-      return tree.assembleLR(k, l, r, sl, sr)
+      return tree.buildL(p, l, r, sl, sr)
    }
 }
 
-func (tree *LBST) assembleLR(p *Node, l, r *Node, sl, sr Size) *Node {
+func (tree *LBST) buildL(p *Node, l, r *Node, sl, sr Size) *Node {
    if tree.isBalanced(sr, sl) {
       p.l = l
       p.r = r
@@ -115,7 +110,7 @@ func (tree *LBST) assembleLR(p *Node, l, r *Node, sl, sr Size) *Node {
    sll := l.s
    slr := sl - l.s - 1
 
-   l.r = tree.assembleLR(p, l.r, r, slr, sr)
+   l.r = tree.buildL(p, l.r, r, slr, sr)
    slr = 1 + sr + slr
 
    if !tree.isBalanced(sll, slr) {
@@ -132,7 +127,7 @@ func (tree *LBST) assembleLR(p *Node, l, r *Node, sl, sr Size) *Node {
    return l
 }
 
-func (tree *LBST) assembleRL(p *Node, l, r *Node, sl, sr Size) *Node {
+func (tree *LBST) buildR(p *Node, l, r *Node, sl, sr Size) *Node {
    if tree.isBalanced(sl, sr) {
       p.l = l
       p.r = r
@@ -144,7 +139,7 @@ func (tree *LBST) assembleRL(p *Node, l, r *Node, sl, sr Size) *Node {
    srl := r.s
    srr := sr - r.s - 1
 
-   r.l = tree.assembleRL(p, l, r.l, sl, srl)
+   r.l = tree.buildR(p, l, r.l, sl, srl)
    r.s = 1 + sl + srl
 
    if !tree.isBalanced(srr, r.s) {
@@ -157,10 +152,29 @@ func (tree *LBST) assembleRL(p *Node, l, r *Node, sl, sr Size) *Node {
    return r
 }
 
-func (tree LBST) Split(i Position) (LBST, LBST) {
+func (tree *LBST) split(p *Node, i, s Size) (l, r *Node) {
+   if p == nil {
+      return
+   }
+   tree.copy(&p)
+
+   sl := p.s
+   sr := s - p.s - 1
+
+   if i <= (*p).s {
+      l, r = tree.split(p.l, i, sl)
+         r = tree.build(r, p, p.r, sl-i, sr)
+   } else {
+      l, r = tree.split(p.r, i-sl-1, sr)
+         l = tree.build(p.l, p, l, sl, i-sl-1)
+   }
+   return l, r
+}
+
+func (tree *LBST) Split(i Position) (LBST, LBST) {
    tree.share(tree.root)
-   l, r := JoinBased{Tree: tree.Tree, Joiner: tree}.split(tree.root, i, tree.size)
+   l, r := tree.split(tree.root, i, tree.size)
 
    return LBST{Tree{arena: tree.arena, root: l, size: i}},
-      LBST{Tree{arena: tree.arena, root: r, size: tree.size - i}}
+          LBST{Tree{arena: tree.arena, root: r, size: tree.size - i}}
 }

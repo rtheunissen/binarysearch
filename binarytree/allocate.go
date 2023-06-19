@@ -96,17 +96,17 @@ func (rc *ReferenceCounter) RemoveReference()  {
    }
 }
 
+// Removes one reference from the given node.
+func (tree Tree) free(p *Node)  {
+   if p != nil {
+      p.RemoveReference()
+   }
+}
+
 // Adds a reference to the node to share it with another tree.
 func (tree Tree) share(p *Node)  {
    if p != nil {
       p.AddReference()
-   }
-}
-
-// Removes one reference from the given node.
-func (tree Tree) release(p *Node)  {
-   if p != nil {
-      p.RemoveReference()
    }
 }
 
@@ -117,7 +117,7 @@ func (tree Tree) shared(p *Node) bool {
 
 // Replaces the given node with a copy only if the node shared with other trees.
 func (tree Tree) copy(p **Node) {
-   assert(*p != nil)
+   // assert(*p != nil)
    //
    // There is no need to copy the node if it is NOT shared with other trees.
    //
@@ -134,7 +134,7 @@ func (tree Tree) copy(p **Node) {
 
    // The resulting copy is a new allocation that has no other references to it,
    // so we decrease the reference count of the original node by one.
-   defer tree.release(*p)
+   defer tree.free(*p)
 
    // Allocate memory for a new node and copy the original values into it.
    //

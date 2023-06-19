@@ -1,11 +1,5 @@
 package binarytree
 
-import (
-   "fmt"
-   "binarysearch/random"
-   "os"
-)
-
 func init() {
    //spew.Config.Indent = "       "
 }
@@ -143,57 +137,91 @@ func init() {
 //}
 
 func Sandbox() {
+
+
    //for {
-   //   fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-   //   a := &RedBlackBottomUp{}
-   //   b := &RedBlackBottomUp{}
+   //  fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+   //  a := &AVLBottomUp{}
+   //  b := &AVLBottomUp{}
    //
-   //   for i, n := uint64(0), random.LessThan(64, random.Uniform()) + 1; i < n; i++ {
-   //      a.Insert(random.LessThan(a.Size()+1, random.Uniform()), i)
-   //   }
-   //   for i, n := uint64(0), random.LessThan(64, random.Uniform()) + 1; i < n; i++ {
-   //      b.Insert(random.LessThan(b.Size()+1, random.Uniform()), i)
-   //   }
+   //  for i, n := uint64(0), random.LessThan(100, random.Uniform()) + 1; i < n; i++ {
+   //     a.Insert(random.LessThan(a.Size()+1, random.Uniform()), i)
+   //  }
+   //  for i, n := uint64(0), random.LessThan(100, random.Uniform()) + 1; i < n; i++ {
+   //     b.Insert(random.LessThan(b.Size()+1, random.Uniform()), i)
+   //  }
    //
-   //   a.Draw(os.Stdout)
-   //   b.Draw(os.Stdout)
+   //  a.Draw(os.Stdout)
+   //  b.Draw(os.Stdout)
    //
-   //   c := a.Join(b).(*RedBlackBottomUp)
+   //  c := a.Join(b).(*AVLBottomUp)
    //
-   //   c.Draw(os.Stdout)
-   //   c.Verify()
+   //  c.Draw(os.Stdout)
+   //  c.Verify()
    //
-   //   c.Free()
+   //  c.Free()
    //}
 
-   for {
-     fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-     tree := &RedBlackBottomUp{}
-     size := random.LessThan(100, random.Uniform()) + 1
-     for i := uint64(0); i < size; i++ {
-        tree.Insert(random.LessThan(tree.Size()+1, random.Uniform()), i)
-     }
 
-     tree.Draw(os.Stdout)
-     for tree.root != nil {
-        fmt.Println()
-        fmt.Println()
-        fmt.Println("before deleting =====================")
+   //
+   //
+   //for j := 0; j < 100000; j++ {
+   //   //fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+   //   tree := &AVLBottomUp{}
+   //   size := random.LessThan(1000, random.Uniform()) + 1
+   //   for i := uint64(0); i < size; i++ {
+   //      tree.Insert(random.LessThan(tree.Size()+1, random.Uniform()), i)
+   //   }
+   //
+   //   //tree.Draw(os.Stdout)
+   //   for tree.root != nil {
+   //      //fmt.Println()
+   //      //fmt.Println()
+   //      //fmt.Println("before deleting =====================")
+   //
+   //      //tree.Verify()
+   //      //tree.Draw(os.Stdout)
+   //
+   //      //fmt.Println("deleting")
+   //      i := random.LessThan(tree.Size(), random.Uniform())
+   //      //fmt.Println(i)
+   //      tree.Delete(i)
+   //      //fmt.Println("after deleting: ---------------")
+   //      //tree.Draw(os.Stdout)
+   //      //tree.Verify()
+   //   }
+   //   tree.Free()
+   //}
+   //fmt.Println(rotations)
 
-        //tree.Verify()
-        //tree.Draw(os.Stdout)
 
-        fmt.Println("deleting")
-        i := random.LessThan(tree.Size(), random.Uniform())
-        fmt.Println(i)
-        tree.Delete(i)
-        fmt.Println("after deleting: ---------------")
-        //tree.Draw(os.Stdout)
-        tree.Verify()
-     }
-     tree.Free()
-   }
-
+   //for {
+   //  fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+   //  tree := &RedBlackBottomUp{}
+   //  size := random.LessThan(34, random.Uniform()) + 1
+   //  for i := uint64(0); i < size; i++ {
+   //     tree.Insert(random.LessThan(tree.Size()+1, random.Uniform()), i)
+   //  }
+   //
+   //  tree.Draw(os.Stdout)
+   //  for tree.root != nil {
+   //     fmt.Println()
+   //     fmt.Println()
+   //     fmt.Println("before deleting max =====================")
+   //
+   //     tree.Verify()
+   //     tree.Draw(os.Stdout)
+   //
+   //     fmt.Println("deleting max")
+   //     i := tree.size - 1
+   //     fmt.Println(i)
+   //     tree.Delete(i)
+   //     fmt.Println("after deleting max: ---------------")
+   //     tree.Draw(os.Stdout)
+   //     tree.Verify()
+   //  }
+   //  tree.Free()
+   //}
 
 
    //for {
@@ -1197,8 +1225,8 @@ func Sandbox() {
 //   //    }
 //   //    p := l.Join(r)
 //   //    p.Verify()
-//   //    assert(p.Size() == l.Size() + r.Size())
-//   //    assert(p.Size() == p.(*WAVL).root.count())
+//   //    // assert(p.Size() == l.Size() + r.Size())
+//   //    // assert(p.Size() == p.(*WAVL).root.count())
 //   //    print(".")
 //   // }
 //}

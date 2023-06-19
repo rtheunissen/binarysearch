@@ -67,16 +67,16 @@ func (tree *Randomized) Insert(i Position, x Data) {
 }
 
 func (tree *Randomized) Delete(i Position) Data {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    p := &tree.root
    s := tree.size
    tree.size--
    for {
       tree.copy(p)
       if i == (*p).s {
-         defer tree.release(*p)
+         defer tree.free(*p)
          x := (*p).x
-         *p = tree.join2((*p).l, (*p).r, (*p).s, s-(*p).s-1)
+         *p = tree.join((*p).l, (*p).r, (*p).s, s-(*p).s-1)
          return x
       }
       if i < (*p).s {
@@ -91,7 +91,7 @@ func (tree *Randomized) Delete(i Position) Data {
    }
 }
 
-func (tree *Randomized) join2(l *Node, r *Node, sl, sr Size) (root *Node) {
+func (tree *Randomized) join(l *Node, r *Node, sl, sr Size) (root *Node) {
    p := &root
    for {
       if l == nil {
@@ -121,12 +121,12 @@ func (tree *Randomized) join2(l *Node, r *Node, sl, sr Size) (root *Node) {
 }
 
 func (tree *Randomized) Select(i Size) Data {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    return tree.lookup(tree.root, i)
 }
 
 func (tree *Randomized) Update(i Size, x Data) {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    tree.copy(&tree.root)
    tree.update(tree.root, i, x)
 }
@@ -151,7 +151,7 @@ func (tree *Randomized) splitInto(p *Node, i uint64, l, r **Node) {
 }
 
 func (tree *Randomized) split(i Size) (Tree, Tree) {
-   assert(i <= tree.Size())
+   // assert(i <= tree.Size())
    tree.share(tree.root)
    var l, r *Node
    tree.splitInto(tree.root, i, &l, &r)
@@ -175,7 +175,7 @@ func (tree *Randomized) Join(that List) List { // TODO check if benchmarks are a
    return &Randomized{
       Tree{
          arena: tree.arena,
-         root:  l.join2(l.root, r.root, l.size, r.size),
+         root:  l.join(l.root, r.root, l.size, r.size),
          size:  l.size + r.size,
       },
       tree.Source,

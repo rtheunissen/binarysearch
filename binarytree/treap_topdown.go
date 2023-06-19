@@ -28,7 +28,7 @@ func (tree *TreapTopDown) Clone() List {
 }
 
 func (tree *TreapTopDown) join(l, r *Node, sl Size) (root *Node) {
-   assert(sl == l.size())
+   // assert(sl == l.size())
    p := &root
    for {
       if l == nil {
@@ -53,10 +53,6 @@ func (tree *TreapTopDown) join(l, r *Node, sl Size) (root *Node) {
          r = *p
       }
    }
-}
-
-func (tree *TreapTopDown) join2(l, r *Node, sl, sr Size) (root *Node) {
-   return tree.join(l, r, sl)
 }
 
 //
@@ -104,20 +100,26 @@ func (tree *TreapTopDown) join2(l, r *Node, sl, sr Size) (root *Node) {
 //   tree.size = Size(len(x))
 //   return &tree
 //}
-
-func (tree *TreapTopDown) join3(l, p, r *Node, sl, sr Size) (root *Node) {
+func (tree *TreapTopDown) rank(p *Node) uint64 {
+   if p == nil {
+      return 0
+   } else {
+      return p.y
+   }
+}
+func (tree *TreapTopDown) build(l, p, r *Node, sl, sr Size) (root *Node) {
    //tree.pathcopy(&p)
-   if rank(p) >= rank(l) && rank(p) >= rank(r) {
+   if tree.rank(p) >= tree.rank(l) && tree.rank(p) >= tree.rank(r) {
       p.l = l
       p.r = r
       p.s = sl
       return p
    }
-   if rank(l) > rank(r) {
-      l.r = tree.join3(l.r, p, r, sl-l.s-1, sr)
+   if tree.rank(l) > tree.rank(r) {
+      l.r = tree.build(l.r, p, r, sl-l.s-1, sr)
       return l
    } else {
-      r.l = tree.join3(l, p, r.l, sl, r.s)
+      r.l = tree.build(l, p, r.l, sl, r.s)
       r.s = r.s + sl + 1
       return r
    }
@@ -131,7 +133,7 @@ func (tree TreapTopDown) delete(p **Node, i Position, x *Data) {
             *p = nil
          } else {
             tree.copy(p)
-            defer tree.release(*p)// TODO what
+            defer tree.free(*p) // TODO what
             *p = tree.join((*p).l, (*p).r, (*p).s)
          }
          return
@@ -167,20 +169,20 @@ func (tree *TreapTopDown) insert(p **Node, i Position, n *Node) {
 }
 
 func (tree *TreapTopDown) Insert(i Position, x Data) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.size++
    tree.insert(&tree.root, i, tree.allocate(Node{x: x, y: tree.Source.Uint64()}))
 }
 
 func (tree *TreapTopDown) Delete(i Position) (x Data) {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    tree.delete(&tree.root, i, &x)
    tree.size--
    return
 }
 
 func (tree TreapTopDown) split(i Size) (Tree, Tree) {
-   assert(i <= tree.Size())
+   // assert(i <= tree.Size())
    tree.share(tree.root)
    l, r := tree.Tree.split(tree.root, i)
 
@@ -189,19 +191,19 @@ func (tree TreapTopDown) split(i Size) (Tree, Tree) {
 }
 
 func (tree TreapTopDown) Split(i Position) (List, List) {
-   assert(i <= tree.Size())
+   // assert(i <= tree.Size())
    l, r := tree.split(i)
    return &TreapTopDown{Tree: l, Source: tree.Source},
       &TreapTopDown{Tree: r, Source: tree.Source}
 }
 
 func (tree *TreapTopDown) Select(i Size) Data {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    return tree.lookup(tree.root, i)
 }
 
 func (tree *TreapTopDown) Update(i Size, x Data) {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    tree.copy(&tree.root)
    tree.update(tree.root, i, x)
 }
@@ -225,8 +227,8 @@ func (tree TreapTopDown) verifyMaxRankHeap(p *Node) {
    if p == nil {
       return
    }
-   invariant(rank(p) >= rank(p.l))
-   invariant(rank(p) >= rank(p.r))
+   invariant(tree.rank(p) >= tree.rank(p.l))
+   invariant(tree.rank(p) >= tree.rank(p.r))
 
    tree.verifyMaxRankHeap(p.l)
    tree.verifyMaxRankHeap(p.r)

@@ -43,7 +43,7 @@ unset x2tics
 unset y2tics
 
 set xtics font DEFAULT_FONT offset 0,-0.5
-set xrange [0.1:*]
+set xrange [0.8:*]
 
 unset y2tics
 set y2tics autofreq font DEFAULT_FONT offset 1,0

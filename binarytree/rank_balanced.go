@@ -5,16 +5,7 @@ package binarytree
 type RankBalanced struct {
 }
 
-func (RankBalanced) rank(p *Node) int {
-   return p.rank()
-}
-
-func (RankBalanced) promote(p *Node){
-   p.y++
-}
-
-// Deprecated, why? use tree.rank
-func (p *Node) rank() int {
+func (tree RankBalanced) rank(p *Node) int {
    if p == nil {
       return -1
    } else {
@@ -22,44 +13,44 @@ func (p *Node) rank() int {
    }
 }
 
-func promote(p *Node) {
+func (tree RankBalanced) rankDifference(parent, child *Node) int {
+   // assert(parent != nil)
+   // assert(tree.rank(parent) >= tree.rank(child))
+   return tree.rank(parent) - tree.rank(child)
+}
+
+func (tree RankBalanced) isZeroChild(parent, child *Node) bool {
+   return tree.rankDifference(parent, child) == 0
+}
+
+func (tree RankBalanced) isOneChild(parent, child *Node) bool {
+   return tree.rankDifference(parent, child) == 1
+}
+
+func (tree RankBalanced) isTwoChild(parent, child *Node) bool {
+   return tree.rankDifference(parent, child) == 2
+}
+
+func (tree RankBalanced) isThreeChild(parent, child *Node) bool {
+   return tree.rankDifference(parent, child) == 3
+}
+
+func (tree RankBalanced) promote(p *Node){
    p.y++
 }
 
-func demote(p *Node) {
+func (tree RankBalanced) demote(p *Node) {
    p.y--
 }
 
-func isZeroZero(p *Node) bool {
-   return isZeroChild(p, p.l) && isZeroChild(p, p.r)
+func (tree RankBalanced) isZeroZero(p *Node) bool {
+   return tree.isZeroChild(p, p.l) && tree.isZeroChild(p, p.r)
 }
 
-func isOneOne(p *Node) bool {
-   return isOneChild(p, p.l) && isOneChild(p, p.r)
+func (tree RankBalanced) isOneOne(p *Node) bool {
+   return tree.isOneChild(p, p.l) && tree.isOneChild(p, p.r)
 }
 
-func isTwoTwo(p *Node) bool {
-   return isTwoChild(p, p.l) && isTwoChild(p, p.r)
+func (tree RankBalanced) isTwoTwo(p *Node) bool {
+   return tree.isTwoChild(p, p.l) && tree.isTwoChild(p, p.r)
 }
-
-func rankDifference(parent, child *Node) int {
-   assert(parent.rank() >= child.rank())
-   return parent.rank() - child.rank()
-}
-
-func isZeroChild(parent, child *Node) bool {
-   return parent.rank() == child.rank() //rankDifference(parent, child) == 0
-}
-
-func isOneChild(parent, child *Node) bool {
-   return rankDifference(parent, child) == 1
-}
-
-func isTwoChild(parent, child *Node) bool {
-   return rankDifference(parent, child) == 2
-}
-
-func isThreeChild(parent, child *Node) bool {
-   return rankDifference(parent, child) == 3
-}
-

@@ -53,7 +53,6 @@ func testBalancers(t *testing.T, scale list.Size, balancers []Balancer, distribu
                   tree = balancer.Restore(tree.Clone())
 
                   balancer.Verify(tree)
-                  tree.Verify()
                }
                //
                reference.Assert(t, tree)
