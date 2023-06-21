@@ -40,13 +40,13 @@ func (tree *TreapTopDown) join(l, r *Node, sl Size) (root *Node) {
          return
       }
       if l.y >= r.y {
-         tree.copy(&l)
+         tree.persist(&l)
          sl = sl - l.s - 1
          *p = l
          p = &l.r
          l = *p
       } else {
-         tree.copy(&r)
+         tree.persist(&r)
          r.s = r.s + sl
          *p = r
          p = &r.l
@@ -132,13 +132,13 @@ func (tree TreapTopDown) delete(p **Node, i Position, x *Data) {
          if (*p).l == nil && (*p).r == nil {
             *p = nil
          } else {
-            tree.copy(p)
+            tree.persist(p)
             defer tree.free(*p) // TODO what
             *p = tree.join((*p).l, (*p).r, (*p).s)
          }
          return
       }
-      tree.copy(p)
+      tree.persist(p)
       if i < (*p).s {
          p = deleteL(*p)
       } else {
@@ -159,7 +159,7 @@ func (tree *TreapTopDown) insert(p **Node, i Position, n *Node) {
          *p = n
          return
       }
-      tree.copy(p)
+      tree.persist(p)
       if i <= (*p).s {
          p = insertL(*p)
       } else {
@@ -204,7 +204,7 @@ func (tree *TreapTopDown) Select(i Size) Data {
 
 func (tree *TreapTopDown) Update(i Size, x Data) {
    // assert(i < tree.Size())
-   tree.copy(&tree.root)
+   tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }
 

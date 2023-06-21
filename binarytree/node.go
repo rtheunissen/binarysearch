@@ -444,14 +444,14 @@ func (tree Tree) verifySize(p *Node, s Size) Size {
 //}
 
 func (tree *Tree) replacedByRightSubtree(p **Node) *Node {
-   tree.copy(p)
+   tree.persist(p)
    r := *p
    *p = (*p).r
    return r
 }
 
 func (tree *Tree) replacedByLeftSubtree(p **Node) *Node {
-   tree.copy(p)
+   tree.persist(p)
    l := *p
    *p = (*p).l
    return l
@@ -479,7 +479,7 @@ func (tree *Tree) deleteMin2(p *Node) (root *Node, deleted *Node) {
    n := Node{}
    l := &n
    for {
-      tree.copy(&p)
+      tree.persist(&p)
       if p.l == nil {
          l.l = p.r
          break
@@ -494,7 +494,7 @@ func (tree *Tree) deleteMin2(p *Node) (root *Node, deleted *Node) {
 
 func (tree *Tree) deleteMin(p **Node) *Node {
    for {
-      tree.copy(p)
+      tree.persist(p)
       if (*p).l == nil {
          r := *p
          *p = (*p).r
@@ -508,12 +508,12 @@ func (tree *Tree) deleteMin(p **Node) *Node {
 func (tree *Tree) deleteMax(p **Node) *Node {
    for {
       if (*p).r == nil {
-         tree.copy(p)
+         tree.persist(p)
          l := *p
          *p = (*p).l
          return l
       }
-      tree.copy(p)
+      tree.persist(p)
       p = &(*p).r
    }
 }
@@ -555,10 +555,10 @@ func (tree *Tree) update(p *Node, i Position, x Data) {
          return
       }
       if i < p.s {
-         tree.copy(&p.l)
+         tree.persist(&p.l)
          p = p.l
       } else {
-         tree.copy(&p.r)
+         tree.persist(&p.r)
          i = i - p.s - 1
          p = p.r
       }
@@ -863,12 +863,12 @@ func (tree *Tree) pathR(p *Node, i *Position) **Node {
 // TODO: these are nuts
 func (tree *Tree) pathLeft(p ***Node) {
    // assert((**p).l != nil)
-   tree.copy(&(**p).l)
+   tree.persist(&(**p).l)
    *p = insertL(**p)
 }
 func (tree *Tree) pathRight(p ***Node, i *Position) {
    // assert((**p).r != nil)
-   tree.copy(&(**p).r)
+   tree.persist(&(**p).r)
    *p = insertR(**p, i)
 }
 func (tree *Tree) attach(p **Node, x Data) {
@@ -880,23 +880,23 @@ func (tree *Tree) attachL(p *Node, x Data) {
 }
 
 func (tree *Tree) attachLL(p *Node, x Data) {
-   tree.copy(&p.l)
+   tree.persist(&p.l)
    p.s++
    p.l.s++
    p.l.l = tree.allocate(Node{x: x})
 }
 func (tree *Tree) attachRR(p *Node, x Data) {
-   tree.copy(&p.r)
+   tree.persist(&p.r)
    p.r.r = tree.allocate(Node{x: x})
 }
 func (tree *Tree) attachLR(p *Node, x Data) {
-   tree.copy(&p.l)
+   tree.persist(&p.l)
    p.s++
    p.l.r = tree.allocate(Node{x: x})
 }
 
 func (tree *Tree) attachRL(p *Node, x Data) {
-   tree.copy(&p.r)
+   tree.persist(&p.r)
    p.r.s++
    p.r.l = tree.allocate(Node{x: x})
 }
@@ -910,24 +910,24 @@ func pathDeletingRightIgnoringIndex(p *Node) **Node {
 }
 
 func (tree Tree) rotateL(p **Node) {
-   tree.copy(&(*p).r)
+   tree.persist(&(*p).r)
    *p = (*p).rotateL()
 }
 
 func (tree Tree) rotateR(p **Node) {
-   tree.copy(&(*p).l)
+   tree.persist(&(*p).l)
    *p = (*p).rotateR()
 }
 
 func (tree Tree) rotateRL(p **Node) {
-   tree.copy(&(*p).r)
-   tree.copy(&(*p).r.l)
+   tree.persist(&(*p).r)
+   tree.persist(&(*p).r.l)
    *p = (*p).rotateRL()
 }
 
 func (tree Tree) rotateLR(p **Node) {
-   tree.copy(&(*p).l)
-   tree.copy(&(*p).l.r)
+   tree.persist(&(*p).l)
+   tree.persist(&(*p).l.r)
    *p = (*p).rotateLR()
 }
 
@@ -963,7 +963,7 @@ func (tree Tree) rotateLR(p **Node) {
 // //
 func (tree *Tree) appendR(p **Node, n *Node) {
    for *p != nil {
-      tree.copy(p)
+      tree.persist(p)
       p = &(*p).r
    }
    *p = n
@@ -973,7 +973,7 @@ func (tree *Tree) appendR(p **Node, n *Node) {
 // // no left child, then appends n* to the left of the last node on the path.
 func (tree *Tree) appendL(p **Node, n *Node) {
    for *p != nil {
-      tree.copy(p)
+      tree.persist(p)
       p = &(*p).l
    }
    *p = n

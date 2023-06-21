@@ -501,7 +501,7 @@ func (tree *LBSTBottomUp) insert(p *Node, s Size, i Position, x Data) *Node {
    if p == nil {
       return tree.allocate(Node{x: x})
    }
-   tree.copy(&p)
+   tree.persist(&p)
    sl := p.s
    sr := s - p.s - 1
 
@@ -534,7 +534,7 @@ func (tree *LBSTBottomUp) insert(p *Node, s Size, i Position, x Data) *Node {
 }
 
 func (tree *LBSTBottomUp) delete(p *Node, s Size, i Position, x *Data) *Node {
-   tree.copy(&p)
+   tree.persist(&p)
 
    sl := p.s
    sr := s - p.s - 1
@@ -600,7 +600,7 @@ func (tree *LBSTBottomUp) Select(i Size) Data {
 
 func (tree *LBSTBottomUp) Update(i Size, x Data) {
    // assert(i < tree.Size())
-   tree.copy(&tree.root)
+   tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }
 

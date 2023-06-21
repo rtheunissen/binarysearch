@@ -44,7 +44,7 @@ func (tree *TreapFingerTree) reverseL(p *Node, g *Node, s Size) *Node {
       if p == nil {
          return g
       }
-      tree.copy(&p)
+      tree.persist(&p)
       sl := p.s
       p.s = s - p.s - 1
       l := p.l
@@ -60,7 +60,7 @@ func (tree *TreapFingerTree) reverseR(p *Node, g *Node) *Node {
       if p == nil {
          return g
       }
-      tree.copy(&p)
+      tree.persist(&p)
       r := p.r
       p.r = g
       g = p
@@ -92,7 +92,7 @@ func (tree *TreapFingerTree) randomRank() uint64 {
 }
 
 func (tree *TreapFingerTree) rotateParentLeftOnRightSpine(p *Node) {
-   tree.copy(&p.r)
+   tree.persist(&p.r)
    r := p.r // parent on the spine
    p.r = r.r
    r.r = p.l
@@ -102,7 +102,7 @@ func (tree *TreapFingerTree) rotateParentLeftOnRightSpine(p *Node) {
 }
 
 func (tree *TreapFingerTree) rotateParentRightOnLeftSpine(p *Node) {
-   tree.copy(&p.l)
+   tree.persist(&p.l)
    l := p.l
    p.l = l.l
    l.l = p.r
@@ -190,7 +190,7 @@ func (tree *TreapFingerTree) rank(p *Node) uint64 {
 }
 func (tree *TreapFingerTree) rotateDownL(p *Node) {
    for p.r != nil && p.r.y > p.y {
-      tree.copy(&p.r)
+      tree.persist(&p.r)
       r := p.r
       p.r = r.l
       r.l = p.l
@@ -203,7 +203,7 @@ func (tree *TreapFingerTree) rotateDownL(p *Node) {
 
 func (tree *TreapFingerTree) rotateDownR(p *Node) {
    for p.l != nil && p.l.y > p.y {
-      tree.copy(&p.l)
+      tree.persist(&p.l)
       l := p.l
       p.l = l.r
       l.r = p.r
@@ -238,7 +238,7 @@ func (tree *TreapFingerTree) getTail() (p *Node) {
 }
 
 func (tree *TreapFingerTree) insertAsLast(x Data) {
-   tree.copy(&tree.root)
+   tree.persist(&tree.root)
    p := tree.allocate(Node{x: x, y: tree.randomRank()})
    p.r = tree.getTail()
    p = tree.rotateUpR(p)
@@ -247,7 +247,7 @@ func (tree *TreapFingerTree) insertAsLast(x Data) {
 }
 
 func (tree *TreapFingerTree) insertAsFirst(x Data) {
-   tree.copy(&tree.root)
+   tree.persist(&tree.root)
    p := tree.allocate(Node{x: x, y: tree.randomRank()})
    p.l = tree.getHead()
    p = tree.rotateUpL(p)
@@ -276,7 +276,7 @@ func (tree *TreapFingerTree) Update(i Position, x Data) {
    case i > tree.root.s:
       tree.updateFromTail(x, tree.size-i-1)
    default:
-      tree.copy(&tree.root)
+      tree.persist(&tree.root)
       tree.root.x = x
    }
 }
@@ -297,8 +297,8 @@ func (tree TreapFingerTree) accessFromHead(i Position) Data {
 }
 
 func (tree *TreapFingerTree) updateFromTail(x Data, i Position) {
-   tree.copy(&tree.root)
-   tree.copy(&tree.root.r)
+   tree.persist(&tree.root)
+   tree.persist(&tree.root.r)
 
    p := tree.root.r
    for {
@@ -307,11 +307,11 @@ func (tree *TreapFingerTree) updateFromTail(x Data, i Position) {
          return
       }
       if i > p.s {
-         tree.copy(&p.r)
+         tree.persist(&p.r)
          i = i - p.s - 1
          p = p.r
       } else {
-         tree.copy(&p.l)
+         tree.persist(&p.l)
          tree.update(p.l, p.s-i, x)
          return
       }
@@ -319,8 +319,8 @@ func (tree *TreapFingerTree) updateFromTail(x Data, i Position) {
 }
 
 func (tree *TreapFingerTree) updateFromHead(x Data, i Position) {
-   tree.copy(&tree.root)
-   tree.copy(&tree.root.l)
+   tree.persist(&tree.root)
+   tree.persist(&tree.root.l)
 
    p := tree.root.l
    for {
@@ -329,11 +329,11 @@ func (tree *TreapFingerTree) updateFromHead(x Data, i Position) {
          return
       }
       if i > p.s {
-         tree.copy(&p.l)
+         tree.persist(&p.l)
          i = i - p.s - 1
          p = p.l
       } else {
-         tree.copy(&p.r)
+         tree.persist(&p.r)
          tree.update(p.r, i-1, x)
          return
       }
@@ -367,7 +367,7 @@ func (tree *TreapFingerTree) insert(p **Node, i Position, n *Node) {
          *p = n
          return
       }
-      tree.copy(p)
+      tree.persist(p)
       if i <= (*p).s {
          p = insertL(*p)
       } else {
@@ -377,8 +377,8 @@ func (tree *TreapFingerTree) insert(p **Node, i Position, n *Node) {
 }
 
 func (tree *TreapFingerTree) insertFromHead(x Data, i Position) {
-   tree.copy(&tree.root)
-   tree.copy(&tree.root.l)
+   tree.persist(&tree.root)
+   tree.persist(&tree.root.l)
    tree.root.s++
    tree.size++
 
@@ -387,7 +387,7 @@ func (tree *TreapFingerTree) insertFromHead(x Data, i Position) {
    for {
       //
       if i > p.s {
-         tree.copy(&p.l)
+         tree.persist(&p.l)
          i = i - p.s - 1
          p = p.l
          continue
@@ -441,16 +441,16 @@ func (tree TreapFingerTree) splitFromHead(i Position) (Tree, Tree) {
    // TODO: I think there is a bug here when i == n
 
    //////
-   tree.copy(&tree.root)
+   tree.persist(&tree.root)
 
    p := tree.root
    d := i
    for d > (p.l.s + 1) {
       d = d - (p.l.s + 1)
-      tree.copy(&p.l)
+      tree.persist(&p.l)
       p = p.l
    }
-   tree.copy(&p.l)
+   tree.persist(&p.l)
    g := p.l
    p.l = nil
    p = g
@@ -479,17 +479,17 @@ func (tree TreapFingerTree) splitFromTail(i Position) (Tree, Tree) {
    // assert(i < tree.size)
    // assert(i > tree.root.s)
 
-   tree.copy(&tree.root)
+   tree.persist(&tree.root)
 
    p := tree.root
    d := tree.size - i
 
    for d > (p.r.s + 1) {
       d = d - (p.r.s + 1)
-      tree.copy(&p.r)
+      tree.persist(&p.r)
       p = p.r
    }
-   tree.copy(&p.r)
+   tree.persist(&p.r)
    g := p.r
    p.r = nil
    p = g
@@ -522,8 +522,8 @@ func (tree TreapFingerTree) splitFromTail(i Position) (Tree, Tree) {
 //
 
 func (tree *TreapFingerTree) insertFromTail(x Data, i Position) {
-   tree.copy(&tree.root)
-   tree.copy(&tree.root.r)
+   tree.persist(&tree.root)
+   tree.persist(&tree.root.r)
 
    tree.size++
 
@@ -532,7 +532,7 @@ func (tree *TreapFingerTree) insertFromTail(x Data, i Position) {
    for {
       //
       if i > p.s {
-         tree.copy(&p.r)
+         tree.persist(&p.r)
          i = i - p.s - 1
          p = p.r
          continue
@@ -707,8 +707,8 @@ func (tree *TreapFingerTree) deleteFirst(x *Data) {
    //println("deleteFirst")
    defer tree.free(tree.root.l)
    *x = tree.root.l.x
-   tree.copy(&tree.root)
-   tree.copy(&tree.root.l)
+   tree.persist(&tree.root)
+   tree.persist(&tree.root.l)
    tree.root.l = tree.reverseL(tree.root.l.r, tree.root.l.l, tree.root.l.s)
    tree.root.s--
 }
@@ -717,8 +717,8 @@ func (tree *TreapFingerTree) deleteLast(x *Data) {
    //println("deleteLast")
    defer tree.free(tree.root.r)
    *x = tree.root.r.x
-   tree.copy(&tree.root)
-   tree.copy(&tree.root.r)
+   tree.persist(&tree.root)
+   tree.persist(&tree.root.r)
    tree.root.r = tree.reverseR(tree.root.r.l, tree.root.r.r)
 }
 func (tree TreapFingerTree) delete(p **Node, i Position, x *Data) {
@@ -728,13 +728,13 @@ func (tree TreapFingerTree) delete(p **Node, i Position, x *Data) {
          if (*p).l == nil && (*p).r == nil {
             *p = nil
          } else {
-            tree.copy(p) // TODO: should we instead share the left and right here?
+            tree.persist(p) // TODO: should we instead share the left and right here?
             //defer tree.release(*p)
             *p = tree.join((*p).l, (*p).r, (*p).s)
          }
          return
       }
-      tree.copy(p)
+      tree.persist(p)
       if i < (*p).s {
          p = deleteL(*p)
       } else {
@@ -748,12 +748,12 @@ func (tree *TreapFingerTree) deleteFromHead(i Position, x *Data) {
       tree.deleteFirst(x)
       return
    }
-   tree.copy(&tree.root)
-   tree.copy(&tree.root.l)
+   tree.persist(&tree.root)
+   tree.persist(&tree.root.l)
    tree.root.s--
    p := tree.root.l
    for i > p.s+1 {
-      tree.copy(&p.l)
+      tree.persist(&p.l)
       i = i - p.s - 1
       p = p.l
    }
@@ -762,7 +762,7 @@ func (tree *TreapFingerTree) deleteFromHead(i Position, x *Data) {
       p.s--
       return
    }
-   tree.copy(&p.l)
+   tree.persist(&p.l)
    g := p.l
    defer tree.free(g)
    *x = g.x
@@ -785,13 +785,13 @@ func (tree *TreapFingerTree) join(l, r *Node, sl Size) (root *Node) {
          return
       }
       if l.y >= r.y {
-         tree.copy(&l)
+         tree.persist(&l)
          sl = sl - l.s - 1
          *p = l
          p = &l.r
          l = *p
       } else {
-         tree.copy(&r)
+         tree.persist(&r)
          r.s = r.s + sl
          *p = r
          p = &r.l
@@ -807,11 +807,11 @@ func (tree *TreapFingerTree) deleteFromTail(i Position, x *Data) {
       return
    }
    i = tree.size - i - 1
-   tree.copy(&tree.root)
-   tree.copy(&tree.root.r)
+   tree.persist(&tree.root)
+   tree.persist(&tree.root.r)
    p := tree.root.r
    for i > p.s+1 {
-      tree.copy(&p.r) // TODO I think this could be nulll?
+      tree.persist(&p.r) // TODO I think this could be nulll?
       i = i - p.s - 1
       p = p.r
    }
@@ -823,7 +823,7 @@ func (tree *TreapFingerTree) deleteFromTail(i Position, x *Data) {
       return
    }
    //println("delete on the right spine")
-   tree.copy(&p.r)
+   tree.persist(&p.r)
    g := p.r
    defer tree.free(g)
    *x = g.x
@@ -849,7 +849,7 @@ func (tree *TreapFingerTree) reverseL2(p *Node, g *Node) *Node {
       if p == nil {
          return g
       }
-      tree.copy(&p)
+      tree.persist(&p)
       s = s + p.s + 1
       p.s = s - p.s - 1
       l := p.l
@@ -860,7 +860,7 @@ func (tree *TreapFingerTree) reverseL2(p *Node, g *Node) *Node {
 }
 func (tree *TreapFingerTree) deleteRoot(v *Data) {
    //println("deleteRoot")
-   tree.copy(&tree.root)
+   tree.persist(&tree.root)
    *v = tree.root.x
 
    // To treap
@@ -996,8 +996,8 @@ func (tree *TreapFingerTree) Delete(i Position) (v Data) {
 //}
 
 func (tree *TreapFingerTree) joinUp(o *TreapFingerTree) *Node {
-   tree.copy(&tree.root)
-   tree.copy(&o.root)
+   tree.persist(&tree.root)
+   tree.persist(&o.root)
 
    l := tree.root.r
    r := o.root.l
@@ -1025,14 +1025,14 @@ func (tree *TreapFingerTree) joinUp(o *TreapFingerTree) *Node {
          return o.root
       }
       if l.y < r.y { // TODO: how does <= affect things? Should we prefer larger size?
-         tree.copy(&l)
+         tree.persist(&l)
          s = s + l.s + 1
          g := l.r
          l.r = p
          p = l
          l = g
       } else {
-         tree.copy(&r)
+         tree.persist(&r)
          s = s + r.s + 1
          r.s = s - r.s - 1
          g := r.l

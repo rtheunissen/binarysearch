@@ -53,7 +53,7 @@ func (tree *Randomized) Insert(i Position, x Data) {
          *p = n
          return
       }
-      tree.copy(p)     //
+      tree.persist(p)  //
       if i <= (*p).s { //
          s = (*p).s  //
          (*p).s++    //
@@ -72,7 +72,7 @@ func (tree *Randomized) Delete(i Position) Data {
    s := tree.size
    tree.size--
    for {
-      tree.copy(p)
+      tree.persist(p)
       if i == (*p).s {
          defer tree.free(*p)
          x := (*p).x
@@ -104,13 +104,13 @@ func (tree *Randomized) join(l *Node, r *Node, sl, sr Size) (root *Node) {
       }
 
       if random.LessThan(sl+sr, tree.Source) < sl {
-         tree.copy(&l)
+         tree.persist(&l)
          sl = sl - l.s - 1
          *p = l
          p = &l.r
          l = *p
       } else {
-         tree.copy(&r)
+         tree.persist(&r)
          sr = r.s
          r.s = r.s + sl
          *p = r
@@ -127,13 +127,13 @@ func (tree *Randomized) Select(i Size) Data {
 
 func (tree *Randomized) Update(i Size, x Data) {
    // assert(i < tree.Size())
-   tree.copy(&tree.root)
+   tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }
 
 func (tree *Randomized) splitInto(p *Node, i uint64, l, r **Node) {
    for p != nil {
-      tree.copy(&p)
+      tree.persist(&p)
       if i <= p.s {
          *r = p
          p.s = p.s - i

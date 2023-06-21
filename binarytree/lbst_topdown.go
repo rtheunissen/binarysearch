@@ -56,7 +56,7 @@ func (tree *LBSTTopDown) insert(p **Node, s Size, i Position, x Data) {
          *p = tree.allocate(Node{x: x})
          return
       }
-      tree.copy(p)
+      tree.persist(p)
 
       sl := (*p).sizeL()
       sr := (*p).sizeR(s)
@@ -170,7 +170,7 @@ func (tree *LBSTTopDown) delete(p **Node, s Size, i Position) (deleted *Node) {
    // assert(i < s)
    // assert(s == (*p).size())
    for {
-      tree.copy(p)
+      tree.persist(p)
 
       sl := (*p).s
       sr := s - (*p).s - 1
@@ -335,7 +335,7 @@ func (tree *LBSTTopDown) buildL(p *Node, l, r *Node, sl, sr Size) *Node {
       p.s = sl
       return p
    }
-   tree.copy(&l)
+   tree.persist(&l)
    l.r = tree.buildL(p, l.r, r, sl-l.s-1, sr)
    if !tree.isBalanced(l.s, sl+sr-l.s) {
       tree.rebalanceR(&l, sr+sl-l.s)
@@ -350,7 +350,7 @@ func (tree *LBSTTopDown) buildR(p *Node, l, r *Node, sl, sr Size) *Node {
       p.s = sl
       return p
    }
-   tree.copy(&r)
+   tree.persist(&r)
    r.l = tree.buildR(p, l, r.l, sl, r.s)
    r.s = 1 + sl + r.s
    if !tree.isBalanced(sl+sr-r.s, r.s) {
@@ -363,7 +363,7 @@ func (tree LBSTTopDown) split(p *Node, i, s Size) (l, r *Node) {
    if p == nil {
       return
    }
-   tree.copy(&p)
+   tree.persist(&p)
 
    sl := p.s
    sr := s - p.s - 1

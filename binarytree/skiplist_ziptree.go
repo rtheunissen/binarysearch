@@ -31,7 +31,7 @@ func (tree *Zip) randomRank() uint64 {
 func (tree *Zip) unzip(p *Node, i Position, l, r **Node) {
    //p.partition(i, &l, &r)
    for p != nil {
-      tree.copy(&p)
+      tree.persist(&p)
       if i <= p.s {
          *r = p
          p.s = p.s - i
@@ -74,11 +74,11 @@ func (tree *Zip) Insert(i Position, x Data) {
          if n.y == (*p).y { // Branching left and ranks are equal.
             break
          }
-         tree.copy(p)
+         tree.persist(p)
          (*p).s = (*p).s + 1 // Increase the size of the left subtree.
          p = &(*p).l         // Path left.
       } else {
-         tree.copy(p)
+         tree.persist(p)
          i = i - ((*p).s + 1) // Skip the current node and left subtree.
          p = &(*p).r          // Path right.
       }
@@ -111,13 +111,13 @@ func (tree *Zip) zip(l, r *Node, sl Size) (root *Node) {
       }
 
       if tree.rank(l) >= tree.rank(r) {
-         tree.copy(&l)
+         tree.persist(&l)
          sl = sl - l.s - 1 //l.sizeR(sl)
          *p = l
          p = &l.r
          l = *p
       } else {
-         tree.copy(&r)
+         tree.persist(&r)
          r.s = r.s + sl
          *p = r
          p = &r.l
@@ -193,12 +193,12 @@ func (tree *Zip) delete(p **Node, i Position, x *Data) {
          if (*p).l == nil && (*p).r == nil {
             *p = nil
          } else {
-            tree.copy(p)
+            tree.persist(p)
             *p = tree.zip((*p).l, (*p).r, (*p).s)
          }
          return
       }
-      tree.copy(p)
+      tree.persist(p)
       if i < (*p).s {
          (*p).s = (*p).s - 1 // Decrease the size of the left subtree.
          p = &(*p).l         // Path left.
@@ -241,7 +241,7 @@ func (tree *Zip) Select(i Size) Data {
 
 func (tree *Zip) Update(i Size, x Data) {
    // assert(i < tree.Size())
-   tree.copy(&tree.root)
+   tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }
 

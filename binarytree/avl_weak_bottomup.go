@@ -22,7 +22,7 @@ func (tree *AVLWeakBottomUp) insert(p *Node, i Position, x Data) *Node {
    if p == nil {
       return tree.allocate(Node{x: x})
    }
-   tree.copy(&p)
+   tree.persist(&p)
    if i <= p.s {
       p.s = p.s + 1
       p.l = tree.insert(p.l, i, x)
@@ -52,7 +52,7 @@ func (tree *AVLWeakBottomUp) insert(p *Node, i Position, x Data) *Node {
 // }
 
 func (tree AVLWeakBottomUp) delete(p *Node, i Position, x *Data) *Node {
-   tree.copy(&p)
+   tree.persist(&p)
    if i == p.s {
       *x = p.x
       defer tree.free(p)
@@ -85,7 +85,7 @@ func (tree AVLWeakBottomUp) extractMin(p *Node, min **Node) *Node {
       *min = tree.replacedByRightSubtree(&p)
       return p
    }
-   tree.copy(&p)
+   tree.persist(&p)
    p.s--
    p.l = tree.extractMin(p.l, min)
    return tree.rebalanceOnDelete(p)
@@ -97,7 +97,7 @@ func (tree AVLWeakBottomUp) extractMax(p *Node, max **Node) *Node {
       *max = tree.replacedByLeftSubtree(&p)
       return p
    }
-   tree.copy(&p)
+   tree.persist(&p)
    p.r = tree.extractMax(p.r, max)
    return tree.rebalanceOnDelete(p)
 }
@@ -131,7 +131,7 @@ func (tree AVLWeakBottomUp) split(p *Node, i, s Size) (l, r *Node) {
    if p == nil {
       return
    }
-   tree.copy(&p)
+   tree.persist(&p)
 
    sl := p.s
    sr := s - p.s - 1

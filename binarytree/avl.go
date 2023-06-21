@@ -70,7 +70,7 @@ func (tree *AVLBottomUp) insert(p *Node, i list.Position, x list.Data) *Node {
    if p == nil {
       return tree.allocate(Node{x: x})
    }
-   tree.copy(&p)
+   tree.persist(&p)
    if i <= p.s {
       p.s = p.s + 1
       p.l = tree.insert(p.l, i, x)
@@ -146,7 +146,7 @@ func (tree *AVLBottomUp) balanceInsertR(p *Node) *Node {
 }
 
 func (tree *AVLBottomUp) delete(p *Node, i list.Position, x *list.Data) *Node {
-   tree.copy(&p)
+   tree.persist(&p)
    if i == p.s {
       *x = p.x
       defer tree.free(p)
@@ -255,7 +255,7 @@ func (tree *AVLBottomUp) balanceDeleteL(p *Node) *Node {
 
 
 func (tree *AVLBottomUp) deleteMin(p *Node, min **Node) *Node {
-   tree.copy(&p)
+   tree.persist(&p)
    if p.l == nil {
       *min = p
       return p.r
@@ -266,7 +266,7 @@ func (tree *AVLBottomUp) deleteMin(p *Node, min **Node) *Node {
 }
 
 func (tree *AVLBottomUp) deleteMax(p *Node, r **Node) *Node {
-   tree.copy(&p)
+   tree.persist(&p)
    if p.r == nil {
       *r = p
       return p.l
@@ -291,7 +291,7 @@ func (tree *AVLBottomUp) buildR(l, p, r *Node, sl list.Size) *Node {
       p.y = uint64(tree.rank(l) + 1)
       return p
    }
-   tree.copy(&l)
+   tree.persist(&l)
    l.r = tree.buildR(l.r, p, r, sl-l.s-1)
    return tree.balanceInsertR(l)
 }
@@ -304,7 +304,7 @@ func (tree *AVLBottomUp) buildL(l, p, r *Node, sl list.Size) *Node {
       p.y = uint64(tree.rank(r) + 1)
       return p
    }
-   tree.copy(&r)
+   tree.persist(&r)
    r.s = 1 + sl + r.s
    r.l = tree.buildL(l, p, r.l, sl)
    return tree.balanceInsertL(r)
@@ -314,7 +314,7 @@ func (tree *AVLBottomUp) joinR(l, r *Node, sl list.Size) (p *Node) {
    if tree.rank(l) <= tree.rank(r) + 1 {
       return tree.build(tree.deleteMax(l, &p), p, r, sl-1)
    }
-   tree.copy(&l)
+   tree.persist(&l)
    l.r = tree.joinR(l.r, r, sl-l.s-1)
    return tree.balanceInsertR(l)
 }
@@ -323,7 +323,7 @@ func (tree *AVLBottomUp) joinL(l, r *Node, sl list.Size) (p *Node) {
    if tree.rank(r) <= tree.rank(l) + 1 {
       return tree.build(l, p, tree.deleteMin(r, &p), sl)
    }
-   tree.copy(&r)
+   tree.persist(&r)
    r.s = sl + r.s
    r.l = tree.joinL(l, r.l, sl)
    return tree.balanceInsertL(r)
@@ -355,7 +355,7 @@ func (tree *AVLBottomUp) split(p *Node, i, s list.Size) (l, r *Node) {
    if p == nil {
       return
    }
-   tree.copy(&p)
+   tree.persist(&p)
    if i <= (*p).s {
       l, r = tree.split(p.l, i, p.s)
          r = tree.build(r, p, p.r, p.s - i)

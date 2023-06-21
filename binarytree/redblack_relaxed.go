@@ -18,7 +18,7 @@ func (tree RedBlackRelaxed) split(p *Node, i, s Size) (l, r *Node) {
    if p == nil {
       return
    }
-   tree.copy(&p)
+   tree.persist(&p)
 
    sl := p.s
    sr := s - p.s - 1
@@ -50,12 +50,12 @@ func (tree RedBlackRelaxed) build(l, p, r *Node, sl Size) *Node {
       return p
    }
    if tree.rank(l) < tree.rank(r) {
-      tree.copy(&r)
+      tree.persist(&r)
       r.s = 1 + sl + r.s
       r.l = tree.build(l, p, r.l, sl)
       return tree.fixL(r)
    } else {
-      tree.copy(&l)
+      tree.persist(&l)
       l.r = tree.build(l.r, p, r, sl-l.s-1)
       return tree.fixR(l)
    }

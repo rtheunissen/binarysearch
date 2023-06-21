@@ -24,6 +24,9 @@ func (strategy Partition) Restore(tree Tree) Tree {
    return tree
 }
 
+// TODO: technically weight-based balanced is balanced for all trees s < 4, which would reduce partition count big time.
+//       confirm that average and maximum path lengths stay exactly the same, but partition count drops.
+//       how does this affect performance?
 func (strategy Partition) balance(tree *Tree, p *Node, s Size) *Node {
    if s < 3 {
       return p

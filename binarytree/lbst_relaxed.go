@@ -132,7 +132,7 @@ func (tree *LBSTRelaxed) Insert(i Position, x Data) {
    // Search with increasing depth until the end of the path is reached.
    //
    for *p != nil {
-      tree.copy(p)
+      tree.persist(p)
       depth++
 
       sl := (*p).s         // Size of the left subtree.  O(1)
@@ -213,7 +213,7 @@ func (tree *LBSTRelaxed) joinLr(l, r *Node, sl, sr Size) *Node {
       p.s = sl - 1
       return p
    }
-   tree.copy(&l)
+   tree.persist(&l)
    l.r = tree.joinlR(l.r, r, sl-l.s-1, sr)
    return l
 }
@@ -229,7 +229,7 @@ func (tree *LBSTRelaxed) joinlR(l, r *Node, sl, sr Size) *Node {
       p.s = sl
       return p
    }
-   tree.copy(&r)
+   tree.persist(&r)
    r.l = tree.joinLr(l, r.l, sl, r.s)
    r.s = sl + r.s
    return r

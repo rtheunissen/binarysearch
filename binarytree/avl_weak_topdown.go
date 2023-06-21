@@ -29,7 +29,7 @@ func (tree *AVLWeakTopDown) insert(p **Node, i Position, x Data) {
       tree.attach(p, x)
       return
    }
-   tree.copy(p)
+   tree.persist(p)
    //
    // "Otherwise, tree.promote the root if it is not 1,1."
    //
@@ -241,7 +241,7 @@ func (tree *AVLWeakTopDown) insert(p **Node, i Position, x Data) {
 }
 
 func (tree *AVLWeakTopDown) dissolve(p **Node, x *Data) {
-   tree.copy(p)
+   tree.persist(p)
    defer tree.free(*p)
    *x = (*p).x
    *p = tree.join((*p).l, (*p).r, (*p).s)
@@ -249,7 +249,7 @@ func (tree *AVLWeakTopDown) dissolve(p **Node, x *Data) {
 
 func (tree *AVLWeakTopDown) Update(i Size, x Data) {
    // assert(i < tree.size)
-   tree.copy(&tree.root)
+   tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }
 
@@ -302,7 +302,7 @@ func (tree AVLWeakTopDown) split(p *Node, i, s Size) (l, r *Node) {
    if p == nil {
       return
    }
-   tree.copy(&p)
+   tree.persist(&p)
 
    sl := p.s
    sr := s - p.s - 1
@@ -339,14 +339,14 @@ func (tree AVLWeakTopDown) resetSafeNode(p *Node) bool {
    }
    if tree.isTwoChild(p, p.l) && tree.isTwoTwo(p.r) {
       // assert(tree.isOneChild(p, p.r))
-      tree.copy(&p.r)
+      tree.persist(&p.r)
       tree.demote(p)
       tree.demote(p.r)
       return true
    }
    if tree.isTwoChild(p, p.r) && tree.isTwoTwo(p.l) {
       // assert(tree.isOneChild(p, p.l))
-      tree.copy(&p.l)
+      tree.persist(&p.l)
       tree.demote(p)
       tree.demote(p.l)
       return true
@@ -387,7 +387,7 @@ func (tree AVLWeakTopDown) delete(p **Node, i Position) (x Data) {
    // This is the parent of the current node; the grandparent and "safe node".
    g := p
    for {
-      tree.copy(p)
+      tree.persist(p)
       if tree.resetSafeNode(*p) {
          tree.rebalanceTopDownOnDelete(g)
       }
@@ -433,7 +433,7 @@ func (tree AVLWeakTopDown) deleteMax(p **Node) (max *Node) {
       return tree.replacedByLeftSubtree(p)
    }
    for {
-      tree.copy(p)
+      tree.persist(p)
       right := pathDeletingRightIgnoringIndex(*p)
       if tree.resetSafeNode(*p) {
          tree.rebalanceTopDownOnDelete(g)
@@ -454,7 +454,7 @@ func (tree AVLWeakTopDown) deleteMin(p **Node) (min *Node) {
       return tree.replacedByRightSubtree(p)
    }
    for {
-      tree.copy(p)
+      tree.persist(p)
       left := deleteL(*p)
       if tree.resetSafeNode(*p) {
          tree.rebalanceTopDownOnDelete(g)

@@ -22,7 +22,7 @@ func (tree *RedBlackRelaxedBottomUp) insert(p *Node, i Position, x Data) *Node {
    if p == nil {
       return tree.allocate(Node{x: x})
    }
-   tree.copy(&p)
+   tree.persist(&p)
    if i <= p.s {
       p.s = p.s + 1
       p.l = tree.insert(p.l, i, x)
@@ -47,7 +47,7 @@ func (tree *RedBlackRelaxedBottomUp) Select(i Size) Data {
 
 func (tree *RedBlackRelaxedBottomUp) Update(i Size, x Data) {
    // assert(i < tree.Size())
-   tree.copy(&tree.root)
+   tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }
 

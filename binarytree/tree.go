@@ -80,7 +80,7 @@ func (tree Tree) partition(p *Node, i uint64) *Node {
    r := &n
    for i != p.s {
       // measurement(&partitionDepth, 1)
-      tree.copy(&p)
+      tree.persist(&p)
       if i < p.s {
          p.s = p.s - i - 1
          r.l = p
@@ -93,7 +93,7 @@ func (tree Tree) partition(p *Node, i uint64) *Node {
          p = p.r
       }
    }
-   tree.copy(&p)
+   tree.persist(&p)
    l.r = p.l
    r.l = p.r
    p.l = n.r
@@ -107,7 +107,7 @@ func (tree *Tree) split(p *Node, i uint64) (*Node, *Node) {
    l := &n
    r := &n
    for p != nil {
-      tree.copy(&p)
+      tree.persist(&p)
       if i <= p.s {
          p.s = p.s - i
          r.l = p
@@ -157,7 +157,7 @@ func (tree *Tree) Select(i list.Size) list.Data {
 
 func (tree *Tree) Update(i list.Size, x list.Data) {
    // assert(i < tree.size)
-   tree.copy(&tree.root)
+   tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }
 
@@ -191,7 +191,7 @@ func (tree *Tree) insert(p **Node, s list.Size, i list.Position, x list.Data) {
          *p = tree.allocate(Node{x: x})
          return
       }
-      tree.copy(p)
+      tree.persist(p)
       sl := (*p).s
       sr := s - (*p).s - 1
 
@@ -333,7 +333,7 @@ func (tree *Tree) dissolve(p *Node, s list.Size) *Node {
 
 func (tree *Tree) delete(p **Node, s list.Size, i list.Size) (x list.Data) {
    for {
-      tree.copy(p)
+      tree.persist(p)
       if i == (*p).s {
          x := (*p).x
          *p = tree.dissolve(*p, s)

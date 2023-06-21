@@ -55,7 +55,7 @@ func (tree AVLRelaxedBottomUp) buildL(l *Node, p *Node, r *Node, sl Size) (root 
       p.y = uint64(tree.rank(l) + 1)
       return p
    }
-   tree.copy(&l)
+   tree.persist(&l)
    l.r = tree.build(l.r, p, r, sl-l.s-1)
    return tree.balanceInsertR(l)
 }
@@ -68,7 +68,7 @@ func (tree AVLRelaxedBottomUp) buildR(l *Node, p *Node, r *Node, sl Size) (root 
       p.y = uint64(tree.rank(r) + 1)
       return p
    }
-   tree.copy(&r)
+   tree.persist(&r)
    r.s = 1 + sl + r.s
    r.l = tree.build(l, p, r.l, sl)
    return tree.balanceInsertL(r)
@@ -116,7 +116,7 @@ func (tree AVLRelaxedBottomUp) split(p *Node, i, s Size) (l, r *Node) {
    if p == nil {
       return
    }
-   tree.copy(&p)
+   tree.persist(&p)
 
    sl := p.s
    sr := s - p.s - 1

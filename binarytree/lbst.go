@@ -30,7 +30,7 @@ func (tree LBST) join(l *Node, r *Node, sl, sr Size) (k *Node) {
 }
 
 func (tree LBST) extractMin(p *Node, s Size, x **Node) *Node {
-   tree.copy(&p)
+   tree.persist(&p)
    if p.l == nil {
       *x = p
       p = p.r
@@ -56,7 +56,7 @@ func (tree LBST) extractMin(p *Node, s Size, x **Node) *Node {
 }
 
 func (tree LBST) extractMax(p *Node, s Size, x **Node) *Node {
-   tree.copy(&p)
+   tree.persist(&p)
    if p.r == nil {
       *x = p
       p = p.l
@@ -105,7 +105,7 @@ func (tree *LBST) buildL(p *Node, l, r *Node, sl, sr Size) *Node {
       p.s = sl
       return p
    }
-   tree.copy(&l)
+   tree.persist(&l)
 
    sll := l.s
    slr := sl - l.s - 1
@@ -134,7 +134,7 @@ func (tree *LBST) buildR(p *Node, l, r *Node, sl, sr Size) *Node {
       p.s = sl
       return p
    }
-   tree.copy(&r)
+   tree.persist(&r)
 
    srl := r.s
    srr := sr - r.s - 1
@@ -156,7 +156,7 @@ func (tree *LBST) split(p *Node, i, s Size) (l, r *Node) {
    if p == nil {
       return
    }
-   tree.copy(&p)
+   tree.persist(&p)
 
    sl := p.s
    sr := s - p.s - 1

@@ -29,7 +29,7 @@ func (tree *RedBlackRelaxedTopDown) insert(p **Node, i Position, x Data) {
       tree.attach(p, x)
       return
    }
-   tree.copy(p)
+   tree.persist(p)
    //
    // "Otherwise, promote the root if 0,0."
    //
@@ -280,7 +280,7 @@ func (tree *RedBlackRelaxedTopDown) Select(i Size) Data {
 
 func (tree *RedBlackRelaxedTopDown) Update(i Size, x Data) {
    // assert(i < tree.Size())
-   tree.copy(&tree.root)
+   tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }
 

@@ -77,7 +77,7 @@ func (tree *RedBlackBottomUp) Delete(i list.Position) (x list.Data) {
 }
 
 func (tree *RedBlackBottomUp) delete(p *Node, i list.Position, x *list.Data) *Node {
-   tree.copy(&p)
+   tree.persist(&p)
    if i == p.s {
       *x = p.x
       defer tree.free(p)
@@ -242,7 +242,7 @@ func (tree *RedBlackBottomUp) insert(p *Node, i list.Position, x list.Data) *Nod
    if p == nil {
       return tree.allocate(Node{x: x})
    }
-   tree.copy(&p)
+   tree.persist(&p)
    if i <= p.s {
       p.s = p.s + 1
       p.l = tree.insert(p.l, i, x)
@@ -300,7 +300,7 @@ func (tree RedBlackBottomUp) split(p *Node, i, s list.Size) (l, r *Node) {
    if p == nil {
       return
    }
-   tree.copy(&p)
+   tree.persist(&p)
 
    sl := p.s
    sr := s - p.s - 1
@@ -324,7 +324,7 @@ func (tree RedBlackBottomUp) Split(i list.Position) (list.List, list.List) {
 }
 
 func (tree *RedBlackBottomUp) deleteMin(p *Node, min **Node) *Node {
-   tree.copy(&p)
+   tree.persist(&p)
    if p.l == nil {
       *min = p
       return p.r
@@ -336,7 +336,7 @@ func (tree *RedBlackBottomUp) deleteMin(p *Node, min **Node) *Node {
 
 
 func (tree *RedBlackBottomUp) deleteMax(p *Node, max **Node) *Node {
-   tree.copy(&p)
+   tree.persist(&p)
    if p.r == nil {
       *max = p
       return p.l
@@ -362,12 +362,12 @@ func (tree RedBlackBottomUp) build(l, p, r *Node, sl list.Size) *Node {
       return p
    }
    if tree.rank(l) < tree.rank(r) {
-      tree.copy(&r)
+      tree.persist(&r)
       r.s = 1 + sl + r.s
       r.l = tree.build(l, p, r.l, sl)
       return tree.balanceInsertL(r)
    } else {
-      tree.copy(&l)
+      tree.persist(&l)
       l.r = tree.build(l.r, p, r, sl-l.s-1)
       return tree.balanceInsertR(l)
    }

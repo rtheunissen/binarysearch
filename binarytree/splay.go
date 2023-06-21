@@ -30,7 +30,7 @@ func (tree *Splay) Clone() List {
 //     (p)            (r)
 //     ↙
 func (tree *Tree) linkL(p *Node, r *Node, i Position) (*Node, *Node, Size) {
-   tree.copy(&p.l)
+   tree.persist(&p.l)
    p.s = p.s - i - 1
    r.l = p
    r = r.l
@@ -50,7 +50,7 @@ func (tree *Tree) linkL(p *Node, r *Node, i Position) (*Node, *Node, Size) {
 //  So (i+i) is a
 
 func (tree *Tree) linkR(p *Node, l *Node, i Position) (*Node, *Node, Size) {
-   tree.copy(&p.r)
+   tree.persist(&p.r)
    i = i - p.s - 1
    l.r = p
    l = l.r
@@ -59,17 +59,17 @@ func (tree *Tree) linkR(p *Node, l *Node, i Position) (*Node, *Node, Size) {
 }
 
 func (tree *Splay) rotateL(p *Node) *Node {
-   tree.copy(&p.r)
+   tree.persist(&p.r)
    return p.rotateL()
 }
 
 func (tree *Splay) rotateR(p *Node) *Node {
-   tree.copy(&p.l)
+   tree.persist(&p.l)
    return p.rotateR()
 }
 
 func (tree *Splay) splay(p *Node, i Position) *Node {
-   tree.copy(&p)
+   tree.persist(&p)
    n := Node{s: i}
    l := &n
    r := &n
@@ -200,15 +200,15 @@ func (tree *Splay) splayMax(l *Node) *Node {
    if l == nil { // TODO is this ever nil?
       return nil
    }
-   tree.copy(&l)
+   tree.persist(&l)
    for l.r != nil {
       if l.r.r != nil {
-         tree.copy(&l.r)
-         tree.copy(&l.r.r)
+         tree.persist(&l.r)
+         tree.persist(&l.r.r)
          l.r = l.r.rotateL()
          l = l.rotateL()
       } else {
-         tree.copy(&l.r)
+         tree.persist(&l.r)
          l = l.rotateL()
       }
    }
