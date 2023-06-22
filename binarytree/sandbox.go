@@ -1,5 +1,9 @@
 package binarytree
 
+import (
+   "binarysearch/random"
+)
+
 func init() {
    //spew.Config.Indent = "       "
 }
@@ -138,28 +142,40 @@ func init() {
 
 func Sandbox() {
 
+   r := random.New(4)
+   for {
+      //fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+      tree := &AVLBottomUp{}
 
+      for i, n := uint64(0), random.LessThan(8, r) + 1; i < n; i++ {
+         tree.Insert(random.LessThan(tree.Size()+1, random.Uniform()), i)
+      }
+      //tree.Draw(os.Stdout)
+      tree.Free()
+   }
+
+   //
    //for {
-   //  fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-   //  a := &AVLBottomUp{}
-   //  b := &AVLBottomUp{}
+   // fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+   // a := &AVLBottomUp{}
+   // b := &AVLBottomUp{}
    //
-   //  for i, n := uint64(0), random.LessThan(100, random.Uniform()) + 1; i < n; i++ {
-   //     a.Insert(random.LessThan(a.Size()+1, random.Uniform()), i)
-   //  }
-   //  for i, n := uint64(0), random.LessThan(100, random.Uniform()) + 1; i < n; i++ {
-   //     b.Insert(random.LessThan(b.Size()+1, random.Uniform()), i)
-   //  }
+   // for i, n := uint64(0), random.LessThan(100, random.Uniform()) + 1; i < n; i++ {
+   //    a.Insert(random.LessThan(a.Size()+1, random.Uniform()), i)
+   // }
+   // for i, n := uint64(0), random.LessThan(100, random.Uniform()) + 1; i < n; i++ {
+   //    b.Insert(random.LessThan(b.Size()+1, random.Uniform()), i)
+   // }
    //
-   //  a.Draw(os.Stdout)
-   //  b.Draw(os.Stdout)
+   // a.Draw(os.Stdout)
+   // b.Draw(os.Stdout)
    //
-   //  c := a.Join(b).(*AVLBottomUp)
+   // c := a.Join(b).(*AVLBottomUp)
    //
-   //  c.Draw(os.Stdout)
-   //  c.Verify()
+   // c.Draw(os.Stdout)
+   // c.Verify()
    //
-   //  c.Free()
+   // c.Free()
    //}
 
 
@@ -1225,8 +1241,8 @@ func Sandbox() {
 //   //    }
 //   //    p := l.Join(r)
 //   //    p.Verify()
-//   //    // assert(p.Size() == l.Size() + r.Size())
-//   //    // assert(p.Size() == p.(*WAVL).root.count())
+//   //    assert(p.Size() == l.Size() + r.Size())
+//   //    assert(p.Size() == p.(*WAVL).root.count())
 //   //    print(".")
 //   // }
 //}

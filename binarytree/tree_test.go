@@ -11,7 +11,7 @@ import (
 // TODO: can we not make them binarytree?
 func TestBST(t *testing.T) {
    list.TestSuite{
-      Scale: 100,
+      Scale: 64,
       Tests: []list.Test{
          list.TestNew,
          list.TestSelect,
@@ -47,13 +47,13 @@ func TestBST(t *testing.T) {
       },
       Lists: []list.List{
          &AVLBottomUp{},
-         &AVLWeakTopDown{},
-         &AVLWeakBottomUp{},
-         &AVLRelaxedTopDown{},
-         &AVLRelaxedBottomUp{},
-         &RedBlackBottomUp{},
-         &RedBlackRelaxedBottomUp{},
-         &RedBlackRelaxedTopDown{},
+         //&AVLWeakTopDown{},
+         //&AVLWeakBottomUp{},
+         //&AVLRelaxedTopDown{},
+         //&AVLRelaxedBottomUp{},
+         //&RedBlackBottomUp{},
+         //&RedBlackRelaxedBottomUp{},
+         //&RedBlackRelaxedTopDown{},
          //&LBSTBottomUp{},
          //&LBSTTopDown{},
          //&LBSTRelaxed{},

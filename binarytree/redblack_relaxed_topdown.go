@@ -40,7 +40,7 @@ func (tree *RedBlackRelaxedTopDown) insert(p **Node, i Position, x Data) {
    // "This establishes the invariant for the main loop of the algorithm:
    //  *p is a non-nil node that is not a 0,0-node and not a 0-child.
    for {
-      // assert(!tree.isZeroZero(*p))
+      assert(!tree.isZeroZero(*p))
       //
       // "From *p, take one step down the search path..."
       //
@@ -66,9 +66,9 @@ func (tree *RedBlackRelaxedTopDown) insert(p **Node, i Position, x Data) {
             continue
          }
          // In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child
-         // assert(tree.isZeroChild(*p, (*p).l))
-         // assert(!tree.isZeroChild((*p).l, (*p).l.l))
-         // assert(!tree.isZeroChild((*p).l, (*p).l.l))
+         assert(tree.isZeroChild(*p, (*p).l))
+         assert(!tree.isZeroChild((*p).l, (*p).l.l))
+         assert(!tree.isZeroChild((*p).l, (*p).l.l))
 
          // From y, take one step down the
          // search path to z. If z is null, replace z by a new node of rank 0 containing the item to
@@ -274,18 +274,18 @@ func (tree *RedBlackRelaxedTopDown) insert(p **Node, i Position, x Data) {
 }
 
 func (tree *RedBlackRelaxedTopDown) Select(i Size) Data {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    return tree.lookup(tree.root, i)
 }
 
 func (tree *RedBlackRelaxedTopDown) Update(i Size, x Data) {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }
 
 func (tree *RedBlackRelaxedTopDown) Insert(i Position, x Data) {
-   // assert(i <= tree.Size())
+   assert(i <= tree.Size())
    tree.size++
    tree.insert(&tree.root, i, x)
 }

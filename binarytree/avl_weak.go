@@ -27,7 +27,7 @@ func (tree WAVL) Verify() {
 }
 
 func (tree WAVL) buildL(l *Node, p *Node, r *Node, sl Size) (root *Node) {
-   // assert(tree.rank(l) >= tree.rank(r))
+   assert(tree.rank(l) >= tree.rank(r))
    if tree.rank(l) - tree.rank(r) <= 1 {
       p.l = l
       p.r = r
@@ -41,7 +41,7 @@ func (tree WAVL) buildL(l *Node, p *Node, r *Node, sl Size) (root *Node) {
 }
 
 func (tree WAVL) buildR(l *Node, p *Node, r *Node, sl Size) (root *Node) {
-   // assert(tree.rank(r) >= tree.rank(l))
+   assert(tree.rank(r) >= tree.rank(l))
    if tree.rank(r) <= tree.rank(l) + 1 {
       p.l = l
       p.r = r
@@ -137,11 +137,11 @@ func (tree WAVL) rebalanceOnDelete(p *Node) *Node {
          tree.promote(p)
          tree.demote(p.r)
 
-         // assert(tree.isTwoChild(p, p.l))
-         // assert(tree.isOneChild(p, p.r))
+         assert(tree.isTwoChild(p, p.l))
+         assert(tree.isOneChild(p, p.r))
 
          if p.r.l == nil {
-            // assert(tree.isTwoTwo(p.r))
+            assert(tree.isTwoTwo(p.r))
             tree.demote(p.r)
          }
       } else {
@@ -152,8 +152,8 @@ func (tree WAVL) rebalanceOnDelete(p *Node) *Node {
          tree.demote(p.r)
          tree.demote(p.r)
 
-         // assert(tree.isTwoChild(p, p.l))
-         // assert(tree.isTwoChild(p, p.r))
+         assert(tree.isTwoChild(p, p.l))
+         assert(tree.isTwoChild(p, p.r))
       }
    } else if tree.isThreeChild(p, p.l) {
       if tree.isTwoChild(p, p.r) {
@@ -168,11 +168,11 @@ func (tree WAVL) rebalanceOnDelete(p *Node) *Node {
          tree.promote(p)
          tree.demote(p.l)
 
-         // assert(tree.isOneChild(p, p.l))
-         // assert(tree.isTwoChild(p, p.r))
+         assert(tree.isOneChild(p, p.l))
+         assert(tree.isTwoChild(p, p.r))
 
          if p.l.r == nil {
-            // assert(tree.isTwoTwo(p.l))
+            assert(tree.isTwoTwo(p.l))
             tree.demote(p.l)
          }
       } else {
@@ -183,8 +183,8 @@ func (tree WAVL) rebalanceOnDelete(p *Node) *Node {
          tree.demote(p.l)
          tree.demote(p.r)
 
-         // assert(tree.isTwoChild(p, p.l))
-         // assert(tree.isTwoChild(p, p.r))
+         assert(tree.isTwoChild(p, p.l))
+         assert(tree.isTwoChild(p, p.r))
       }
    }
    return p

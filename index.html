@@ -4,6 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <link rel="stylesheet" href="docs/katex/katex.min.css">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script defer src="docs/katex/katex.min.js"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="docs/katex/contrib/auto-render.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              // customised options
+              // • auto-render specific keys, e.g.:
+              delimiters: [
+                  {left: '$$', right: '$$', display: true},
+                  {left: '$', right: '$', display: false},
+                  {left: '\\(', right: '\\)', display: false},
+                  {left: '\\[', right: '\\]', display: true}
+              ],
+              // • rendering keys, e.g.:
+              throwOnError : false
+            });
+        });
+    </script>
+
     <title>Exploring the design space of binary search trees</title>
     <style>
 
@@ -26,6 +51,11 @@
         p   { font-size: 1.0rem }
         a   { font-size: 1.0rem }
         pre { font-size: 0.8rem }
+
+        .katex { font-size: 1em; }
+        .katex-display {
+            margin: 2em 0;
+        }
 
         h2 span {
             display: block;
@@ -235,6 +265,8 @@
     <small>
         This project is still a work in progress.
     </small>
+
+    <p></p>
 
     <section id="abstract">
         <p>
@@ -465,16 +497,15 @@ type Node struct {
                 <p>
                     Every time we partitioned a sublist around its median we halved its maximum path length, and then we halved the maximum path length of each half, and so on until we reached a single node that could not be partitioned any further.
                     The question becomes "how many times can we divide a number by 2 until we get to 1?".
-                    This is known as the discrete <a href="https://en.wikipedia.org/wiki/Binary_logarithm">binary logarithm</a>, written as <span class="math">⌊log<span class="subscript">2</span>⌋</span>.
+                    This is known as the <a href="https://en.wikipedia.org/wiki/Binary_logarithm">binary logarithm</a>, written as $\log_{2}$.
                 </p>
                 <p>
-                    The discrete binary log is frequently encountered in computer science and information theory because it relates so closely to binary numbers.
-                    For example, the number of bits required to encode some integer <span class="math">N</span> in binary is <span class="math">⌊log<span class="subscript">2</span>(N)⌋+1</span>.
-                    The same reasoning applies to decimal numbers: the number of digits required to represent a decimal integer <span class="math">N</span> is <span class="math">⌊log<span class="subscript">10</span>(N)⌋+1</span>, or the number of times we can divide by 10 before we get to 1.
+                    The binary log is frequently encountered in computer science and information theory because it relates so closely to binary numbers.
+                    For example, the number of bits required to represent an integer $n$ in binary is $\left\lfloor \log_{2}(n) \right\rfloor + 1$.
+                    The same reasoning applies to decimal numbers, where the number of digits required to represent an integer $n$ is $\left\lfloor \log_{10}(n) \right\rfloor + 1$, or the number of times we can divide by 10 until we get to 1.
+                    A binary number shortens by 1 bit when we divide by 2 and a decimal number shortens by 1 digit when we divide by 10.
                 </p>
                 <p>
-                    When we divide a decimal number by 10, the representation shortens by 1 digit.
-                    Similarly, when we divide a binary number by 2, the representation shortens by 1 bit.
                     A two-way branch at every node ideally halves the path length every time and is therefore <em>logarithmic</em> in the size of the list: when the size of the list doubles, the search cost only increases by one.
                     By extension, search cost grows linearly when the list grows exponentially.
                 </p>
@@ -782,9 +813,9 @@ a  b  c         a  b  c           a  b  c
 
             <pre>
 func partition(p *Node, i uint64) *Node {
-   n := Node{s: i}
-   l := &n
-   r := &n
+   n = Node{s: i}
+   l = &n
+   r = &n
    for i != p.s {
       if i < p.s {
          p.s = p.s - i - 1
@@ -854,11 +885,11 @@ func partition(p *Node, i uint64) *Node {
 
             <p>
                 To determine if a node is median-balanced, we can add 1 to the smaller size to see if it becomes greater than or equal to the larger size.
-                Without loss of generality, assume that <span class="math">x < y</span>.
+                Without loss of generality, assume that $x \lt y$.
             </p>
 
             <pre>
-<mark class="yellow">Median(x, y) := (x+1) ≥ y</mark>
+<mark class="yellow">Median(x, y) = (x+1) ≥ y</mark>
         </pre>
 
             <p>
@@ -942,58 +973,34 @@ func partition(p *Node, i uint64) *Node {
                 The bottom level of the larger subtree gets completed with <em>ceil</em>, and the bottom level of the smaller subtree gets emptied with <em>floor</em>.
                 We can then determine if the height difference is greater than 1 by comparing these heights:
             </p>
-            <pre>
-Height(x,y) := ⌈log₂(max(x,y)+1)⌉ - ⌊log₂(min(x,y)+1)⌋ ≤ 1
-            </pre>
             <p>
-                Without loss of generality, assume that <span class="math">x < y</span>:
+                $$\text{Height}(x,y) = \lceil \log_2(\max(x,y)+1) \rceil - \lfloor \log_2(\min(x,y)+1) \rfloor \leq 1$$
             </p>
-
-            <pre>
-Height(x,y) := ⌈log₂(y+1)⌉ - ⌊log₂(x+1)⌋ ≤ 1
-            </pre>
-
+<!--            <p>-->
+<!--                -->
+<!--            </p>-->
+<!--            <p>-->
+<!--                $$\text{Height}(x,y) = \lceil \log_{2}(y+1) \rceil - \lfloor \log_{2}(x+1) \rfloor \leq 1$$-->
+<!--            </p>-->
             <p>
-                This function, as presented above and by Muusse in [], <mark class="green">can be simplified using an identity of log₂</mark> where <span class="math">⌈log₂(s+1)⌉ ≡ ⌊log₂(s)⌋+1</span>.
-                The result is the same whether you complete the bottom level with <em>ceil</em>, or empty the bottom level with <em>floor</em> and add 1.
-            </p>
-            <pre>
-Height(x,y) := ⌊log₂(y)⌋ - ⌊log₂(x+1)⌋ ≤ 0
-
-Height(x,y) := ⌊log₂(x+1)⌋ ≥ ⌊log₂(y)⌋
-            </pre>
-
-            <p>
-                Given that the number of bits required to encode an integer <span class="math">i</span> in binary is <span class="math">⌊log₂(i)⌋+1</span>, we can add <span class="math">+1</span> to both sides of the inequality to see that what we are comparing is the number of bits required to encode <span class="math">x+1</span> and <span class="math">y</span>.
-                The most-significant bit, or the MSB, is the left-most bit set to 1, starting from position 1 on the right counting left.
-                All the bits to the left of the MSB will be 0, so the position of the MSB is equal to the number of bits required to encode the integer.
+                This function, as presented above and by Muusse in [], can be simplified using an identity of the binary logarithm where $\lceil \log_{2}(s+1) \rceil \equiv \lfloor \log_{2}(s) \rfloor + 1$.
+                The result is the same whether you complete a level with <em>ceil</em> or empty a level with <em>floor</em> and add 1.
+                Without loss of generality, assume that $x \lt y$:
+<!--                Given that the number of bits required to represent an integer $n$ in binary is $\lfloor \log_{2}(n) \rfloor + 1$, this becomes a comparison between the number of bits required to represent $x+1$ and $y$.-->
             </p>
             <p>
-                For example:
-            </p>
-            <pre>
-  00001101 = 13, because 8 + 4 + 0 + 1 = 13
-      ↑
-     MSB at position 4
-
-        log₂(13) ≈ 3.7, so ⌊log₂(13)⌋+1 = 4
-
-
- 00010001 = 17, because 16 + 0 + 0 + 0 + 1 = 17
-    ↑
-   MSB at position 5
-
-       log₂(17) ≈ 4.1, so ⌊log₂(17)⌋+1 = 5
-       The number of bits required to encode the number 17 in binary is 5
-         </pre>
-            <p>
-                Using this information, we can determine whether a node is height-balanced by comparing the MSB of <span class="math">x+1</span> and <span class="math">y</span>.
-                This allows us to determine height-balance without the need to actually calculate either logarithm, which would require slow floating-point calculations to first calculate each logarithm and then floor them.
+                $$\text{Height}(x,y) = \lfloor \log_{2}(x+1) \rfloor \geq \lfloor \log_{2}(y) \rfloor$$
             </p>
 
-            <pre>
-<mark class="yellow">Height(x,y):= MSB(x+1) ≥ MSB(y)</mark>
-            </pre>
+<!--            <p>-->
+<!--                The MSB of a binary number is defined here as the position of the leftmost bit set to 1, counting from right to left.-->
+<!--                All the bits to the left of the MSB will be 0 and do not affect the value, indicating that the position of the MSB corresponds to the number of bits required to represent the integer in binary.-->
+<!--                Using this information, we can determine whether a node is height-balanced by comparing the MSB of $x+1$ and the MSB of $y$, thereby avoiding the need to calculate either logarithm.-->
+<!--            </p>-->
+
+<!--            <pre>-->
+<!--<mark class="yellow">Height(x,y)= MSB(x+1) ≥ MSB(y)</mark>-->
+<!--            </pre>-->
 
         </section>
 
@@ -1046,9 +1053,9 @@ x     ·           Weight : 4          Weight : 1         Weight : 3
             </p>
 
             <pre>
-  <mark class="yellow">HalfSize(x, y) := x ≥ y >> 1</mark>
+  <mark class="yellow">HalfSize(x, y) = x ≥ y >> 1</mark>
 
-<mark class="yellow">HalfWeight(x, y) := (x + 1) ≥ (y + 1) >> 1</mark>
+<mark class="yellow">HalfWeight(x, y) = (x + 1) ≥ (y + 1) >> 1</mark>
             </pre>
 
             <p>
@@ -1085,9 +1092,9 @@ BALANCED              NOT BALANCED
 
             <pre>
 
-  <mark class="yellow">LogSize(x, y) := MSB(x) ≥ MSB(y >> 1)</mark>
+  <mark class="yellow">LogSize(x, y) = MSB(x) ≥ MSB(y >> 1)</mark>
 
-<mark class="yellow">LogWeight(x, y) := MSB(x + 1) ≥ MSB((y + 1) >> 1)</mark>
+<mark class="yellow">LogWeight(x, y) = MSB(x + 1) ≥ MSB((y + 1) >> 1)</mark>
             </pre>
 
             <p>
@@ -1095,14 +1102,14 @@ BALANCED              NOT BALANCED
             </p>
 
             <pre>
-    Height(x, y) := MSB(<mark class="blue">x + 1</mark>) ≥ MSB(<mark class="blue">y</mark>)
-    Median(x, y) :=    (<mark class="blue">x + 1</mark>) ≥    (<mark class="blue">y</mark>)
+    Height(x, y) = MSB(<mark class="blue">x + 1</mark>) ≥ MSB(<mark class="blue">y</mark>)
+    Median(x, y) =    (<mark class="blue">x + 1</mark>) ≥    (<mark class="blue">y</mark>)
 
-   LogSize(x, y) := MSB(<mark class="red">x</mark>) ≥ MSB(<mark class="red">y >> 1</mark>)
-  HalfSize(x, y) :=    (<mark class="red">x</mark>) ≥    (<mark class="red">y >> 1</mark>)
+   LogSize(x, y) = MSB(<mark class="red">x</mark>) ≥ MSB(<mark class="red">y >> 1</mark>)
+  HalfSize(x, y) =    (<mark class="red">x</mark>) ≥    (<mark class="red">y >> 1</mark>)
 
- LogWeight(x, y) := MSB(<mark class="green">x + 1</mark>) ≥ MSB(<mark class="green">(y + 1) >> 1</mark>)
-HalfWeight(x, y) :=    (<mark class="green">x + 1</mark>) ≥    (<mark class="green">(y + 1) >> 1</mark>)
+ LogWeight(x, y) = MSB(<mark class="green">x + 1</mark>) ≥ MSB(<mark class="green">(y + 1) >> 1</mark>)
+HalfWeight(x, y) =    (<mark class="green">x + 1</mark>) ≥    (<mark class="green">(y + 1) >> 1</mark>)
             </pre>
 
             <p>
@@ -1114,9 +1121,9 @@ HalfWeight(x, y) :=    (<mark class="green">x + 1</mark>) ≥    (<mark class="g
             </p>
 
             <pre>
-MSB(x) ≥ MSB(y) := x ≥ y || ((x & y) << 1) ≥ y    Roura, S.
-MSB(x) ≥ MSB(y) := x ≥ y || x ≥ (x ^ y)           Chan, T.M.
-MSB(x) ≥ MSB(y) := x ≥ (~x & y)                   Warren, H.S.
+MSB(x) ≥ MSB(y) = x ≥ y || ((x & y) << 1) ≥ y    Roura, S.
+MSB(x) ≥ MSB(y) = x ≥ y || x ≥ (x ^ y)           Chan, T.M.
+MSB(x) ≥ MSB(y) = x ≥ (~x & y)                   Warren, H.S.
             </pre>
 
             <!--          Roura, S. (2001). A New Method for Balancing Binary Search Trees. I-->
@@ -1146,7 +1153,7 @@ MSB(x) ≥ MSB(y) := x ≥ (~x & y)                   Warren, H.S.
             </p>
 
             <pre>
-    Cost() := (sl ≥ srl && sl ≥ srr) &&
+    Cost() = (sl ≥ srl && sl ≥ srr) &&
               (sr ≥ sll && sr ≥ slr)
             </pre>
 
@@ -1501,8 +1508,8 @@ MSB(x) ≥ MSB(y) := x ≥ (~x & y)                   Warren, H.S.
             <p>
                 Implementing a linear list using a binary search tree requires that we track the size of each subtree along the search path.
                 It seems ideal then to use this information for balancing, rather than heights or ranks stored additionally in each node.
-                The original paper by Nievergelt & Reingold in 1972 introduced weight-balanced trees as <em>trees of bounded balance</em> or BB[<span class="math">α</span>] trees, where <span class="math">0 ≤ α ≤ ½</span> is a parameter to trade-off between better balance and fewer rotations.
-                Many other papers on weight-balanced trees since then use two parameters: <span class="math">Δ</span> to determine if a node is weight-balanced, and <span class="math">Γ</span> to determine whether one or two rotations are required to restore balance.
+                The original paper by Nievergelt & Reingold in 1972 introduced weight-balanced trees as <em>trees of bounded balance</em> or BB[<span class="math">α</span>] trees, where $0 \leq \alpha \leq \frac{1}{2}$ is a parameter to trade-off between better balance and fewer rotations.
+                Many other papers on weight-balanced trees since then use two parameters: $\Delta$ to determine if a node is weight-balanced, and $\Gamma$ to determine whether one or two rotations are required to restore balance.
                 The valid range for these parameters are complex, involving either fractional arithmetic or multiplication with the potential for integer overflow.
             </p>
 
