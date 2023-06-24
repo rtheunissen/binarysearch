@@ -12,68 +12,56 @@ type Balancer interface {
    Verify(Tree)
 }
 
-type Balance interface {
-   isBalanced(x, y Size) bool
-}
-
-type Partition struct {
-   Balance
-}
-
-func (strategy Partition) Restore(tree Tree) Tree {
-   tree.root = strategy.balance(&tree, tree.root, tree.size)
-   return tree
-}
-
-// TODO: technically weight-based balanced is balanced for all trees s < 4, which would reduce partition count big time.
-//       confirm that average and maximum path lengths stay exactly the same, but partition count drops.
-//       how does this affect performance?
-func (strategy Partition) balance(tree *Tree, p *Node, s Size) *Node {
-   if s < 3 {
-      return p
+func partition(p *Node, i uint64) *Node {
+   // assert(i < p.size())
+   // measurement(&partitionCount, 1)
+   n := Node{s: i}
+   l := &n
+   r := &n
+   for i != p.s {
+      // measurement(&partitionCost, 1)
+      if i < p.s {
+         p.s = p.s - i - 1
+         r.l = p
+         r = r.l
+         p = p.l
+      } else {
+         i = i - p.s - 1
+         l.r = p
+         l = l.r
+         p = p.r
+      }
    }
-   sl := p.sizeL()
-   sr := p.sizeR(s)
-
-   // assert(strategy.isBalanced(sl, sr) || sl < sr)
-   // assert(strategy.isBalanced(sr, sl) || sr < sl)
-
-   // Replace `p` by its underlying median if not balanced.
-   if !strategy.isBalanced(sl, sr) || !strategy.isBalanced(sr, sl) {
-      p = tree.partition(p, s >> 1)
-   }
-   // Recursively balance the left and right subtrees.
-   p.l = strategy.balance(tree, p.l, p.sizeL())
-   p.r = strategy.balance(tree, p.r, p.sizeR(s))
+   l.r = p.l
+   r.l = p.r
+   p.l = n.r
+   p.r = n.l
+   p.s = n.s
    return p
 }
 
-func (strategy Partition) verify(p *Node, s Size) {
-   if p == nil {
-      return
-   }
-   sl := p.sizeL()
-   sr := p.sizeR(s)
-
-   invariant(strategy.isBalanced(sl, sr))
-   invariant(strategy.isBalanced(sr, sl))
-
-   strategy.verify(p.l, sl)
-   strategy.verify(p.r, sr)
-
-}
-
-func (strategy Partition) Verify(tree Tree) {
-   strategy.verify(tree.root, tree.size)
-
-}
-
-
-
 type Log struct{}
 
+func (balancer Log) balance(p *Node, s Size) *Node {
+   if s <= 3 {
+      return p
+   }
+   if !balancer.isBalanced(p.sizeL(), p.sizeR(s)) {
+      p = partition(p, s >> 1)
+   }
+   p.l = balancer.balance(p.l, p.sizeL())
+   p.r = balancer.balance(p.r, p.sizeR(s))
+   return p
+}
+
+func (Log) isBalanced(sl, sr Size) bool {
+   return LBST{}.isBalanced(sl + 1, sr + 1) &&
+          LBST{}.isBalanced(sr + 1, sl + 1)
+}
+
 func (balancer Log) Restore(tree Tree) Tree {
-   return Partition{balancer}.Restore(tree)
+   tree.root = balancer.balance(tree.root, tree.size)
+   return tree
 }
 
 func (balancer Log) Verify(tree Tree) {
@@ -91,36 +79,47 @@ func (balancer Log) verify(p *Node, s Size) {
    balancer.verify(p.r, p.sizeR(s))
 }
 
-func (Log) isBalanced(x, y Size) bool {
-   return !SmallerMSB(x+1, (y+1) >> 1)
-}
 
 
 
 
 type Weight struct{}
 
+func (balancer Weight) balance(p *Node, s Size) *Node {
+   if s <= 3 {
+      return p
+   }
+   if !balancer.isBalanced(p.sizeL(), p.sizeR(s)) {
+      p = partition(p, s >> 1)
+   }
+   p.l = balancer.balance(p.l, p.sizeL())
+   p.r = balancer.balance(p.r, p.sizeR(s))
+   return p
+}
+
+func (balancer Weight) isBalanced(sl, sr Size) bool {
+   return (sl + 1) >= (sr + 1) >> 1 &&
+          (sr + 1) >= (sl + 1) >> 1
+}
+
 func (balancer Weight) Restore(tree Tree) Tree {
-   return Partition{balancer}.Restore(tree)
+   tree.root = balancer.balance(tree.root, tree.size)
+   return tree
 }
 
 func (balancer Weight) Verify(tree Tree) {
    balancer.verify(tree.root, tree.size)
 }
 
-// -1 <= ⌊log₂(L)⌋ - ⌊log₂(R)⌋ <= 1
 func (balancer Weight) verify(p *Node, s Size) {
    if p == nil {
       return
    }
-   //invariant(Difference(Log2(p.sizeL()), Log2(p.sizeR(s))) <= 1)
+   invariant((p.sizeL() + 1) >= (p.sizeR(s) + 1) >> 1)
+   invariant((p.sizeR(s) + 1) >= (p.sizeL() + 1) >> 1)
 
    balancer.verify(p.l, p.sizeL())
    balancer.verify(p.r, p.sizeR(s))
-}
-
-func (Weight) isBalanced(x, y Size) bool {
-   return x+1 >= (y+1) >> 1
 }
 
 
@@ -130,29 +129,33 @@ func (Weight) isBalanced(x, y Size) bool {
 type Cost struct{}
 
 func (balancer Cost) Restore(tree Tree) Tree {
-   tree.root = balancer.balance(&tree, tree.root, tree.size)
+   tree.root = balancer.balance(tree.root, tree.size)
    return tree
 }
 
-func (strategy Cost) balance(tree *Tree, p *Node, s Size) *Node {
-   if s < 3 {
+func (balancer Cost) balance(p *Node, s Size) *Node {
+   if s <= 2 {
       return p
    }
-   // Replace `p` by its underlying median if not balanced.
-   if !strategy.isBalanced(p, s) {
-      p = tree.partition(p, s >> 1)
+   if !balancer.isBalanced(p, s) {
+      p = partition(p, s >> 1)
    }
-   // Recursively balance the left and right subtrees.
-   p.l = strategy.balance(tree, p.l, p.sizeL())
-   p.r = strategy.balance(tree, p.r, p.sizeR(s))
+   p.l = balancer.balance(p.l, p.sizeL())
+   p.r = balancer.balance(p.r, p.sizeR(s))
    return p
 }
 
 func (Cost) isBalanced(p *Node, s Size) bool {
-   if p.sizeL() >= p.sizeR(s) {
-     return p.sizeR(s) >= p.l.sizeL() && p.sizeR(s) >= p.l.sizeR(p.sizeL())
+   //if p.sizeL() >= p.sizeR(s) {
+   //  return p.sizeR(s) >= p.l.sizeL() && p.sizeR(s) >= p.l.sizeR(p.sizeL())
+   //} else {
+   //  return p.sizeL() >= p.r.sizeR(p.sizeR(s)) && p.sizeL() >= p.r.sizeL()
+   //}
+
+   if s >= (p.s + 1) << 1 {
+      return p.s >= p.r.s && s - p.r.s <= (p.s + 1) << 1
    } else {
-     return p.sizeL() >= p.r.sizeR(p.sizeR(s)) && p.sizeL() >= p.r.sizeL()
+      return s - p.l.s >= p.s + 1 && s >= (p.s << 1) - p.l.s
    }
 }
 
@@ -164,7 +167,12 @@ func (balancer Cost) verify(p *Node, s Size) {
    if p == nil {
       return
    }
-   invariant(p.height() <= int(1.44 * math.Log2(float64(s + 2)) - 0.328))
+   invariant(p.l == nil || p.sizeR(s) >= p.l.sizeL())
+   invariant(p.l == nil || p.sizeR(s) >= p.l.sizeR(p.sizeL()))
+   invariant(p.r == nil || p.sizeL() >= p.r.sizeL())
+   invariant(p.r == nil || p.sizeL() >= p.r.sizeR(p.sizeR(s)))
+
+   invariant(p.height() <= int(1.44 * math.Log2(float64(s + 2)) - 0.328)) // Knuth?
 
    balancer.verify(p.l, p.sizeL())
    balancer.verify(p.r, p.sizeR(s))
@@ -173,8 +181,21 @@ func (balancer Cost) verify(p *Node, s Size) {
 
 type Median struct{}
 
+func (balancer Median) balance(p *Node, s Size) *Node {
+   if s <= 2 {
+      return p
+   }
+   if !balancer.isBalanced(p, s) {
+      p = partition(p, s >> 1)
+   }
+   p.l = balancer.balance(p.l, p.sizeL())
+   p.r = balancer.balance(p.r, p.sizeR(s))
+   return p
+}
+
 func (balancer Median) Restore(tree Tree) Tree {
-   return Partition{balancer}.Restore(tree)
+   tree.root = balancer.balance(tree.root, tree.size)
+   return tree
 }
 
 func (balancer Median) Verify(tree Tree) {
@@ -192,18 +213,33 @@ func (balancer Median) verify(p *Node, s Size) {
    balancer.verify(p.r, p.sizeR(s))
 }
 
-func (Median) isBalanced(x, y Size) bool {
-   return x+1 >= y
+func (Median) isBalanced(p *Node, s Size) bool {
+   return p.sizeL() + 1 >= p.sizeR(s) &&
+          p.sizeR(s) + 1 >= p.sizeL()
 }
 
 type Height struct{}
 
-func (balancer Height) Restore(tree Tree) Tree {
-   return Partition{balancer}.Restore(tree)
+func (balancer Height) balance(p *Node, s Size) *Node {
+   if s <= 2 {
+      return p
+   }
+   if !balancer.isBalanced(p, s) {
+      p = partition(p, s >> 1)
+   }
+   p.l = balancer.balance(p.l, p.sizeL())
+   p.r = balancer.balance(p.r, p.sizeR(s))
+   return p
 }
 
-func (Height) isBalanced(x, y Size) bool {
-   return !SmallerMSB(x+1, y)
+func (balancer Height) Restore(tree Tree) Tree {
+   tree.root = balancer.balance(tree.root, tree.size)
+   return tree
+}
+
+func (Height) isBalanced(p *Node, s Size) bool {
+   return GreaterThanOrEqualToMSB(p.sizeL()+1, p.sizeR(s)) &&
+          GreaterThanOrEqualToMSB(p.sizeR(s)+1, p.sizeL())
 }
 
 func (balancer Height) Verify(tree Tree) {
@@ -286,14 +322,6 @@ func (balancer Height) verify(p *Node, s Size) {
 //  }
 //}
 
-// https://web.eecs.umich.edu/~qstout/pap/CACM86.pdf
-type DSW struct {
-}
-
-func (balancer DSW) Verify(tree Tree) {
-   invariant(tree.root.height() <= int(Log2(tree.size)))
-}
-
 //func (tree Tree) fromVineToTree() Tree {
 //   //leaves ← size + 1 − 2**⌊log2(size + 1))⌋
 //
@@ -307,15 +335,24 @@ func (balancer DSW) Verify(tree Tree) {
 //   return tree
 //}
 
-func (balancer DSW) Restore(tree Tree) Tree {
-   return balancer.toTree(balancer.toVine(tree))
+type DSW struct {
 }
 
-func (balancer DSW) toVine(tree Tree) Tree {
+func (balancer DSW) Verify(tree Tree) {
+   invariant(tree.root.height() == int(Log2(tree.size)))
+}
+
+func (balancer DSW) Restore(tree Tree) Tree {
+   return Tree{
+      root:  balancer.toTree(balancer.toVine(tree.root), tree.size),
+      arena: tree.arena,
+      size:  tree.size,
+   }
+}
+
+func (balancer DSW) toVine(p *Node) (vine *Node) {
    n := Node{}
    l := &n
-   p := tree.root
-   s := tree.size
    for p != nil {
       for p.l != nil {
          p = p.rotateR()
@@ -324,37 +361,88 @@ func (balancer DSW) toVine(tree Tree) Tree {
       l = l.r
       p = p.r
    }
-   tree.root = n.r
-   tree.size = s
-   return tree
+   return n.r
 }
 
-func (balancer DSW) toTree(tree Tree) Tree {
-   p := tree.root
-   s := tree.size
-   m := 1<<Log2(s+1) - 1
-
-   p = balancer.compress(p, s-Size(m))
+func (balancer DSW) toTree(vine *Node, size Size) *Node {
+   m := Size(1 << Log2(size + 1) - 1)
+   p := balancer.compress(vine, size - m)
    for m > 1 {
-      p = balancer.compress(p, Size(m)>>1)
-      m = m >> 1
+       m = m >> 1
+       p = balancer.compress(p, m)
    }
-   tree.root = p
-   tree.size = s
-   return tree
+   return p
 }
 
-func (balancer DSW) compress(p *Node, c Size) *Node {
+func (balancer DSW) compress(p *Node, k Size) *Node {
    n := Node{}
    l := &n
    n.r = p
-   for ; c > 0; c-- {
+   for ; k > 0; k-- {
       l.r = p.rotateL()
       l = l.r
       p = l.r
    }
    return n.r
 }
+
+
+// https://web.eecs.umich.edu/~qstout/pap/CACM86.pdf
+//type DSW struct {
+//}
+//
+//func (balancer DSW) Verify(tree Tree) {
+//   invariant(tree.root.height() <= int(Log2(tree.size)))
+//}
+//
+//func (balancer DSW) Restore(tree Tree) Tree {
+//   return balancer.toTree(balancer.toVine(tree))
+//}
+//
+//func (balancer DSW) toVine(tree Tree) Tree {
+//   n := Node{}
+//   l := &n
+//   p := tree.root
+//   s := tree.size
+//   for p != nil {
+//      for p.l != nil {
+//         p = p.rotateR()
+//      }
+//      l.r = p
+//      l = l.r
+//      p = p.r
+//   }
+//   tree.root = n.r
+//   tree.size = s
+//   return tree
+//}
+//
+//func (balancer DSW) toTree(tree Tree) Tree {
+//   p := tree.root
+//   s := tree.size
+//   m := 1 << Log2(s + 1) - 1
+//
+//   p = balancer.compress(p, s - Size(m))
+//   for m > 1 {
+//      p = balancer.compress(p, Size(m) >> 1)
+//      m = m >> 1
+//   }
+//   tree.root = p
+//   tree.size = s
+//   return tree
+//}
+//
+//func (balancer DSW) compress(p *Node, c Size) *Node {
+//   n := Node{}
+//   l := &n
+//   n.r = p
+//   for ; c > 0; c-- {
+//      l.r = p.rotateL()
+//      l = l.r
+//      p = l.r
+//   }
+//   return n.r
+//}
 
 //func (tree Tree) compress(count Size) Tree {
 //   n := Node{}

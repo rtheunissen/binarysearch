@@ -10,11 +10,11 @@ type LBST struct {
 }
 
 func (LBST) isBalanced(x, y Size) bool {
-   return !utility.SmallerMSB(x, y >> 1)
+   return utility.GreaterThanOrEqualToMSB(x, y >> 1)
 }
 
 func (LBST) singleRotation(x, y Size) bool {
-   return !utility.SmallerMSB(x, y)
+   return utility.GreaterThanOrEqualToMSB(x, y)
 }
 
 func (tree LBST) join(l *Node, r *Node, sl, sr Size) (k *Node) {

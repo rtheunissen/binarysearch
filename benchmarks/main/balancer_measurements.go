@@ -22,21 +22,21 @@ func main() {
       Scale:     1_000_000,
       Measurements: []binarytree.Measurement{
          &binarytree.PartitionCount{},
-         &binarytree.PartitionDepth{},
-         &binarytree.AveragePathLength{},
-         &binarytree.MaximumPathLength{},
+         &binarytree.PartitionCost{},
+         &binarytree.AverageSearchCost{},
+         &binarytree.MaximumSearchCost{},
          &binarytree.Rotations{},
       },
       Distributions: []distribution.Distribution{
          &distribution.Uniform{},
       },
       Strategy: utility.Resolve[binarytree.Balancer](*strategy, []binarytree.Balancer{
-         &binarytree.Median{},
-         &binarytree.Height{},
+         //&binarytree.Median{},
+         //&binarytree.Height{},
          &binarytree.Weight{},
          &binarytree.Log{},
          &binarytree.Cost{},
-         &binarytree.DSW{},
+         //&binarytree.DSW{},
       }),
    }.Run()
 }
@@ -52,7 +52,9 @@ type BalancerMeasurement struct {
 }
 
 func (measurement BalancerMeasurement) Run() {
-
+   if measurement.Strategy == nil {
+      return
+   }
    path := fmt.Sprintf(
       "benchmarks/data/balancers/measurements/%s",
       utility.NameOf(measurement.Strategy),
@@ -104,11 +106,14 @@ func (measurement BalancerMeasurement) Run() {
       //
       //
       for _, random := range measurement.Distributions {
+
+         source := random.New(uint64(position))
+
          for iteration := 1; iteration <= measurement.Iterations; iteration++ {
             //
             // Randomize the tree.
             //
-            instance.Tree = instance.Tree.Randomize(random.New(uint64(position)))
+            instance.Tree = instance.Tree.Randomize(source)
             //
             // Reset measurements.
             //

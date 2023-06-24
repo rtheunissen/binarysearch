@@ -27,37 +27,37 @@ func (PartitionCount) Measure(BinaryTree) any {
    return partitionCount
 }
 
-type PartitionDepth struct {
+type PartitionCost struct {
 
 }
-var partitionDepth uint64 = 0
+var partitionCost uint64 = 0
 
-func (PartitionDepth) Reset()  {
-   partitionDepth = 0
+func (PartitionCost) Reset()  {
+   partitionCost = 0
 }
 
-func (PartitionDepth) Measure(BinaryTree) any {
-   return partitionDepth
+func (PartitionCost) Measure(BinaryTree) any {
+   return partitionCost
 }
 
-type MaximumPathLength struct {
+type MaximumSearchCost struct {
 
 }
 
-func (MaximumPathLength) Reset()  {
+func (MaximumSearchCost) Reset()  {
 }
 
-func (MaximumPathLength) Measure(tree BinaryTree) any {
-   return tree.Root().MaximumPathLength()
+func (MaximumSearchCost) Measure(tree BinaryTree) any {
+   return tree.Root().MaximumSearchCost()
 }
 
-type AveragePathLength struct {
+type AverageSearchCost struct {
 }
 
-func (accumulator *AveragePathLength) Measure(tree BinaryTree) any {
-   return tree.Root().AveragePathLength()
+func (accumulator *AverageSearchCost) Measure(tree BinaryTree) any {
+   return tree.Root().AverageSearchCost()
 }
-func (AveragePathLength) Reset()  {
+func (AverageSearchCost) Reset()  {
 }
 var allocations uint64 = 0
 

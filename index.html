@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=2" />
 
     <link rel="stylesheet" href="docs/katex/katex.min.css">
 
@@ -36,7 +36,7 @@
         }
 
         html {
-            font-size: 1.5em;
+            font-size: medium;
         }
 
         /**
@@ -1240,75 +1240,61 @@ func balance(p *Node, s Size) *Node {
 
 <!--            <div class="graphs">-->
 <!--                <img src="benchmarks/svg/balancers/Partition/Uniform/PartitionCount__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/TotalPartitionDepth__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePartitionDepth__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/TotalPartitionCost__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePartitionCost__sbezier.svg">-->
 <!--                <img src="benchmarks/svg/balancers/Partition/Uniform/Duration__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePathLength__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/MaximumPathLength__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/AverageSearchCost__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/MaximumSearchCost__sbezier.svg">-->
 <!--            </div>-->
-
             <section id="partition-count">
-                <h4>Partition count</h4>
-
                 <p>
-                    Partition count is the number of times the balancing algorithm decided to partition a node.
-                    This number is simply the total number of calls to <em>partition</em> to balance a random tree of some size.
+                    <strong>Partition Count</strong> is the number of times the balancer decided to partition a node when balancing the tree at each size increment.
                     Dividing this number by the size of the tree at each step gives us the average partition count per node.
-                    A straight horizontal line indicates that partition count increases linearly in the size of the tree.
                 </p>
                 <p>
-                    The results show that <mark class="red">height-balance partitions more nodes than median-balance, which is unexpected</mark>.
+                    The expectation is that height-balance partitions less often than median-balance because it skips some redundant partitioning steps, but the results show that height-balance actually partitions at more nodes than median-balance, which is unexpected.
                     The entire idea behind height-balance as an alternative to strict median-balance was to avoid redundant partitioning.
                 </p>
                 <p>
-                    On the other hand, the constant and logarithmic weight-balance strategies appear to consistently partition linearly in the size of the tree with very little variance.
-                    Cost-optimized balance is somewhere in-between, overall less than median-balance and height-balance but more than weight-balance.
-                </p>
-                <p>
-                    We can see clearly the effect of weight-balance relative to size-balance:
-                    the overall partition count drops substantially by allowing branches to terminate with two nodes in the same direction, as expected.
-                    Logarithmic weight-balance partitions the least often overall, though only slightly less often than constant weight-balance.
+                    On the other hand, weight-balance appears to partition linearly in the size of the tree with very little variance.
+                    Cost-optimized balance is somewhere in-between, partitioning less often than both median-balance and height-balance, but more often than weight-balance.
                 </p>
                 <div class="graphs">
                     <img src="benchmarks/svg/balancers/Partition/Uniform/PartitionCount__sbezier.svg">
                 </div>
             </section>
 
-            <section id="partition-depth">
-                <h4>Partition depth</h4>
+            <section id="partition-cost">
                 <p>
-                    Partition depth is the number of links that were followed during each partition, also the path length to each respective median, or simply <em>the amount of work done during partitioning</em>.
-                </p>
-                <p>
-                    When we sum all partition depths and divide by the size of the tree, we get the average partition depth.
+                    <strong>Partition Cost</strong> is the total path length traversed by <em>partition</em>.
+                    The average partition cost is the sum of all partition costs divided by the size of the tree.
                     The shape of this plot matches what Muusse labels in Figure 5.3 of [] as <em>node visits divided by N</em>.
                 </p>
 
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/Partition/Uniform/TotalPartitionDepth__sbezier.svg">-->
+                    <img src="benchmarks/svg/balancers/Partition/Uniform/TotalPartitionCost__sbezier.svg">
                 </div>
                 <p>
-                    A more direct evaluation of partition depth can be made by plotting partition depth against partition count, which is then the average depth per call to partition.
-                    This is slightly different from plotting partition depth against the size of the tree because it normalizes instead against the partition count, which is different between strategies.
+                    A more direct evaluation of partition cost can be made by plotting partition cost against partition count, which is then the average depth per partition.
                 </p>
                 <p>
-                    The results show that <mark class="yellow">height-balance consistently has the lowest average partition depth</mark>, which relieves some of the anxiety from the unexpected discovery that height-balance partitions more often than median-balance.
-                    This presents an interesting competition of which is more efficient: to partition more often with shorter paths, or to partition less often with longer paths.
+                    The results suggest that height-balance consistently has the lowest average partition cost, which relieves some concern from the unexpected discovery that height-balance partitions more often than median-balance.
+                    This presents an interesting competition of efficiency, which is better: to partition more often with shorter paths, or to partition less often with longer paths?
+                </p>
+                <p>
+                    Cost-optimized balance weaves between median-balance, and weight-balance is consistently higher.
                 </p>
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePartitionDepth__sbezier.svg">
+                    <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePartitionCost__sbezier.svg">
                 </div>
 
             </section>
 
             <section id="average-path-length">
-                <h4>Average path length</h4>
                 <p>
-                    The total path length of a binary tree is the sum of the path length to every node from the root of the tree, and the average path length is that sum divided by the number of nodes.
-                    This measurement can be thought of as the average depth, average search cost, or simply a measure of how balanced a tree is.
-                </p>
+                    <strong>Average Search Cost</strong> is the average path length of the balanced tree.
                 <p>
-                    The results show that the average path length after balancing generally approaches log2(s).
+                    The results show that the average path length after balancing generally approaches $log_2(s)$.
                     Both median-balanced and height-balanced trees have the same minimal average path length, with cost-optimized trees only slightly worse.
                     Somewhere in the middle are size-balanced trees, followed by the weight-balanced trees.
                 </p>
@@ -1321,15 +1307,14 @@ func balance(p *Node, s Size) *Node {
                     As expected, we can see that the cost of using weight to allow branches to terminate with two nodes in the same direction has very little impact on average path length.
                 </p>
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/All/Uniform/AveragePathLength__sbezier.svg">
+                    <img src="benchmarks/svg/balancers/All/Uniform/AverageSearchCost__sbezier.svg">
                 </div>
 
             </section>
 
             <section id="maximum-path-length">
-                <h4>Maximum path length</h4>
                 <p>
-                    The maximum path length (height bound) is the longest path from the root to any node, and can be thought of as the worst-case search cost.
+                    <strong>Maximum Search Cost</strong> is the longest path from the root to any node, and can be thought of as the worst-case search cost.
                 </p>
                 <p>
                     The results are the same for median-balance and height-balance, as is the case with average path length.
@@ -1341,7 +1326,7 @@ func balance(p *Node, s Size) *Node {
                 </p>
 
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/All/Uniform/MaximumPathLength__sbezier.svg">
+                    <img src="benchmarks/svg/balancers/All/Uniform/MaximumSearchCost__sbezier.svg">
                 </div>
             </section>
 
@@ -1466,8 +1451,8 @@ func balance(p *Node, s Size) *Node {
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Duration__unique.svg">-->
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Rotations__unique.svg">-->
 
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/AveragePathLength__unique.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/MaximumPathLength__unique.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/AverageSearchCost__unique.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/MaximumSearchCost__unique.svg">-->
 <!--            </div>-->
 
             <p>
@@ -1503,8 +1488,8 @@ func balance(p *Node, s Size) *Node {
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/Duration__sbezier.svg">-->
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/Rotations__sbezier.svg">-->
 
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/AveragePathLength__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/MaximumPathLength__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/AverageSearchCost__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/MaximumSearchCost__sbezier.svg">-->
 <!--            </div>-->
 
 <!--            -->
@@ -1515,8 +1500,8 @@ func balance(p *Node, s Size) *Node {
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Duration__sbezier.svg">-->
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Rotations__sbezier.svg">-->
 
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/AveragePathLength__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/MaximumPathLength__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/AverageSearchCost__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/MaximumSearchCost__sbezier.svg">-->
 <!--            </div>-->
 
 
@@ -1534,8 +1519,8 @@ func balance(p *Node, s Size) *Node {
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/Duration__sbezier.svg">-->
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/Rotations__sbezier.svg">-->
 
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/AveragePathLength__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/MaximumPathLength__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/AverageSearchCost__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/MaximumSearchCost__sbezier.svg">-->
 <!--            </div>-->
 
             <p>
@@ -1561,8 +1546,8 @@ func balance(p *Node, s Size) *Node {
 
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/AVLConc/Duration__sbezier.svg">-->
 
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/AVLConc/AveragePathLength__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/AVLConc/MaximumPathLength__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/AVLConc/AverageSearchCost__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/AVLConc/MaximumSearchCost__sbezier.svg">-->
 <!--            </div>-->
 
         </section>

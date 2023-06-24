@@ -41,7 +41,7 @@ import (
 //          sl <= α * s
 //          sr <= α * s
 //
-//       MaximumPathLength upper-bound:
+//       MaximumSearchCost upper-bound:
 //
 //          ⌊log1/α(size)⌋
 //
@@ -167,7 +167,7 @@ func (tree *LBSTRelaxed) Insert(i Position, x Data) {
 
    // Check if a rebuild is required.
    if tree.tooDeep(tree.size, depth) {
-      tree.balance(unbalancedNode, unbalancedSize)
+      tree.rebuild(unbalancedNode, unbalancedSize)
    }
 }
 
@@ -176,7 +176,7 @@ func (tree *LBSTRelaxed) Insert(i Position, x Data) {
 //
 //        tooDeep := depth > 2 * ⌊log₂(size)⌋
 //
-//     because root.height() <= MaximumPathLength(2 * math.FloorLog2(size))
+//     because root.height() <= MaximumSearchCost(2 * math.FloorLog2(size))
 //
 //   depth is height + 1 ?
 func (tree *LBSTRelaxed) tooDeep(size Size, depth uint64) bool {
@@ -184,12 +184,56 @@ func (tree *LBSTRelaxed) tooDeep(size Size, depth uint64) bool {
 }
 
 // Determines if two sizes are balanced.
-func (LBSTRelaxed) isBalanced(x, y Size) bool {
-   return Log{}.isBalanced(x, y)
+func (tree *LBSTRelaxed) isBalanced(sl, sr Size) bool {
+   return Log{}.isBalanced(sl, sr)
 }
 
-func (tree *LBSTRelaxed) balance(p **Node, s Size) {
-   *p = Partition{Log{}}.balance(&tree.Tree, *p, s)
+func (tree *LBSTRelaxed) balance(p *Node, s Size) *Node {
+   // assert(strategy.isBalanced(p.sizeL(), p.sizeR(s)) || p.sizeL() < p.sizeR(s))
+   // assert(strategy.isBalanced(p.sizeR(s), p.sizeL()) || p.sizeR(s) < p.sizeL())
+   if s < 4 ||
+      tree.isBalanced(p.sizeL(), p.sizeR(s)) &&
+      tree.isBalanced(p.sizeR(s), p.sizeL()) {
+      return p
+   }
+   p = tree.partition(p, s >> 1)
+   p.l = tree.balance(p.l, p.sizeL())
+   p.r = tree.balance(p.r, p.sizeR(s))
+   return p
+}
+
+func (tree *LBSTRelaxed) rebuild(p **Node, s Size) {
+   *p = tree.balance(*p, s)
+}
+
+func (tree *LBSTRelaxed) partition(p *Node, i uint64) *Node {
+   // assert(i < p.size())
+   // measurement(&partitionCount, 1)
+   n := Node{s: i}
+   l := &n
+   r := &n
+   for i != p.s {
+      // measurement(&partitionCost, 1)
+      tree.persist(&p)
+      if i < p.s {
+         p.s = p.s - i - 1
+         r.l = p
+         r = r.l
+         p = p.l
+      } else {
+         i = i - p.s - 1
+         l.r = p
+         l = l.r
+         p = p.r
+      }
+   }
+   tree.persist(&p)
+   l.r = p.l
+   r.l = p.r
+   p.l = n.r
+   p.r = n.l
+   p.s = n.s
+   return p
 }
 
 func (tree *LBSTRelaxed) Split(i Size) (List, List) {

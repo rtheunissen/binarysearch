@@ -70,7 +70,7 @@ import (
 // }
 //
 // func (tree LBST) verifyHeight(root *Node, size Size) {
-//    invariant(root.height() <= MaximumPathLength(2 * math.Log2(size)))
+//    invariant(root.height() <= MaximumSearchCost(2 * math.Log2(size)))
 // }
 //
 // func (tree LBST) verifyWeight(p *Node, s Size) {

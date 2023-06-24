@@ -1,6 +1,5 @@
 package main
 
-
 import (
    "binarysearch/abstract/list"
    "binarysearch/binarytree"
@@ -14,9 +13,9 @@ import (
 
 func main() {
   BalancerBenchmark{
-     Iterations:       100,
-     Samples:          100,
-     Scale:      1_000_000,
+     Iterations:        100,
+     Samples:           100,
+     Scale:      10_000_000,
      Distributions: []distribution.Distribution{
         &distribution.Uniform{},
      },
@@ -72,6 +71,7 @@ func (benchmark BalancerBenchmark) Run() {
 
      instance := binarytree.Splay{}.New().(*binarytree.Splay)
 
+
      for position := step; position <= benchmark.Scale; position += step {
 
         fmt.Printf("%s %-10s %10d/%d\n",
@@ -89,10 +89,12 @@ func (benchmark BalancerBenchmark) Run() {
 
            var duration time.Duration
 
+           source := random.New(uint64(position))
+
            for iteration := 1; iteration <= benchmark.Iterations; iteration++ {
 
               // Randomize the tree.
-              instance.Tree = instance.Tree.Randomize(random.New(uint64(position)))
+              instance.Tree = instance.Tree.Randomize(source)
 
               start := time.Now()
 

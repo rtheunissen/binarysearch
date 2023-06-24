@@ -55,7 +55,7 @@ type BinaryTree interface {
 
 //
 // // Returns the average path length of all nodes reachable BST p*.
-//func AveragePathLength(p BinaryTreeNode, s Size) float64 {
+//func AverageSearchCost(p BinaryTreeNode, s Size) float64 {
 //   if s == 0 {
 //      return 0
 //   }
@@ -79,7 +79,7 @@ func (tree Tree) partition(p *Node, i uint64) *Node {
    l := &n
    r := &n
    for i != p.s {
-      // measurement(&partitionDepth, 1)
+      // measurement(&partitionCost, 1)
       tree.persist(&p)
       if i < p.s {
          p.s = p.s - i - 1

@@ -9,8 +9,8 @@ import (
    "flag"
    "fmt"
    "os"
-   "time"
    "path/filepath"
+   "time"
 )
 
 
@@ -41,9 +41,9 @@ func main() {
       }),
       Measurements: []binarytree.Measurement{
          &binarytree.PartitionCount{},
-         &binarytree.PartitionDepth{},
-         &binarytree.AveragePathLength{},
-         &binarytree.MaximumPathLength{},
+         &binarytree.PartitionCost{},
+         &binarytree.AverageSearchCost{},
+         &binarytree.MaximumSearchCost{},
          &binarytree.Rotations{},
          &binarytree.Allocations{},
       },
