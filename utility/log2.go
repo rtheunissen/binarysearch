@@ -25,7 +25,7 @@ func Log2[T constraints.Unsigned](x T) T {
 func SmallerMSB[T constraints.Unsigned](x, y T) bool {
    return !GreaterThanOrEqualToMSB(x, y)
    //return x < ^x & y                   // Warren, H.S. (2002). Hacker's Delight. 2nd Edition, section 5-3.
-   //     x < y && s < (x^y)           // Chan, T.M. (2002). Closest-point problems simplified on the RAM. SODA '02.
+   //     x < y && x < (x^y)           // Chan, T.M. (2002). Closest-point problems simplified on the RAM. SODA '02.
    //     x < y && ((x&y) << 1) < y    // Roura, S. (2001). A New Method for Balancing Binary Search Trees. ICALP.
 }
 

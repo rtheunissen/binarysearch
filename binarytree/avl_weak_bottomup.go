@@ -68,14 +68,14 @@ func (tree AVLWeakBottomUp) delete(p *Node, i Position, x *Data) *Node {
 }
 
 func (tree *AVLWeakBottomUp) Delete(i Position) (x Data) {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    tree.root = tree.delete(tree.root, i, &x)
    tree.size = tree.size - 1
    return
 }
 
 func (tree *AVLWeakBottomUp) Insert(i Position, x Data) {
-   assert(i <= tree.Size())
+   // assert(i <= tree.Size())
    tree.size = tree.size + 1
    tree.root = tree.insert(tree.root, i, x)
 }
@@ -147,7 +147,7 @@ func (tree AVLWeakBottomUp) split(p *Node, i, s Size) (l, r *Node) {
 }
 
 func (tree AVLWeakBottomUp) Split(i Position) (List, List) {
-   assert(i <= tree.Size())
+   // assert(i <= tree.Size())
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
 

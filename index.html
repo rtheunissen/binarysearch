@@ -20,8 +20,6 @@
               delimiters: [
                   {left: '$$', right: '$$', display: true},
                   {left: '$', right: '$', display: false},
-                  {left: '\\(', right: '\\)', display: false},
-                  {left: '\\[', right: '\\]', display: true}
               ],
               // • rendering keys, e.g.:
               throwOnError : false
@@ -38,7 +36,7 @@
         }
 
         html {
-            font-size: 16px;
+            font-size: 1.5em;
         }
 
         /**
@@ -52,8 +50,9 @@
         a   { font-size: 1.0rem }
         pre { font-size: 0.8rem }
 
-        .katex { font-size: 1em; }
+        .katex { font-size: 1em; padding: 0 0 0 2px }
         .katex-display {
+            padding: 0;
             margin: 2em 0;
         }
 
@@ -86,17 +85,15 @@
         p  { margin:   0    0 1.0rem 0 }
         h1 { margin: 2.0rem 0 0.5rem 0 }
         h2 { margin: 4.0rem 0 2.0rem 0 }
-        h3 { margin: 4.0rem 0 1.0rem 0 }
+        h3 { margin: 5.0rem 0 1.0rem 0 }
         h4 { margin: 1.0rem 0 0.5rem 0 }
 
         article {
             font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif; /* Transitional */
             /*font-family: system-ui, sans-serif;*/
+            /*font-family: sans-serif;*/
         }
 
-        pre, .math {
-            font-family: ui-monospace, monospace;
-        }
 
         .math {
             display: inline-block;
@@ -116,11 +113,35 @@
         article {
             display: block;
             margin: auto;
-            max-width: 720px;
-            line-height: 1.4;
+            max-width: 38rem;
+            line-height: 1.38;
             padding: 0 1rem;
         }
+        a, .underline {
+            display: inline-block;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            text-decoration-thickness: 2px;
+        }
+        cite {
+            display: inline-block;
+            font-style: normal;
+        }
+        cite a {
 
+            text-decoration: none;
+        }
+        cite:before {
+            /*content: "["*/
+        }
+        cite:after {
+            /*content: "]"*/
+        }
+        @media print {
+            article a {
+                text-decoration: none;
+            }
+        }
         hr {
             margin: 2rem 0;
             opacity: 0.25;
@@ -151,27 +172,22 @@
         mark.blue    { background-color: rgba(0, 0, 255, 0.05) }
 
 
-        .underline, a {
-            display: inline-block;
-            text-decoration: underline;
-            text-underline-offset: 2px;
-            text-decoration-thickness: 2px;
-        }
+
 
         span.quote {
             font-style: italic;
         }
         span.quote:before {
-            content: "“"
+            /*content: "“"*/
         }
         span.quote:after {
-            content: "”"
+            /*content: "”"*/
         }
 
 
 
         .definition {
-            margin: 2rem 0;
+            margin: 1rem 0 2rem 0;
         }
 
         .definition .underline {
@@ -464,7 +480,7 @@
                 <h4>Node structure</h4>
                 <p>
                     Some nodes may not have a left or right subtree, suggesting that either or both links could be nil, but the pointers themselves are still there because they are part of the allocated node structure.
-                    A node that has neither a left or right subtree is called a <em>leaf</em> node.
+                    <span class="indent">A <em>leaf</em> is an empty subtree denoted by a nil reference.</span><br>
                 </p>
                 <pre>
 type Node struct {
@@ -505,14 +521,14 @@ type Node struct {
                     The same reasoning applies to decimal numbers, where the number of digits required to represent an integer $n$ is $\left\lfloor \log_{10}(n) \right\rfloor + 1$, or the number of times we can divide by 10 until we get to 1.
                     A binary number shortens by 1 bit when we divide by 2 and a decimal number shortens by 1 digit when we divide by 10.
                 </p>
-                <p>
-                    A two-way branch at every node ideally halves the path length every time and is therefore <em>logarithmic</em> in the size of the list: when the size of the list doubles, the search cost only increases by one.
-                    By extension, search cost grows linearly when the list grows exponentially.
-                </p>
-                <p>
-                    The <mark>maximum path length</mark> is the longest path from the root to a node is often referred to as the <span class="quote">height</span> of the tree and can be thought of as the maximum search cost.
-                    The total path length of a binary tree is the sum of the path length from the root to every other node, and the <mark>average path length</mark> is the total path length divided by the number of nodes.
-                </p>
+<!--                <p>-->
+<!--                    A two-way branch at every node ideally halves the path length every time and is therefore <em>logarithmic</em> in the size of the list: when the size of the list doubles, the search cost only increases by one.-->
+<!--                    By extension, search cost grows linearly when the list grows exponentially.-->
+<!--                </p>-->
+<!--                <p>-->
+<!--                    The <mark>maximum path length</mark> is the longest path from the root to a node is often referred to as the <span class="quote">height</span> of the tree and can be thought of as the maximum search cost.-->
+<!--                    The total path length of a binary tree is the sum of the path length from the root to every other node, and the <mark>average path length</mark> is the total path length divided by the number of nodes.-->
+<!--                </p>-->
             </section>
 
             <section id="insert">
@@ -615,11 +631,7 @@ type Node struct {
                 <p>
                     We can now follow this algorithm to search by relative position:
                 </p>
-
                 <pre>
-p : pointer along the search path
-i : search position, also distance
-
 func search(p *Node, i uint64) *Node {
    for {
       if i == p.s {
@@ -759,18 +771,29 @@ a  b  c         a  b  c           a  b  c
             </pre>
 
         <p>
-            Keep in mind that a node only keeps pointers to other nodes, not the nodes themselves, so to get the information of another node we need first retrieve it from memory.
-            Every time the program follows a link from one node to another, it must interact with memory to dereference that next node.
-            Generally, a tree search uses less energy when there are fewer links to follow per search.
-            Balance is therefore a measure of low <em>average path length</em>: on average, how many links would a program need to follow?
-            The path length of a node is the number of links to reach it from the root.
-            The average path length is the sum of all path lengths divided by the size of the tree.
+            Keep in mind that a node only stores reference to other nodes, not the nodes themselves, so to get the information of another node we must dereference it.
+            The program must therefore interact with memory whenever it follows a link from one node to another.
+            Reducing the number of links to follow is therefore a strategy to reduce interaction with memory.
         </p>
+
+        <p class="definition"><span class="underline">Definition:</span><br>
+            <span class="indent">The <em>path length</em> of a node is the number of links to follow to reach it from the root.</span>
+        </p>
+        <p class="definition"><span class="underline">Definition:</span><br>
+            <span class="indent">The <em>average path length</em> is the sum of all path lengths divided by the size of the tree.</span>
+        </p>
+
         <p>
+            Balance is therefore a measure of low average path length: on average, how many links would a program need to follow?
             To restore balance, we need a strategy to reduce the average path length by adjusting the branches of a tree without changing its underlying sequence.
             Some balancing strategies spend a lot of energy to achieve perfect balance, while others spend less energy by being more relaxed.
             We can evaluate these strategies as a trade-off between balance and energy: to what extent can balance be relaxed before search cost becomes too much?
         </p>
+
+        <p class="definition"><span class="underline">Definition:</span><br>
+            <span class="indent">A tree is balanced if every node is balanced by some definition of balance.</span>
+        </p>
+
 
         <section id="rotations">
             <h3>Rotations</h3>
@@ -796,9 +819,19 @@ a  b  c         a  b  c           a  b  c
                                                           (b)
     </pre>
 
+            <pre>
+func (p *Node) rotateL() *Node {       func (p *Node) rotateR() *Node {
+   r := p.r                               l := p.l
+   p.r = r.l                              p.l = l.r
+   r.l = p                                l.r = p
+   r.s = r.s + p.s + 1                    p.s = p.s - l.s - 1
+   return r                               return l
+}                                      }
+            </pre>
+
             <p>
-                A well-known algorithm to restore balance using tree rotations was designed by Quentin Stout and Bette Warren in 1986 [1], based on work done by Colin Day in 1976 [], commonly known as the Day-Stout-Warren algorithm or simply DSW.
-                This algorithm first transforms the tree into a linked-list using right-rotations, then transforms that linked-list into a balanced tree using left-rotations.
+                A well-known algorithm to restore balance using tree rotations was designed by Quentin Stout and Bette Warren in 1986 [], based on work done by Colin Day in 1976 [].
+                Commonly known as the Day-Stout-Warren algorithm or simply DSW, this algorithm first transforms the tree into a linked-list using right-rotations, then transforms that linked-list into a balanced tree using left-rotations.
             </p>
 
         </section>
@@ -846,59 +879,59 @@ func partition(p *Node, i uint64) *Node {
             <p class="definition"><span class="underline">Definition:</span><br>
                 <span class="indent">A node is median-balanced if the size of its left and right subtrees differ by no more than 1.</span>
             </p>
-            <p class="definition"><span class="underline">Definition:</span><br>
-                <span class="indent">A tree is median-balanced if all of its nodes are median-balanced.</span>
-            </p>
-
             <p>
-                A median-balanced tree is perfectly balanced because there is no structural arrangement of the same node sequence that has a lower average path length.
-                In 2017, Ivo Muusse published an algorithm for balancing a binary search tree [] that uses <em>partition</em> to replace every node of a tree by its underlying median to produce a median-balanced tree.
+                To determine if a node is median-balanced, we can add 1 to the smaller size to see if it becomes greater than or equal to the larger size.
+                Without loss of generality, assert that $x \leq y$.
             </p>
-
             <p>
-                Consider a node of size 10 with a left subtree size of 2 and a right subtree size of 7, which is therefore not median-balanced because the size difference is greater than 1.
-                For this node to be median-balanced, there would need to be 4 nodes in one subtree and 5 nodes in the other, either way.
-                The median node would be at position 10/2 = 5, so the algorithm moves that node to the top, which in this case pushes the original node down into the left subtree.
-                The number of nodes is now evenly distributed between the left and right subtrees, however there might be nodes within those subtrees that are not median-balanced.
-                Repeating the same steps recursively in the left and right subtrees results in a median-balanced tree.
+                $$\text{Median}(x, y) = (x+1) \geq y$$
+            </p>
+            <p>
+                A median-balanced tree is perfectly balanced because every branch divides the search space exactly in half.
+                In 2017, Ivo Muusse published an algorithm to balance a binary search tree that uses <em>partition</em> to replace every node of a tree by its underlying median to produce a median-balanced tree <cite data-title="An algorithm for balancing a binary search tree" data-authors="Ivo Muusse" data-year="2017"><a href="references/2017_muusse.pdf"></a></cite>.
+            </p>
+            <p>
+                Partitioning the root around its median distributes its nodes evenly between the left and right subtrees, however there might be nodes within those subtrees that are not median-balanced.
+                Repeating this step recursively in the left and right subtrees results in a median-balanced tree.
             </p>
 
             <pre>
-
-1. Start with the root of the tree as node P.
-2. Partition the median node of P if P is not already balanced.
-3. Balance the left subtree of P.
-4. Balance the right subtree of P.
+func balance(p *Node, s Size) *Node {
+   if p == nil {
+      return p
+   }
+   if not balanced(p) {
+      p = tree.partition(p, s / 2)
+   }
+   p.l = balance(tree, p.l, size(p.l))
+   p.r = balance(tree, p.r, size(p.r))
+   return p
+}
             </pre>
 
+
             <p>
-                This algorithm has multiple useful properties:
+                This algorithm has several useful properties:
             </p>
 
             <ul>
-                <li>General for any definition of local balance.</li>
-                <li>Efficient when trees are already somewhat balanced.</li>
+                <li>General for any local definition of balance.</li>
                 <li>Operates purely top-down in constant space.</li>
-                <li>Subtree balancing can be done in parallel.</li>
-                <li>Can be cancelled without invalidating the tree.</li>
+                <li>Subtree balancing is independent so can be done in parallel.</li>
+                <li>Efficient when trees are already somewhat balanced.</li>
             </ul>
 
             <p>
-                To determine if a node is median-balanced, we can add 1 to the smaller size to see if it becomes greater than or equal to the larger size.
-                Without loss of generality, assume that $x \lt y$.
+                There are however some node arrangements that are not median-balanced but have the same average path length as if they were median-balanced.
+                Consider the following trees that both form the same sequence of 5 nodes with an average path length of 6/5.
+                The first tree is not median-balanced because 5/2 is 2, so the median node is (c) but the root is currently (b).
             </p>
-
-            <pre>
-<mark class="yellow">Median(x, y) = (x+1) ≥ y</mark>
-        </pre>
-
             <p>
-                There are however are some arrangements are not strictly median-balanced but have the same maximum and average path length as a median-balanced tree.
-                Consider the trees in [Figure] that both form the same sequence: a,b,c,d,e.
-                Both trees have a size of 5, average path length of 6/5, and a maximum path length of 2.
-                However, the first tree is not median-balanced because 5/2 is 2 so the median node is (c), but the root is currently (b).
                 The median-balancing strategy would partition at (b) to make (c) the root, but the average path length stays the same.
-                This partitioning step is therefore redundant because balance did not improve.
+                This partitioning step is therefore redundant because it did not improve the average or worst-case search cost of the tree.
+                Ideally, partitioning by median should only be done if doing so reduces the average path length.
+<!--                Ideally, median partitioning should only be done if it would reduce the average path length of the tree.-->
+
             </p>
 
 
@@ -921,57 +954,48 @@ func partition(p *Node, i uint64) *Node {
 
         <section id="height-balance">
             <h3>Height balance</h3>
-
             <p class="definition">
                 <span class="underline">Definition:</span><br>
-                <span class="indent">The height of a node is equal to its maximum path length.</span>
+                <span class="indent">The <em>height</em> of a tree is the maximum path length from its root.</span>
             </p>
 
             <p class="definition">
                 <span class="underline">Definition:</span><br>
-                <span class="indent">The height of a tree is the height of its root.</span>
-            </p>
-
-            <p class="definition">
-                <span class="underline">Definition:</span><br>
-                <span class="indent">A node is height-balanced if the height of its left and right subtrees differ by no more than 1.</span>
-            </p>
-
-            <p class="definition">
-                <span class="underline">Definition:</span><br>
-                <span class="indent">A tree is height-balanced if all of its nodes are height-balanced.</span>
+                <span class="indent">A node is <em>height-balanced</em> if the height of its left and right subtrees differ by no more than 1.</span>
             </p>
 
             <p>
 
-                We can continue to use the same partition-based balancing algorithm, but change the definition of balance to <mark class="yellow">only partition if the node is not height-balanced</mark>.
-                Any node that is not height-balanced is partitioned to become median-balanced, which results in a height-balanced tree.
+                We can continue to use the same partition-based balancing algorithm but change the definition of balance to <mark class="yellow">only partition if the node is not already height-balanced</mark>.
+                Every node that is not height-balanced is partitioned to become median-balanced, which results in a height-balanced tree.
 
             </p>
 
             <p>
-                The problem to solve is <mark class="blue">to determine whether a node is height-balanced using only subtree size</mark>.
-                Ivo Muusse solves this in [] by using a stricter definition of height-balance where both the minimum and maximum path lengths of two subtrees differ by no more than one.
+                The problem to solve is to determine whether a node is height-balanced.
+                Ivo Muusse solves this in <cite data-title="An algorithm for balancing a binary search tree" data-authors="Ivo Muusse" data-year="2017"><a href="references/2017_muusse.pdf"></a></cite> by using a strict definition of height-balance where both the minimum and maximum path lengths of two subtrees differ by no more than 1.
                 Then, by pretending that both subtrees are already strictly height-balanced, we can compare their minimum and maximum heights.
+<!--                We can then compare their minimum and maximum heights by pretending that both subtrees are already strictly height-balanced.-->
+
             <p>
-                A binary tree is considered <em>perfect</em> when none of the nodes have only one subtree, thereby forming a perfect triangular shape conceptually.
-                The height of a perfect binary tree is <span class="math">log<span class="subscript">2</span>(s+1)-1</span>, which is intuitive because it is the number of links you need to follow from the root to get to the bottom of the tree, or conceptually the number of times that you can divide the size of the tree by 2, since every level of the tree has twice the number of nodes as the one above it.
+                A binary tree is <em>perfect</em> if every node has either zero or two subtrees, thereby forming a complete triangular shape conceptually.
+                The height of a perfect binary tree is $\log_{2}(s+1) - 1$, which is intuitive since every level of the tree has twice the number of nodes as the one above it and the number of branches to follow from the root to the bottom of the tree is the number of times that the size can be divided by 2 before reaching 1.
             </p>
 
             <pre>
 
-        ·               Size    : 7
-     ╱     ╲            Height  : 2
-   ·        ·
- ╱   ╲    ╱   ╲         log₂(7) ≈ 2.8
-·     ·  ·     ·        log₂(8) = 3
+                1     3         7             15
 
+                .     .         .              .
+                     . .      .   .        .       .
+                             . . . .     .   .   .   .
+                                        . . . . . . . .
             </pre>
 
             <p>
                 When a tree is strictly height-balanced, all the levels are of the tree are full except for maybe the bottom level, where some nodes might have only 1 subtree.
-                The bottom level of the larger subtree gets completed with <em>ceil</em>, and the bottom level of the smaller subtree gets emptied with <em>floor</em>.
-                We can then determine if the height difference is greater than 1 by comparing these heights:
+                The bottom level of the smaller subtree is emptied with <em>floor</em>, and the bottom level of the larger subtree is completed with <em>ceil</em>, giving the minimum and maximum heights of the two subtrees.
+                We can then determine if the height difference is greater than 1 by comparing these heights.
             </p>
             <p>
                 $$\text{Height}(x,y) = \lceil \log_2(\max(x,y)+1) \rceil - \lfloor \log_2(\min(x,y)+1) \rfloor \leq 1$$
@@ -984,163 +1008,201 @@ func partition(p *Node, i uint64) *Node {
 <!--            </p>-->
             <p>
                 This function, as presented above and by Muusse in [], can be simplified using an identity of the binary logarithm where $\lceil \log_{2}(s+1) \rceil \equiv \lfloor \log_{2}(s) \rfloor + 1$.
-                The result is the same whether you complete a level with <em>ceil</em> or empty a level with <em>floor</em> and add 1.
-                Without loss of generality, assume that $x \lt y$:
-<!--                Given that the number of bits required to represent an integer $n$ in binary is $\lfloor \log_{2}(n) \rfloor + 1$, this becomes a comparison between the number of bits required to represent $x+1$ and $y$.-->
+                The result is the same whether you complete a level with <em>ceil</em> or empty a level with <em>floor</em> and add one.
+                This allows us to express both sides of the inequality in terms of the <em>floor</em> of the binary logarithm.
             </p>
+<!--            <p>-->
+<!--                Without loss of generality, assert that $x \leq y$:-->
+<!--                Given that the number of bits required to represent an integer $n$ in binary is $\lfloor \log_{2}(n) \rfloor + 1$, this becomes a comparison between the number of bits required to represent $x+1$ and $y$.-->
+<!--            </p>-->
             <p>
                 $$\text{Height}(x,y) = \lfloor \log_{2}(x+1) \rfloor \geq \lfloor \log_{2}(y) \rfloor$$
             </p>
-
-<!--            <p>-->
-<!--                The MSB of a binary number is defined here as the position of the leftmost bit set to 1, counting from right to left.-->
-<!--                All the bits to the left of the MSB will be 0 and do not affect the value, indicating that the position of the MSB corresponds to the number of bits required to represent the integer in binary.-->
-<!--                Using this information, we can determine whether a node is height-balanced by comparing the MSB of $x+1$ and the MSB of $y$, thereby avoiding the need to calculate either logarithm.-->
-<!--            </p>-->
-
-<!--            <pre>-->
-<!--<mark class="yellow">Height(x,y)= MSB(x+1) ≥ MSB(y)</mark>-->
-<!--            </pre>-->
 
         </section>
 
         <section id="weight-balance">
             <h3>Weight balance</h3>
 <!--            https://yoichihirai.com/bst.pdf-->
-            <p>
-                Originally introduced by Nievergelt and Reingold in 1973 as <em>binary search trees of bounded balance</em> [], a node is considered weight-balanced if the size of one subtree is within a constant factor of the other.
-                Keeping to the binary theme, we can choose 2 as the constant factor to only partition if the weight of one subtree is more than twice the weight of the other.
-            </p>
-
-            <p>
-                The classic weight-balance theory uses <em>weight</em> to mean the size + 1, which effectively balances not by subtree size but instead by the number of empty subtrees or nil pointers, which is always size + 1.
-                This distinction actually makes a significant difference when balancing by partition.
-                For large sizes, a small +1 is insignificant because the weight would need to be very close to the boundary for the +1 to push it into unbalanced territory.
-                However, consider what happens in the common case of a subtree of size 3 with height 2:
-            </p>
-            <pre>
-                  TREE                LEFT               RIGHT
-   ·              Height : 2          Height : 0         Height : 1
- ╱   ╲            Size   : 3          Size   : 0         Size   : 2
-x     ·           Weight : 4          Weight : 1         Weight : 3
-    ╱   ╲
-   x     ·
-       ╱   ╲
-      x     x
-            </pre>
-
-            <p>
-                The empty left subtree has a size of 0 and the right subtree has a size of 2.
-                When we define weight as subtree size with a constant balancing factor of 2, this node is <em>not</em> balanced because half of 2 is 1 which is greater than 0.
-                In this case, a partition would occur to make the middle node the root and the height would decrease to 1.
-                When we instead define weight as subtree size + 1, or equivalently as the number of empty subtrees, we get 1 for the left subtree and 3 for the right which is balanced because 3/2 is 1 using integer division.
-                Since this case is very common due to most nodes occurring at the lower levels of the tree, we get a significant reduction in partitioning at the cost of a slightly higher average path length - a good trade.
-            </p>
-
-            <p>
+<!--            https://i11www.iti.kit.edu/extra/publications/bw-etdwb-20.pdf-->
+            <p class="definition">
                 <span class="underline">Definition:</span><br>
-                <span class="indent">The weight of a node is the number of underlying empty subtrees or nil pointers, equal to its size + 1.</span>
+                <span class="indent">The <em>weight</em> of a tree is the number of leaves, or one more than the number of nodes.</span>
+            </p>
+            <p class="definition">
+                <span class="underline">Definition:</span><br>
+                <span class="indent">A node is <em>weight-balanced</em> if the weights of its subtrees are within some defined range.</span>
+            </p>
+            <p>
+                The general category of weight-balanced trees require some definition of reasonable difference in the number of nodes between the left and the right subtree.
+                Intuitively, there is then an upper-bound on the height of the tree given that every node in the tree is weight-balanced.
+                A median-balanced node is therefore also perfectly weight-balanced because there is an ideal distribution in the number of nodes between its and right subtrees, and is therefore also height-balanced.
+            </p>
+            <p>
+                A simple definition of weight-balance is to choose 2 as a constant factor, where a node is balanced if the weight of the smaller subtree is at least half the weight of the larger subtree.
+            </p>
+
+            <p>
+                $$\text{Weight}(x, y) = (x + 1) \geq (y+1) / 2$$
+            </p>
+        </section>
+        <section id="log-balance">
+            <h3>Log balance</h3>
+            <p>
+                A somewhat overlooked variant of weight-balance was introduced by Salvador Roura in 2001 [], which directly compares the binary logarithm of the weights of the left and right subtrees.
             </p>
 
             <p class="definition">
                 <span class="underline">Definition:</span><br>
-                <span class="indent">A node is weight-balanced if the weight of one subtree is no more than twice the weight of the other.</span>
+                <span class="indent">A node is <em>logarithmically</em> weight-balanced if the discrete binary logarithm of the weights of its subtrees differ by no more than 1.</span>
             </p>
 
-            <p class="definition">
-                <span class="underline">Definition:</span><br>
-                <span class="indent">A tree is weight-balanced when all of its nodes are weight-balanced.</span>
+            <p>
+                $$
+                \begin{aligned}
+                \text{Log}(x,y) = &\lfloor\log_{2}(y+1)\rfloor - \lfloor\log_{2}(x+1)\rfloor \leq 1
+                \\              = &\lfloor\log_{2}(x+1)\rfloor \geq \lfloor\log_{2}(y+1)\rfloor - 1
+                \\              = &\lfloor\log_{2}(x+1)\rfloor \geq \lfloor\log_{2}(y+1)\rfloor - \lfloor\log_{2}(2)\rfloor
+                \\              = &\lfloor\log_{2}(x+1)\rfloor \geq \lfloor \log_{2}((y+1)/2) \rfloor
+                \end{aligned}
+                $$
+            </p>
+            <p>
+                For example, a node with subtree weights 9 and 5 is balanced because $\log_{2}(9) = 4$ and $\log_{2}(5) = 3$ which do not differ by more than 1.
+                On the other hand, a node with subtree weights 9 and 3 is <em>not</em> balanced because  $\log_{2}(3) = 2$, which is too far away from 4.
             </p>
 
             <pre>
-  <mark class="yellow">HalfSize(x, y) = x ≥ y >> 1</mark>
-
-<mark class="yellow">HalfWeight(x, y) = (x + 1) ≥ (y + 1) >> 1</mark>
+                Draw subtrees of 9 and 5 and 9 and 3.
             </pre>
 
             <p>
-                A somewhat overlooked variant of weight-balance was introduced by Salvador Roura in 2001 [], which directly compares the binary logarithm of the left and right subtree sizes.
-                This definition of balance is more relaxed with a maximum height of <span class="math">2*⌊log₂(s)⌋</span>, and fits naturally into the framework of balancing by partition.
-                While most of that paper uses subtree size rather than weight, Roura mentions in the final remarks that "it is possible to use the number of [empty subtrees] instead of the number of [nodes] as balancing information".
-                This suggestion, alongside the classic weight-balanced trees using size + 1, as well as the fact that log is undefined for 0, suggests that using weight instead of size is likely to yield good results.
-            </p>
-
-            <p class="definition">
-                <span class="underline">Definition:</span><br>
-                <span class="indent">A node is logarithmically weight-balanced if the MSB of the weight of its subtrees differ by no more than 1.</span>
-            </p>
-
-            <p>
-                For example, a node with subtree sizes 17 and 8 is balanced, but 17 and 7 is <em>not</em> balanced because the most positions of their most-significant bits are too far apart.
+                The most-significant-bit or MSB is the position of the leftmost bit set to 1.
+                The MSB gives the number of bits required to represent the integer in binary since all the bits to the left of the MSB will be 0 and do not affect the value.
+                Comparing the MSB is therefore equivalent to comparing the discrete binary logarithm.
+                A node is therefore logarithmically weight-balanced if the MSB of the weight of one subtree is at most one step away from the MSB of the weight of the other subtree.
             </p>
 
             <pre>
-   ↓↓                    ↓ ↓
-00010001 = 17         00010001 = 17
-00001000 = 8          00000111 = 7
+                 BALANCED        NOT BALANCED
 
-BALANCED              NOT BALANCED
+                 ↓↓                ↓ ↓
+              x: 0<strong>1</strong>01 = 5          00<strong>1</strong>1 = 3
+              y: <strong>1</strong>001 = 9          <strong>1</strong>001 = 9
+
             </pre>
-
+        </section>
+        <section id="log-balance">
+            <h3>Comparing the binary log</h3>
             <p>
-                Assuming <span class="math">x < y</span>, the MSB of <span class="math">y</span> is either at the same position as the MSB of <span class="math">x</span> or further to the left.
-                Shifting all the bits of <span class="math">y</span> one step to the right (dividing by 2) then either aligns the MSB of <span class="math">y</span> with the MSB of <span class="math">x</span>, or moves it one step to the right of the MSB of <span class="math">x</span> (if they were already aligned).
-                After the shift, if the MSB of <span class="math">y</span> is still to the left of the MSB of <span class="math">x</span> it indicates that the MSB of <span class="math">y</span> was more than one step away and therefore not balanced.
-                Balance is therefore met if the MSB of <span class="math">x</span> is greater than or equal to the MSB of <span class="math">y</span> shifted to the right by one step.
-                Substituting <span class="math">x+1</span> and <span class="math">y+1</span> yields an expression for logarithmic weight-balance.
-            </p>
-
-            <pre>
-
-  <mark class="yellow">LogSize(x, y) = MSB(x) ≥ MSB(y >> 1)</mark>
-
-<mark class="yellow">LogWeight(x, y) = MSB(x + 1) ≥ MSB((y + 1) >> 1)</mark>
-            </pre>
-
             <p>
-                We now have 6 definitions of balance in terms of the left and right subtree sizes to balance by partition:
-            </p>
+                Generally, we require a function that determines whether the MSB of one integer is less than the MSB of another.
+                The first candidate is the function used by Roura in [], the second is by Chan in [], and the third is from Warren in [].
 
-            <pre>
-    Height(x, y) = MSB(<mark class="blue">x + 1</mark>) ≥ MSB(<mark class="blue">y</mark>)
-    Median(x, y) =    (<mark class="blue">x + 1</mark>) ≥    (<mark class="blue">y</mark>)
-
-   LogSize(x, y) = MSB(<mark class="red">x</mark>) ≥ MSB(<mark class="red">y >> 1</mark>)
-  HalfSize(x, y) =    (<mark class="red">x</mark>) ≥    (<mark class="red">y >> 1</mark>)
-
- LogWeight(x, y) = MSB(<mark class="green">x + 1</mark>) ≥ MSB(<mark class="green">(y + 1) >> 1</mark>)
-HalfWeight(x, y) =    (<mark class="green">x + 1</mark>) ≥    (<mark class="green">(y + 1) >> 1</mark>)
-            </pre>
-
-            <p>
-                There appears to be a pattern where a stricter definition of balance is relaxed by using the MSB of the same terms.
-                The problem to solve now is how to actually compare the MSB of one integer to the MSB of another.
+                These functions allow us to compare the discrete binary logarithm without the need to calculate the logarithm itself.
             </p>
             <p>
-                There are a handful of clever ways to do this using bitwise operations [][][]:
+                $$
+                \begin{align}
+                \lfloor\log_{2}(x)\rfloor \geq \lfloor\log_{2}(y)\rfloor &= x \geq y \text{ || } y \leq (x \mathbin{\&} y) \ll 1
+                \\                                                      &= x \geq y \text{ || } x \geq (x \oplus y)
+                \\                                                      &= x \geq (\lnot{x} \mathbin{\&} y)
+                \end{align}
+                $$
+            </p>
+            <!--
+            <p>
+                $$
+                \begin{align*}
+                \lfloor\log_{2}(x)\rfloor \lt \lfloor\log_{2}(y)\rfloor &= x \lt y \text{ and } y \gt (x \mathbin{\&} y) \ll 1
+                \\                                                      &= x \lt y \text{ and } x \lt (x \oplus y)
+                \\                                                      &= x \lt (\lnot{x} \mathbin{\&} y)
+                \end{align*}
+                $$
+            </p>
+            -->
+            <p>
+
             </p>
 
-            <pre>
-MSB(x) ≥ MSB(y) = x ≥ y || ((x & y) << 1) ≥ y    Roura, S.
-MSB(x) ≥ MSB(y) = x ≥ y || x ≥ (x ^ y)           Chan, T.M.
-MSB(x) ≥ MSB(y) = x ≥ (~x & y)                   Warren, H.S.
-            </pre>
+
+            <p>
+                So far we have four definitions of weight-balance: median-balance (4),  height-balance (5),  weight-balance (6), and logarithmic weight-balance (7).
+                There appears to be a pattern where a stronger definition of balance is relaxed by the logarithm — what a neat relationship.
+
+                <!--                There are two defined strategies in terms of the binary logarithm that can be rewritten as bitwise operations.-->
+
+            </p>
+            <p>
+                $$
+                \begin{align*}
+                \text{Median}(x, y) &&=&& &(x+1) &\geq& &&y
+                \\
+                \text{Height}(x,y)  &&=&& \lfloor\log_{2} &(x+1)\rfloor &\geq& &\lfloor\log_{2}(&y)\rfloor
+                \\
+                \text{Weight}(x, y) &&=&& &(x+1) &\geq& &&(y+1)/2
+                \\
+                \text{Log}(x, y)    &&=&& \lfloor\log_{2}&(x+1)\rfloor &\geq& &\lfloor\log_{2}(&(y+1)/2) \rfloor
+                \end{align*}
+                $$
+            </p>
+
+            <p>
+                Using the bitwise function of Warren (3) to replace the binary log comparisons and shifts for division yields the following expanded solutions:
+
+            </p>
+            <p>
+                $$
+                \begin{align}
+                \text{Median}(x, y) &= (x+1) \geq y
+                \\
+                \text{Height}(x,y)  &= (x+1) \geq \lnot{(x+1)} \mathbin{\&} y
+                \\
+                \text{Weight}(x, y) &= (x+1) \geq (y+1) \gg 1
+                \\
+                \text{Log}(x, y)    &= (x+1) \geq \lnot{(x+1)} \mathbin{\&} ((y+1) \gg 1)
+                \end{align}
+                $$
+            </p>
+<!--            <pre>-->
+<!--MSB(x) ≥ MSB(y) = x ≥ y || ((x & y) << 1) ≥ y-->
+<!--MSB(x) ≥ MSB(y) = x ≥ y || x ≥ (x ^ y)-->
+<!--MSB(x) ≥ MSB(y) = x ≥ (~x & y)-->
+<!--            </pre>-->
+<!--            MSB(x) ≥ MSB(y) = x ≥ y || ((x & y) << 1) ≥ y    Roura, S.-->
+<!--            MSB(x) ≥ MSB(y) = x ≥ y || x ≥ (x ^ y)           Chan, T.M.-->
+<!--            MSB(x) ≥ MSB(y) = x ≥ (~x & y)                   Warren, H.S.-->
+
+<!--            <pre>-->
+<!--    Median(x, y) =    (<mark class="blue">x + 1</mark>) ≥    (<mark class="blue">y</mark>)-->
+<!--    Height(x, y) = MSB(<mark class="blue">x + 1</mark>) ≥ MSB(<mark class="blue">y</mark>)-->
+<!--  HalfSize(x, y) =    (<mark class="red">x + 1</mark>) ≥    (<mark class="red">(y + 1) >> 1</mark>)-->
+<!--   LogSize(x, y) = MSB(<mark class="red">x + 1</mark>) ≥ MSB(<mark class="red">(y + 1) >> 1</mark>)-->
+<!--            </pre>-->
+
+
+<!--            <pre>-->
+<!--    Height(x, y) = MSB(<mark class="blue">x + 1</mark>) ≥ MSB(<mark class="blue">y</mark>)-->
+<!--    Median(x, y) =    (<mark class="blue">x + 1</mark>) ≥    (<mark class="blue">y</mark>)-->
+
+<!--   LogSize(x, y) = MSB(<mark class="red">x</mark>) ≥ MSB(<mark class="red">y >> 1</mark>)-->
+<!--  HalfSize(x, y) =    (<mark class="red">x</mark>) ≥    (<mark class="red">y >> 1</mark>)-->
+
+<!-- LogWeight(x, y) = MSB(<mark class="green">x + 1</mark>) ≥ MSB(<mark class="green">(y + 1) >> 1</mark>)-->
+<!--HalfWeight(x, y) =    (<mark class="green">x + 1</mark>) ≥    (<mark class="green">(y + 1) >> 1</mark>)-->
+<!--            </pre>-->
+        </section>
+        <section id="log-balance">
+            <h3>Cost-optimized balance</h3>
+            <p>
+
 
             <!--          Roura, S. (2001). A New Method for Balancing Binary Search Trees. I-->
             <!--          Chan, T.M. (2002). Closest-point problems simplified on the RAM. SO-->
             <!--          Warren, H.S. (2002). Hacker's Delight. 2nd Edition, section 5-3.-->
-        </section>
 
-
-
-        <section id="cost-balance">
-            <h3>Cost-optimized weight-balance</h3>
-            <p>
                 There is one other design candidate that does not follow the same pattern.
-                Cho and Sahni introduced the idea of <em>cost optimized search trees</em> in 2000,
-                where the total search cost of the tree can not be reduced by a rotation anywhere in the tree,
-                even if some nodes are not strictly weight-balanced by the classic definition.
-            </p>
+                In 2000, Cho and Sahni introduced the idea of <em>cost-optimized search trees</em>, where the average search cost can not be reduced by a rotation anywhere in the tree.
             <p>
                 Even though their definition considers rotations specifically, we can apply this concept to partition-based balancing without the need to consider rotations at all.
                 In this context, the only determination to make is whether a node is balanced or not, with no concern for how to restore that balance locally, given that the algorithm uses median-partitioning generally.
@@ -1151,26 +1213,30 @@ MSB(x) ≥ MSB(y) = x ≥ (~x & y)                   Warren, H.S.
                 <span class="underline">Definition:</span><br>
                 <span class="indent">A node is cost-optimized if the size of each subtree is greater than or equal to the size of both subtrees of the other subtree.</span>
             </p>
-
             <pre>
-    Cost() = (sl ≥ srl && sl ≥ srr) &&
-              (sr ≥ sll && sr ≥ slr)
+                                   .
+                              l        r
+                           ll   lr  rl   rr
             </pre>
-
+            <p>
+                $$
+                \begin{align*}
+                \text{Cost(p)} =  l &\geq rl, l \geq rr, r \geq ll, r \geq lr \\
+                \end{align*}
+                $$
+            </p>
         </section>
 
         <section id="balancer-analysis">
             <h3>Analysis</h3>
             <p>
-                10,000 trees were created in size increments of 10.
-                At every step, a tree is grown, uniformly randomized, and balanced.
-                All measurements should match exactly across systems because they measure the structure of the balanced tree, which is consistent given the same source of randomness.
+                10,000 trees were created in size increments of 100.
+                A tree was grown randomly at every step, then balanced by each strategy.
+                These measurements are consistent across systems because they measure the structure of the balanced tree which is consistent given the same source of randomness.
             </p>
             <p>
                 The results were generated on an Intel i5 13600K with 32GB of DDR5 memory.
             </p>
-
-
 
 <!--            <div class="graphs">-->
 <!--                <img src="benchmarks/svg/balancers/Partition/Uniform/PartitionCount__sbezier.svg">-->
@@ -1180,7 +1246,6 @@ MSB(x) ≥ MSB(y) = x ≥ (~x & y)                   Warren, H.S.
 <!--                <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePathLength__sbezier.svg">-->
 <!--                <img src="benchmarks/svg/balancers/Partition/Uniform/MaximumPathLength__sbezier.svg">-->
 <!--            </div>-->
-
 
             <section id="partition-count">
                 <h4>Partition count</h4>
@@ -1505,6 +1570,52 @@ MSB(x) ≥ MSB(y) = x ≥ (~x & y)                   Warren, H.S.
         <section id="weight-balanced-trees">
             <h3>Weight-balanced trees</h3>
 
+            <!--                        Adams [1] gives a functional implementation-->
+            <!--            of weight-balanced trees and claims they perform as-->
+            <!--            well as red-black trees, however does not provide a-->
+            <!--            practical evaluation.-->
+
+            <!--            With weight-balanced trees, a set-->
+            <!--            of balancing parameters (see Section 2.1) play a crucial-->
+            <!--            role. While Nievergelt and Reingold introduced the-->
+            <!--            technique and conjectured its correctness, the balancing-->
+            <!--            technique does not work for the whole range of balance-->
+            <!--            parameters they state in their paper. Later, Blum-->
+            <!--            and Mehlhorn [4] not only point out this incorrectness,-->
+            <!--            but also give a rigorous proof for a smaller space of-->
+            <!--            the balancing parameters. Hirai and Yamamoto [8]-->
+            <!--            use a computer-assisted proof system to discover the-->
+            <!--            whole space of feasible balancing parameters.-->
+
+            <!--            While the original proposal-->
+            <!--            (although incorrect, as Blum and Mehlhorn have shown)-->
+            <!--            by Nievergelt and Reingold was already a top-down-->
+            <!--            algorithm, the supplied proof by Blum and Mehlhorn-->
+            <!--            only works for a bottom-up rebalancing.-->
+
+
+            <!--            Later, Lai-->
+            <!--            and Wood [10] have provided a top-down rebalancing-->
+            <!--            algorithm and shown its correctness.-->
+
+            <!--            To our knowledge, no empirical-->
+            <!--            analysis of top-down weight-balanced trees has been-->
+            <!--            done yet.-->
+
+            <!--            comprehensive experimental evaluation of top-down as-->
+            <!--            well as bottom-up weight-balanced trees and the possible choices for the balancing parameters,-->
+
+            <!--            We gain the insight that-->
+            <!--            top-down weight-balanced trees should be preferred over-->
+            <!--            bottom-up weight-balanced trees, and most of the time-->
+            <!--            they can compete with the performance of red-black-->
+            <!--            trees.-->
+
+
+            <!--            We can also see that the race between-->
+            <!--            red-black trees and weight-balanced trees is a toss-up-->
+
+
             <p>
                 Implementing a linear list using a binary search tree requires that we track the size of each subtree along the search path.
                 It seems ideal then to use this information for balancing, rather than heights or ranks stored additionally in each node.
@@ -1515,6 +1626,10 @@ MSB(x) ≥ MSB(y) = x ≥ (~x & y)                   Warren, H.S.
 
             <section id="logarithmic-weight-balanced-trees">
                 <h4>Logarithmic weight-balanced trees</h4>
+<!--                  This definition of balance is more relaxed with a maximum height of <span class="math">2*⌊log₂(s)⌋</span>, and fits naturally into the framework of balancing by partition.
+                While most of that paper uses subtree size rather than weight, Roura mentions in the final remarks that "it is possible to use the number of [empty subtrees] instead of the number of [nodes] as balancing information".
+                This suggestion, alongside the classic weight-balanced trees using size + 1, as well as the fact that log is undefined for 0, suggests that using weight instead of size is likely to yield good results.
+                -->
                 <p>
                     The weight-balance strategy suggested by Roura in 2001 use simple bitwise operations to determine logarithmic weight-balance, avoiding both fractional arithmetic and integer overflow.
                     The height bound of a logarithmic weight-balanced tree is the same as a red-black tree, no greater than <span class="math">2*⌊log₂(s)⌋</span>.
@@ -1634,9 +1749,7 @@ MSB(x) ≥ MSB(y) = x ≥ (~x & y)                   Warren, H.S.
 
     <section id="references">
         <h2>References</h2>
-        <ol>
-            <li></li>
-        </ol>
+
     </section>
 
 <!--    <pre>-->
@@ -1700,6 +1813,35 @@ MSB(x) ≥ MSB(y) = x ≥ (~x & y)                   Warren, H.S.
 <!--https://web.archive.org/web/*/http://t-t-travails.blogspot.com/2008/04/left-leaning-red-black-trees-are-hard.html-->
 <!--https://github.com/zarif98sjs/RedBlackTree-An-Intuitive-Approach-->
 <!--https://www.boost.org/doc/libs/1_53_0/doc/html/intrusive/set_multiset.html-->
+
+
+
+<script>
+    // Get all cite elements
+    const citeElements = document.querySelectorAll('cite');
+
+    // Reference block container
+    const referencesContainer = document.getElementById('references');
+
+    // Loop through each cite element
+    citeElements.forEach((citeElement, index) => {
+        // Increment the index by 1 for display
+        const referenceNumber = index + 1;
+
+        // Update the citation number in the <a> tag
+        const anchorElement = citeElement.querySelector('a');
+        anchorElement.innerText = `[${referenceNumber}]` //`[${citeElement.getAttribute('data-authors')}, ${citeElement.getAttribute('data-year')}]`;
+
+        // Create a new reference block
+        const referenceBlock = document.createElement('p');
+        referenceBlock.textContent = `[${referenceNumber}] ${citeElement.getAttribute('data-authors')}, "${citeElement.getAttribute('data-title')}", ${citeElement.getAttribute('data-year')}.`;
+
+        // Append the reference block to the container
+        referencesContainer.appendChild(referenceBlock);
+    });
+</script>
+
+
 </body>
 </html>
 

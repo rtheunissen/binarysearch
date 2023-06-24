@@ -6,23 +6,26 @@ load "benchmarks/plot/colors.gnuplot"
 #
 ##################################################################
 
-Median      = 1
-Height      = 2
-HalfSize    = 3
-HalfWeight  = 4
-LogSize     = 5
-LogWeight   = 6
-Cost        = 7
-DSW         = 8
+Median  = 1
+Height  = 2
+Weight  = 3
+Log     = 4
+Cost    = 5
+DSW     = 6
 
-set style line Median      dashtype 1 ps 2 lw 2 pt  11 pn 2 lc rgb COLOR_BLACK
-set style line Height      dashtype 4 ps 2 lw 2 pt  10 pn 2 lc rgb COLOR_GREEN
-set style line HalfSize    dashtype 1 ps 2 lw 2 pt   9 pn 2 lc rgb COLOR_RED
-set style line LogSize     dashtype 5 ps 2 lw 2 pt   8 pn 2 lc rgb COLOR_YELLOW
-set style line HalfWeight  dashtype 1 ps 2 lw 2 pt  13 pn 2 lc rgb COLOR_BLUE
-set style line LogWeight   dashtype 5 ps 2 lw 2 pt  12 pn 2 lc rgb COLOR_CYAN
-set style line Cost        dashtype 1 ps 2 lw 2 pt  14 pn 2 lc rgb COLOR_BROWN 
-set style line DSW         dashtype 3 ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_PINK
+set style line Median  dashtype 1 ps 2 lw 2 pt  11 pn 2 lc rgb COLOR_BLACK
+set style line Height  dashtype 4 ps 2 lw 2 pt  10 pn 2 lc rgb COLOR_YELLOW
+set style line Weight  dashtype 1 ps 2 lw 2 pt   9 pn 2 lc rgb COLOR_BLUE
+set style line Log     dashtype 5 ps 2 lw 2 pt   8 pn 2 lc rgb COLOR_CYAN
+set style line Cost    dashtype 2 ps 2 lw 2 pt  14 pn 2 lc rgb COLOR_GREEN
+set style line DSW     dashtype 3 ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_PINK
+
+# set style line HalfSize    dashtype 1 ps 2 lw 2 pt   9 pn 2 lc rgb COLOR_RED
+# set style line LogSize     dashtype 5 ps 2 lw 2 pt   8 pn 2 lc rgb COLOR_YELLOW
+# set style line HalfWeight  dashtype 1 ps 2 lw 2 pt  13 pn 2 lc rgb COLOR_BLUE
+# set style line LogWeight   dashtype 5 ps 2 lw 2 pt  12 pn 2 lc rgb COLOR_CYAN
+# set style line Cost        dashtype 1 ps 2 lw 2 pt  14 pn 2 lc rgb COLOR_BROWN
+# set style line DSW         dashtype 3 ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_PINK
 
 ##################################################################
 #
@@ -30,14 +33,12 @@ set style line DSW         dashtype 3 ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_PINK
 #
 ##################################################################
 
-Partition = "Median Height HalfSize LogSize HalfWeight LogWeight Cost"
-All       = "Median Height HalfSize LogSize HalfWeight LogWeight Cost DSW"
-Limited   = "Median Height HalfWeight DSW"
+Partition = "Median Height Weight Log Cost"
+All       = "Median Height Weight Log Cost DSW"
 
-GROUPS = "Partition All Limited"
+GROUPS = "Partition All"
 
 DISTRIBUTIONS = "Uniform"
-
 
 do for [GROUP in GROUPS] {
 

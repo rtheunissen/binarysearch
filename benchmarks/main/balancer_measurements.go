@@ -1,15 +1,15 @@
 package main
 
 import (
+   "binarysearch/abstract/list"
    "binarysearch/binarytree"
    "binarysearch/distribution"
+   "binarysearch/utility"
    "flag"
    "fmt"
-   "binarysearch/utility"
    "os"
-   "binarysearch/abstract/list"
-   "time"
    "path/filepath"
+   "time"
 )
 
 func main() {
@@ -33,10 +33,8 @@ func main() {
       Strategy: utility.Resolve[binarytree.Balancer](*strategy, []binarytree.Balancer{
          &binarytree.Median{},
          &binarytree.Height{},
-         &binarytree.HalfSize{},
-         &binarytree.LogSize{},
-         &binarytree.HalfWeight{},
-         &binarytree.LogWeight{},
+         &binarytree.Weight{},
+         &binarytree.Log{},
          &binarytree.Cost{},
          &binarytree.DSW{},
       }),

@@ -61,16 +61,13 @@ benchmarks: operation-benchmarks balancer-benchmarks
 
 measurements: operation-measurements balancer-measurements
 
-
 BALANCERS := \
 	Median \
 	Height \
-	HalfSize \
-	LogSize \
-	HalfWeight \
-	LogWeight \
+	Weight \
+	Log \
 	Cost \
-	DSW
+	DSW \
 
 balancer-measurements-%:
 	${GO} run benchmarks/main/balancer_measurements.go -strategy $*

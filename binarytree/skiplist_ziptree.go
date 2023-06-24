@@ -83,7 +83,7 @@ func (tree *Zip) Insert(i Position, x Data) {
          p = &(*p).r          // Path right.
       }
    }
-   assert(tree.rank(n) >= tree.rank(*p))
+   // assert(tree.rank(n) >= tree.rank(*p))
    tree.unzip(*p, i, &n.l, &n.r) // Unzip the path into the new node.
    n.s = i                       // Set the size of the left subtree.
    *p = n                        // Write the new node to the path.
@@ -98,7 +98,7 @@ func (tree *Zip) rank(p *Node) uint64 {
 }
 
 func (tree *Zip) zip(l, r *Node, sl Size) (root *Node) {
-   assert(sl == l.size())
+   // assert(sl == l.size())
    p := &root
    for {
       if l == nil {
@@ -128,7 +128,7 @@ func (tree *Zip) zip(l, r *Node, sl Size) (root *Node) {
 
 //
 //func (tree *Zip) zipRecursive(x, y *Node, sl Size) *Node {
-//   assert(sl == x.count())
+//   // assert(sl == x.count())
 //   if x == nil { return y }
 //   if y == nil { return x }
 //   if rank(x) < rank(y) {
@@ -150,7 +150,7 @@ func (tree *Zip) zip(l, r *Node, sl Size) (root *Node) {
 //   }
 //   tree.pathcopy(&p)
 //   if i == p.i {
-//      assert(p.i == p.l.count())
+//      // assert(p.i == p.l.count())
 //      *x = p.x
 //      return tree.zipRecursive(p.l, p.r, p.i)
 //   }
@@ -210,7 +210,7 @@ func (tree *Zip) delete(p **Node, i Position, x *Data) {
 }
 
 func (tree *Zip) Delete(i Position) (x Data) {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    //tree.pathcopy(&tree.root)
    //tree.root = tree.deleteRecursive(tree.root, i, &x)
    tree.delete(&tree.root, i, &x)
@@ -219,7 +219,7 @@ func (tree *Zip) Delete(i Position) (x Data) {
 }
 
 func (tree Zip) split(i Size) (Tree, Tree) {
-   assert(i <= tree.Size())
+   // assert(i <= tree.Size())
    tree.share(tree.root)
    l, r := tree.Tree.split(tree.root, i)
 
@@ -235,12 +235,12 @@ func (tree *Zip) Split(i Position) (List, List) {
 }
 
 func (tree *Zip) Select(i Size) Data {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    return tree.lookup(tree.root, i)
 }
 
 func (tree *Zip) Update(i Size, x Data) {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }

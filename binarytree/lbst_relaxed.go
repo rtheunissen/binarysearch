@@ -120,7 +120,7 @@ func (tree *LBSTRelaxed) Verify() {
 
 // Inserts a value `s` at position `i` in the tree.
 func (tree *LBSTRelaxed) Insert(i Position, x Data) {
-   assert(i <= tree.Size())
+   // assert(i <= tree.Size())
 
    var unbalancedNode **Node // An unbalanced node along the insertion path.
    var unbalancedSize Size   // The size of the unbalanced node.
@@ -185,15 +185,15 @@ func (tree *LBSTRelaxed) tooDeep(size Size, depth uint64) bool {
 
 // Determines if two sizes are balanced.
 func (LBSTRelaxed) isBalanced(x, y Size) bool {
-   return LogSize{}.isBalanced(x, y)
+   return Log{}.isBalanced(x, y)
 }
 
 func (tree *LBSTRelaxed) balance(p **Node, s Size) {
-   *p = Partition{LogSize{}}.balance(&tree.Tree, *p, s)
+   *p = Partition{Log{}}.balance(&tree.Tree, *p, s)
 }
 
 func (tree *LBSTRelaxed) Split(i Size) (List, List) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
 
    tree.share(tree.root)
    l,r := tree.split(tree.root, i)

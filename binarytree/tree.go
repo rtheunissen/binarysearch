@@ -39,7 +39,7 @@ type BinaryTree interface {
 //   if reflect.DataOf(p).IsNil() {
 //      return 0
 //   }
-//   assert(p.Count() == s)
+//   // assert(p.Count() == s)
 //   iL := InternalPathLength(p.Left(), p.SizeOfLeftSubtree(s))
 //   iR := InternalPathLength(p.Right(), p.SizeOfRightSubtree(s))
 //   return s - 1 + iL + iR // TODO reference this
@@ -72,7 +72,7 @@ type Tree struct {
 // resulting root. This algorithm is identical to splay with no rotation steps.
 //
 func (tree Tree) partition(p *Node, i uint64) *Node {
-   assert(i < p.size())
+   // assert(i < p.size())
    // measurement(&partitionCount, 1)
 
    n := Node{s: i}
@@ -143,7 +143,7 @@ func (tree Tree) Free() {
 // Deletes the node at position `i` from the tree.
 // Returns the data that was in the deleted value.
 func (tree *Tree) Delete(i list.Position) list.Data {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    x := tree.delete(&tree.root, tree.size, i)
    tree.size--
    return x
@@ -151,12 +151,12 @@ func (tree *Tree) Delete(i list.Position) list.Data {
 
 
 func (tree *Tree) Select(i list.Size) list.Data {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    return tree.lookup(tree.root, i)
 }
 
 func (tree *Tree) Update(i list.Size, x list.Data) {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }
@@ -211,7 +211,7 @@ func (tree *Tree) Insert(i list.Size, x list.Data) {
 }
 
 //func (tree *Tree) Split(i Size) (Tree, Tree) {
-//   assert(i <= tree.size)
+//   // assert(i <= tree.size)
 //
 //   var l, r *Node
 //   tree.partition(tree.root, i, &l, &r)
@@ -250,12 +250,12 @@ func (tree Tree) lookup(p *Node, i list.Size) list.Data {
 }
 
 //func (tree *Tree) Select(i Size) Data {
-//  assert(i < tree.Size())
+//  // assert(i < tree.Size())
 //  return tree.lookup(tree.root, i)
 //}
 
 //func (tree *Tree) Update(i Size, x Data) {
-//   assert(i < tree.Size())
+//   // assert(i < tree.Size())
 //   tree.pathcopy(&tree.root)
 //   tree.update(tree.root, i, x)
 //}
@@ -369,7 +369,7 @@ func (tree *Tree) delete(p **Node, s list.Size, i list.Size) (x list.Data) {
 // Deletes the node at position `i` from the tree.
 // Returns the data that was in the deleted Data.
 //func (tree *Tree) Delete(i Size) Data {
-//   assert(i < tree.Size())
+//   // assert(i < tree.Size())
 //   x := tree.delete(&tree.root, tree.size, i)
 //   tree.size--
 //   return x

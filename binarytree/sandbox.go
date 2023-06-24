@@ -1,7 +1,8 @@
 package binarytree
 
 import (
-   "binarysearch/random"
+   "fmt"
+   "math"
 )
 
 func init() {
@@ -140,19 +141,39 @@ func init() {
 //   ////}
 //}
 
+func log2_1(x, y int) bool {
+   // assert(x <= y)
+   return (1 + int(math.Floor(math.Log2(float64(y))))) - (1 + int(math.Floor(math.Log2(float64(x))))) <= 1
+}
+func log2_2(x, y int) bool {
+   // assert(x <= y)
+   return x >= y / 2 && x <= y * 2
+}
 func Sandbox() {
 
-   r := random.New(4)
-   for {
-      //fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-      tree := &AVLBottomUp{}
 
-      for i, n := uint64(0), random.LessThan(8, r) + 1; i < n; i++ {
-         tree.Insert(random.LessThan(tree.Size()+1, random.Uniform()), i)
+
+   n := 100000
+   for x := 1; x < n; x++ {
+      for y := x; y < n; y++ {
+         if log2_1(x, y) != log2_2(x, y) {
+            panic(fmt.Sprint("x", x, "y", y))
+         }
       }
-      //tree.Draw(os.Stdout)
-      tree.Free()
    }
+
+
+   //r := random.New(4)
+   //for {
+   //   //fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+   //   tree := &AVLBottomUp{}
+   //
+   //   for i, n := uint64(0), random.LessThan(8, r) + 1; i < n; i++ {
+   //      tree.Insert(random.LessThan(tree.Size()+1, random.Uniform()), i)
+   //   }
+   //   //tree.Draw(os.Stdout)
+   //   tree.Free()
+   //}
 
    //
    //for {
@@ -1241,8 +1262,8 @@ func Sandbox() {
 //   //    }
 //   //    p := l.Join(r)
 //   //    p.Verify()
-//   //    assert(p.Size() == l.Size() + r.Size())
-//   //    assert(p.Size() == p.(*WAVL).root.count())
+//   //    // assert(p.Size() == l.Size() + r.Size())
+//   //    // assert(p.Size() == p.(*WAVL).root.count())
 //   //    print(".")
 //   // }
 //}

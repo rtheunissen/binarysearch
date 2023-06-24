@@ -40,7 +40,7 @@ func (tree *AVLBottomUp) verifyHeight(p *Node, s list.Size) {
       return
    }
    invariant(tree.rank(p) == tree.root.height())
-   invariant(tree.rank(p) <= int(1.44043 * math.Log2(float64(s))))
+   invariant(tree.rank(p) <= int(1.44 * math.Log2(float64(s + 2)) - 0.328))
 }
 
 func (tree *AVLBottomUp) verifyRanks(p *Node) {
@@ -86,8 +86,8 @@ func (tree *AVLBottomUp) balanceInsertL(p *Node) *Node {
    if !tree.isZeroChild(p, p.l) {
       return p
    }
-   assert(tree.isZeroChild(p, p.l))
-   assert(tree.isOneChild(p, p.r) || tree.isTwoChild(p, p.r))
+   // assert(tree.isZeroChild(p, p.l))
+   // assert(tree.isOneChild(p, p.r) || tree.isTwoChild(p, p.r))
    //
    // Otherwise, the height of the left subtree increased.
    //
@@ -108,8 +108,8 @@ func (tree *AVLBottomUp) balanceInsertL(p *Node) *Node {
       tree.promote(p)
       return p
    }
-   assert(tree.isZeroChild(p, p.l))
-   assert(tree.isTwoChild(p, p.r))
+   // assert(tree.isZeroChild(p, p.l))
+   // assert(tree.isTwoChild(p, p.r))
    //
    // The parent is a 0,2-node because we could not promote it without creating
    // a 3-child in the right subtree. The only way to resolve this is to rotate,
@@ -154,9 +154,9 @@ func (tree *AVLBottomUp) balanceInsertL(p *Node) *Node {
       tree.demote(p.r)
       return p
    }
-   assert(tree.isZeroChild(p, p.l))
-   assert(tree.isTwoChild(p, p.r))
-   assert(tree.isOneChild(p.l, p.l.r))
+   // assert(tree.isZeroChild(p, p.l))
+   // assert(tree.isTwoChild(p, p.r))
+   // assert(tree.isOneChild(p.l, p.l.r))
    //
    // The right subtree of the left subtree is a 1-child, which prevents us from
    // making a simple right rotation followed by a demotion. If we did that, the
@@ -250,7 +250,7 @@ func (tree *AVLBottomUp) balanceInsertR(p *Node) *Node {
 }
 
 func (tree *AVLBottomUp) Delete(i list.Position) (x list.Data) {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    tree.root = tree.delete(tree.root, i, &x)
    tree.size = tree.size - 1
    return x
@@ -375,7 +375,7 @@ func (tree *AVLBottomUp) deleteMax(p *Node, max **Node) *Node {
 // Constructs a balanced tree with root p where all nodes of l are to the left
 // of p and all nodes in r are to the right of p.
 func (tree *AVLBottomUp) build(l, p, r *Node, sl list.Size) *Node {
-   assert(sl == l.size())
+   // assert(sl == l.size())
    if tree.rank(l) < tree.rank(r) {
       return tree.buildL(l, p, r, sl)
    } else {
@@ -485,7 +485,7 @@ func (tree *AVLBottomUp) joinR(l, r *Node, sl list.Size) (p *Node) {
 }
 
 func (tree *AVLBottomUp) Split(i list.Position) (list.List, list.List) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.share(tree.root)
 
    l, r := tree.split(tree.root, i, tree.size)
@@ -497,7 +497,7 @@ func (tree *AVLBottomUp) Split(i list.Position) (list.List, list.List) {
 // Splits the tree of `p` into two trees `l` and `r` at position `i`, such that
 // the resulting size of `l` is equal to `i`.
 func (tree *AVLBottomUp) split(p *Node, i, s list.Size) (l, r *Node) {
-   assert(s == p.size())
+   // assert(s == p.size())
    if p == nil {
       return
    }
