@@ -189,8 +189,8 @@ func (tree *LBSTRelaxed) isBalanced(sl, sr Size) bool {
 }
 
 func (tree *LBSTRelaxed) balance(p *Node, s Size) *Node {
-   assert(strategy.isBalanced(p.sizeL(), p.sizeR(s)) || p.sizeL() < p.sizeR(s))
-   assert(strategy.isBalanced(p.sizeR(s), p.sizeL()) || p.sizeR(s) < p.sizeL())
+   assert(tree.isBalanced(p.sizeL(), p.sizeR(s)) || p.sizeL() < p.sizeR(s))
+   assert(tree.isBalanced(p.sizeR(s), p.sizeL()) || p.sizeR(s) < p.sizeL())
    if s < 3 ||
       tree.isBalanced(p.sizeL(), p.sizeR(s)) &&
       tree.isBalanced(p.sizeR(s), p.sizeL()) {

@@ -5,12 +5,30 @@ import (
    "math"
 )
 
+// AVLBottomUp
+//
+// This a standard, recursive, bottom-up implementation of an AVL tree
+// using the rank-balanced framework of Haeupler, Sen, and Tarjan.
+//
+// Using ranks makes it easy to reason about the height of each subtree and
+// provides an intuitive way to adjust ranks after rotations. Balancing is
+// annotated in one direction only since the algorithms are symmetrical.
+//
+// A choice was made to not unify the symmetric cases using the direction-based
+// technique of Ben Pfaff and others because it makes the logic more difficult
+// to follow even though there would be less code overall.
+//
+// Storing ranks rather than rank differences takes up an entire integer field,
+// but it makes `join` easier to implement and is consistent with the other
+// rank-balanced implementations. It is possible to store only rank differences
+// instead of ranks to use only 1 bit for the balancing information, if needed.
+//
 type AVLBottomUp struct {
    Tree
    RankBalanced
 }
 
-func (AVLBottomUp) New() list.List {
+func (tree *AVLBottomUp) New() list.List {
    return &AVLBottomUp{}
 }
 
@@ -20,8 +38,8 @@ func (tree *AVLBottomUp) Clone() list.List {
 
 func (tree *AVLBottomUp) Verify() {
    tree.verifySizes(tree.root, tree.size)
-   tree.verifyHeight(tree.root, tree.size)
-   tree.verifyRanks(tree.root)
+   tree.verifyRanks(tree.root, tree.size)
+   tree.verifyHeight(tree.root)
 }
 
 func (tree *AVLBottomUp) verifySizes(p *Node, s list.Size) list.Size {
@@ -35,15 +53,11 @@ func (tree *AVLBottomUp) verifySizes(p *Node, s list.Size) list.Size {
    return s
 }
 
-func (tree *AVLBottomUp) verifyHeight(p *Node, s list.Size) {
-   if p == nil {
-      return
-   }
+func (tree *AVLBottomUp) verifyHeight(p *Node) {
    invariant(tree.rank(p) == tree.root.height())
-   invariant(tree.rank(p) <= int(1.44 * math.Log2(float64(s + 2)) - 0.328))
 }
 
-func (tree *AVLBottomUp) verifyRanks(p *Node) {
+func (tree *AVLBottomUp) verifyRanks(p *Node, s list.Size) {
    if p == nil {
       return
    }
@@ -53,8 +67,11 @@ func (tree *AVLBottomUp) verifyRanks(p *Node) {
    invariant(tree.isOneChild(p, p.l) || tree.isOneChild(p, p.r))
    invariant(tree.isOneChild(p, p.r) || tree.isOneChild(p, p.l))
 
-   tree.verifyRanks(p.l)
-   tree.verifyRanks(p.r)
+   // The height of every node should not exceed the AVL height bound.
+   invariant(tree.rank(p) <= int(1.44 * math.Log2(float64(s + 2)) - 0.328))
+
+   tree.verifyRanks(p.l, p.sizeL())
+   tree.verifyRanks(p.r, p.sizeR(s))
 }
 
 func (tree *AVLBottomUp) Insert(i list.Position, x list.Data) {
@@ -67,12 +84,12 @@ func (tree *AVLBottomUp) insert(p *Node, i list.Position, x list.Data) *Node {
       return tree.allocate(Node{x: x})
    }
    tree.persist(&p)
-   if i <= p.s {
-      p.s = p.s + 1
+   if i <= p.sizeL() {
+      p.s = p.sizeL() + 1
       p.l = tree.insert(p.l, i, x)
       return tree.balanceInsertL(p)
    } else {
-      p.r = tree.insert(p.r, i - p.s - 1, x)
+      p.r = tree.insert(p.r, i - (p.sizeL() + 1), x)
       return tree.balanceInsertR(p)
    }
 }
@@ -120,7 +137,7 @@ func (tree *AVLBottomUp) balanceInsertL(p *Node) *Node {
       //
       //                                  2
       //                          ╭───────┴───────╮
-      //                          2               0   <-- 2-child
+      //                          2               0   ← 2-child
       //                      ╭───┴───╮
       //                      1       0
       //                    ╭─╯
@@ -135,7 +152,7 @@ func (tree *AVLBottomUp) balanceInsertL(p *Node) *Node {
       //
       //                                  2
       //                              ╭───┴───╮
-      //                              1       2   <-- should have rank 1
+      //                              1       2   ← Should have rank 1
       //                            ╭─╯     ╭─┴─╮
       //                            0       0   0
       //
@@ -257,64 +274,255 @@ func (tree *AVLBottomUp) Delete(i list.Position) (x list.Data) {
 
 func (tree *AVLBottomUp) delete(p *Node, i list.Position, x *list.Data) *Node {
    tree.persist(&p)
-   if i == p.s {
+   if i == p.sizeL() {
       *x = p.x
       defer tree.free(p)
       return tree.join(p.l, p.r, p.s)
    }
-   if i < p.s {
-      p.s = p.s - 1
+   if i < p.sizeL() {
+      p.s = p.sizeL() - 1
       p.l = tree.delete(p.l, i, x)
       return tree.balanceDeleteL(p)
    } else {
-      p.r = tree.delete(p.r, i-p.s-1, x)
+      p.r = tree.delete(p.r, i - (p.sizeL() + 1), x)
       return tree.balanceDeleteR(p)
    }
 }
 
 func (tree *AVLBottomUp) balanceDeleteL(p *Node) *Node {
    //
+   // Deleting a node should not increase the height of the tree, and therefore
+   // should not increase the rank of a node, except as needed after a rotation.
+   // The general intuition is to decrease ranks because the height of the tree
+   // is decreasing as nodes are deleted.
    //
+   // Recall that the AVL rule is that every node must be 1,1 or 1,2.
+   //
+   // The first case is simple: we have a 2,2 node that was previously 1,2 but
+   // the left subtree has decreased in height after a deletion. The height of
+   // the left subtree is now equal to the height of the right subtree, so the
+   // node is height-balanced, but the 2,2 parent is not allowed.
+   //
+   // To resolve the invariant, demote the parent to create a valid 1,1 node.
+   //
+   //    DELETE DECREASES HEIGHT     PARENT BECOMES 2,2      DEMOTE TO 1,1
+   //
+   //                3                        3                     2
+   //            ╭───┴───╮                ╭───┴───╮             ╭───┴───╮
+   //            2       1                1       1             1       1
+   //          ╭─┴─╮   ╭─╯              ╭─┴─╮   ╭─╯           ╭─┴─╮   ╭─╯
+   //          1   0   0                0   0   0             0   0   0
+   //        ╭─╯
+   //     →  0
    //
    if tree.isTwoTwo(p) {
       tree.demote(p)
       return p
    }
    //
-   //
+   // Otherwise, it is possible that the left subtree was a 2-child before the
+   // deletion, which would make it a 3-child if the deletion decreased height.
    //
    if tree.isThreeChild(p, p.l) {
       //
+      //                                3
+      //                        ╭───────┴───────╮
+      //            3-child →   0               2
+      //                                    ╭───┴───╮
+      //                                    1       0
+      //                                  ╭─╯
+      //                                  0
       //
+      // In this case, the right subtree must be a 1-child because the node was
+      // previously a 2,1-node and the 2-node is now a 3-node.
+      //
+      assert(tree.isOneChild(p, p.r))
+      //
+      // Demoting the parent is not possible because that would make the right
+      // subtree a 0-child. Consider that the 3,1-node situation means that the
+      // left subtree has become too much shorter than the right subtree.
+      //
+      // This requires a rotation to the left to increase the height of the left
+      // subtree and decrease the height of the right subtree.
+      //
+      // Let's try a left rotation and see what happens.
+      //
+      //            ORIGINAL                      ROTATE PARENT LEFT
+      //
+      //               3                                     2
+      //       ╭───────┴───────╮                     ╭───────┴───────╮
+      //       0               2                     3               0
+      //                   ╭───┴───╮             ╭───┴───╮
+      //                   1       0             0       1
+      //                 ╭─╯                           ╭─╯
+      //                 0                             0
+      //
+      // This rotation did not help, because the height of the left subtree is
+      // now 3 and the height of the right subtree is 1. The structure is not a
+      // valid AVL tree so no amount of rank adjustments can fix it.
+      //
+      // Take a look at the right subtree of the right subtree: if that node is
+      // a 2-child, it suggests that its sibling must be a 1-child. The 1-child
+      // sibling is then the subtree with the greater height because its rank is
+      // closer to its parent.
       //
       if tree.isTwoChild(p.r, p.r.r) {
          //
+         //                             3
+         //                     ╭───────┴───────╮
+         //                     0               2
+         //                                 ╭───┴───╮
+         //                     1-child →   1       0   ← 2-child
+         //                               ╭─╯
+         //                               0
          //
+         assert(tree.isOneChild(p, p.r))
+         assert(tree.isOneChild(p.r, p.r.l))
+         //
+         // We get a valid AVL structure by first rotating the right subtree to
+         // the right, and then rotating the parent left.
+         //
+         //
+         //       ROTATE RIGHT SUBTREE RIGHT        ROTATE PARENT LEFT
+         //
+         //               3                                 1
+         //       ╭───────┴───────╮                     ╭───┴───╮
+         //       0               1                     3       2
+         //                   ╭───┴───╮               ╭─┴─╮     ╰─╮
+         //                   0       2               0   0       0
+         //                           ╰─╮
+         //                             0
+         //
+         // The only thing to do is fix the ranks after the rotations:
+         //
+         //    Consider how the height of each node has changed: the rank of the
+         //    left subtree must change from 3 to 1 because its height is 1, the
+         //    parent must change from 1 to 2 and the right subtree from 2 to 1.
+         //
+         //    Promote the parent once, demote the right subtree once, and
+         //    demote the left subtree twice. This restores the rank invariant.
          //
          tree.rotateRL(&p)
          tree.promote(p)
          tree.demote(p.r)
          tree.demote(p.l)
          tree.demote(p.l)
+         return p
+      }
+      // Otherwise, the right subtree of the right subtree must be a 1-child,
+      // given that it is not a 2-child, which allows the left subtree of the
+      // right subtree to be either a 1-child or a 2-child.
+      //
+      assert(tree.isThreeChild(p, p.l))
+      assert(tree.isOneChild(p.r, p.r.r))
+      //
+      //                              3
+      //                      ╭───────┴───────╮
+      //          3-child →   0               2
+      //                                  ╭───┴───╮
+      //           1-child or 2-child →   ?       1   ← 1-child
+      //                                          ╰─╮
+      //                                            0
+      //
+      // There was no need to first rotate the right subtree to the right,
+      // because the right subtree of the right child is a 1-child, which
+      // indicates that it either has the same or greater height than its
+      // sibling, the left subtree of the right subtree of the parent.
+      //
+      if tree.isTwoChild(p.r, p.r.l) {
+         //
+         //                              3
+         //                      ╭───────┴───────╮
+         //          3-child →   0               2
+         //                                  ╭───┴───╮
+         //                      2-child →   0       1   ← 1-child
+         //                                          ╰─╮
+         //                                            0
+         //
+         // Rotating the parent to the left results in a valid structure, but
+         // the ranks are not correct. The height of the subtree is 2, so the
+         // rank of the parent is correct. The height of the new left subtree
+         // is 1 but its rank is 3, so we demote the left subtree twice.
+         //
+         // This restores the rank invariant.
+         //
+         //                      ROTATE PARENT LEFT
+         //
+         //                              2
+         //                          ╭───┴───╮
+         //            2x Demote →   3       1
+         //                        ╭─┴─╮     ╰─╮
+         //                        0   0       0
+         //
+         //
+         //                   DEMOTE LEFT SUBTREE TWICE
+         //
+         //                              2
+         //                          ╭───┴───╮
+         //            2x Demote →   3       1
+         //                        ╭─┴─╮     ╰─╮
+         //                        0   0       0
+         //
+         //                              2
+         //                          ╭───┴───╮
+         //                          1       1
+         //                        ╭─┴─╮     ╰─╮
+         //                        0   0       0
+         tree.rotateL(&p)
+         tree.demote(p.l)
+         tree.demote(p.l)
+         return p
+
       } else {
+         assert(tree.isOneChild(p.r, p.r.l))
+         assert(tree.isOneChild(p.r, p.r.r))
+         //
+         //                              3
+         //                      ╭───────┴───────╮
+         //          3-child →   0               2
+         //                                  ╭───┴───╮
+         //                      1-child →   1       1   ← 1-child
+         //                                  ╰─╮     ╰─╮
+         //                                    0       0
+         //
+         // Rotating the parent to the left results in a valid structure, but
+         // the ranks are not correct. The rank of the parent is 2, but its
+         // height is actually 3. The rank of the left subtree is 3 but its
+         // height is actually 2. To fix this, promote the parent and demote the
+         // left subtree, which restores the rank invariant.
+         //
+         //                      ROTATE PARENT LEFT
+         //
+         //                              2
+         //                      ╭───────┴───────╮
+         //                      3               1
+         //                  ╭───┴───╮           ╰───╮
+         //                  0       1               0
+         //                          ╰─╮
+         //                            0
          //
          //
+         //               PROMOTE PARENT, DEMOTE LEFT SUBTREE
          //
-         if tree.isTwoChild(p.r, p.r.l) {
-            //
-            //
-            //
-            tree.rotateL(&p)
-            tree.demote(p.l)
-            tree.demote(p.l)
-         } else {
-            //
-            //
-            //
-            tree.rotateL(&p)
-            tree.promote(p)
-            tree.demote(p.l)
-         }
+         //                              2   ← Promote
+         //                      ╭───────┴───────╮
+         //           Demote →   3               1
+         //                  ╭───┴───╮           ╰───╮
+         //                  0       1               0
+         //                          ╰─╮
+         //                            0
+         //
+         //                              3
+         //                      ╭───────┴───────╮
+         //                      2               1
+         //                  ╭───┴───╮           ╰───╮
+         //                  0       1               0
+         //                          ╰─╮
+         //                            0
+         tree.rotateL(&p)
+         tree.promote(p)
+         tree.demote(p.l)
+         return p
       }
    }
    return p
@@ -403,7 +611,7 @@ func (tree *AVLBottomUp) buildL(l, p, r *Node, sl list.Size) *Node {
    // consider that the left subtree of `r` will consist of all the nodes in `l`,
    // then `p`,all the nodes currently in that subtree.
    //
-   r.s = p.sizeL() + sl + 1
+   r.s = r.sizeL() + sl + 1
    r.l = tree.buildL(l, p, r.l, sl)
    return tree.balanceInsertL(r)
 }
@@ -446,7 +654,7 @@ func (tree *AVLBottomUp) joinL(l, r *Node, sl list.Size) (p *Node) {
       return tree.build(l, p, tree.deleteMin(r, &p), sl)
    }
    tree.persist(&r)
-   r.s = r.s + sl
+   r.s = r.sizeL() + sl
    r.l = tree.joinL(l, r.l, sl)
    return tree.balanceInsertL(r)
 }

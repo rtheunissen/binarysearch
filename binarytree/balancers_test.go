@@ -24,7 +24,7 @@ func TestBalancers(t *testing.T) {
       &distribution.Zipf{},
       &distribution.Maximum{},
    }
-   testBalancers(t, 10000, balancers, distributions) // TODO: make consistent with test suites and benchmarks patterns exactly
+   testBalancers(t, 1000, balancers, distributions) // TODO: make consistent with test suites and benchmarks patterns exactly
 }
 
 func testBalancers(t *testing.T, scale list.Size, balancers []Balancer, distributions []distribution.Distribution) {

@@ -1,11 +1,8 @@
 package binarytree
 
 import (
-   "binarysearch/abstract/list"
    "binarysearch/random"
-   "fmt"
    "math"
-   "time"
 )
 
 func init() {
@@ -154,24 +151,38 @@ func log2_2(x, y int) bool {
 }
 func Sandbox() {
 
+   random.Seed(4)
+   for {
+     tree := &AVLBottomUp{}
+     size := random.LessThan(10, random.Uniform()) + 1
 
-
-   t := time.Now()
-   for j := 0; j < 10; j++ {
-     tree := &LBSTTopDown{}
-     for i := 0; i < 1000000; i++ {
-        tree.Insert(random.Uint64() % (tree.Size() + 1), list.Data(i))
+     for i := uint64(0); i < size; i++ {
+        tree.Insert(random.LessThan(tree.Size()+1, random.Uniform()), i)
      }
-
-      fmt.Println(tree.root.height())
-      for i := 0; i < 1000000; i++ {
-         tree.Insert(0, list.Data(i))
-      }
-      tree.Free()
+     for tree.root != nil {
+        i := random.LessThan(tree.Size(), random.Uniform())
+        tree.Delete(i)
+     }
+     tree.Free()
    }
-   fmt.Println(time.Since(t))
-   fmt.Println(rotations)
-   fmt.Println(rotations)
+
+   //
+   //t := time.Now()
+   //for j := 0; j < 10; j++ {
+   //  tree := &LBSTTopDown{}
+   //  for i := 0; i < 1000000; i++ {
+   //     tree.Insert(random.Uint64() % (tree.Size() + 1), list.Data(i))
+   //  }
+   //
+   //   fmt.Println(tree.root.height())
+   //   for i := 0; i < 1000000; i++ {
+   //      tree.Insert(0, list.Data(i))
+   //   }
+   //   tree.Free()
+   //}
+   //fmt.Println(time.Since(t))
+   //fmt.Println(rotations)
+   //fmt.Println(rotations)
 
 
    //

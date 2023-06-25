@@ -121,8 +121,8 @@ func (balancer Weight) verify(p *Node, s Size) {
    sl := p.sizeL()
    sr := p.sizeR(s)
 
-   invariant((sl + 1) >= (sr + 1) >> 1)
-   invariant((sr + 1) >= (sl + 1) >> 1)
+   invariant((sl + 1) >= (sr + 1) / 2)
+   invariant((sr + 1) >= (sl + 1) / 2)
 
    balancer.verify(p.l, sl)
    balancer.verify(p.r, sr)
@@ -163,7 +163,7 @@ func (balancer Cost) Verify(tree Tree) {
    balancer.verify(tree.root, tree.size)
 }
 
-func (balancer Cost) verify(p *Node, s Size) {
+func (balancer Cost) verify(p *Node, s Size) (height int) {
    if p == nil {
       return
    }
@@ -173,10 +173,14 @@ func (balancer Cost) verify(p *Node, s Size) {
    invariant(p.r == nil || p.sizeL() >= p.r.sizeL())
    invariant(p.r == nil || p.sizeL() >= p.r.sizeR(p.sizeR(s)))
 
-   invariant(p.height() <= int(1.44 * math.Log2(float64(s + 2)) - 0.328)) // Knuth?
+   heightL := balancer.verify(p.l, p.sizeL())
+   heightR := balancer.verify(p.r, p.sizeR(s))
 
-   balancer.verify(p.l, p.sizeL())
-   balancer.verify(p.r, p.sizeR(s))
+   height = 1 + Max(heightL, heightR)
+
+   invariant(height <= int(1.44 * math.Log2(float64(s + 2)) - 0.328)) // Knuth?
+
+   return height
 }
 
 
@@ -251,14 +255,16 @@ func (balancer Height) Verify(tree Tree) {
 // subtrees is no greater than 1, and both subtrees are also height-balanced.
 //
 // invariant(p.height() <= FloorLog2(s))
-func (balancer Height) verify(p *Node, s Size) {
+func (balancer Height) verify(p *Node, s Size) (height int) {
    if p == nil {
       return
    }
-   invariant(Difference(p.l.height(), p.r.height()) <= 1)
+   heightL := balancer.verify(p.l, p.sizeL())
+   heightR := balancer.verify(p.r, p.sizeR(s))
 
-   balancer.verify(p.l, p.sizeL())
-   balancer.verify(p.r, p.sizeR(s))
+   invariant(Difference(heightL, heightR) <= 1)
+
+   return 1 + Max(heightL, heightR)
 }
 
 //

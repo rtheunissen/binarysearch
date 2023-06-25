@@ -24,7 +24,7 @@ func (tree LBSTTopDown) verifyBalance(p *Node, s Size) {
    sl := p.sizeL()
    sr := p.sizeR(s)
 
-   invariant(utility.Difference(utility.Log2(sl), utility.Log2(sr)) <= 1)
+   invariant(utility.Difference(utility.Log2(sl + 1), utility.Log2(sr + 1)) <= 1)
 
    tree.verifyBalance(p.l, sl)
    tree.verifyBalance(p.r, sr)
