@@ -40,7 +40,7 @@ func (tree AVLRelaxedTopDown) verifyRanks(p *Node) {
 }
 
 func (tree *AVLRelaxedTopDown) Delete(i Position) Data {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    x := tree.Tree.delete(&tree.root, tree.size, i)
    tree.size--
    return x
@@ -123,7 +123,7 @@ func (tree AVLRelaxedTopDown) split(p *Node, i, s Size) (l, r *Node) {
 }
 
 func (tree AVLRelaxedTopDown) Split(i Position) (List, List) {
-   // assert(i <= tree.Size())
+   assert(i <= tree.Size())
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
 

@@ -120,7 +120,7 @@ func (tree *LBSTRelaxed) Verify() {
 
 // Inserts a value `s` at position `i` in the tree.
 func (tree *LBSTRelaxed) Insert(i Position, x Data) {
-   // assert(i <= tree.Size())
+   assert(i <= tree.Size())
 
    var unbalancedNode **Node // An unbalanced node along the insertion path.
    var unbalancedSize Size   // The size of the unbalanced node.
@@ -189,8 +189,8 @@ func (tree *LBSTRelaxed) isBalanced(sl, sr Size) bool {
 }
 
 func (tree *LBSTRelaxed) balance(p *Node, s Size) *Node {
-   // assert(strategy.isBalanced(p.sizeL(), p.sizeR(s)) || p.sizeL() < p.sizeR(s))
-   // assert(strategy.isBalanced(p.sizeR(s), p.sizeL()) || p.sizeR(s) < p.sizeL())
+   assert(strategy.isBalanced(p.sizeL(), p.sizeR(s)) || p.sizeL() < p.sizeR(s))
+   assert(strategy.isBalanced(p.sizeR(s), p.sizeL()) || p.sizeR(s) < p.sizeL())
    if s < 3 ||
       tree.isBalanced(p.sizeL(), p.sizeR(s)) &&
       tree.isBalanced(p.sizeR(s), p.sizeL()) {
@@ -207,7 +207,7 @@ func (tree *LBSTRelaxed) rebuild(p **Node, s Size) {
 }
 
 func (tree *LBSTRelaxed) partition(p *Node, i uint64) *Node {
-   // assert(i < p.size())
+   assert(i < p.size())
    // measurement(&partitionCount, 1)
    n := Node{s: i}
    l := &n
@@ -237,7 +237,7 @@ func (tree *LBSTRelaxed) partition(p *Node, i uint64) *Node {
 }
 
 func (tree *LBSTRelaxed) Split(i Size) (List, List) {
-   // assert(i <= tree.size)
+   assert(i <= tree.size)
 
    tree.share(tree.root)
    l,r := tree.split(tree.root, i)

@@ -4,7 +4,7 @@ load "benchmarks/plot/functions.gnuplot"
 set tmargin 2
 set bmargin 2
 set rmargin 4
-set lmargin 5
+set lmargin 4
 
 SVG = sprintf("benchmarks/svg/balancers/%s/%s__%s.svg", GROUP, MEASUREMENT, SMOOTH)
 system mkdir(SVG)

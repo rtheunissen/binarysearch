@@ -67,7 +67,7 @@ func (tree *Randomized) Insert(i Position, x Data) {
 }
 
 func (tree *Randomized) Delete(i Position) Data {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    p := &tree.root
    s := tree.size
    tree.size--
@@ -121,12 +121,12 @@ func (tree *Randomized) join(l *Node, r *Node, sl, sr Size) (root *Node) {
 }
 
 func (tree *Randomized) Select(i Size) Data {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    return tree.lookup(tree.root, i)
 }
 
 func (tree *Randomized) Update(i Size, x Data) {
-   // assert(i < tree.Size())
+   assert(i < tree.Size())
    tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }
@@ -151,7 +151,7 @@ func (tree *Randomized) splitInto(p *Node, i uint64, l, r **Node) {
 }
 
 func (tree *Randomized) split(i Size) (Tree, Tree) {
-   // assert(i <= tree.Size())
+   assert(i <= tree.Size())
    tree.share(tree.root)
    var l, r *Node
    tree.splitInto(tree.root, i, &l, &r)
