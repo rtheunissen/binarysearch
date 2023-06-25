@@ -124,7 +124,7 @@ func (animation *BinaryTreeAnimation) shouldRenderFrame() bool {
 //   Title        string
 //   Introduction string
 //   Graphics     []console.Graphic //
-//   MaximumSearchCost       int       // Viewport height
+//   MaximumPathLength       int       // Viewport height
 //   Offset       int       // Viewport offset
 //}
 //
@@ -209,19 +209,19 @@ func (animation *BinaryTreeAnimation) shouldRenderFrame() bool {
 //
 //   // ← Decreases the draw offset of the image within the viewport.
 //   case keyboard.KeyArrowLeft:
-//      a.Offset = int(math.Max(float64(-a.MaximumSearchCost/2), float64(a.Offset-1)))
+//      a.Offset = int(math.Max(float64(-a.MaximumPathLength/2), float64(a.Offset-1)))
 //
 //   // → Increases the draw offset of the image within the viewport.
 //   case keyboard.KeyArrowRight:
-//      a.Offset = int(math.Min(float64(+a.MaximumSearchCost/2), float64(a.Offset+1)))
+//      a.Offset = int(math.Min(float64(+a.MaximumPathLength/2), float64(a.Offset+1)))
 //
 //   // ↑ Increases the height of the viewport.
 //   case keyboard.KeyArrowUp:
-//      a.MaximumSearchCost = a.MaximumSearchCost + 1
+//      a.MaximumPathLength = a.MaximumPathLength + 1
 //
 //   // ↓ Decreases the height of the viewport.
 //   case keyboard.KeyArrowDown:
-//      a.MaximumSearchCost = int(math.Max(0, float64(a.MaximumSearchCost-1)))
+//      a.MaximumPathLength = int(math.Max(0, float64(a.MaximumPathLength-1)))
 //
 //      // Exit
 //   case keyboard.KeyCtrlC:

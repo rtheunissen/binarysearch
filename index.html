@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=2" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link rel="stylesheet" href="docs/katex/katex.min.css">
 
@@ -36,7 +36,7 @@
         }
 
         html {
-            font-size: medium;
+            font-size: 16px;
         }
 
         /**
@@ -114,7 +114,7 @@
             display: block;
             margin: auto;
             max-width: 38rem;
-            line-height: 1.38;
+            line-height: 1.4;
             padding: 0 1rem;
         }
         a, .underline {
@@ -228,7 +228,7 @@
         .graphs img {
             width: 50%;
             margin-top: 2rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             /*width: 50%; !* Display images side-by-side *!*/
             /*max-width: 100%; !* Limit image width to its intrinsic size *!*/
             /*margin: 20px 0;*/
@@ -299,8 +299,6 @@
             Some of the algorithms implemented and tested herein are presented as such for the first time, which includes a handful of original contributions.
         </p>
     </section>
-
-    
 
     <section id="introduction">
         <h2><span>Part 1</span>Introduction</h2>
@@ -526,7 +524,7 @@ type Node struct {
 <!--                    By extension, search cost grows linearly when the list grows exponentially.-->
 <!--                </p>-->
 <!--                <p>-->
-<!--                    The <mark>maximum path length</mark> is the longest path from the root to a node is often referred to as the <span class="quote">height</span> of the tree and can be thought of as the maximum search cost.-->
+<!--                    The <mark>maximum path length</mark> is the longest path from the root to a node is often referred to as the <span class="quote">height</span> of the tree and can be thought of as the maximum path length.-->
 <!--                    The total path length of a binary tree is the sum of the path length from the root to every other node, and the <mark>average path length</mark> is the total path length divided by the number of nodes.-->
 <!--                </p>-->
             </section>
@@ -1027,7 +1025,7 @@ func balance(p *Node, s Size) *Node {
 <!--            https://i11www.iti.kit.edu/extra/publications/bw-etdwb-20.pdf-->
             <p class="definition">
                 <span class="underline">Definition:</span><br>
-                <span class="indent">The <em>weight</em> of a tree is the number of leaves, or one more than the number of nodes.</span>
+                <span class="indent">The <em>weight</em> of a tree is the number of leaves reachable from its root, which is one more than the number of nodes in the tree.</span>
             </p>
             <p class="definition">
                 <span class="underline">Definition:</span><br>
@@ -1104,9 +1102,9 @@ func balance(p *Node, s Size) *Node {
             <p>
                 $$
                 \begin{align}
-                \lfloor\log_{2}(x)\rfloor \geq \lfloor\log_{2}(y)\rfloor &= x \geq y \text{ || } y \leq (x \mathbin{\&} y) \ll 1
-                \\                                                      &= x \geq y \text{ || } x \geq (x \oplus y)
-                \\                                                      &= x \geq (\lnot{x} \mathbin{\&} y)
+                \lfloor\log_{2}(x)\rfloor \geq \lfloor\log_{2}(y)\rfloor &\equiv x \geq y \text{ || } y \leq (x \mathbin{\&} y) \ll 1
+                \\                                                      &\equiv x \geq y \text{ || } x \geq (x \oplus y)
+                \\                                                      &\equiv x \geq (\lnot{x} \mathbin{\&} y)
                 \end{align}
                 $$
             </p>
@@ -1138,11 +1136,11 @@ func balance(p *Node, s Size) *Node {
                 \begin{align*}
                 \text{Median}(x, y) &&=&& &(x+1) &\geq& &&y
                 \\
-                \text{Height}(x,y)  &&=&& \lfloor\log_{2} &(x+1)\rfloor &\geq& &\lfloor\log_{2}(&y)\rfloor
+                \text{Height}(x,y)  &&=&& \lfloor\log_{2} &(x+1)\rfloor &\geq& &&\lfloor\log_{2}(y)\rfloor
                 \\
                 \text{Weight}(x, y) &&=&& &(x+1) &\geq& &&(y+1)/2
                 \\
-                \text{Log}(x, y)    &&=&& \lfloor\log_{2}&(x+1)\rfloor &\geq& &\lfloor\log_{2}(&(y+1)/2) \rfloor
+                \text{Log}(x, y)    &&=&& \lfloor\log_{2}&(x+1)\rfloor &\geq& &&\lfloor\log_{2}((y+1)/2) \rfloor
                 \end{align*}
                 $$
             </p>
@@ -1153,15 +1151,15 @@ func balance(p *Node, s Size) *Node {
             </p>
             <p>
                 $$
-                \begin{align}
-                \text{Median}(x, y) &= (x+1) \geq y
+                \begin{align*}
+                \text{Median}(x, y) &= (x+1) \geq (y)
                 \\
-                \text{Height}(x,y)  &= (x+1) \geq \lnot{(x+1)} \mathbin{\&} y
+                \text{Height}(x,y)  &= (x+1) \geq (y)\mathbin{\&}\lnot{(x+1)}
                 \\
-                \text{Weight}(x, y) &= (x+1) \geq (y+1) \gg 1
+                \text{Weight}(x, y) &= (x+1) \geq ((y+1)\gg1)
                 \\
-                \text{Log}(x, y)    &= (x+1) \geq \lnot{(x+1)} \mathbin{\&} ((y+1) \gg 1)
-                \end{align}
+                \text{Log}(x, y)    &= (x+1) \geq ((y+1)\gg1)\mathbin{\&}\lnot{(x+1)}
+                \end{align*}
                 $$
             </p>
 <!--            <pre>-->
@@ -1230,153 +1228,144 @@ func balance(p *Node, s Size) *Node {
         <section id="balancer-analysis">
             <h3>Analysis</h3>
             <p>
-                10,000 trees were created in size increments of 100.
-                A tree was grown randomly at every step, then balanced by each strategy.
-                These measurements are consistent across systems because they measure the structure of the balanced tree which is consistent given the same source of randomness.
+                Measurements were made in size increments of 100 up to 1,000,000.
+                Random trees were grown for each size and balanced by every strategy.
+                The results were generated on an Intel i5 13600K with 32GB of DDR5 memory but should be consistent across platforms, except for duration which is benchmarked separately.
             </p>
             <p>
-                The results were generated on an Intel i5 13600K with 32GB of DDR5 memory.
+
             </p>
 
 <!--            <div class="graphs">-->
 <!--                <img src="benchmarks/svg/balancers/Partition/Uniform/PartitionCount__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/TotalPartitionCost__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePartitionCost__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/TotalPartitionDepth__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePartitionDepth__sbezier.svg">-->
 <!--                <img src="benchmarks/svg/balancers/Partition/Uniform/Duration__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/AverageSearchCost__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/MaximumSearchCost__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePathLength__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/MaximumPathLength__sbezier.svg">-->
 <!--            </div>-->
             <section id="partition-count">
                 <p>
-                    <strong>Partition Count</strong> is the number of times the balancer decided to partition a node when balancing the tree at each size increment.
-                    Dividing this number by the size of the tree at each step gives us the average partition count per node.
-                </p>
-                <p>
-                    The expectation is that height-balance partitions less often than median-balance because it skips some redundant partitioning steps, but the results show that height-balance actually partitions at more nodes than median-balance, which is unexpected.
-                    The entire idea behind height-balance as an alternative to strict median-balance was to avoid redundant partitioning.
-                </p>
-                <p>
-                    On the other hand, weight-balance appears to partition linearly in the size of the tree with very little variance.
-                    Cost-optimized balance is somewhere in-between, partitioning less often than both median-balance and height-balance, but more often than weight-balance.
+                    <strong>Partition Count</strong> is the number of times the balancer needed to partition a node during the balancing of a given random tree at each size increment.
+                    Dividing the partition count by the size of the tree at each increment corresponds to the fraction of nodes partitioned.
+                    A horizontal line indicates that the number of nodes to partition grows linearly in the size of the tree.
                 </p>
                 <div class="graphs">
                     <img src="benchmarks/svg/balancers/Partition/Uniform/PartitionCount__sbezier.svg">
                 </div>
+                <p>
+                    The expectation is that height-balance partitions less often than median-balance because it avoids some redundant partitioning, but the results show that height-balance actually partitions more nodes than median-balance.
+                    Why is that?
+                </p>
+                <p>
+                    On the other hand, weight-balance partitions less often than all others: $15\%$ of nodes are partitioned for logarithmic weight-balance, $16\%$ for constant weight-balance, and upwards of $30\%$ for height- and median-balance.
+                </p>
+
+                <p>
+                    Cost-optimized balance is somewhere in-between, partitioning less often than both median-balance and height-balance, but more often than weight-balance.
+                    There appears to be a pattern where height-balance follows along the peaks of median-balance and cost-optimized balance follows along the valleys.
+                </p>
+
             </section>
 
-            <section id="partition-cost">
+            <section id="partition-depth">
                 <p>
-                    <strong>Partition Cost</strong> is the total path length traversed by <em>partition</em>.
-                    The average partition cost is the sum of all partition costs divided by the size of the tree.
-                    The shape of this plot matches what Muusse labels in Figure 5.3 of [] as <em>node visits divided by N</em>.
+                    <strong>Partition Depth</strong> is the total path length traversed by <em>partition</em> at each size increment.
+                    Dividing partition depth by the size of the tree gives the average amount of work done per node, and plotting partition depth against partition count gives the average amount of work done per call to <em>partition</em>.
                 </p>
 
+
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/Partition/Uniform/TotalPartitionCost__sbezier.svg">
+                    <img src="benchmarks/svg/balancers/Partition/Uniform/TotalPartitionDepth__sbezier.svg">
                 </div>
                 <p>
-                    A more direct evaluation of partition cost can be made by plotting partition cost against partition count, which is then the average depth per partition.
+                    Interestingly, height-balance partitions more often but takes shorter paths than median-balance during partition.
+                    Shorter paths suggests that height-balance partitioning is usually lower in the tree where there are many but smaller subtrees.
+                    This presents an interesting competition for which is better: to partition smaller subtrees more often, or to partition larger subtrees less often.
                 </p>
                 <p>
-                    The results suggest that height-balance consistently has the lowest average partition cost, which relieves some concern from the unexpected discovery that height-balance partitions more often than median-balance.
-                    This presents an interesting competition of efficiency, which is better: to partition more often with shorter paths, or to partition less often with longer paths?
+                    The weight-balance strategies do not partition many nodes but each call to partition is costly in comparison: weight-balance visits $\sim 3.8$ nodes per call to partition compared to median-balance with $\sim 3.2$ and height-balance with $\sim 3.0$.
                 </p>
                 <p>
-                    Cost-optimized balance weaves between median-balance, and weight-balance is consistently higher.
+                    The partition depth of cost-optimized balance hovers around the low-end of median-balance, but is more costly than height-balance.
+                    This is a promising result for cost-optimized balance from a structural perspective because it has low partition count and low partition depth relative to median- and height-balance.
                 </p>
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePartitionCost__sbezier.svg">
+                    <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePartitionDepth__sbezier.svg">
                 </div>
 
             </section>
 
             <section id="average-path-length">
                 <p>
-                    <strong>Average Search Cost</strong> is the average path length of the balanced tree.
-                <p>
-                    The results show that the average path length after balancing generally approaches $log_2(s)$.
-                    Both median-balanced and height-balanced trees have the same minimal average path length, with cost-optimized trees only slightly worse.
-                    Somewhere in the middle are size-balanced trees, followed by the weight-balanced trees.
-                </p>
-                <p>
-                    Notice that the relative difference between them all is very small: the difference between the most-balanced and least-balanced result is ~3%.
-                    At the final step where the size of the tree is 100,000 the average path length ranges between ~14.6 and ~15.1, which is not nothing but also not huge.
-                </p>
-                <p>
-                    The conclusion is that all of these strategies produce well-balanced trees and proportionality is consistent.
-                    As expected, we can see that the cost of using weight to allow branches to terminate with two nodes in the same direction has very little impact on average path length.
-                </p>
-                <div class="graphs">
-                    <img src="benchmarks/svg/balancers/All/Uniform/AverageSearchCost__sbezier.svg">
-                </div>
+                    <strong>Average Path Length</strong> measures how well-balanced the resulting tree is at each increment, where a lower average path length indicates a better-balanced tree.
+                    Dividing this average by $\log_{2}(n)$ gives the constant factor of the logarithmic bound, proportional to the binary logarithm.
+                    As this factor appears to approach $1$, all design candidates produce an average path length of $\sim log_{2}(n)$.
+                    For example, the tree of size 1,000,000 at the final increment would have an average path length of about $20$.
 
+                <div class="graphs">
+                    <img src="benchmarks/svg/balancers/All/Uniform/AveragePathLength__sbezier.svg">
+                </div>
+                <p>
+                    The results show that median-balance, height-balance and DSW all have optimal average path length, with cost-optimized balance only slightly above optimal.
+                    Using weight-balance with a constant factor results in slightly better balance than logarithmic weight-balance, but only $\sim 2\%$.
+                </p>
+                <p>
+                    Notice that the relative difference between all strategies is very small.
+                    The average path length at the final increment ranges between $17.9$ and $18.6$, making the percentage difference between the least and most-balanced trees only $\sim 4\%$.
+                </p>
             </section>
 
             <section id="maximum-path-length">
                 <p>
-                    <strong>Maximum Search Cost</strong> is the longest path from the root to any node, and can be thought of as the worst-case search cost.
+                    <strong>Maximum Path Length</strong> is the longest path in the balanced tree at each size increment.
                 </p>
                 <p>
-                    The results are the same for median-balance and height-balance, as is the case with average path length.
-                    We can see that the proportionality is consistent between all strategies, creeping up very slowly.
-                    The order of best to worst is the same here as with average path length, with the two log-based weight-balanced strategies generally being the least-balanced.
+                    The results are the same for the height-balanced strategies because only the lowest level in the tree has missing nodes, which is optimal.
+                    As size increases, the lowest level is completed and a new level is started which becomes the longest path.
+                    The new level is twice the size of the completed level, so it will take twice as long before the maximum path length increases again.
                 </p>
                 <p>
-                    However, keep in mind that this is the <em>worst-case</em> search cost, which is an unlikely branch to encounter often in most practical settings.
+                    There is a $\sim 30\%$ difference in maximum path length between the least and most-balanced trees:
+                    cost-optimized balance has a maximum path length of $\sim 1.05\log_{2}$, weight-balance with a constant factor $\sim 1.18\log_{2}$, and logarithmic weight-balance $\sim 1.30\log_{2}$.
                 </p>
-
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/All/Uniform/MaximumSearchCost__sbezier.svg">
+                    <img src="benchmarks/svg/balancers/All/Uniform/MaximumPathLength__sbezier.svg">
                 </div>
             </section>
 
             <section id="duration">
-                <h4>Duration</h4>
                 <p>
-                    100 trees were also created in size increments of 10,000 to measure the amount of time it takes for each strategy to balance a randomized tree at each step.
-                    Keep in mind however that duration-based benchmarks are system-dependent and the results could be entirely different on other machines.
+                <strong>Duration</strong> measures the amount of time in milliseconds for each strategy to balance randomized trees in size increments of 100,000 up to 10,000,000.
+                    This measures how long it takes the algorithm to balance the tree on actual hardware.
+                    Keep in mind that time-based measurements are system-dependent so the results could be entirely different on other machines.
                 </p>
-                <p>
-                    Duration is often used by benchmarks as the one metric to rule them all because it practically evaluates the cost of memory interaction as well as the overhead of the algorithm itself.
-                    There is often a structural measurement that correlates strongly with duration, but this is not always the case.
-                </p>
-                <p>
-                    The results indicate a correlation between duration and partition count.
-                    We can see that <mark class="red">median-balance is consistently faster than height-balance</mark>, which is unexpected because median-balance visits fewer nodes overall.
-                    This suggests that the overhead of more calls to partition counts against height-balance enough to make it slower.
-                </p>
-                <p>
-                    The performance of cost-optimized weight-balance seems to cut straight through median-balance, sometimes faster and sometimes slower, but always slower than the other weight-balanced strategies.
-                </p>
-                <p>
-                    The size-balanced strategies are consistently ~20% faster than cost-optimized weight-balance, and <mark class="green">the weight-balanced strategies are ~30% faster</mark> respectively.
-                </p>
-
                 <div class="graphs">
                     <img src="benchmarks/svg/balancers/All/Uniform/Duration__sbezier.svg">
                 </div>
-
                 <p>
-                    DSW is significantly slower than all partition-based strategies when the trees become large, but performs well when running the benchmarks on a smaller scale.
-                    This is an interesting result since DSW is linear in time compared to partition-based balancing which is technically <a href="https://en.wikipedia.org/wiki/Time_complexity#Quasilinear_time">linearithmic</a>.
+                    The results show that median-balance is marginally faster than height-balance, which settles the competition with an unexpected result.
+                    Looking at duration cumulatively, it seems that the total duration is practically identical between median-balance, height-balance and cost-optimized balance.
                 </p>
                 <p>
-                    Even though DSW appears to be slower to balance large random trees, the algorithm has some clear advantages over partition-based balancing and should not be discounted from the outset.
-                    A 2002 article by Timothy J. Rolfe brought attention back to the DSW algorithm, stating one advantage as being "pedagogically valuable within a course on data structures where one progresses from the binary search tree into self-adjusting trees, since it gives a first exposure to doing rotations within a binary search tree."
+                The two weight-balance strategies are equivalent, both $\sim25\%$ faster than median-balance and height-balance, and $\sim30\%$ faster than DSW.
+                This suggests that weight-balance with a constant factor is likely the better choice because it takes the same amount of time to achieve better balance.
+                </p>
+
+
+                <div class="graphs">
+                    <img src="benchmarks/svg/balancers/All/Uniform/TotalDuration__cumulative.svg">
+                </div>
+                <p>
+                    DSW appears to be consistently slower to balance large random trees, but the algorithm has some advantages over partition-based balancing that should not be discounted.
+                    Both approaches use constant space but DSW is linear in time, where partition-based balancing is technically log-linear [], though perhaps it could be proven to be linear with high probability in the randomized case.
                     The two phases of DSW are also useful procedures individually: (i) to convert any binary search tree into a linked list, and (ii) to convert a linked list into a balanced tree, both in linear time and constant space.
-                    Another consideration is that DSW does not require awareness of subtree size information which may not be available in some cases.
+                    DSW also does not rely on subtree size which may not be available in some cases.
                 </p>
-            </section>
-
-            <section id="balancer-conclusions">
-                <h4>Conclusions</h4>
-                <p>
-                    We can safely say that all strategies explored here are viable in practice to balance a random binary search tree.
-                    Generally, balancing by partition is an excellent strategy when trees are already at least somewhat-balanced.
-                    The weight-based strategies are the fastest and incur only a slight relative increase in average path length, which is likely to be a good trade in practice.
-                    The size-based strategies do more work than their weight-based counterparts but achieve slightly better balance.
-                    Surprisingly, the benchmarks suggest that <mark>median-balance is the best choice for random trees when strict height-balance is a requirement</mark>.
-                    DSW is the best choice to balance trees that are likely to be linear lists, or when subtree size information is not available.
+                    Generally, balancing by partition is an excellent strategy when trees are already somewhat-balanced.
+                    The weight-balance strategies are the fastest and the resulting balance is only slightly suboptimal, suggesting a good trade in practice when balancing is frequent.
+                    Surprisingly, the benchmarks suggest that median-balance is likely the best choice to balance random trees when strict height-balance is a requirement or when balancing is infrequent.
+                    DSW is the best choice to balance trees that are likely to be linear lists, or when subtree sizes are not available.
                 </p>
             </section>
         </section>
@@ -1451,8 +1440,8 @@ func balance(p *Node, s Size) *Node {
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Duration__unique.svg">-->
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Rotations__unique.svg">-->
 
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/AverageSearchCost__unique.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/MaximumSearchCost__unique.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/AveragePathLength__unique.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/MaximumPathLength__unique.svg">-->
 <!--            </div>-->
 
             <p>
@@ -1488,8 +1477,8 @@ func balance(p *Node, s Size) *Node {
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/Duration__sbezier.svg">-->
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/Rotations__sbezier.svg">-->
 
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/AverageSearchCost__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/MaximumSearchCost__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/AveragePathLength__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/MaximumPathLength__sbezier.svg">-->
 <!--            </div>-->
 
 <!--            -->
@@ -1500,8 +1489,8 @@ func balance(p *Node, s Size) *Node {
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Duration__sbezier.svg">-->
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Rotations__sbezier.svg">-->
 
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/AverageSearchCost__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/MaximumSearchCost__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/AveragePathLength__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/MaximumPathLength__sbezier.svg">-->
 <!--            </div>-->
 
 
@@ -1519,8 +1508,8 @@ func balance(p *Node, s Size) *Node {
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/Duration__sbezier.svg">-->
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/Rotations__sbezier.svg">-->
 
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/AverageSearchCost__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/MaximumSearchCost__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/AveragePathLength__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/MaximumPathLength__sbezier.svg">-->
 <!--            </div>-->
 
             <p>
@@ -1546,8 +1535,8 @@ func balance(p *Node, s Size) *Node {
 
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/AVLConc/Duration__sbezier.svg">-->
 
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/AVLConc/AverageSearchCost__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/AVLConc/MaximumSearchCost__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/AVLConc/AveragePathLength__sbezier.svg">-->
+<!--                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/AVLConc/MaximumPathLength__sbezier.svg">-->
 <!--            </div>-->
 
         </section>

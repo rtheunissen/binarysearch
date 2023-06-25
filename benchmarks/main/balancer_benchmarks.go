@@ -13,9 +13,9 @@ import (
 
 func main() {
   BalancerBenchmark{
-     Iterations:        100,
-     Samples:           100,
-     Scale:      10_000_000,
+     Duration:            1000 * time.Millisecond,
+     Samples:              100,
+     Scale:         10_000_000,
      Distributions: []distribution.Distribution{
         &distribution.Uniform{},
      },
@@ -36,7 +36,7 @@ type BalancerBenchmark struct {
   Samples       int
   Strategies    []binarytree.Balancer
   Distributions []distribution.Distribution
-  Iterations    int
+  Duration      time.Duration
 }
 
 func (benchmark BalancerBenchmark) Run() {
@@ -63,9 +63,12 @@ func (benchmark BalancerBenchmark) Run() {
         "Distribution",
         "Scale",
         "Size",
+        "Iterations",
         "Duration",
      }
-     fmt.Fprintln(file, header...)
+     if  _, err := fmt.Fprintln(file, header...); err != nil {
+        return
+     }
 
      step := benchmark.Scale / benchmark.Samples
 
@@ -87,29 +90,38 @@ func (benchmark BalancerBenchmark) Run() {
 
         for _, random := range benchmark.Distributions {
 
+           start := time.Now()
+
+           iterations := 0
+
            var duration time.Duration
 
-           source := random.New(uint64(position))
-
-           for iteration := 1; iteration <= benchmark.Iterations; iteration++ {
+           for  {
+              iterations++
 
               // Randomize the tree.
-              instance.Tree = instance.Tree.Randomize(source)
+              instance.Tree = instance.Tree.Randomize(random.New(uint64(position)))
 
-              start := time.Now()
+              checkpoint := time.Now()
 
               instance.Tree = strategy.Restore(instance.Tree)
 
-              duration += time.Since(start)
-           }
+              duration += time.Since(checkpoint)
 
+              if time.Since(start) > benchmark.Duration {
+                 break
+              }
+           }
            row := []any{
               utility.NameOf(random),
               fmt.Sprint(benchmark.Scale),
               fmt.Sprint(instance.Size()),
-              fmt.Sprint(duration.Nanoseconds() / int64(benchmark.Iterations)),
+              fmt.Sprint(iterations),
+              fmt.Sprint(duration.Nanoseconds() / int64(iterations)),
            }
-           fmt.Fprintln(file, row...)
+           if _, err := fmt.Fprintln(file, row...); err != nil {
+              panic(err)
+           }
         }
      }
      instance.Free()

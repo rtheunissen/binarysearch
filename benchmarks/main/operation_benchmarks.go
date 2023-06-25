@@ -8,9 +8,9 @@ import (
    "binarysearch/utility"
    "flag"
    "fmt"
-   "time"
    "os"
    "path/filepath"
+   "time"
 )
 
 func main() {
@@ -39,10 +39,8 @@ func main() {
       },
       Strategies: []list.List{
          &binarytree.AVLBottomUp{},
-         &binarytree.AVLJoinBased{},
          &binarytree.AVLWeakTopDown{},
          &binarytree.AVLWeakBottomUp{},
-         &binarytree.AVLWeakJoinBased{},
          &binarytree.AVLRelaxedTopDown{},
          &binarytree.AVLRelaxedBottomUp{},
          &binarytree.RedBlackBottomUp{},
@@ -50,10 +48,8 @@ func main() {
          &binarytree.RedBlackRelaxedTopDown{},
          &binarytree.LBSTBottomUp{},
          &binarytree.LBSTTopDown{},
-         &binarytree.LBSTJoinBased{},
          &binarytree.LBSTRelaxed{},
          &binarytree.TreapTopDown{},
-         &binarytree.TreapJoinBased{},
          &binarytree.TreapFingerTree{},
          &binarytree.Randomized{},
          &binarytree.Zip{},

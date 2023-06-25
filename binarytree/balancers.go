@@ -54,9 +54,9 @@ func (balancer Log) balance(p *Node, s Size) *Node {
    return p
 }
 
-func (Log) isBalanced(sl, sr Size) bool {
-   return LBST{}.isBalanced(sl + 1, sr + 1) &&
-          LBST{}.isBalanced(sr + 1, sl + 1)
+func (Log) isBalanced(x, y Size) bool {
+   return GreaterThanOrEqualToMSB(x + 1, (y + 1) >> 1) &&
+          GreaterThanOrEqualToMSB(y + 1, (x + 1) >> 1)
 }
 
 func (balancer Log) Restore(tree Tree) Tree {
@@ -73,10 +73,13 @@ func (balancer Log) verify(p *Node, s Size) {
    if p == nil {
       return
    }
-   invariant(Difference(Log2(p.sizeL() + 1), Log2(p.sizeR(s) + 1)) <= 1)
+   sl := p.sizeL()
+   sr := p.sizeR(s)
 
-   balancer.verify(p.l, p.sizeL())
-   balancer.verify(p.r, p.sizeR(s))
+   invariant(Difference(Log2(sl + 1), Log2(sr + 1)) <= 1)
+
+   balancer.verify(p.l, sl)
+   balancer.verify(p.r, sr)
 }
 
 
@@ -97,9 +100,9 @@ func (balancer Weight) balance(p *Node, s Size) *Node {
    return p
 }
 
-func (balancer Weight) isBalanced(sl, sr Size) bool {
-   return (sl + 1) >= (sr + 1) >> 1 &&
-          (sr + 1) >= (sl + 1) >> 1
+func (balancer Weight) isBalanced(x, y Size) bool {
+   return (x + 1) >= (y + 1) >> 1 &&
+          (y + 1) >= (x + 1) >> 1
 }
 
 func (balancer Weight) Restore(tree Tree) Tree {
@@ -115,11 +118,14 @@ func (balancer Weight) verify(p *Node, s Size) {
    if p == nil {
       return
    }
-   invariant((p.sizeL() + 1) >= (p.sizeR(s) + 1) >> 1)
-   invariant((p.sizeR(s) + 1) >= (p.sizeL() + 1) >> 1)
+   sl := p.sizeL()
+   sr := p.sizeR(s)
 
-   balancer.verify(p.l, p.sizeL())
-   balancer.verify(p.r, p.sizeR(s))
+   invariant((sl + 1) >= (sr + 1) >> 1)
+   invariant((sr + 1) >= (sl + 1) >> 1)
+
+   balancer.verify(p.l, sl)
+   balancer.verify(p.r, sr)
 }
 
 
@@ -146,16 +152,10 @@ func (balancer Cost) balance(p *Node, s Size) *Node {
 }
 
 func (Cost) isBalanced(p *Node, s Size) bool {
-   //if p.sizeL() >= p.sizeR(s) {
-   //  return p.sizeR(s) >= p.l.sizeL() && p.sizeR(s) >= p.l.sizeR(p.sizeL())
-   //} else {
-   //  return p.sizeL() >= p.r.sizeR(p.sizeR(s)) && p.sizeL() >= p.r.sizeL()
-   //}
-
-   if s >= (p.s + 1) << 1 {
-      return p.s >= p.r.s && s - p.r.s <= (p.s + 1) << 1
+   if p.sizeL() >= p.sizeR(s) {
+     return p.sizeR(s) >= p.l.sizeL() && p.sizeR(s) >= p.l.sizeR(p.sizeL())
    } else {
-      return s - p.l.s >= p.s + 1 && s >= (p.s << 1) - p.l.s
+     return p.sizeL() >= p.r.sizeR(p.sizeR(s)) && p.sizeL() >= p.r.sizeL()
    }
 }
 
@@ -169,6 +169,7 @@ func (balancer Cost) verify(p *Node, s Size) {
    }
    invariant(p.l == nil || p.sizeR(s) >= p.l.sizeL())
    invariant(p.l == nil || p.sizeR(s) >= p.l.sizeR(p.sizeL()))
+
    invariant(p.r == nil || p.sizeL() >= p.r.sizeL())
    invariant(p.r == nil || p.sizeL() >= p.r.sizeR(p.sizeR(s)))
 
@@ -214,8 +215,8 @@ func (balancer Median) verify(p *Node, s Size) {
 }
 
 func (Median) isBalanced(p *Node, s Size) bool {
-   return p.sizeL() + 1 >= p.sizeR(s) &&
-          p.sizeR(s) + 1 >= p.sizeL()
+   return p.s >= s >> 1 &&
+          p.s <= s >> 1
 }
 
 type Height struct{}
@@ -238,8 +239,8 @@ func (balancer Height) Restore(tree Tree) Tree {
 }
 
 func (Height) isBalanced(p *Node, s Size) bool {
-   return GreaterThanOrEqualToMSB(p.sizeL()+1, p.sizeR(s)) &&
-          GreaterThanOrEqualToMSB(p.sizeR(s)+1, p.sizeL())
+   return GreaterThanOrEqualToMSB(p.sizeL() + 1, p.sizeR(s)) &&
+          GreaterThanOrEqualToMSB(p.sizeR(s) + 1, p.sizeL())
 }
 
 func (balancer Height) Verify(tree Tree) {
@@ -343,11 +344,8 @@ func (balancer DSW) Verify(tree Tree) {
 }
 
 func (balancer DSW) Restore(tree Tree) Tree {
-   return Tree{
-      root:  balancer.toTree(balancer.toVine(tree.root), tree.size),
-      arena: tree.arena,
-      size:  tree.size,
-   }
+   tree.root = balancer.toTree(balancer.toVine(tree.root), tree.size)
+   return tree
 }
 
 func (balancer DSW) toVine(p *Node) (vine *Node) {

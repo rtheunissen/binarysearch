@@ -3451,7 +3451,7 @@ import (
 // }
 //
 // func (tree LBST) verifyHeight(root *Node, size Size) {
-//    invariant(root.height() &lt;= MaximumSearchCost(2 * math.Log2(size)))
+//    invariant(root.height() &lt;= MaximumPathLength(2 * math.Log2(size)))
 // }
 //
 // func (tree LBST) verifyWeight(p *Node, s Size) {
@@ -4356,7 +4356,7 @@ import (
 //          sl &lt;= α * s
 //          sr &lt;= α * s
 //
-//       MaximumSearchCost upper-bound:
+//       MaximumPathLength upper-bound:
 //
 //          ⌊log1/α(size)⌋
 //
@@ -4491,7 +4491,7 @@ func (tree *LBSTRelaxed) Insert(i Position, x Data) <span class="cov0" title="0"
 //
 //        tooDeep := depth &gt; 2 * ⌊log₂(size)⌋
 //
-//     because root.height() &lt;= MaximumSearchCost(2 * math.FloorLog2(size))
+//     because root.height() &lt;= MaximumPathLength(2 * math.FloorLog2(size))
 //
 //   depth is height + 1 ?
 func (tree *LBSTRelaxed) tooDeep(size Size, depth uint64) bool <span class="cov0" title="0">{
@@ -4993,37 +4993,37 @@ func (PartitionCount) Measure(BinaryTree) any <span class="cov0" title="0">{
    return partitionCount
 }</span>
 
-type PartitionCost struct {
+type PartitionDepth struct {
 
 }
 var partitionDepth uint64 = 0
 
-func (PartitionCost) Reset()  <span class="cov0" title="0">{
+func (PartitionDepth) Reset()  <span class="cov0" title="0">{
    partitionDepth = 0
 }</span>
 
-func (PartitionCost) Measure(BinaryTree) any <span class="cov0" title="0">{
+func (PartitionDepth) Measure(BinaryTree) any <span class="cov0" title="0">{
    return partitionDepth
 }</span>
 
-type MaximumSearchCost struct {
+type MaximumPathLength struct {
 
 }
 
-func (MaximumSearchCost) Reset()  {<span class="cov0" title="0">
+func (MaximumPathLength) Reset()  {<span class="cov0" title="0">
 }</span>
 
-func (MaximumSearchCost) Measure(tree BinaryTree) any <span class="cov0" title="0">{
-   return tree.Root().MaximumSearchCost()
+func (MaximumPathLength) Measure(tree BinaryTree) any <span class="cov0" title="0">{
+   return tree.Root().MaximumPathLength()
 }</span>
 
-type AverageSearchCost struct {
+type AveragePathLength struct {
 }
 
-func (accumulator *AverageSearchCost) Measure(tree BinaryTree) any <span class="cov0" title="0">{
-   return tree.Root().AverageSearchCost()
+func (accumulator *AveragePathLength) Measure(tree BinaryTree) any <span class="cov0" title="0">{
+   return tree.Root().AveragePathLength()
 }</span>
-func (AverageSearchCost) Reset()  {<span class="cov0" title="0">
+func (AveragePathLength) Reset()  {<span class="cov0" title="0">
 }</span>
 var allocations uint64 = 0
 
@@ -5255,7 +5255,7 @@ func averagePathLength(p *Node, depth uint64, totalDepth *uint64, totalNodes *ui
 //
 //    return IPL(t-&gt;l) + IPL(t-&gt;r) + t-&gt;s;
 //   }
-func (p *Node) AverageSearchCost() float64 <span class="cov0" title="0">{
+func (p *Node) AveragePathLength() float64 <span class="cov0" title="0">{
    var totalDepth uint64
    var totalNodes uint64
    averagePathLength(p, 0, &amp;totalDepth, &amp;totalNodes)
@@ -5295,7 +5295,7 @@ func (p Node) isLeaf() bool <span class="cov0" title="0">{ // TODO conc can have
 // Complexity: O(n)
 //
 
-func (p *Node) MaximumSearchCost() int <span class="cov0" title="0">{
+func (p *Node) MaximumPathLength() int <span class="cov0" title="0">{
    return p.height()
 }</span>
 
@@ -5852,8 +5852,8 @@ func (tree *Tree) update(p *Node, i Position, x Data) <span class="cov8" title="
 // //    }
 // // }
 // //
-// // func (tree BST) MaximumSearchCost() Size {
-// //    return tree.Root.MaximumSearchCost()
+// // func (tree BST) MaximumPathLength() Size {
+// //    return tree.Root.MaximumPathLength()
 // // }
 // //
 // // // Creates a tree from an existing sequence.
@@ -7450,7 +7450,7 @@ func init() {<span class="cov8" title="1">
 //   //   start := time.Now()
 //   //   tree = Median{}.Restore(tree)
 //   //   taken := time.Now().Sub(start)
-//   //   fmt.Println("Median", size, tree.partitions, tree.partitionSteps, tree.root.AverageSearchCost(), tree.root.MaximumSearchCost(), taken.Nanoseconds())
+//   //   fmt.Println("Median", size, tree.partitions, tree.partitionSteps, tree.root.AveragePathLength(), tree.root.MaximumPathLength(), taken.Nanoseconds())
 //   //   tree.Free()
 //   //}
 //   //fmt.Println()
@@ -7467,7 +7467,7 @@ func init() {<span class="cov8" title="1">
 //   //   start := time.Now()
 //   //   tree = Height{}.Restore(tree)
 //   //   taken := time.Now().Sub(start)
-//   //   fmt.Println("Height", size, tree.partitions, tree.partitionSteps, tree.root.AverageSearchCost(), tree.root.MaximumSearchCost(), taken.Nanoseconds())
+//   //   fmt.Println("Height", size, tree.partitions, tree.partitionSteps, tree.root.AveragePathLength(), tree.root.MaximumPathLength(), taken.Nanoseconds())
 //   //   tree.Free()
 //   //}
 //   //fmt.Println()
@@ -7484,7 +7484,7 @@ func init() {<span class="cov8" title="1">
 //   //   start := time.Now()
 //   //   tree = Weight{}.Restore(tree)
 //   //   taken := time.Now().Sub(start)
-//   //   fmt.Println("Weight", size, tree.partitions, tree.partitionSteps, tree.root.AverageSearchCost(), tree.root.MaximumSearchCost(), taken.Nanoseconds())
+//   //   fmt.Println("Weight", size, tree.partitions, tree.partitionSteps, tree.root.AveragePathLength(), tree.root.MaximumPathLength(), taken.Nanoseconds())
 //   //   tree.Free()
 //   //}
 //   //
@@ -7500,7 +7500,7 @@ func init() {<span class="cov8" title="1">
 //   ////   partitions = 0
 //   ////   partition_steps = 0
 //   ////   tree = Median{}.Restore(tree)
-//   ////   fmt.Println("Median", size, partitions, partition_steps, tree.root.AverageSearchCost(), tree.root.MaximumSearchCost())
+//   ////   fmt.Println("Median", size, partitions, partition_steps, tree.root.AveragePathLength(), tree.root.MaximumPathLength())
 //   ////   tree.Free()
 //   ////}
 //   ////fmt.Println()
@@ -7516,7 +7516,7 @@ func init() {<span class="cov8" title="1">
 //   ////   partitions = 0
 //   ////   partition_steps = 0
 //   ////   tree = Height{}.Restore(tree)
-//   ////   fmt.Println("Height", size, partitions, partition_steps, tree.root.AverageSearchCost(), tree.root.MaximumSearchCost())
+//   ////   fmt.Println("Height", size, partitions, partition_steps, tree.root.AveragePathLength(), tree.root.MaximumPathLength())
 //   ////   tree.Free()
 //   ////}
 //   ////fmt.Println()
@@ -7531,7 +7531,7 @@ func init() {<span class="cov8" title="1">
 //   ////   partitions = 0
 //   ////   partition_steps = 0
 //   ////   tree = Weight{}.Restore(tree)
-//   ////   fmt.Println("Weight", size, partitions, partition_steps, tree.root.AverageSearchCost(), tree.root.MaximumSearchCost())
+//   ////   fmt.Println("Weight", size, partitions, partition_steps, tree.root.AveragePathLength(), tree.root.MaximumPathLength())
 //   ////   tree.Free()
 //   ////}
 //}
@@ -7790,7 +7790,7 @@ func Sandbox() <span class="cov0" title="0">{
    ////   tree.Insert(random.Uint64() % uint64(i + 1), 0)
    ////   if i % 1000 == 0 {
    ////      t := math.Log(float64(i))
-   ////      a := tree.root.AverageSearchCost()
+   ////      a := tree.root.AveragePathLength()
    ////      fmt.Println(i, a, t, a / t, t / a)
    ////   }
    ////}
@@ -8201,7 +8201,7 @@ func Sandbox() <span class="cov0" title="0">{
    //
    //console.Histogram{
    //   Series: randomized.ExteriorHeightsAlongTheSpines(),
-   //   MaximumSearchCost: 20,
+   //   MaximumPathLength: 20,
    //   Offset: 0,
    //}.Print(os.Stdout)
    //
@@ -8215,7 +8215,7 @@ func Sandbox() <span class="cov0" title="0">{
    //
    //console.Histogram{
    //   Series: tree.(*BST).root.ExteriorHeightsAlongTheSpines(),
-   //   MaximumSearchCost: 20,
+   //   MaximumPathLength: 20,
    //   Offset: 0,
    //}.Print(os.Stdout)
    //
@@ -8228,7 +8228,7 @@ func Sandbox() <span class="cov0" title="0">{
    //}
    //var heights []int
    //tree.(*LBSTBottomUp).Inorder(func(p Node) {
-   //   heights = append(heights, p.MaximumSearchCost())
+   //   heights = append(heights, p.MaximumPathLength())
    //})
    //for x, y := range heights {
    //   fmt.Println(x, y)
@@ -11866,7 +11866,7 @@ type BinaryTree interface {
 
 //
 // // Returns the average path length of all nodes reachable BST p*.
-//func AverageSearchCost(p BinaryTreeNode, s Size) float64 {
+//func AveragePathLength(p BinaryTreeNode, s Size) float64 {
 //   if s == 0 {
 //      return 0
 //   }

@@ -109,8 +109,9 @@ func averagePathLength(p *Node, depth uint64, totalDepth *uint64, totalNodes *ui
    }
    *totalNodes = *totalNodes + 1
    *totalDepth = *totalDepth + depth
-   averagePathLength(p.l, depth+1, totalDepth, totalNodes)
-   averagePathLength(p.r, depth+1, totalDepth, totalNodes)
+
+   averagePathLength(p.l, depth + 1, totalDepth, totalNodes)
+   averagePathLength(p.r, depth + 1, totalDepth, totalNodes)
 }
 
 // long IPL(lbst t)
@@ -118,7 +119,7 @@ func averagePathLength(p *Node, depth uint64, totalDepth *uint64, totalNodes *ui
 //
 //    return IPL(t->l) + IPL(t->r) + t->s;
 //   }
-func (p *Node) AverageSearchCost() float64 {
+func (p *Node) AveragePathLength() float64 {
    var totalDepth uint64
    var totalNodes uint64
    averagePathLength(p, 0, &totalDepth, &totalNodes)
@@ -158,7 +159,7 @@ func (p Node) isLeaf() bool { // TODO conc can have its own that doesn't check p
 // Complexity: O(n)
 //
 
-func (p *Node) MaximumSearchCost() int {
+func (p *Node) MaximumPathLength() int {
    return p.height()
 }
 
@@ -716,8 +717,8 @@ func (tree *Tree) update(p *Node, i Position, x Data) {
 // //    }
 // // }
 // //
-// // func (tree BST) MaximumSearchCost() Size {
-// //    return tree.Root.MaximumSearchCost()
+// // func (tree BST) MaximumPathLength() Size {
+// //    return tree.Root.MaximumPathLength()
 // // }
 // //
 // // // Creates a tree from an existing sequence.

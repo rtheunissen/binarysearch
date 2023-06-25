@@ -41,9 +41,9 @@ func main() {
       }),
       Measurements: []binarytree.Measurement{
          &binarytree.PartitionCount{},
-         &binarytree.PartitionCost{},
-         &binarytree.AverageSearchCost{},
-         &binarytree.MaximumSearchCost{},
+         &binarytree.PartitionDepth{},
+         &binarytree.AveragePathLength{},
+         &binarytree.MaximumPathLength{},
          &binarytree.Rotations{},
          &binarytree.Allocations{},
       },

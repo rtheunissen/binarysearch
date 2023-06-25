@@ -1,7 +1,7 @@
 load "benchmarks/plot/graph.gnuplot"
 load "benchmarks/plot/functions.gnuplot"
 
-set tmargin 3
+set tmargin 2
 set bmargin 2
 set rmargin 4
 set lmargin 5
@@ -11,18 +11,13 @@ system mkdir(SVG)
 set output SVG
 print SVG
 
-set table $TABLE
-plot for [BALANCER in @GROUP] DATA.'/'.BALANCER using (@x):(@y) smooth @SMOOTH
-unset table
-
-plot for [i=1:words(@GROUP)] $TABLE \
-    index (i-1) \
-    using 1:2 \
+plot for [BALANCER in @GROUP] DATA.'/'.BALANCER \
+    using (@x):(@y) \
     axes x1y2 \
     smooth @SMOOTH \
     with linespoints \
-    linestyle value(word(@GROUP,i)) \
-    title word(@GROUP,i)
+    linestyle value(BALANCER) \
+    title BALANCER
 
 do for [DISTRIBUTION in DISTRIBUTIONS] {
 
@@ -31,16 +26,11 @@ do for [DISTRIBUTION in DISTRIBUTIONS] {
     set output SVG
     print SVG
 
-    set table $TABLE
-    plot for [BALANCER in @GROUP] DATA.'/'.BALANCER using (@x):(filter('Distribution', DISTRIBUTION, @y)) smooth @SMOOTH
-    unset table
-
-    plot for [i=1:words(@GROUP)] $TABLE \
-        index (i-1) \
-        using 1:2 \
+    plot for [BALANCER in @GROUP] DATA.'/'.BALANCER \
+        using (@x):(filter('Distribution', DISTRIBUTION, @y)) \
         axes x1y2 \
-        smooth mcsplines \
+        smooth @SMOOTH \
         with linespoints \
-        linestyle value(word(@GROUP,i)) \
-        title word(@GROUP,i)
+        linestyle value(BALANCER) \
+        title BALANCER
 }

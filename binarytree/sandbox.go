@@ -1,8 +1,11 @@
 package binarytree
 
 import (
+   "binarysearch/abstract/list"
+   "binarysearch/random"
    "fmt"
    "math"
+   "time"
 )
 
 func init() {
@@ -55,7 +58,7 @@ func init() {
 //   //   start := time.Now()
 //   //   tree = Median{}.Restore(tree)
 //   //   taken := time.Now().Sub(start)
-//   //   fmt.Println("Median", size, tree.partitions, tree.partitionSteps, tree.root.AverageSearchCost(), tree.root.MaximumSearchCost(), taken.Nanoseconds())
+//   //   fmt.Println("Median", size, tree.partitions, tree.partitionSteps, tree.root.AveragePathLength(), tree.root.MaximumPathLength(), taken.Nanoseconds())
 //   //   tree.Free()
 //   //}
 //   //fmt.Println()
@@ -72,7 +75,7 @@ func init() {
 //   //   start := time.Now()
 //   //   tree = Height{}.Restore(tree)
 //   //   taken := time.Now().Sub(start)
-//   //   fmt.Println("Height", size, tree.partitions, tree.partitionSteps, tree.root.AverageSearchCost(), tree.root.MaximumSearchCost(), taken.Nanoseconds())
+//   //   fmt.Println("Height", size, tree.partitions, tree.partitionSteps, tree.root.AveragePathLength(), tree.root.MaximumPathLength(), taken.Nanoseconds())
 //   //   tree.Free()
 //   //}
 //   //fmt.Println()
@@ -89,7 +92,7 @@ func init() {
 //   //   start := time.Now()
 //   //   tree = Weight{}.Restore(tree)
 //   //   taken := time.Now().Sub(start)
-//   //   fmt.Println("Weight", size, tree.partitions, tree.partitionSteps, tree.root.AverageSearchCost(), tree.root.MaximumSearchCost(), taken.Nanoseconds())
+//   //   fmt.Println("Weight", size, tree.partitions, tree.partitionSteps, tree.root.AveragePathLength(), tree.root.MaximumPathLength(), taken.Nanoseconds())
 //   //   tree.Free()
 //   //}
 //   //
@@ -105,7 +108,7 @@ func init() {
 //   ////   partitions = 0
 //   ////   partition_steps = 0
 //   ////   tree = Median{}.Restore(tree)
-//   ////   fmt.Println("Median", size, partitions, partition_steps, tree.root.AverageSearchCost(), tree.root.MaximumSearchCost())
+//   ////   fmt.Println("Median", size, partitions, partition_steps, tree.root.AveragePathLength(), tree.root.MaximumPathLength())
 //   ////   tree.Free()
 //   ////}
 //   ////fmt.Println()
@@ -121,7 +124,7 @@ func init() {
 //   ////   partitions = 0
 //   ////   partition_steps = 0
 //   ////   tree = Height{}.Restore(tree)
-//   ////   fmt.Println("Height", size, partitions, partition_steps, tree.root.AverageSearchCost(), tree.root.MaximumSearchCost())
+//   ////   fmt.Println("Height", size, partitions, partition_steps, tree.root.AveragePathLength(), tree.root.MaximumPathLength())
 //   ////   tree.Free()
 //   ////}
 //   ////fmt.Println()
@@ -136,7 +139,7 @@ func init() {
 //   ////   partitions = 0
 //   ////   partition_steps = 0
 //   ////   tree = Weight{}.Restore(tree)
-//   ////   fmt.Println("Weight", size, partitions, partition_steps, tree.root.AverageSearchCost(), tree.root.MaximumSearchCost())
+//   ////   fmt.Println("Weight", size, partitions, partition_steps, tree.root.AveragePathLength(), tree.root.MaximumPathLength())
 //   ////   tree.Free()
 //   ////}
 //}
@@ -153,14 +156,33 @@ func Sandbox() {
 
 
 
-   n := 100000
-   for x := 1; x < n; x++ {
-      for y := x; y < n; y++ {
-         if log2_1(x, y) != log2_2(x, y) {
-            panic(fmt.Sprint("x", x, "y", y))
-         }
+   t := time.Now()
+   for j := 0; j < 10; j++ {
+     tree := &LBSTTopDown{}
+     for i := 0; i < 1000000; i++ {
+        tree.Insert(random.Uint64() % (tree.Size() + 1), list.Data(i))
+     }
+
+      fmt.Println(tree.root.height())
+      for i := 0; i < 1000000; i++ {
+         tree.Insert(0, list.Data(i))
       }
+      tree.Free()
    }
+   fmt.Println(time.Since(t))
+   fmt.Println(rotations)
+   fmt.Println(rotations)
+
+
+   //
+   //n := 100000
+   //for x := 1; x < n; x++ {
+   //   for y := x; y < n; y++ {
+   //      if log2_1(x, y) != log2_2(x, y) {
+   //         panic(fmt.Sprint("x", x, "y", y))
+   //      }
+   //   }
+   //}
 
 
    //r := random.New(4)
@@ -415,7 +437,7 @@ func Sandbox() {
    ////   tree.Insert(random.Uint64() % uint64(i + 1), 0)
    ////   if i % 1000 == 0 {
    ////      t := math.Log(float64(i))
-   ////      a := tree.root.AverageSearchCost()
+   ////      a := tree.root.AveragePathLength()
    ////      fmt.Println(i, a, t, a / t, t / a)
    ////   }
    ////}
@@ -826,7 +848,7 @@ func Sandbox() {
    //
    //console.Histogram{
    //   Series: randomized.ExteriorHeightsAlongTheSpines(),
-   //   MaximumSearchCost: 20,
+   //   MaximumPathLength: 20,
    //   Offset: 0,
    //}.Print(os.Stdout)
    //
@@ -840,7 +862,7 @@ func Sandbox() {
    //
    //console.Histogram{
    //   Series: tree.(*BST).root.ExteriorHeightsAlongTheSpines(),
-   //   MaximumSearchCost: 20,
+   //   MaximumPathLength: 20,
    //   Offset: 0,
    //}.Print(os.Stdout)
    //
@@ -853,7 +875,7 @@ func Sandbox() {
    //}
    //var heights []int
    //tree.(*LBSTBottomUp).Inorder(func(p Node) {
-   //   heights = append(heights, p.MaximumSearchCost())
+   //   heights = append(heights, p.MaximumPathLength())
    //})
    //for x, y := range heights {
    //   fmt.Println(x, y)

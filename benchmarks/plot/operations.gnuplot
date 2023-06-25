@@ -115,13 +115,13 @@ do for [GROUP in GROUPS] {
         #
         ##################################################################
 
-        MEASUREMENT = 'MaximumSearchCost'
+        MEASUREMENT = 'MaximumPathLength'
 
         set xlabel "Operations × 10^5"
-        set ylabel "{/:Bold Maximum Search Cost } / log_2Size"
+        set ylabel "{/:Bold Maximum Path Length } / log_2Size"
 
         x = "column('Position')/(column('Scale')/10)"
-        y = "column('MaximumSearchCost')/log2(column('Size'))"
+        y = "column('MaximumPathLength')/log2(column('Size'))"
 
         DATA = sprintf("benchmarks/data/operations/measurements/%s", OPERATION)
 
@@ -139,17 +139,17 @@ do for [GROUP in GROUPS] {
         #
         ##################################################################
 
-        MEASUREMENT = 'AverageSearchCost'
+        MEASUREMENT = 'AveragePathLength'
 
         set xlabel "Operations × 10^5"
-        set ylabel "{/:Bold Average Search Cost } / log_2Size"
+        set ylabel "{/:Bold AveragePathLength } / log_2Size"
 
         DATA = sprintf("benchmarks/data/operations/measurements/%s", OPERATION)
 
         set format y2 "%.2f"
 
         x = "column('Position')/(column('Scale')/10)"
-        y = "column('AverageSearchCost')/log2(column('Size'))"
+        y = "column('AveragePathLength')/log2(column('Size'))"
 
         SMOOTH = "sbezier"
         load "benchmarks/plot/operations/lines.gnuplot"

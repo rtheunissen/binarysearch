@@ -13,12 +13,12 @@ Log     = 4
 Cost    = 5
 DSW     = 6
 
-set style line Median  dashtype 1 ps 1 lw 1 pt  11 pn 2 lc rgb COLOR_BLACK
-set style line Height  dashtype 4 ps 1 lw 1 pt  10 pn 2 lc rgb COLOR_YELLOW
-set style line Weight  dashtype 1 ps 1 lw 1 pt   9 pn 2 lc rgb COLOR_BLUE
-set style line Log     dashtype 5 ps 1 lw 1 pt   8 pn 2 lc rgb COLOR_CYAN
-set style line Cost    dashtype 2 ps 1 lw 1 pt  14 pn 2 lc rgb COLOR_GREEN
-set style line DSW     dashtype 3 ps 1 lw 1 pt   6 pn 2 lc rgb COLOR_PINK
+set style line Median  dashtype 1 ps 1 lw 0.5 pt  11 pn 2 lc rgb COLOR_BLACK
+set style line Height  dashtype 4 ps 1 lw 1   pt  10 pn 2 lc rgb COLOR_BROWN
+set style line Weight  dashtype 1 ps 1 lw 1   pt   9 pn 2 lc rgb COLOR_BLUE
+set style line Log     dashtype 5 ps 1 lw 1   pt   8 pn 2 lc rgb COLOR_CYAN
+set style line Cost    dashtype 2 ps 1 lw 1   pt  14 pn 2 lc rgb COLOR_GREEN
+set style line DSW     dashtype 3 ps 1 lw 1   pt   6 pn 2 lc rgb COLOR_PINK
 
 # set style line HalfSize    dashtype 1 ps 1 lw 1 pt   9 pn 2 lc rgb COLOR_RED
 # set style line LogSize     dashtype 5 ps 1 lw 1 pt   8 pn 2 lc rgb COLOR_YELLOW
@@ -50,7 +50,7 @@ do for [GROUP in GROUPS] {
 
     MEASUREMENT = "PartitionCount"
 
-    set xlabel "{Size × 10^4}"
+    set xlabel "{Size × 10^5}"
     set ylabel "{/:Bold Partition Count} / Size"
 
     x = "column('Size')/(column('Scale')/10)"
@@ -65,17 +65,17 @@ do for [GROUP in GROUPS] {
 
     ##################################################################
     #
-    #           TOTAL PARTITION DEPTH
+    #           TOTAL PARTITION COST
     #
     ##################################################################
 
-    MEASUREMENT = "TotalPartitionCost"
+    MEASUREMENT = "TotalPartitionDepth"
 
-    set xlabel "{Size × 10^4}"
-    set ylabel "{/:Bold Partition Cost} / Size"
+    set xlabel "{Size × 10^5}"
+    set ylabel "{/:Bold Partition Depth} / Size"
 
     x = "column('Size')/(column('Scale')/10)"
-    y = "column('PartitionCost')/column('Size')"
+    y = "column('PartitionDepth')/column('Size')"
 
     set format y2 "%.2f"
 
@@ -87,17 +87,17 @@ do for [GROUP in GROUPS] {
 
     ##################################################################
     #
-    #           AVERAGE PARTITION DEPTH
+    #           AVERAGE PARTITION COST
     #
     ##################################################################
 
-    MEASUREMENT = "AveragePartitionCost"
+    MEASUREMENT = "AveragePartitionDepth"
 
-    set xlabel "{Size × 10^4}"
-    set ylabel "{/:Bold Partition Cost } / Partition Count"
+    set xlabel "{Size × 10^5}"
+    set ylabel "{/:Bold Partition Depth } / Partition Count"
 
     x = "column('Size')/(column('Scale')/10)"
-    y = "column('PartitionCost')/column('PartitionCount')"
+    y = "column('PartitionDepth')/column('PartitionCount')"
 
     set format y2 "%.2f"
 
@@ -114,7 +114,7 @@ do for [GROUP in GROUPS] {
 
     MEASUREMENT = "Rotations"
 
-    set xlabel "{Size × 10^4}"
+    set xlabel "{Size × 10^5}"
     set ylabel "{/:Bold Rotations}"
 
     x = "column('Size')/(column('Scale')/10)"
@@ -134,13 +134,13 @@ do for [GROUP in GROUPS] {
     #
     ##################################################################
 
-    MEASUREMENT = "MaximumSearchCost"
+    MEASUREMENT = "MaximumPathLength"
 
-    set xlabel "Size × 10^4"
-    set ylabel "{/:Bold Maximum Search Cost } / log_2Size"
+    set xlabel "Size × 10^5"
+    set ylabel "{/:Bold Maximum Path Length } / log_2(n)"
 
     x = "column('Size')/(column('Scale')/10)"
-    y = "column('MaximumSearchCost')/log2(column('Size'))"
+    y = "column('MaximumPathLength')/log2(column('Size'))"
 
     set format y2 "%.2f"
 
@@ -156,13 +156,13 @@ do for [GROUP in GROUPS] {
     #
     ##################################################################
 
-    MEASUREMENT = "AverageSearchCost"
+    MEASUREMENT = "AveragePathLength"
 
-    set xlabel "Size × 10^4"
-    set ylabel "{/:Bold Average Search Cost } / log_2Size"
+    set xlabel "Size × 10^5"
+    set ylabel "{/:Bold Average Path Length } / log_2(n)"
 
     x = "column('Size')/(column('Scale')/10)"
-    y = "column('AverageSearchCost')/log2(column('Size'))"
+    y = "column('AveragePathLength')/log2(column('Size'))"
 
     set format y2 "%.2f"
 
@@ -179,7 +179,7 @@ do for [GROUP in GROUPS] {
 
     MEASUREMENT = "Duration"
 
-    set xlabel "Size × 10^5"
+    set xlabel "Size × 10^6"
     set ylabel "{/:Bold Duration } / Size"
 
     x = "column('Size')/(column('Scale')/10)"
@@ -193,5 +193,25 @@ do for [GROUP in GROUPS] {
     load "benchmarks/plot/balancers/lines.gnuplot"
 
     SMOOTH = "unique"
+    load "benchmarks/plot/balancers/lines.gnuplot"
+
+    ##################################################################
+    #
+    #           DURATION (CUMULATIVE)
+    #
+    ##################################################################
+
+    MEASUREMENT = "TotalDuration"
+
+    set xlabel "Size × 10^6"
+    set ylabel "{/:Bold Total Duration } / Size"
+
+    x = "column('Size')/(column('Scale')/10)"
+    y = "column('Duration')/column('Size')"
+
+    set format y2 "%.0f"
+
+    DATA = "benchmarks/data/balancers/benchmarks"
+    SMOOTH = "cumulative"
     load "benchmarks/plot/balancers/lines.gnuplot"
 }

@@ -41,7 +41,7 @@ import (
 //          sl <= α * s
 //          sr <= α * s
 //
-//       MaximumSearchCost upper-bound:
+//       MaximumPathLength upper-bound:
 //
 //          ⌊log1/α(size)⌋
 //
@@ -176,7 +176,7 @@ func (tree *LBSTRelaxed) Insert(i Position, x Data) {
 //
 //        tooDeep := depth > 2 * ⌊log₂(size)⌋
 //
-//     because root.height() <= MaximumSearchCost(2 * math.FloorLog2(size))
+//     because root.height() <= MaximumPathLength(2 * math.FloorLog2(size))
 //
 //   depth is height + 1 ?
 func (tree *LBSTRelaxed) tooDeep(size Size, depth uint64) bool {
@@ -185,13 +185,13 @@ func (tree *LBSTRelaxed) tooDeep(size Size, depth uint64) bool {
 
 // Determines if two sizes are balanced.
 func (tree *LBSTRelaxed) isBalanced(sl, sr Size) bool {
-   return Log{}.isBalanced(sl, sr)
+   return LBST{}.isBalanced(sl, sr) //  Log{}.isBalanced(sl, sr)
 }
 
 func (tree *LBSTRelaxed) balance(p *Node, s Size) *Node {
    // assert(strategy.isBalanced(p.sizeL(), p.sizeR(s)) || p.sizeL() < p.sizeR(s))
    // assert(strategy.isBalanced(p.sizeR(s), p.sizeL()) || p.sizeR(s) < p.sizeL())
-   if s < 4 ||
+   if s < 3 ||
       tree.isBalanced(p.sizeL(), p.sizeR(s)) &&
       tree.isBalanced(p.sizeR(s), p.sizeL()) {
       return p

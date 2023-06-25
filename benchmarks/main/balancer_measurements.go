@@ -22,9 +22,9 @@ func main() {
       Scale:     1_000_000,
       Measurements: []binarytree.Measurement{
          &binarytree.PartitionCount{},
-         &binarytree.PartitionCost{},
-         &binarytree.AverageSearchCost{},
-         &binarytree.MaximumSearchCost{},
+         &binarytree.PartitionDepth{},
+         &binarytree.AveragePathLength{},
+         &binarytree.MaximumPathLength{},
          &binarytree.Rotations{},
       },
       Distributions: []distribution.Distribution{
@@ -35,7 +35,7 @@ func main() {
          //&binarytree.Height{},
          &binarytree.Weight{},
          &binarytree.Log{},
-         &binarytree.Cost{},
+         //&binarytree.Cost{},
          //&binarytree.DSW{},
       }),
    }.Run()

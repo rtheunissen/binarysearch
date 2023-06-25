@@ -1,5 +1,5 @@
 #AVLBottomUp
-Distribution Scale Size Step Position PartitionCount PartitionCost AverageSearchCost MaximumSearchCost Rotations Allocations
+Distribution Scale Size Step Position PartitionCount PartitionDepth AveragePathLength MaximumPathLength Rotations Allocations
 Uniform 1000000 1000000 1000 1000 0 0 18.632511 23 4965 55323
 Uniform 1000000 1000000 1000 2000 0 0 18.594952 23 5188 55620
 Uniform 1000000 1000000 1000 3000 0 0 18.614118 23 5185 55594
@@ -5003,7 +5003,7 @@ Maximum 1000000 1000000 1000 1000000 0 0 18.292384 23 0 19000
 
 
 #AVLJoinBased
-Distribution Scale Size Step Position PartitionCount PartitionCost AverageSearchCost MaximumSearchCost Rotations Allocations
+Distribution Scale Size Step Position PartitionCount PartitionDepth AveragePathLength MaximumPathLength Rotations Allocations
 Uniform 1000000 1000000 1000 1000 0 0 18.492348 23 5063 55427
 Uniform 1000000 1000000 1000 2000 0 0 18.603548 23 5152 55626
 Uniform 1000000 1000000 1000 3000 0 0 18.57725 23 5157 55540
@@ -10007,7 +10007,7 @@ Maximum 1000000 1000000 1000 1000000 0 0 18.29977 23 0 19000
 
 
 #AVLWeakTopDown
-Distribution Scale Size Step Position PartitionCount PartitionCost AverageSearchCost MaximumSearchCost Rotations Allocations
+Distribution Scale Size Step Position PartitionCount PartitionDepth AveragePathLength MaximumPathLength Rotations Allocations
 Uniform 1000000 1000000 1000 1000 0 0 18.565003 25 5615 62113
 Uniform 1000000 1000000 1000 2000 0 0 18.683722 25 5198 60029
 Uniform 1000000 1000000 1000 3000 0 0 18.589735 24 5138 59135
@@ -15011,7 +15011,7 @@ Maximum 1000000 1000000 1000 1000000 0 0 18.306141 24 0 21000
 
 
 #AVLWeakBottomUp
-Distribution Scale Size Step Position PartitionCount PartitionCost AverageSearchCost MaximumSearchCost Rotations Allocations
+Distribution Scale Size Step Position PartitionCount PartitionDepth AveragePathLength MaximumPathLength Rotations Allocations
 Uniform 1000000 1000000 1000 1000 0 0 18.501042 23 4932 55272
 Uniform 1000000 1000000 1000 2000 0 0 18.579312 23 5005 55433
 Uniform 1000000 1000000 1000 3000 0 0 18.627173 23 4793 55246
@@ -20015,7 +20015,7 @@ Maximum 1000000 1000000 1000 1000000 0 0 18.327279 23 0 19000
 
 
 #AVLWeakJoinBased
-Distribution Scale Size Step Position PartitionCount PartitionCost AverageSearchCost MaximumSearchCost Rotations Allocations
+Distribution Scale Size Step Position PartitionCount PartitionDepth AveragePathLength MaximumPathLength Rotations Allocations
 Uniform 1000000 1000000 1000 1000 0 0 18.638284 23 4829 55319
 Uniform 1000000 1000000 1000 2000 0 0 18.586387 23 4906 55461
 Uniform 1000000 1000000 1000 3000 0 0 18.629177 23 4803 55398
@@ -25019,7 +25019,7 @@ Maximum 1000000 1000000 1000 1000000 0 0 18.33603 23 0 20000
 
 
 #AVLRelaxedTopDown
-Distribution Scale Size Step Position PartitionCount PartitionCost AverageSearchCost MaximumSearchCost Rotations Allocations
+Distribution Scale Size Step Position PartitionCount PartitionDepth AveragePathLength MaximumPathLength Rotations Allocations
 Uniform 1000000 1000000 1000 1000 0 0 18.671375 25 4837 60819
 Uniform 1000000 1000000 1000 2000 0 0 18.708327 25 4680 58927
 Uniform 1000000 1000000 1000 3000 0 0 18.563152 24 4730 58410
@@ -30023,7 +30023,7 @@ Maximum 1000000 1000000 1000 1000000 0 0 18.371239 24 0 18000
 
 
 #AVLRelaxedBottomUp
-Distribution Scale Size Step Position PartitionCount PartitionCost AverageSearchCost MaximumSearchCost Rotations Allocations
+Distribution Scale Size Step Position PartitionCount PartitionDepth AveragePathLength MaximumPathLength Rotations Allocations
 Uniform 1000000 1000000 1000 1000 0 0 18.604316 23 4423 54820
 Uniform 1000000 1000000 1000 2000 0 0 18.603427 23 4489 54962
 Uniform 1000000 1000000 1000 3000 0 0 18.582705 23 4583 54996
@@ -35027,7 +35027,7 @@ Maximum 1000000 1000000 1000 1000000 0 0 18.320559 23 0 20000
 
 
 #RedBlackRelaxedTopDown
-Distribution Scale Size Step Position PartitionCount PartitionCost AverageSearchCost MaximumSearchCost Rotations Allocations
+Distribution Scale Size Step Position PartitionCount PartitionDepth AveragePathLength MaximumPathLength Rotations Allocations
 Uniform 1000000 1000000 1000 1000 0 0 18.978758 27 1957 65539
 Uniform 1000000 1000000 1000 2000 0 0 19.05797 27 1994 64637
 Uniform 1000000 1000000 1000 3000 0 0 18.818644 26 1985 64402
@@ -40031,7 +40031,7 @@ Maximum 1000000 1000000 1000 1000000 0 0 18.350468 24 0 24000
 
 
 #RedBlackRelaxedBottomUp
-Distribution Scale Size Step Position PartitionCount PartitionCost AverageSearchCost MaximumSearchCost Rotations Allocations
+Distribution Scale Size Step Position PartitionCount PartitionDepth AveragePathLength MaximumPathLength Rotations Allocations
 Uniform 1000000 1000000 1000 1000 0 0 18.954469 26 1801 60175
 Uniform 1000000 1000000 1000 2000 0 0 19.075962 26 1807 61120
 Uniform 1000000 1000000 1000 3000 0 0 19.042149 26 1902 61569
@@ -45035,7 +45035,7 @@ Maximum 1000000 1000000 1000 1000000 0 0 18.404272 23 0 18000
 
 
 #LBSTBottomUp
-Distribution Scale Size Step Position PartitionCount PartitionCost AverageSearchCost MaximumSearchCost Rotations Allocations
+Distribution Scale Size Step Position PartitionCount PartitionDepth AveragePathLength MaximumPathLength Rotations Allocations
 Uniform 1000000 1000000 1000 1000 0 0 18.847977 27 2920 52337
 Uniform 1000000 1000000 1000 2000 0 0 18.799666 26 3216 52508
 Uniform 1000000 1000000 1000 3000 0 0 18.763049 27 3194 52461
@@ -50039,7 +50039,7 @@ Maximum 1000000 1000000 1000 1000000 0 0 18.352242 24 0 19000
 
 
 #LBSTTopDown
-Distribution Scale Size Step Position PartitionCount PartitionCost AverageSearchCost MaximumSearchCost Rotations Allocations
+Distribution Scale Size Step Position PartitionCount PartitionDepth AveragePathLength MaximumPathLength Rotations Allocations
 Uniform 1000000 1000000 1000 1000 0 0 18.951575 28 2424 51030
 Uniform 1000000 1000000 1000 2000 0 0 18.904104 28 2512 51175
 Uniform 1000000 1000000 1000 3000 0 0 18.868286 28 2591 51450
@@ -55043,7 +55043,7 @@ Maximum 1000000 1000000 1000 1000000 0 0 18.464952 25 0 19000
 
 
 #LBSTJoinBased
-Distribution Scale Size Step Position PartitionCount PartitionCost AverageSearchCost MaximumSearchCost Rotations Allocations
+Distribution Scale Size Step Position PartitionCount PartitionDepth AveragePathLength MaximumPathLength Rotations Allocations
 Uniform 1000000 1000000 1000 1000 0 0 18.84782 27 3036 52313
 Uniform 1000000 1000000 1000 2000 0 0 18.801681 26 3252 52552
 Uniform 1000000 1000000 1000 3000 0 0 18.761832 27 3181 52663
@@ -60047,7 +60047,7 @@ Maximum 1000000 1000000 1000 1000000 0 0 18.411466 25 0 19000
 
 
 #LBSTRelaxed
-Distribution Scale Size Step Position PartitionCount PartitionCost AverageSearchCost MaximumSearchCost Rotations Allocations
+Distribution Scale Size Step Position PartitionCount PartitionDepth AveragePathLength MaximumPathLength Rotations Allocations
 Uniform 1000000 1000000 1000 1000 0 0 23.012183 48 0 36704
 Uniform 1000000 1000000 1000 2000 0 0 23.28216 47 0 37663
 Uniform 1000000 1000000 1000 3000 0 0 22.97457 47 0 37880
@@ -65051,7 +65051,7 @@ Maximum 1000000 1000000 1000 1000000 0 0 21.508578 38 0 15000
 
 
 #TreapTopDown
-Distribution Scale Size Step Position PartitionCount PartitionCost AverageSearchCost MaximumSearchCost Rotations Allocations
+Distribution Scale Size Step Position PartitionCount PartitionDepth AveragePathLength MaximumPathLength Rotations Allocations
 Uniform 1000000 1000000 1000 1000 0 0 24.400527 49 0 51795
 Uniform 1000000 1000000 1000 2000 0 0 25.447781 52 0 51692
 Uniform 1000000 1000000 1000 3000 0 0 25.375128 52 0 51160

@@ -55,7 +55,7 @@ type BinaryTree interface {
 
 //
 // // Returns the average path length of all nodes reachable BST p*.
-//func AverageSearchCost(p BinaryTreeNode, s Size) float64 {
+//func AveragePathLength(p BinaryTreeNode, s Size) float64 {
 //   if s == 0 {
 //      return 0
 //   }
