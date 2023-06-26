@@ -18,43 +18,43 @@ func main() {
    flag.Parse()
 
    TreeBenchmark{
-      Scale:      1_000_000,
-      Samples:         1000,
+      Scale:      10_000_000,
+      Samples:          100,
       Iterations:        10,
       Operation: utility.Resolve(*operation, []list.Operation{
-         &operations.Insert{},
-         &operations.InsertPersistent{},
-         &operations.InsertDelete{},
-         &operations.InsertDeletePersistent{},
+         //&operations.Insert{},
+         //&operations.InsertPersistent{},
+         //&operations.InsertDelete{},
+         //&operations.InsertDeletePersistent{},
          &operations.InsertDeleteCycles{},
-         &operations.InsertDeleteCyclesPersistent{},
-         &operations.SplitJoin{},
+         //&operations.InsertDeleteCyclesPersistent{},
+         //&operations.SplitJoin{},
       }),
       Distributions: []distribution.Distribution{
          &distribution.Uniform{},
-         &distribution.Normal{},
-         &distribution.Skewed{},
-         &distribution.Zipf{},
-         &distribution.Maximum{},
+         //&distribution.Normal{},
+         //&distribution.Skewed{},
+         //&distribution.Zipf{},
+         //&distribution.Maximum{},
       },
       Strategies: []list.List{
-         &binarytree.AVLBottomUp{},
-         &binarytree.AVLWeakTopDown{},
-         &binarytree.AVLWeakBottomUp{},
-         &binarytree.AVLRelaxedTopDown{},
-         &binarytree.AVLRelaxedBottomUp{},
-         &binarytree.RedBlackBottomUp{},
-         &binarytree.RedBlackRelaxedBottomUp{},
-         &binarytree.RedBlackRelaxedTopDown{},
+         //&binarytree.AVLBottomUp{},
+         //&binarytree.AVLWeakTopDown{},
+         //&binarytree.AVLWeakBottomUp{},
+         //&binarytree.AVLRelaxedTopDown{},
+         //&binarytree.AVLRelaxedBottomUp{},
+         //&binarytree.RedBlackBottomUp{},
+         //&binarytree.RedBlackRelaxedBottomUp{},
+         //&binarytree.RedBlackRelaxedTopDown{},
          &binarytree.LBSTBottomUp{},
-         &binarytree.LBSTTopDown{},
+         //&binarytree.LBSTTopDown{},
          &binarytree.LBSTRelaxed{},
-         &binarytree.TreapTopDown{},
-         &binarytree.TreapFingerTree{},
-         &binarytree.Randomized{},
-         &binarytree.Zip{},
-         &binarytree.Splay{},
-         &binarytree.Conc{},
+         //&binarytree.TreapTopDown{},
+         //&binarytree.TreapFingerTree{},
+         //&binarytree.Randomized{},
+         //&binarytree.Zip{},
+         //&binarytree.Splay{},
+         //&binarytree.Conc{},
       },
    }.Run()
 }
@@ -70,6 +70,9 @@ type TreeBenchmark struct {
 }
 
 func (benchmark TreeBenchmark) Run() {
+   if benchmark.Operation == nil {
+      return
+   }
 
    //
    for _, strategy := range benchmark.Strategies {

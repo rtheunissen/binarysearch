@@ -1,6 +1,7 @@
 package console
 
 import (
+   . "binarysearch/utility"
    "io"
    "math"
    "strconv"

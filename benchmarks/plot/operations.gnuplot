@@ -29,27 +29,27 @@ Conc                       = 20
 RedBlackBottomUp           = 21
 
 
-set style line AVLBottomUp                  dashtype 1 ps 2 lw 2 pt   1 pn 2 lc rgb COLOR_BLACK
-set style line AVLJoinBased                 dashtype 3 ps 2 lw 2 pt   2 pn 2 lc rgb COLOR_CYAN
-set style line AVLWeakBottomUp              dashtype 1 ps 2 lw 2 pt   4 pn 2 lc rgb COLOR_BLUE
-set style line AVLWeakTopDown               dashtype 5 ps 2 lw 2 pt   3 pn 2 lc rgb COLOR_GREEN
-set style line AVLWeakJoinBased             dashtype 3 ps 2 lw 2 pt   5 pn 2 lc rgb COLOR_CYAN
-set style line AVLRelaxedTopDown            dashtype 5 ps 2 lw 2 pt   6 pn 2 lc rgb COLOR_BLUE
-set style line AVLRelaxedBottomUp           dashtype 1 ps 2 lw 2 pt   7 pn 2 lc rgb COLOR_YELLOW
-set style line RedBlackBottomUp             dashtype 1 ps 2 lw 2 pt  12 pn 2 lc rgb COLOR_RED
-set style line RedBlackRelaxedBottomUp      dashtype 1 ps 2 lw 2 pt   8 pn 2 lc rgb COLOR_GREEN
-set style line RedBlackRelaxedTopDown       dashtype 5 ps 2 lw 2 pt   9 pn 2 lc rgb COLOR_CYAN
-set style line LBSTBottomUp                 dashtype 1 ps 2 lw 2 pt  10 pn 2 lc rgb COLOR_GREEN
-set style line LBSTTopDown                  dashtype 5 ps 2 lw 2 pt  11 pn 2 lc rgb COLOR_BLUE
-set style line LBSTJoinBased                dashtype 3 ps 2 lw 2 pt  12 pn 2 lc rgb COLOR_YELLOW
-set style line LBSTRelaxed                  dashtype 1 ps 2 lw 2 pt  13 pn 2 lc rgb COLOR_RED
-set style line TreapTopDown                 dashtype 5 ps 2 lw 2 pt  14 pn 2 lc rgb COLOR_RED
-set style line TreapJoinBased               dashtype 3 ps 2 lw 2 pt  15 pn 2 lc rgb COLOR_CYAN
-set style line TreapFingerTree              dashtype 1 ps 2 lw 2 pt  16 pn 2 lc rgb COLOR_BLUE
-set style line Randomized                   dashtype 1 ps 2 lw 2 pt  17 pn 2 lc rgb COLOR_YELLOW
-set style line Zip                          dashtype 1 ps 2 lw 2 pt  18 pn 2 lc rgb COLOR_GREEN
-set style line Splay                        dashtype 1 ps 2 lw 2 pt  19 pn 2 lc rgb COLOR_PINK
-set style line Conc                         dashtype 3 ps 2 lw 2 pt  20 pn 2 lc rgb COLOR_PURPLE
+set style line AVLBottomUp                  dashtype 1 ps 1 lw 1 pt   1 pn 2 lc rgb COLOR_BLACK
+set style line AVLJoinBased                 dashtype 3 ps 1 lw 1 pt   2 pn 2 lc rgb COLOR_CYAN
+set style line AVLWeakBottomUp              dashtype 1 ps 1 lw 1 pt   4 pn 2 lc rgb COLOR_BLUE
+set style line AVLWeakTopDown               dashtype 5 ps 1 lw 1 pt   3 pn 2 lc rgb COLOR_GREEN
+set style line AVLWeakJoinBased             dashtype 3 ps 1 lw 1 pt   5 pn 2 lc rgb COLOR_CYAN
+set style line AVLRelaxedTopDown            dashtype 5 ps 1 lw 1 pt   6 pn 2 lc rgb COLOR_BLUE
+set style line AVLRelaxedBottomUp           dashtype 1 ps 1 lw 1 pt   7 pn 2 lc rgb COLOR_YELLOW
+set style line RedBlackBottomUp             dashtype 1 ps 1 lw 1 pt  12 pn 2 lc rgb COLOR_RED
+set style line RedBlackRelaxedBottomUp      dashtype 1 ps 1 lw 1 pt   8 pn 2 lc rgb COLOR_GREEN
+set style line RedBlackRelaxedTopDown       dashtype 5 ps 1 lw 1 pt   9 pn 2 lc rgb COLOR_CYAN
+set style line LBSTBottomUp                 dashtype 1 ps 1 lw 1 pt  10 pn 2 lc rgb COLOR_GREEN
+set style line LBSTTopDown                  dashtype 5 ps 1 lw 1 pt  11 pn 2 lc rgb COLOR_BLUE
+set style line LBSTJoinBased                dashtype 3 ps 1 lw 1 pt  12 pn 2 lc rgb COLOR_YELLOW
+set style line LBSTRelaxed                  dashtype 1 ps 1 lw 1 pt  13 pn 2 lc rgb COLOR_RED
+set style line TreapTopDown                 dashtype 5 ps 1 lw 1 pt  14 pn 2 lc rgb COLOR_RED
+set style line TreapJoinBased               dashtype 3 ps 1 lw 1 pt  15 pn 2 lc rgb COLOR_CYAN
+set style line TreapFingerTree              dashtype 1 ps 1 lw 1 pt  16 pn 2 lc rgb COLOR_BLUE
+set style line Randomized                   dashtype 1 ps 1 lw 1 pt  17 pn 2 lc rgb COLOR_YELLOW
+set style line Zip                          dashtype 1 ps 1 lw 1 pt  18 pn 2 lc rgb COLOR_GREEN
+set style line Splay                        dashtype 1 ps 1 lw 1 pt  19 pn 2 lc rgb COLOR_PINK
+set style line Conc                         dashtype 3 ps 1 lw 1 pt  20 pn 2 lc rgb COLOR_PURPLE
 
 
 ##################################################################
@@ -69,17 +69,20 @@ RankBalanced           = "AVLWeakBottomUp AVLWeakTopDown AVLRelaxedBottomUp RedB
 HeightBalanced         = "AVLBottomUp RedBlackBottomUp AVLWeakBottomUp AVLRelaxedBottomUp Conc"
 
 WeightBalanced         = "LBSTBottomUp LBSTTopDown LBSTJoinBased LBSTRelaxed"
+WeightBalancedRelaxed  = "LBSTBottomUp LBSTRelaxed"
 Probabilistic          = "TreapTopDown TreapFingerTree Randomized Zip"
 Combination            = "AVLRelaxedBottomUp AVLWeakBottomUp LBSTBottomUp TreapTopDown"
 CombinationSplay       = "AVLRelaxedBottomUp AVLWeakBottomUp LBSTBottomUp TreapTopDown Splay"
 SizeOnly               = "LBSTBottomUp LBSTRelaxed Randomized Splay"
 
 GROUPS = "AVLWeakRedBlack AVLRelaxed RedBlack"
+GROUPS = "WeightBalancedRelaxed"
 
 OPERATIONS = "InsertPersistent InsertDeleteCyclesPersistent Insert InsertDeleteCycles InsertDelete InsertDeletePersistent InsertDeleteCycles"
-OPERATIONS = "Insert InsertDeleteCycles InsertDelete"
+OPERATIONS = "InsertDeleteCycles InsertDeleteCyclesPersistent"
 
 DISTRIBUTIONS = "Uniform Normal Skewed Zipf Maximum"
+DISTRIBUTIONS = "Uniform"
 
 do for [GROUP in GROUPS] {
 

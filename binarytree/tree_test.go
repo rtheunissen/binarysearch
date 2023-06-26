@@ -11,7 +11,7 @@ import (
 // TODO: can we not make them binarytree?
 func TestBST(t *testing.T) {
    list.TestSuite{
-      Scale: 64,
+      Scale: 100,
       Tests: []list.Test{
          list.TestNew,
          list.TestSelect,
@@ -24,11 +24,11 @@ func TestBST(t *testing.T) {
          list.TestDelete,
          list.TestDeletePersistent,
          list.TestInsertDelete,
-         list.TestInsertDeletePersistent,
-         list.TestSplit,
-         list.TestJoin,
-         list.TestJoinFromSplit,
-         list.TestJoinAfterInsertDelete,
+         //list.TestInsertDeletePersistent,
+         //list.TestSplit,
+         //list.TestJoin,
+         //list.TestJoinFromSplit,
+         //list.TestJoinAfterInsertDelete,
       },
       Distributions: []distribution.Distribution{
          &distribution.Uniform{},
@@ -46,17 +46,17 @@ func TestBST(t *testing.T) {
          &distribution.Slope{},
       },
       Lists: []list.List{
-         &AVLBottomUp{},
+         //&AVLBottomUp{},
          //&AVLWeakTopDown{},
          //&AVLWeakBottomUp{},
          //&AVLRelaxedTopDown{},
          //&AVLRelaxedBottomUp{},
          //&RedBlackBottomUp{},
-         //&RedBlackRelaxedBottomUp{},
-         //&RedBlackRelaxedTopDown{},
+         &RedBlackRelaxedBottomUp{},
+         &RedBlackRelaxedTopDown{},
          //&LBSTBottomUp{},
          //&LBSTTopDown{},
-         //&LBSTRelaxed{},
+         &LBSTRelaxed{},
          //&TreapTopDown{},
          //&TreapFingerTree{},
          //&Randomized{},

@@ -30,14 +30,14 @@ func (PartitionCount) Measure(BinaryTree) any {
 type PartitionDepth struct {
 
 }
-var partitionCost uint64 = 0
+var partitionDepth uint64 = 0
 
 func (PartitionDepth) Reset()  {
-   partitionCost = 0
+   partitionDepth = 0
 }
 
 func (PartitionDepth) Measure(BinaryTree) any {
-   return partitionCost
+   return partitionDepth
 }
 
 type MaximumPathLength struct {

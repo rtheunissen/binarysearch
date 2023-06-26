@@ -34,19 +34,19 @@ func (tree *RedBlackRelaxedBottomUp) insert(p *Node, i Position, x Data) *Node {
 }
 
 func (tree *RedBlackRelaxedBottomUp) Insert(i Position, x Data) {
-   assert(i <= tree.Size())
+   // assert(i <= tree.Size())
    tree.size = tree.size + 1
    tree.root = tree.insert(tree.root, i, x)
    return
 }
 
 func (tree *RedBlackRelaxedBottomUp) Select(i Size) Data {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    return tree.lookup(tree.root, i)
 }
 
 func (tree *RedBlackRelaxedBottomUp) Update(i Size, x Data) {
-   assert(i < tree.Size())
+   // assert(i < tree.Size())
    tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }

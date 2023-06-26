@@ -12,7 +12,7 @@ animation: animate
 
 # Run the test suite.
 test: assertions-on measurements-off
-	${GO} test -count 1 ./binarytree -cpuprofile cpu.out
+	${GO} test -count 1 ./binarytree
 
 # Runs the test suite and collects code coverage.
 coverage: assertions-off measurements-off

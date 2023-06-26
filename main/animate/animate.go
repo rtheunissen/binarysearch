@@ -2,6 +2,7 @@ package main
 
 import (
    "binarysearch/abstract/list"
+   . "binarysearch/binarytree"
    "binarysearch/binarytree/animations"
    console2 "binarysearch/console"
    "binarysearch/distribution"
@@ -75,20 +76,16 @@ func chooseDistribution() distribution.Distribution {
 func chooseStrategy() list.List {
    return console2.Choose[list.List]("Strategy",
       &AVLBottomUp{},
-      &AVLJoinBased{},
       &AVLWeakTopDown{},
       &AVLWeakBottomUp{},
-      &AVLWeakJoinBased{},
       &AVLRelaxedTopDown{},
       &AVLRelaxedBottomUp{},
       &RedBlackRelaxedBottomUp{},
       &RedBlackRelaxedTopDown{},
       &LBSTBottomUp{},
       &LBSTTopDown{},
-      &LBSTJoinBased{},
       &LBSTRelaxed{},
       &TreapTopDown{},
-      &TreapJoinBased{},
       &TreapFingerTree{},
       &Randomized{},
       &Zip{},

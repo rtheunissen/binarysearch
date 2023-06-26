@@ -7,13 +7,6 @@ type RedBlackRelaxed struct {
    RankBalanced
 }
 
-func (tree *RedBlackRelaxed) Delete(i Position) (x Data) {
-   assert(i < tree.Size())
-   x = tree.Tree.delete(&tree.root, tree.size, i)
-   tree.size--
-   return x
-}
-
 func (tree RedBlackRelaxed) split(p *Node, i, s Size) (l, r *Node) {
    if p == nil {
       return
@@ -34,7 +27,7 @@ func (tree RedBlackRelaxed) split(p *Node, i, s Size) (l, r *Node) {
 }
 
 func (tree RedBlackRelaxed) Split(i Position) (RedBlackRelaxed, RedBlackRelaxed) {
-   assert(i <= tree.Size())
+   // assert(i <= tree.Size())
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
    return RedBlackRelaxed{Tree: Tree{arena: tree.arena, root: l, size: i}},

@@ -120,6 +120,9 @@ func averagePathLength(p *Node, depth uint64, totalDepth *uint64, totalNodes *ui
 //    return IPL(t->l) + IPL(t->r) + t->s;
 //   }
 func (p *Node) AveragePathLength() float64 {
+   if p == nil {
+      return 0
+   }
    var totalDepth uint64
    var totalNodes uint64
    averagePathLength(p, 0, &totalDepth, &totalNodes)
@@ -475,48 +478,80 @@ func (tree *Tree) replacedByLeftSubtree(p **Node) *Node {
 //   }
 //}
 //
+//
+//func (tree *Tree) deleteMin2(p *Node) (root *Node, deleted *Node) {
+//   // assert(p != nil)
+//   n := Node{}
+//   l := &n
+//   for {
+//      tree.persist(&p)
+//      if p.l == nil {
+//         l.l = p.r
+//         return n.l, p
+//      }
+//      p.s = p.s - 1
+//      l.l = p
+//      l = l.l
+//      p = p.l
+//   }
+//}
 
-func (tree *Tree) deleteMin2(p *Node) (root *Node, deleted *Node) {
-   assert(p != nil)
+func (tree *Tree) deleteMin2(r *Node) (root, min *Node) {
    n := Node{}
    l := &n
    for {
-      tree.persist(&p)
-      if p.l == nil {
-         l.l = p.r
-         break
+      tree.persist(&r)
+      if r.l == nil {
+         l.l = r.r
+         return n.l, r
       }
-      p.s = p.s - 1
-      l.l = p
+      r.s = r.s - 1
+      l.l = r
       l = l.l
-      p = p.l
-   }
-   return n.l, p
-}
-
-func (tree *Tree) deleteMin(p **Node) *Node {
-   for {
-      tree.persist(p)
-      if (*p).l == nil {
-         r := *p
-         *p = (*p).r
-         return r
-      }
-      (*p).s--
-      p = &(*p).l
+      r = r.l
    }
 }
 
-func (tree *Tree) deleteMax(p **Node) *Node {
+func (tree *Tree) deleteMin(p **Node) (min *Node) {
+   //*p, min = tree.deleteMin2(*p)
+   //return
    for {
-      if (*p).r == nil {
-         tree.persist(p)
-         l := *p
-         *p = (*p).l
-         return l
+     tree.persist(p)
+     if (*p).l == nil {
+        r := *p
+        *p = (*p).r
+        return r
+     }
+     (*p).s--
+     p = &(*p).l
+   }
+}
+func (tree *Tree) deleteMax2(p *Node) (root, min *Node) {
+   n := Node{}
+   r := &n
+   for {
+      tree.persist(&p)
+      if p.r == nil {
+         r.r = p.l
+         return n.r, p
       }
-      tree.persist(p)
-      p = &(*p).r
+      r.r = p
+      r = r.r
+      p = p.r
+   }
+}
+func (tree *Tree) deleteMax(p **Node) (max *Node) {
+   //*p, max = tree.deleteMax2(*p)
+   //return
+   for {
+     if (*p).r == nil {
+        tree.persist(p)
+        l := *p
+        *p = (*p).l
+        return l
+     }
+     tree.persist(p)
+     p = &(*p).r
    }
 }
 
@@ -851,25 +886,25 @@ func deleteR(p *Node, i *Position) **Node {
 
 /*
 func (tree *Tree) pathL(p *Node) **Node {
-   assert(p.l != nil)
+   // assert(p.l != nil)
    tree.copy(&p.l)
    return pathL(p)
 }
 
 func (tree *Tree) pathR(p *Node, i *Position) **Node {
-   assert(p.r != nil)
+   // assert(p.r != nil)
    tree.copy(&p.r)
    return pathR(p, i)
 }
 */
 // TODO: these are nuts
 func (tree *Tree) pathLeft(p ***Node) {
-   assert((**p).l != nil)
+   // assert((**p).l != nil)
    tree.persist(&(**p).l)
    *p = insertL(**p)
 }
 func (tree *Tree) pathRight(p ***Node, i *Position) {
-   assert((**p).r != nil)
+   // assert((**p).r != nil)
    tree.persist(&(**p).r)
    *p = insertR(**p, i)
 }
@@ -983,7 +1018,7 @@ func (tree *Tree) appendL(p **Node, n *Node) {
 
 //// TODO put this under linked list ?
 //func (tree *Tree) truncateL(p **Node) *Node {
-//   assert(*p != nil)
+//   // assert(*p != nil)
 //   tree.copy(p)
 //   for (*p).l != nil {
 //      p = &(*p).l
@@ -995,7 +1030,7 @@ func (tree *Tree) appendL(p **Node, n *Node) {
 //}
 //
 //func (tree *Tree) truncateR(p **Node) *Node {
-//   assert(*p != nil)
+//   // assert(*p != nil)
 //   tree.copy(p)
 //   for (*p).r != nil {
 //      p = &(*p).r

@@ -1,7 +1,9 @@
 package binarytree
 
 import (
-   "binarysearch/random"
+   . "binarysearch/abstract/list"
+   "binarysearch/utility"
+   "fmt"
    "math"
 )
 
@@ -141,30 +143,59 @@ func init() {
 //   ////}
 //}
 
+func heightBound1(height int, size Size) bool {
+   return height > 2 * int(utility.Log2(size))
+}
+func heightBound2(height int, size Size) bool {
+   return size < (1 << ((height + 1) >> 1))
+}
+func heightBound3(height int, size Size) bool {
+   return (height + 1) / 2 > int(math.Log2(float64(size)))
+}
 func log2_1(x, y int) bool {
-   assert(x <= y)
+   // assert(x <= y)
    return (1 + int(math.Floor(math.Log2(float64(y))))) - (1 + int(math.Floor(math.Log2(float64(x))))) <= 1
 }
 func log2_2(x, y int) bool {
-   assert(x <= y)
+   // assert(x <= y)
    return x >= y / 2 && x <= y * 2
 }
 func Sandbox() {
-
-   random.Seed(4)
-   for {
-     tree := &AVLBottomUp{}
-     size := random.LessThan(10, random.Uniform()) + 1
-
-     for i := uint64(0); i < size; i++ {
-        tree.Insert(random.LessThan(tree.Size()+1, random.Uniform()), i)
-     }
-     for tree.root != nil {
-        i := random.LessThan(tree.Size(), random.Uniform())
-        tree.Delete(i)
-     }
-     tree.Free()
+   //
+   for i := 1; i < 1000000; i++ {
+      for h := 1; h < 32; h++ {
+         h1 := heightBound1(h, Size(i))
+         h2 := heightBound2(h, Size(i))
+         h3 := heightBound3(h, Size(i))
+         if int(2 * math.Log2(float64(i))) != int(2 *utility.Log2(uint64(i))) {
+         //if h1 != h2 || h1 != h3 || h2 != h3 {
+            panic(fmt.Sprint(i, h, h1, h2, h3, int(2 * math.Log2(float64(i))), int(2 *utility.Log2(uint64(i)))))
+         }
+      }
    }
+
+   //
+   //random.Seed(4)
+   //var d time.Duration
+   //var f float64
+   //for k := 0; k < 100; k++ {
+   //  tree := &LBSTRelaxed{}
+   //  size := 10_000
+   //
+   //  for i := 0; i < size; i++ {
+   //     tree.Insert(random.LessThan(tree.Size()+1, random.Uniform()), Data(i))
+   //  }
+   //  t := time.Now()
+   //  for tree.root != nil {
+   //     i := random.LessThan(tree.Size(), random.Uniform())
+   //     tree.Delete(i)
+   //     //f += tree.root.AveragePathLength()
+   //  }
+   //  d += time.Since(t)
+   //  tree.Free()
+   //}
+   //fmt.Println(f / (3 * 100_000))
+   //fmt.Println(d)
 
    //
    //t := time.Now()
@@ -1295,8 +1326,8 @@ func Sandbox() {
 //   //    }
 //   //    p := l.Join(r)
 //   //    p.Verify()
-//   //    assert(p.Size() == l.Size() + r.Size())
-//   //    assert(p.Size() == p.(*WAVL).root.count())
+//   //    // assert(p.Size() == l.Size() + r.Size())
+//   //    // assert(p.Size() == p.(*WAVL).root.count())
 //   //    print(".")
 //   // }
 //}

@@ -1,9 +1,9 @@
 package console
 
 import (
-   "strconv"
-
+   . "binarysearch/utility"
    "io"
+   "strconv"
 )
 
 type VHistogram struct {

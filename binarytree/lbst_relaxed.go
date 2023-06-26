@@ -8,7 +8,7 @@ import (
 //
 // Recap:
 //    The _height_ of a tree is the longest path from the root to any other node.
-//    The _depth_ of a node is the number of links to follow to reach the root.
+//    The _height_ of a node is the number of links to follow to reach the root.
 //    The _weight_ of a tree is equal to its size; the number of reachable nodes.
 //
 //    To guarantee a tree height upper-bound, a weight-balanced tree maintains
@@ -26,7 +26,7 @@ import (
 // to reduce its height by at least 1, thereby restoring the height bound.
 //
 // When inserting a new node, we count the number of nodes top-down to determine
-// if the path exceeded the height upper-bound; if the depth exceeds the tree's
+// if the path exceeded the height upper-bound; if the height exceeds the tree's
 // height upper-bound, then at least one node along the insertion path must not
 // be weight-balanced - we call this node the "scapegoat".
 //
@@ -57,7 +57,7 @@ import (
 //       sl >= ~sl & (sr >> 1)
 //       sr >= ~sr & (sl >> 1)
 //
-//       Check: size < (1 << ((depth + 1) >> 1))
+//       Check: size < (1 << ((height + 1) >> 1))
 //
 //       The maximum height is 2 * ⌊log₂(m)⌋, where `m` is the maximum size
 //       that the tree has reached. Deletions do not consider balance at all.
@@ -101,6 +101,7 @@ import (
 
 type LBSTRelaxed struct {
    Tree
+   Log
 }
 
 // Creates a new LBSTRelaxed BST from existing values.
@@ -117,32 +118,61 @@ func (tree *LBSTRelaxed) Clone() List {
 func (tree *LBSTRelaxed) Verify() {
    tree.verifySizes()
 }
+//
+func (tree *LBSTRelaxed) delete(p **Node, s Size, i Size) (x Data) {
+   for {
+      tree.persist(p)
+      sl := (*p).sizeL()
+      sr := (*p).sizeR(s)
+      if i < sl {
+         s = sl
+    (*p).s = sl - 1
+         p = &(*p).l
+         continue
+      }
+      if i > sl {
+         s = sr
+         i = i - sl - 1
+         p = &(*p).r
+         continue
+      }
+      x := (*p).x
+      *p = tree.join((*p).l, (*p).r, sl, sr)
+      return x
+   }
+}
 
-// Inserts a value `s` at position `i` in the tree.
-func (tree *LBSTRelaxed) Insert(i Position, x Data) {
-   assert(i <= tree.Size())
-
+// Deletes the node at position `i` from the tree.
+// Returns the data that was in the deleted value.
+func (tree *LBSTRelaxed) Delete(i Position) Data {
+ assert(i < tree.size)
+ x := tree.delete(&tree.root, tree.size, i)
+ tree.size = tree.size - 1
+ return x
+}
+func (tree *LBSTRelaxed) insert(p **Node, s Size, i Position, x Data) {
    var unbalancedNode **Node // An unbalanced node along the insertion path.
    var unbalancedSize Size   // The size of the unbalanced node.
-   var depth uint64          // The depth of the insertion so far.
+   var height uint64         // The height of the insertion so far.
+   // Search with increasing height until the end of the path is reached.
+   for {
+      // Attach a new node at the end of the path.
+      if *p == nil {
+         *p = tree.allocate(Node{x: x})
 
-   p := &tree.root
-   s := tree.size
-
-   // Search with increasing depth until the end of the path is reached.
-   //
-   for *p != nil {
+         // Check if a rebuild is required.
+         if tree.size < 1 << (height >> 1) {
+            tree.rebuild(unbalancedNode, unbalancedSize)
+         }
+         return
+      }
       tree.persist(p)
-      depth++
+      height++
 
-      sl := (*p).s         // Size of the left subtree.  O(1)
-      sr := s - (*p).s - 1 // Size of the right subtree. O(1)
-
+      sl := (*p).sizeL()
+      sr := (*p).sizeR(s)
       if i <= sl {
-         //
-         // LEFT
-         //
-         if unbalancedNode == nil && !tree.isBalanced(sr, sl+1) {
+         if unbalancedNode == nil && !tree.isBalanced(sr, sl + 1) {
             unbalancedNode = p
             unbalancedSize = s + 1
          }
@@ -150,10 +180,7 @@ func (tree *LBSTRelaxed) Insert(i Position, x Data) {
          s = sl
 
       } else {
-         //
-         // RIGHT
-         //
-         if unbalancedNode == nil && !tree.isBalanced(sl, sr+1) {
+         if unbalancedNode == nil && !tree.isBalanced(sl, sr + 1) {
             unbalancedNode = p
             unbalancedSize = s + 1
          }
@@ -161,42 +188,33 @@ func (tree *LBSTRelaxed) Insert(i Position, x Data) {
          s = sr
       }
    }
-   // Attach a new node at the end of the path.
-   *p = tree.allocate(Node{x: x})
-   tree.size++
-
-   // Check if a rebuild is required.
-   if tree.tooDeep(tree.size, depth) {
-      tree.rebuild(unbalancedNode, unbalancedSize)
-   }
+}
+// Inserts a value `s` at position `i` in the tree.
+func (tree *LBSTRelaxed) Insert(i Position, x Data) {
+   // assert(i <= tree.size)
+   tree.size = tree.size + 1
+   tree.insert(&tree.root, tree.size, i, x)
 }
 
-// Determines if the depth at which a new node was inserted was too deep, i.e.
+// Determines if the height at which a new node was inserted was too deep, i.e.
 // if the new height of the tree exceeds the upper-bound for its size.
 //
-//        tooDeep := depth > 2 * ⌊log₂(size)⌋
+//        tooDeep := height > 2 * ⌊log₂(size)⌋
 //
 //     because root.height() <= MaximumPathLength(2 * math.FloorLog2(size))
 //
-//   depth is height + 1 ?
-func (tree *LBSTRelaxed) tooDeep(size Size, depth uint64) bool {
-   return (1 << ((depth + 1) >> 1)) > size
-}
-
-// Determines if two sizes are balanced.
-func (tree *LBSTRelaxed) isBalanced(sl, sr Size) bool {
-   return LBST{}.isBalanced(sl, sr) //  Log{}.isBalanced(sl, sr)
+//   height is height + 1 ?
+func (tree *LBSTRelaxed) tooDeep(size Size, height uint64) bool {
+   return (1 << ((height + 1) >> 1)) > size
 }
 
 func (tree *LBSTRelaxed) balance(p *Node, s Size) *Node {
-   assert(tree.isBalanced(p.sizeL(), p.sizeR(s)) || p.sizeL() < p.sizeR(s))
-   assert(tree.isBalanced(p.sizeR(s), p.sizeL()) || p.sizeR(s) < p.sizeL())
-   if s < 3 ||
-      tree.isBalanced(p.sizeL(), p.sizeR(s)) &&
-      tree.isBalanced(p.sizeR(s), p.sizeL()) {
+   if s <= 3 {
       return p
    }
-   p = tree.partition(p, s >> 1)
+   if !(tree.balanced(p, s)) {
+      p = tree.partition(p, s >> 1)
+   }
    p.l = tree.balance(p.l, p.sizeL())
    p.r = tree.balance(p.r, p.sizeR(s))
    return p
@@ -206,44 +224,15 @@ func (tree *LBSTRelaxed) rebuild(p **Node, s Size) {
    *p = tree.balance(*p, s)
 }
 
-func (tree *LBSTRelaxed) partition(p *Node, i uint64) *Node {
-   assert(i < p.size())
-   // measurement(&partitionCount, 1)
-   n := Node{s: i}
-   l := &n
-   r := &n
-   for i != p.s {
-      // measurement(&partitionCost, 1)
-      tree.persist(&p)
-      if i < p.s {
-         p.s = p.s - i - 1
-         r.l = p
-         r = r.l
-         p = p.l
-      } else {
-         i = i - p.s - 1
-         l.r = p
-         l = l.r
-         p = p.r
-      }
-   }
-   tree.persist(&p)
-   l.r = p.l
-   r.l = p.r
-   p.l = n.r
-   p.r = n.l
-   p.s = n.s
-   return p
-}
 
 func (tree *LBSTRelaxed) Split(i Size) (List, List) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
 
    tree.share(tree.root)
    l,r := tree.split(tree.root, i)
 
-   return &LBSTRelaxed{Tree{arena: tree.arena, root: l, size: i}},
-          &LBSTRelaxed{Tree{arena: tree.arena, root: r, size: tree.size - i}}
+   return &LBSTRelaxed{Tree: Tree{arena: tree.arena, root: l, size: i}},
+          &LBSTRelaxed{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
 }
 
 func (tree *LBSTRelaxed) joinLr(l, r *Node, sl, sr Size) *Node {
@@ -274,12 +263,12 @@ func (tree *LBSTRelaxed) joinlR(l, r *Node, sl, sr Size) *Node {
       return p
    }
    tree.persist(&r)
-   r.l = tree.joinLr(l, r.l, sl, r.s)
+   r.l = tree.joinLr(l, r.l, sl, r.s) // wtf shouldn't this be joinlR
    r.s = sl + r.s
    return r
 }
 
-func (tree *LBSTRelaxed) join4(l, r *Node, sl, sr Size) *Node {
+func (tree *LBSTRelaxed) join(l, r *Node, sl, sr Size) *Node {
    if sl > sr {
       return tree.joinLr(l, r, sl, sr)
    } else {
@@ -287,16 +276,12 @@ func (tree *LBSTRelaxed) join4(l, r *Node, sl, sr Size) *Node {
    }
 }
 
-func (tree *LBSTRelaxed) join(l, r *LBSTRelaxed) *LBSTRelaxed {
-   tree.share(l.root)
-   tree.share(r.root)
-   return &LBSTRelaxed{Tree{
-      arena: tree.arena,
-      root:  tree.join4(l.root, r.root, l.size, r.size),
-      size:  l.size + r.size,
-   }}
-}
-
 func (tree *LBSTRelaxed) Join(other List) List {
-   return tree.join(tree, other.(*LBSTRelaxed))
+   tree.share(tree.root)
+   tree.share(other.(*LBSTRelaxed).root)
+   return &LBSTRelaxed{Tree: Tree{
+      arena: tree.arena,
+      root:  tree.join(tree.root, other.(*LBSTRelaxed).root, tree.size, other.(*LBSTRelaxed).size),
+      size:  tree.size + other.(*LBSTRelaxed).size,
+   }}
 }

@@ -26,7 +26,6 @@ func (animation *BinaryTreeAnimation) Setup() {
    }
    animation.Frame = 0
    animation.List = animation.Operation.Setup(animation.List, animation.Size)
-   animation.New(123)
 }
 
 func (animation *BinaryTreeAnimation) Close() {

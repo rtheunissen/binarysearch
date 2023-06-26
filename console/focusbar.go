@@ -1,6 +1,7 @@
 package console
 
 import (
+   "binarysearch/utility"
    "io"
    "math"
 )
@@ -21,8 +22,8 @@ func (f FocusBar) Print(page io.Writer) {
       x = 0
    }
    Print(page, " ")
-   Print(page, Repeat("░", x))
-   Print(page, Repeat("▓", 1))
-   Print(page, Repeat("░", w-x-1))
+   Print(page, utility.Repeat("░", x))
+   Print(page, utility.Repeat("▓", 1))
+   Print(page, utility.Repeat("░", w-x-1))
    Print(page, " ")
 }

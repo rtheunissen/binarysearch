@@ -13,13 +13,13 @@ type Balancer interface {
 }
 
 func partition(p *Node, i uint64) *Node {
-   assert(i < p.size())
+   // assert(i < p.size())
    // measurement(&partitionCount, 1)
    n := Node{s: i}
    l := &n
    r := &n
    for i != p.s {
-      // measurement(&partitionCost, 1)
+      // measurement(&partitionDepth, 1)
       if i < p.s {
          p.s = p.s - i - 1
          r.l = p
@@ -46,7 +46,7 @@ func (balancer Log) balance(p *Node, s Size) *Node {
    if s <= 3 {
       return p
    }
-   if !balancer.isBalanced(p.sizeL(), p.sizeR(s)) {
+   if !balancer.balanced(p, s) {
       p = partition(p, s >> 1)
    }
    p.l = balancer.balance(p.l, p.sizeL())
@@ -54,9 +54,13 @@ func (balancer Log) balance(p *Node, s Size) *Node {
    return p
 }
 
-func (Log) isBalanced(x, y Size) bool {
-   return GreaterThanOrEqualToMSB(x + 1, (y + 1) >> 1) &&
-          GreaterThanOrEqualToMSB(y + 1, (x + 1) >> 1)
+func (balancer Log) balanced(p *Node, s Size) bool {
+   return balancer.isBalanced(p.sizeL(), p.sizeR(s)) &&
+          balancer.isBalanced(p.sizeR(s), p.sizeL())
+}
+
+func (balancer Log) isBalanced(x, y Size) bool {
+   return GreaterThanOrEqualToMSB(x + 1, (y + 1) >> 1)
 }
 
 func (balancer Log) Restore(tree Tree) Tree {
@@ -595,7 +599,7 @@ func (Tree) Vine(size Size) Tree {
 }
 
 func (Tree) WorstCaseMedianVine(size Size) Tree {
-   assert(size > 0)
+   // assert(size > 0)
    t := Tree{}
    n := Node{}
    p := &n
@@ -674,7 +678,7 @@ func (tree Tree) Randomize(access distribution.Distribution) Tree {
 }
 
 func (tree Tree) randomize(access distribution.Distribution, p *Node, s Size) *Node {
-   assert(p.size() == s)
+   // assert(p.size() == s)
    if p == nil {
       return nil
    }

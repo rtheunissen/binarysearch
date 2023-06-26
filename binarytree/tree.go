@@ -39,7 +39,7 @@ type BinaryTree interface {
 //   if reflect.DataOf(p).IsNil() {
 //      return 0
 //   }
-//   assert(p.Count() == s)
+//   // assert(p.Count() == s)
 //   iL := InternalPathLength(p.Left(), p.SizeOfLeftSubtree(s))
 //   iR := InternalPathLength(p.Right(), p.SizeOfRightSubtree(s))
 //   return s - 1 + iL + iR // TODO reference this
@@ -67,40 +67,39 @@ type Tree struct {
    root *Node
    size list.Size
 }
-
+//
+//func (tree *LBSTRelaxed) partition(p *Node, i uint64) *Node {
+//   // assert(i < p.size())
+//   // measurement(&partitionCount, 1)
+//   n := Node{s: i}
+//   l := &n
+//   r := &n
+//   for i != p.s {
+//      // measurement(&partitionDepth, 1)
+//      tree.persist(&p)
+//      if i < p.s {
+//         p.s = p.s - i - 1
+//         r.l = p
+//         r = r.l
+//         p = p.l
+//      } else {
+//         i = i - p.s - 1
+//         l.r = p
+//         l = l.r
+//         p = p.r
+//      }
+//   }
+//   tree.persist(&p)
+//   l.r = p.l
+//   r.l = p.r
+//   p.l = n.r
+//   p.r = n.l
+//   p.s = n.s
+//   return p
+//}
 // Moves the node at position `i` in the tree of `p` to its root and returns the
 // resulting root. This algorithm is identical to splay with no rotation steps.
 //
-func (tree Tree) partition(p *Node, i uint64) *Node {
-   assert(i < p.size())
-   // measurement(&partitionCount, 1)
-
-   n := Node{s: i}
-   l := &n
-   r := &n
-   for i != p.s {
-      // measurement(&partitionCost, 1)
-      tree.persist(&p)
-      if i < p.s {
-         p.s = p.s - i - 1
-         r.l = p
-         r = r.l
-         p = p.l
-      } else {
-         i = i - p.s - 1
-         l.r = p
-         l = l.r
-         p = p.r
-      }
-   }
-   tree.persist(&p)
-   l.r = p.l
-   r.l = p.r
-   p.l = n.r
-   p.r = n.l
-   p.s = n.s
-   return p
-}
 
 func (tree *Tree) split(p *Node, i uint64) (*Node, *Node) {
    n := Node{}
@@ -143,7 +142,7 @@ func (tree Tree) Free() {
 // Deletes the node at position `i` from the tree.
 // Returns the data that was in the deleted value.
 func (tree *Tree) Delete(i list.Position) list.Data {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    x := tree.delete(&tree.root, tree.size, i)
    tree.size--
    return x
@@ -151,12 +150,12 @@ func (tree *Tree) Delete(i list.Position) list.Data {
 
 
 func (tree *Tree) Select(i list.Size) list.Data {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    return tree.lookup(tree.root, i)
 }
 
 func (tree *Tree) Update(i list.Size, x list.Data) {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }
@@ -211,7 +210,7 @@ func (tree *Tree) Insert(i list.Size, x list.Data) {
 }
 
 //func (tree *Tree) Split(i Size) (Tree, Tree) {
-//   assert(i <= tree.size)
+//   // assert(i <= tree.size)
 //
 //   var l, r *Node
 //   tree.partition(tree.root, i, &l, &r)
@@ -250,12 +249,12 @@ func (tree Tree) lookup(p *Node, i list.Size) list.Data {
 }
 
 //func (tree *Tree) Select(i Size) Data {
-//  assert(i < tree.Size())
+//  // assert(i < tree.Size())
 //  return tree.lookup(tree.root, i)
 //}
 
 //func (tree *Tree) Update(i Size, x Data) {
-//   assert(i < tree.Size())
+//   // assert(i < tree.Size())
 //   tree.pathcopy(&tree.root)
 //   tree.update(tree.root, i, x)
 //}
@@ -305,11 +304,135 @@ func (tree Tree) Each(visit func(list.Data)) {
 //   }
 //   return p
 //}
+//
+//func (tree *Tree) joinLr(l, r *Node, sl, sr list.Size) *Node {
+//   n := Node{}
+//   p := &n
+//   for {
+//      if l.sizeR(sl) <= sr  {
+//         z := l.y
+//         m := tree.deleteMax(&l)
+//         m.l = l
+//         m.r = r
+//         m.s = sl - 1
+//         m.y = z
+//         p.r = m
+//         break
+//      }
+//      tree.persist(&l)
+//      p.r = l
+//      p = p.r
+//      sl = sl - p.sizeL() - 1
+//      l = l.r
+//   }
+//   return n.r
+//   //if l == nil {
+//   //   return r
+//   //}
+//   //if sl <= sr {
+//   //   p := tree.deleteMax(&l)
+//   //   p.l = l
+//   //   p.r = r
+//   //   p.s = sl - 1
+//   //   return p
+//   //}
+//   //tree.persist(&l)
+//   //l.r = tree.joinLr(l.r, r, sl - l.s - 1, sr)
+//   //return l
+//}
+//
+//func (tree *Tree) joinlR(l, r *Node, sl, sr list.Size) *Node {
+//   n := Node{}
+//   p := &n
+//   for {
+//      // func (tree *Tree) deleteMin2(p *Node) (root, min *Node) {
+//      //   n := Node{}
+//      //   l := &n
+//      //   for {
+//      //      tree.persist(&p)
+//      //      if p.l == nil {
+//      //         l.l = p.r
+//      //         return n.l, p
+//      //      }
+//      //      p.s = p.s - 1
+//      //      l.l = p
+//      //      l = l.l
+//      //      p = p.l
+//      //   }
+//      //}
+//      if r.sizeL() <= sl  {
+//         var m *Node
+//         z := r.y
+//         r, m = tree.deleteMin2(r)
+//         m.l = l
+//         m.r = r
+//         m.s = sl
+//         m.y = z
+//         p.l = m
+//         break
+//      }
+//      tree.persist(&r)
+//      p.l = r
+//      p = p.l
+//      r.s = r.s + sl
+//      r = r.l
+//   }
+//   return n.l
+//   //
+//   //
+//   //if r == nil {
+//   //   return l
+//   //}
+//   //if sr <= sl {
+//   //   p := tree.deleteMin(&r)
+//   //   p.l = l
+//   //   p.r = r
+//   //   p.s = sl
+//   //   return p
+//   //}
+//   //tree.persist(&r)
+//   //r.l = tree.joinlR(l, r.l, sl, r.s)
+//   //r.s = sl + r.s
+//   //return r
+//}
+//
+//func (tree *Tree) join(l, r *Node, sl, sr list.Size) *Node {
+//   if l == nil {
+//      return r
+//   }
+//   if r == nil {
+//      return l
+//   }
+//   if sl <= sr {
+//      tree.persist(&l)
+//      tree.persist(&r)
+//      p := tree.deleteMin(&r)
+//      p.l = l
+//      p.r = r
+//      p.s = sl
+//      return p
+//   } else {
+//      tree.persist(&l)
+//      tree.persist(&r)
+//      p := tree.deleteMax(&l)
+//      p.r = r
+//      p.l = l
+//      p.s = sl - 1
+//      return p
+//   }
+//   //if l == nil {
+//   //   return r
+//   //}
+//   //if sl < sr {
+//   //   return tree.joinlR(l, r, sl, sr)
+//   //} else {
+//   //   return tree.joinLr(l, r, sl, sr)
+//   //}
+//}
 
 func (tree *Tree) dissolve(p *Node, s list.Size) *Node {
-   defer tree.free(p)
    if p.l == nil {
-      return p.r
+    return p.r
    }
    if p.r == nil {
       return p.l
@@ -369,7 +492,7 @@ func (tree *Tree) delete(p **Node, s list.Size, i list.Size) (x list.Data) {
 // Deletes the node at position `i` from the tree.
 // Returns the data that was in the deleted Data.
 //func (tree *Tree) Delete(i Size) Data {
-//   assert(i < tree.Size())
+//   // assert(i < tree.Size())
 //   x := tree.delete(&tree.root, tree.size, i)
 //   tree.size--
 //   return x
