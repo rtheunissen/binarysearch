@@ -13,9 +13,9 @@ import (
 
 func main() {
   BalancerBenchmark{
-     Duration:            1000 * time.Millisecond,
-     Samples:              100,
-     Scale:         10_000_000,
+     Duration:           3000 * time.Millisecond,
+     Samples:             100,
+     Scale:        10_000_000,
      Distributions: []distribution.Distribution{
         &distribution.Uniform{},
      },
@@ -77,11 +77,6 @@ func (benchmark BalancerBenchmark) Run() {
 
      for position := step; position <= benchmark.Scale; position += step {
 
-        fmt.Printf("%s %-10s %10d/%d\n",
-           time.Now().Format(time.TimeOnly),
-           utility.NameOf(strategy),
-           position,
-           benchmark.Scale)
 
         // Grow the tree.
         for instance.Size() < list.Size(position) {
@@ -100,7 +95,7 @@ func (benchmark BalancerBenchmark) Run() {
               iterations++
 
               // Randomize the tree.
-              instance.Tree = instance.Tree.Randomize(random.New(uint64(position)))
+              instance.Tree = instance.Tree.Randomize(random.New(uint64(iterations)))
 
               checkpoint := time.Now()
 
@@ -122,6 +117,14 @@ func (benchmark BalancerBenchmark) Run() {
            if _, err := fmt.Fprintln(file, row...); err != nil {
               panic(err)
            }
+           fmt.Printf("%s %-10s %-10s %10d/%d %dx\n",
+              time.Now().Format(time.TimeOnly),
+              utility.NameOf(strategy),
+              utility.NameOf(random),
+              position,
+              benchmark.Scale,
+              iterations)
+
         }
      }
      instance.Free()

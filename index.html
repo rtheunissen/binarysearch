@@ -513,8 +513,8 @@ type Node struct {
 <!--                    By extension, search cost grows linearly when the list grows exponentially.-->
 <!--                </p>-->
 <!--                <p>-->
-<!--                    The <mark>maximum path length</mark> is the longest path from the root to a node is often referred to as the <span class="quote">height</span> of the tree and can be thought of as the maximum path length.-->
-<!--                    The total path length of a binary tree is the sum of the path length from the root to every other node, and the <mark>average path length</mark> is the total path length divided by the number of nodes.-->
+<!--                    The maximum path length is the longest path from the root to a node is often referred to as the <span class="quote">height</span> of the tree and can be thought of as the maximum path length.-->
+<!--                    The total path length of a binary tree is the sum of the path length from the root to every other node, and the average path length is the total path length divided by the number of nodes.-->
 <!--                </p>-->
             </section>
 
@@ -691,7 +691,13 @@ func search(p *Node, i uint64) *Node {
                 </p>
 <!--                https://en.wikipedia.org/wiki/Persistent<em>data</em>structure#:~:text=in%20the%20array.-,Path%20copying,-%5Bedit%5D-->
             </section>
-
+            <p>
+                TODO MIX IN HERE, APPLIES TO ALL:<br>
+                An AVL tree is always height-balanced, so the maximum path length is always logarithmic in the size of the tree.
+                Recall that a persistent update requires that we copy all paths that lead to a modification.
+                Since all structural adjustments on an AVL tree are local to the search path, a persistent update would need to copy all nodes along the search path.
+                Persistence is therefore well-supported by AVL trees because a persistent update would only need to copy a logarithmic number of nodes.
+            </p>
 
             <section id="parent-pointers">
                 <h4>Parent pointers</h4>
@@ -953,7 +959,7 @@ func balance(p *Node, s Size) *Node {
 
             <p>
 
-                We can continue to use the same partition-based balancing algorithm but change the definition of balance to <mark class="yellow">only partition if the node is not already height-balanced</mark>.
+                We can continue to use the same partition-based balancing algorithm but change the definition of balance to only partition if the node is not already height-balanced.
                 Every node that is not height-balanced is partitioned to become median-balanced, which results in a height-balanced tree.
 
             </p>
@@ -1161,22 +1167,22 @@ func balance(p *Node, s Size) *Node {
 <!--            MSB(x) ≥ MSB(y) = x ≥ (~x & y)                   Warren, H.S.-->
 
 <!--            <pre>-->
-<!--    Median(x, y) =    (<mark class="blue">x + 1</mark>) ≥    (<mark class="blue">y</mark>)-->
-<!--    Height(x, y) = MSB(<mark class="blue">x + 1</mark>) ≥ MSB(<mark class="blue">y</mark>)-->
-<!--  HalfSize(x, y) =    (<mark class="red">x + 1</mark>) ≥    (<mark class="red">(y + 1) >> 1</mark>)-->
-<!--   LogSize(x, y) = MSB(<mark class="red">x + 1</mark>) ≥ MSB(<mark class="red">(y + 1) >> 1</mark>)-->
+<!--    Median(x, y) =    (<mark class="blue">x + 1) ≥    (<mark class="blue">y)-->
+<!--    Height(x, y) = MSB(<mark class="blue">x + 1) ≥ MSB(<mark class="blue">y)-->
+<!--  HalfSize(x, y) =    (<mark class="red">x + 1) ≥    (<mark class="red">(y + 1) >> 1)-->
+<!--   LogSize(x, y) = MSB(<mark class="red">x + 1) ≥ MSB(<mark class="red">(y + 1) >> 1)-->
 <!--            </pre>-->
 
 
 <!--            <pre>-->
-<!--    Height(x, y) = MSB(<mark class="blue">x + 1</mark>) ≥ MSB(<mark class="blue">y</mark>)-->
-<!--    Median(x, y) =    (<mark class="blue">x + 1</mark>) ≥    (<mark class="blue">y</mark>)-->
+<!--    Height(x, y) = MSB(<mark class="blue">x + 1) ≥ MSB(<mark class="blue">y)-->
+<!--    Median(x, y) =    (<mark class="blue">x + 1) ≥    (<mark class="blue">y)-->
 
-<!--   LogSize(x, y) = MSB(<mark class="red">x</mark>) ≥ MSB(<mark class="red">y >> 1</mark>)-->
-<!--  HalfSize(x, y) =    (<mark class="red">x</mark>) ≥    (<mark class="red">y >> 1</mark>)-->
+<!--   LogSize(x, y) = MSB(<mark class="red">x) ≥ MSB(<mark class="red">y >> 1)-->
+<!--  HalfSize(x, y) =    (<mark class="red">x) ≥    (<mark class="red">y >> 1)-->
 
-<!-- LogWeight(x, y) = MSB(<mark class="green">x + 1</mark>) ≥ MSB(<mark class="green">(y + 1) >> 1</mark>)-->
-<!--HalfWeight(x, y) =    (<mark class="green">x + 1</mark>) ≥    (<mark class="green">(y + 1) >> 1</mark>)-->
+<!-- LogWeight(x, y) = MSB(<mark class="green">x + 1) ≥ MSB(<mark class="green">(y + 1) >> 1)-->
+<!--HalfWeight(x, y) =    (<mark class="green">x + 1) ≥    (<mark class="green">(y + 1) >> 1)-->
 <!--            </pre>-->
         </section>
         <section id="log-balance">
@@ -1343,12 +1349,13 @@ func balance(p *Node, s Size) *Node {
                     Looking at duration cumulatively, it seems that the total duration is practically identical between median-balance, height-balance and cost-optimized balance.
                 </p>
                 <p>
-                    The two weight-balance strategies are equivalent, both $\sim25\%$ faster than median-balance and height-balance, and $\sim30\%$ faster than DSW.
-                    This suggests that weight-balance with a constant factor is likely the better choice because it takes the same amount of time to achieve better balance.
+                    The two weight-balance strategies are equal, both $\sim25\%$ faster than median-balance and height-balance, and $\sim30\%$ faster than DSW.
+                    This suggests that weight-balance with a constant factor is likely the better choice because it takes the same amount of time as logarithmic weight-balance but achieves better balance.
+                    However, logarithmic weight-balance requires fewer calls to partition and visits fewer nodes overall, which might offer some benefit on other machines.
                 </p>
                 <p>
-                    Cost-optimized balance has a lower partition count and lower partition depth but takes about the same amount of time as median-balance and height-balance.
-                    This is likely due to the more complex balance check which compares across 3 nodes, thereby interacting with memory more often.
+                    Cost-optimized balance has a lower partition count, lower partition depth, and is slightly faster than median-balance and height-balance but slower than weight-balance.
+                    The overhead is likely from the memory interaction of the three-node size comparison to determine cost-optimized balance.
                 </p>
 
                 <div class="graphs">
@@ -1356,7 +1363,7 @@ func balance(p *Node, s Size) *Node {
                 </div>
                 <p>
                     DSW appears to be consistently slower to balance large random trees, but the algorithm has some advantages over partition-based balancing that should not be discounted.
-                    Both approaches use constant space but DSW is linear in time, where partition-based balancing is technically log-linear [], though could perhaps be proven linear with high probability in the case of random trees.
+                    Both algorithms use constant space, but DSW is $O(n)$ and partition-based balancing is theoretically $O(n\log{n})$[], though could perhaps be proven linear with high probability in the case of random trees.
                 </p>
                 <p>
                     The two phases of DSW are also useful procedures individually: (i) to convert any binary search tree into a linked list, and (ii) to convert a linked list into a balanced tree, both in linear time and constant space.
@@ -1375,7 +1382,7 @@ func balance(p *Node, s Size) *Node {
 
 
     <section id="strategies-to-maintain-balance">
-        <h2><span>Part 3</span>Self-Balancing Search Trees</h2>
+        <h2><span>Part 3</span>Self-Balancing Trees</h2>
 
         <p>
             Restoring balance to an entire tree is powerful but often disproportionately expensive because the entire tree must be traversed.
@@ -1405,12 +1412,7 @@ func balance(p *Node, s Size) *Node {
                 Concurrency is therefore not viable because another operation would need to wait for the current operation to return to the root to potentially adjust it in some way.
                 Generally, in an AVL tree only one operation can be performed at a time due to the recursive bottom-up nature of its algorithms.
             </p>
-            <p>
-                An AVL tree is always height-balanced, so the maximum path length is always logarithmic in the size of the tree.
-                Recall that a persistent update requires that we copy all paths that lead to a modification.
-                Since all structural adjustments on an AVL tree are local to the search path, a persistent update would need to copy all nodes along the search path.
-                Persistence is therefore well-supported by AVL trees because a persistent update would only need to copy a logarithmic number of nodes.
-            </p>
+
             <p>
                 Since the invention of AVL trees, many self-balancing strategies have been proposed, the most common being the <a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree">red-black tree</a> of Guibas and Sedgewick in 1978.
                 Instead of directly storing the height of every node as in AVL trees, red-black trees use a color field in the node structure to track whether a node is <span class="rb-red">red</span> or <span class="rb-black">black</span>.
@@ -1419,19 +1421,22 @@ func balance(p *Node, s Size) *Node {
             </p>
 
             <p>
-                Inserting into a red-black tree requires at most 2 rotations and deletion at most 3.
-                The primary advantage of red-black trees is that the balancing overhead per operation is constant, i.e. not proportional to the size of the tree as is the case with deletion in AVL trees.
-            </p>
-            <p>
-                Red-black trees are not strictly height-balanced because the heights of two subtrees can differ by more than 1 in some cases.
-                The color-based rules do however impose an upper-bound on the height of a red-black tree, which is at most twice $\log_{2}$ of its size.
+                Inserting into a red-black tree requires at most two rotations, and deleting at most three.
+                Inserting into an AVL also requires at most two rotations, but deletion may require a rotation at every node along the search path, proportional to the logarithm of the size of the tree.
+                The primary advantage of red-black trees is that the balancing overhead per operation is constant.
             </p>
             <p>
                 Compared to red-black trees, AVL trees are more balanced but rotate more often to maintain that balance.
-                A <a href="https://stackoverflow.com/questions/13852870/red-black-tree-over-avl-tree/23277366#23277366">common response</a> to the recurring question of <span class="quote">should I use an AVL tree or a red-black tree</span> is to use an AVL tree when mostly searching because the average path length is lower, but to use red-black trees when mostly inserting and deleting because they require fewer rotations.
-                This is however a misconception, because inserting and deleting both include searching, which is affected by path length all the same.
+                Red-black trees are not strictly height-balanced because the heights of two subtrees differ by more than one in some cases.
+                The color-based rules do however provide an upper-bound on the height of the tree, which is at most $2\log_{2}n$ where $n$ is the size of the tree, and the corresponding bound for AVL trees is $\sim 1.44\log_{2}n$.
+            </p>
+            <p>
+                A <a href="https://stackoverflow.com/questions/13852870/red-black-tree-over-avl-tree/23277366#23277366">common response</a> and misconception to the recurring question of <span class="quote">should I use an AVL tree or a red-black tree</span> is to use an AVL tree when mostly searching because the average path length is lower, but to use red-black trees when mostly inserting and deleting because they require fewer rotations.
+                Consider that inserting and deleting both require a search from the root to the bottom of the tree, which is exactly affected by average path length.
+                A red-black tree uses fewer rotations by relaxing the balance, but that relaxed balance results in search traversing longer paths during insert and delete.
                 There is a trade-off between the cost of doing more rotations and the cost of traversing longer paths.
-<!--                The benchmarks confirm this, showing that <mark class="yellow">AVL trees are generally faster than an red-black trees</mark> even though they require more rotations on average.-->
+                How likely is it that the shorter paths of an AVL tree provides better savings than the lower number of rotations in red-black trees?
+<!--                The benchmarks confirm this, showing that AVL trees are generally faster than an red-black trees even though they require more rotations on average.-->
 <!--                When inserting and deleting in cycles, the path length of red-black trees slowly gets worse over time which correlates with a decrease in performance.-->
             </p>
 
@@ -1444,23 +1449,31 @@ func balance(p *Node, s Size) *Node {
 
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/AveragePathLength__unique.svg">-->
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/MaximumPathLength__unique.svg">-->
-<!--            </div>-->
+<!--            </div>
+-->
 
             <p>
                 Red-black trees are very common in lecture notes and in practice.
                 Many of the C++ standard library <span class="code">set</span> implementations use red-black trees, as well as Java's <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/TreeMap.html#:~:text=A-,Red%2DBlack%20tree,-based%20NavigableMap%20implementation">TreeMap</a>, and parts of the <a href="https://github.com/torvalds/linux/blob/master/include/linux/rbtree.h">Linux kernel</a>.
-                They are generally considered to be a decent all-rounder when it comes to self-balancing binary search trees, but attempting to implement them often results in frustration.
-                At various stages throughout this project, especially when implementing the deletion algorithm without parent pointers, there was a sense of <span class="quote">this can't be it</span>.
+                They are generally considered to be a decent all-rounder when it comes to self-balancing binary search trees, but attempting to implement them from reference material often results in frustration.
+                A quick scroll through the Wikipedia page of <a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree">red-black trees</a> should provide some evidence as to why that may be.
+                Most implementations are recursive, and many use parent pointers.
+                Tarjan showed how top-down red-black trees work in 1985, but good implementations of this algorithm are rare.
+<!--                https://www.cs.princeton.edu/research/techreps/TR-006-85-->
             </p>
             <p>
                 In 2013, Haeupler, Sen & Tarjan introduced <a href="https://en.wikipedia.org/wiki/WAVL_tree">rank-balanced trees</a> which unify many height-based balanced trees under a single framework.
-                Rank-balanced trees store in each node an integer rank and use various rank-based rules to yield simple implementations of AVL trees, red-black trees, and others.
-                A new strategy emerged from this framework: the <em>weak AVL tree</em>, which effectively combines the insertion of AVL trees with the deletion of red-black trees such that <mark class="yellow">the height bound degrades gracefully from that of an AVL tree as the number of deletions increase, and is never worse than that of a red-black tree</mark>.
-                Insertion and deletion in a weak AVL tree both require at most 2 rotations, which is fewer than AVL trees and red-black trees.
+                Rank-balanced trees store in each node an integer rank and use various rank-based rules to define AVL trees, red-black trees, and others.
+                They describe the AVL rule and the red-black rule, and how to represent them using ranks and rank differences.
             </p>
             <p>
-                Unlike AVL trees, concurrency is well-supported by weak AVL trees because both <mark class="yellow">insertion and deletion can be implemented purely top-down</mark> with no need to return back to the root.
+                A new strategy emerged from this framework: the <em>weak</em> AVL tree, which effectively combines the insertion of AVL trees with the deletion of red-black trees such that the height bound degrades gracefully from that of an AVL tree as the number of deletions increase, and is never worse than that of a red-black tree.
+                Insertion and deletion in a weak AVL tree both require at most two rotations, which is fewer than AVL trees and red-black trees.
+            </p>
+            <p>
+                Unlike AVL trees, concurrency is well-supported by weak AVL trees because both insertion and deletion can be implemented purely top-down with no need to return back to the root.
                 The top-down algorithms are more complex and result in slightly different trees in some cases, but nonetheless produce valid weak AVL trees.
+
             </p>
 
 <!--            <p>-->
@@ -1497,10 +1510,10 @@ func balance(p *Node, s Size) *Node {
 
 
             <p>
-                Following on from this work in 2018, Sen, Tarjan & Kim introduced <a href="http://sidsen.azurewebsites.net//papers/ravl-trees-journal.pdf">relaxed rank-balanced trees</a> in which balancing is only done after insertion, not deletion.
+                Following on from this work in 2018, Sen, Tarjan & Kim introduced <a href="http://sidsen.azurewebsites.net//papers/ravl-trees-journal.pdf">relaxed rank-balanced trees</a> where balancing is only done after insertion, not deletion.
                 The balance of relaxed rank-balanced trees improves as nodes are inserted, and degrades very slowly as nodes are deleted.
-                A subtle difference is that the height bound of a relaxed rank-balanced tree is proportional not to the size of the tree, which is often the case, but instead proportional to the number of insertions specifically.
-                Relaxed variants of AVL trees and red-black trees are described in their paper and implemented here, both bottom-up and purely top-down.
+                A key difference is that the height bound is proportional to the number of insertions specifically, rather than the size of the tree.
+                The relaxed variants of AVL trees and red-black trees are implemented here as described in their paper, both bottom-up and top-down.
             </p>
 
 <!--            <div class="graphs">-->
@@ -1625,18 +1638,22 @@ func balance(p *Node, s Size) *Node {
 <!--                The bottom-up variant is the original recursive implementation by Roura, but uses a slightly simpler bitwise expression to determine balance: <span class="code">x < ^x & y</span> instead of <span class="code">x < y && ((x&y) << 1) < y</span>.-->
 <!--                The top-down variant is based on the general weight-balancing algorithm of Barth & Wagner that uses subtree weight instead of subtree size; simply $size+1$ instead of $size$.-->
 <!--            </p>-->
+        </section>
+        <section id="scapegoat-trees">
+            <h3>Scapegoat trees</h3>
             <p>
-                Exploring this space further we find the idea of <em>partial rebuilding</em> by Overmars in 1983. TODO
+                Exploring further we find the idea of <em>partial rebuilding</em> by Overmars in 1983. TODO
                 Further development produced the <a href="">general balanced trees</a> of Andersson in 1989 and 1999, followed by the <a href="">scapegoat tree</a> of Galperin & Rivest in 1993.
             </p>
             <p>
-                A weight-balanced tree has a known maximum height bound given that every node of the tree is weight balanced, by definition.
+                A weight-balanced tree has a known maximum height when every node of the tree is weight-balanced.
                 For example, when all the nodes of a binary search tree are logarithmically weight-balanced its height can not be greater than $2\log_{2}n$.
                 Therefore, when the height of a tree exceeds this bound there must be at least one node that is <em>not</em> weight-balanced.
-                Galperin & Rivest refer to this node as the <span class="quote">scapegoat</span>.
-                The basic idea of partial rebuilding is to find this node and restore its balance, thereby restoring the height-bound of the tree.
-                Intuitively, the <mark>height of a node that was <em>not</em> balanced decreases when it becomes balanced</mark>.
-                This strategy therefore combines the ideas of weight-balance and height-balance by allowing some nodes to not be weight-balanced as long as the overall height-bound is valid.
+            </p>
+              <p>Galperin & Rivest refer to this node as the <span class="quote">scapegoat</span>.
+                The basic idea of partial rebuilding is to search along the path that exceeds the height bound to find an unbalanced node and then balance it, thereby restoring the height-bound.
+                Intuitively, the height of a tree that was <em>not</em> balanced decreases when it becomes balanced.
+                This strategy combines the ideas of weight- and height-balance by allowing some nodes to not be weight-balanced, as long as the height of the tree is within bounds.
             </p>
             <pre>
 
@@ -1647,39 +1664,52 @@ but that the tree has a low average search cost ]
 
             </pre>
             <p>
-                A scapegoat tree uses a parameter $\frac{1}{2} \leq \alpha \leq 1$ and defines height to be no greater than $\lfloor\log_{\frac{1}{\alpha}}\rfloor+1$, and that a node is $\alpha$-weight-balanced if $sl \leq \alpha * (sl + sr + 1)$ and $sr \leq \alpha * (sl + sr + 1)$</span>.
-                The insertion algorithm as presented in [] is a two-phase recursive algorithm, (i) search by descending from the root and attach a new node, then (ii) ascend bottom-up to find a scapegoat that is not $\alpha$-weight-balanced.
-                There must be at least one node along the search path that is not balanced when the height exceeds the height bound, so the second phase checks for $\alpha$-weight-balance until a scapegoat is found, then rebuilds that entire subtree to restore the height bound.
-                The primary rebuilding algorithm suggested in [] is similar to Day-Stout-Warren, recursively flattening the tree into a list then compressing the list back into a perfectly-balanced tree.
+                A scapegoat tree uses a parameter $\frac{1}{2} \leq \alpha \lt 1$ and defines height to be no greater than $\lfloor\log_{\frac{1}{\alpha}}\rfloor+1$.
+                A tree of size $s = sl + sr + 1$ is $\alpha$-weight-balanced if $sl \leq \alpha * s$ and $sr \leq \alpha * s$</span>.
+                The insertion algorithm described by Galperin & Rivest is a two-pass recursive algorithm, (i) search by descending from the root and attach a new node, then (ii) ascend bottom-up to find a scapegoat that is not $\alpha$-weight-balanced.
+                There must be at least one such node along the search path when the height exceeds the height bound, so when that happens, the bottom-up part of the algorithm looks for a node that is not $\alpha$-weight-balanced, then rebuilds that subtree to restore the height bound.
+                The suggested rebuilding algorithm in [] is similar to Day-Stout-Warren, recursively flattening the tree into a list then rotating the list back into a perfectly-balanced tree.
             </p>
 
             <p>
-                There are a few downsides to this strategy as presented:
-                (i) the recursion must unwind all the way back to the root even when the insertion did not exceed the height bound,
-                (ii) the $\alpha$-parameter imposes an awkward fractional log base and may require floating point arithmetic to determine weight-balance,
-                (iii) the rebuilding algorithm does not make use of the fact that the subtree is likely already somewhat-balanced.
+                There are a few drawbacks to this strategy:
+                (i) the recursion goes all the way back to the root even when the insertion did not exceed the height bound,
+                (ii) the $\alpha$-parameter imposes an awkward fractional log base, and
+                (iii) the rebuilding algorithm does not consider that the subtree is likely already somewhat-balanced given that the height only just exceeded the bound.
             </p>
             <p>
-                Recursion can be avoided by looking for an unbalanced node top-down before the height is known.
-                The scapegoat is then already in-hand when the height bound is exceeded after a new node is attached at the bottom of the tree.
-                Checking weight-balance optimistically on the way down might be redundant because the result may not be relevant in the end, but conventional weight-balanced trees already evaluate balance at every node anyway so this is okay.
-                Consider that there are potentially multiple nodes along the search path that qualify as a scapegoat, offering a choice: use the first one encountered higher up in the tree, or the last one encountered lower in the tree.
-                The logical implication is simple: a preference for the highest node skips further weight-balance checks if a scapegoat has been identified, otherwise keep checking and overwrite the existing reference.
-                Using the lowest node is a simple choice when already using the recursive approach, also because once you pass by one there is no guarantee that another exists higher up still.
-                There are however some hints that preferring a node higher up in the tree is likely to produce better results.
-                Overmars originally suggested using the highest node in [], and Galperin & Rivest write in [] that <span class="quote">in our experiments this heuristic performed better than choosing the first weight-unbalanced ancestor to be the scapegoat</span>.
-                Even so, every implementation or pedagogical reference currently available for scapegoat trees use the recursive method and prefer the deepest scapegoat.
+                Recursion can be avoided by looking for a scapegoat top-down along the search path, before it is known what the height will be.
+                The scapegoat is then already in-hand when the height bound is exceeded at the bottom of the tree.
+                Evaluating weight-balance optimistically is redundant in some cases because the result is not needed when the height remains valid, which is often the case.
+                However, this is okay because other weight-balanced trees already evaluate balance at every node along the search path anyway.
             </p>
+            <p>
+                There can be many nodes along the search path that qualify as a scapegoat, offering a choice to use the first one closest to the root, or to use the last one furthest away from the root.
+                For a given operation, accepting the first scapegoat closest to the root allows the algorithm to skip further checks for weight-balance, whereas using the last scapegoat furthest from the root must keep checking weight-balance because it is not known whether more will be found along the way.
+            </p>
+            <p>
+                Choosing the scapegoat furthest from the root is a clear choice when using a recursive insertion algorithm because once you pass one by on the way back up there is no guarantee that another will come along.
+                For the algorithm to alternatively use the scapegoat closest to the root, it would need to maintain a reference to the last scapegoat found, which is now potentially far down the tree again since we are back at the root.
+                The intuition is also that subtrees are smaller around the lower levels of the tree, so one should prefer to rebuild smaller subtrees which is faster.
 
+            </p>
             <p>
-                The matter of the $\alpha$-parameter can be solved by using the logarithmic weight-balance definition of Roura in [].
-                The maximum height of a strictly logarithmic weight-balanced tree is $2\log_{2}n$, so there must be a node along the search path that is not logarithmically weight-balanced if the height exceeds this bound after the insertion.
-                For a tree of size $n$, the height $h$ exceeds the bound when is it greater than twice the binary log of $n$.
+                There are however some hints that rebuilding larger subtrees closer to the root likely produces better results.
+                Overmars originally suggested in 1983 to use the node closest to the root [], and Galperin & Rivest write that <em>this heuristic performed better than choosing the first weight-unbalanced ancestor to be the scapegoat</em>.
+                Even so, all visible references and implementations of scapegoat trees use the recursive method and choose the scapegoat furthest from the root.
+            </p>
+            <p>
+                The matter of the $\alpha$-parameter can be resolved by using logarithmic weight-balance instead.
+                The maximum height of a weight-balanced tree where every node has logarithmic weight-balanced is $2\log_{2}n$, so there must be a node along the search path that is not logarithmically weight-balanced when the height exceeds this bound after an insertion.
+                The equivalent $\alpha$ for this bound is $\frac{1}{\sqrt{2}}$.
+            </p>
+            <p>
+                Using logarithmic weight-balance, a tree of size $n$ requires a partial rebuild somewhere along the search path when the height $h$ is greater than twice the binary log of $n$.
             </p>
             <p>
                 $$
                 \begin{aligned}
-                \text{Exceeds}(h,n)
+                \text{Exceeds}(h, n)
                 \  &\equiv h \gt 2\log_{2}n
                 \\ &\equiv n \lt 2^{(h + 1)/2}
                 \\ &\equiv n \lt 1 \ll ((h + 1) \gg 1)
@@ -1688,9 +1718,9 @@ but that the tree has a low average search cost ]
             </p>
 
             <p>
-                The final sharp edge to resolve is the choice of algorithm to rebuild the subtree of the scapegoat.
+                The final sharp edge to resolve is the choice of algorithm to rebuild the scapegoat.
                 We can assert that the subtree is already somewhat-balanced, and we know that restoring logarithmic weight-balance at every node in that subtree would restore the height bound.
-                Using a partition-based weight-balance strategy is therefore an excellent choice, operating both top-down and in constant time while making use of the fact that most nodes should not require partitioning.
+                Restoring balance using a partition-based strategy is therefore a good choice since most nodes should not require partitioning.
             </p>
 
             <p>
@@ -1698,13 +1728,18 @@ but that the tree has a low average search cost ]
             </p>
 
             <p>
-                Alongside the reference to the root node and the current size of the tree, scapegoat trees also store a <em>maximum size</em> field, which is the maximum size that the tree has reached since the root was rebuilt.
-                The theory follows that the entire tree should be rebuilt when the current size becomes less than <span class="math">α</span> times the maximum size, then to reset the maximum size to the current size.
-                Occasionally rebuilding the tree when many deletions have occurred ensures that the height is always logarithmic in the current size of the tree.
-                Alternatively, we can use the concept of <em>relaxed balance</em> introduced by Sen, Tarjan & Kim to only balance after an insertion and not after a deletion.
-                The intuition here is that height can not increase when a node is deleted, and the next insertion that occurs will inevitably restore the height bound again, possibly at the root if that is the first encountered node that is not weight-balanced.
-                The height is then at most logarithmic in the number of insertions rather than the current size of the tree, but possibly more tightly proportional to the delta between insertions and deletions.
-                This approach avoids the need to maintain the maximum size field, and thereby yields a third logarithmic weight-balance strategy: <span class="code">LBSTRelaxed</span>.
+                Alongside a reference to the root node and the current size of the tree, a scapegoat tree also stores a <em>maximum size</em> field, which is the maximum size that the tree has reached since the root was rebuilt.
+                The theory suggests that the entire tree should be rebuilt when the current size becomes less than $\alpha$ times the maximum size, then to reset the maximum size to the current size.
+            </p>
+            <p>
+                Occasionally rebuilding the tree when many deletions have occurred ensures that the height remains logarithmic in the current size of the tree.
+                Alternatively, we can use the concept of relaxed balance of Sen, Tarjan & Kim to only balance after an insertion and not after a deletion.
+                The intuition here is that height does not increase when a node is deleted, and the following insertion will inevitably restore the height bound, possibly even at the root all the same.
+                The height is then at most logarithmic in the number of insertions rather than the current size of the tree.
+            </p>
+            <p>
+                The general pattern of deletion is to search for the node to be deleted then replace it by the <em>join</em> of its subtrees.
+
             </p>
 
         </section>

@@ -27,7 +27,7 @@ do for [DISTRIBUTION in DISTRIBUTIONS] {
     print SVG
 
     plot for [BALANCER in @GROUP] DATA.'/'.BALANCER \
-        using (@x):(filter('Distribution', DISTRIBUTION, @y)) \
+        using (@x):(@y) \
         axes x1y2 \
         smooth @SMOOTH \
         with linespoints \
