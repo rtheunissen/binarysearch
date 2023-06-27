@@ -71,47 +71,53 @@
 				
 				<option value="file7">binarysearch/binarytree/avl_weak_topdown.go (0.0%)</option>
 				
-				<option value="file8">binarysearch/binarytree/balancers.go (83.2%)</option>
+				<option value="file8">binarysearch/binarytree/balancers.go (83.3%)</option>
 				
 				<option value="file9">binarysearch/binarytree/conc.go (0.0%)</option>
 				
 				<option value="file10">binarysearch/binarytree/draw.go (0.0%)</option>
 				
-				<option value="file11">binarysearch/binarytree/lbst.go (1.1%)</option>
+				<option value="file11">binarysearch/binarytree/lbst.go (0.0%)</option>
 				
 				<option value="file12">binarysearch/binarytree/lbst_bottomup.go (0.0%)</option>
 				
-				<option value="file13">binarysearch/binarytree/lbst_relaxed.go (100.0%)</option>
+				<option value="file13">binarysearch/binarytree/lbst_relaxed.go (0.0%)</option>
 				
 				<option value="file14">binarysearch/binarytree/lbst_topdown.go (0.0%)</option>
 				
 				<option value="file15">binarysearch/binarytree/measurements.go (0.0%)</option>
 				
-				<option value="file16">binarysearch/binarytree/node.go (47.9%)</option>
+				<option value="file16">binarysearch/binarytree/node.go (59.9%)</option>
 				
-				<option value="file17">binarysearch/binarytree/randomized.go (0.0%)</option>
+				<option value="file17">binarysearch/binarytree/partition.go (0.0%)</option>
 				
-				<option value="file18">binarysearch/binarytree/rank_balanced.go (0.0%)</option>
+				<option value="file18">binarysearch/binarytree/randomized.go (0.0%)</option>
 				
-				<option value="file19">binarysearch/binarytree/redblack_bottomup.go (0.0%)</option>
+				<option value="file19">binarysearch/binarytree/rank_balanced.go (78.6%)</option>
 				
-				<option value="file20">binarysearch/binarytree/redblack_relaxed.go (0.0%)</option>
+				<option value="file20">binarysearch/binarytree/redblack.go (100.0%)</option>
 				
-				<option value="file21">binarysearch/binarytree/redblack_relaxed_bottomup.go (0.0%)</option>
+				<option value="file21">binarysearch/binarytree/redblack_bottomup.go (100.0%)</option>
 				
-				<option value="file22">binarysearch/binarytree/redblack_relaxed_topdown.go (0.0%)</option>
+				<option value="file22">binarysearch/binarytree/redblack_relaxed.go (100.0%)</option>
 				
-				<option value="file23">binarysearch/binarytree/sandbox.go (0.0%)</option>
+				<option value="file23">binarysearch/binarytree/redblack_relaxed_bottomup.go (100.0%)</option>
 				
-				<option value="file24">binarysearch/binarytree/skiplist_ziptree.go (0.0%)</option>
+				<option value="file24">binarysearch/binarytree/redblack_relaxed_topdown.go (100.0%)</option>
 				
-				<option value="file25">binarysearch/binarytree/splay.go (0.0%)</option>
+				<option value="file25">binarysearch/binarytree/redblack_topdown.go (98.4%)</option>
 				
-				<option value="file26">binarysearch/binarytree/treap_fingertree.go (0.0%)</option>
+				<option value="file26">binarysearch/binarytree/sandbox.go (0.0%)</option>
 				
-				<option value="file27">binarysearch/binarytree/treap_topdown.go (0.0%)</option>
+				<option value="file27">binarysearch/binarytree/splay.go (0.0%)</option>
 				
-				<option value="file28">binarysearch/binarytree/tree.go (63.4%)</option>
+				<option value="file28">binarysearch/binarytree/treap_fingertree.go (0.0%)</option>
+				
+				<option value="file29">binarysearch/binarytree/treap_topdown.go (0.0%)</option>
+				
+				<option value="file30">binarysearch/binarytree/tree.go (26.2%)</option>
+				
+				<option value="file31">binarysearch/binarytree/zip.go (0.0%)</option>
 				
 				</select>
 			</div>
@@ -552,6 +558,7 @@ func (tree *AVLBottomUp) balanceInsertL(p *Node) *Node <span class="cov0" title=
    tree.demote(p.r)
    return p</span>
 }
+
 // Symmetric
 func (tree *AVLBottomUp) balanceInsertR(p *Node) *Node <span class="cov0" title="0">{
    if tree.isZeroChild(p, p.r) </span><span class="cov0" title="0">{
@@ -1371,6 +1378,7 @@ func (tree *WAVL) build(l, p, r *Node, sl Size) *Node <span class="cov0" title="
 
 // Rebalancing is only necessary when p.r is 0-child, which is when the ranks
 // are equal, given that both p and p.r are non-nil.
+// TODO: is this AVL?
 func (tree WAVL) balanceInsertL(p *Node) *Node <span class="cov0" title="0">{
    if tree.isZeroChild(p, p.l) </span><span class="cov0" title="0">{
       if tree.isOneChild(p, p.r) </span><span class="cov0" title="0">{
@@ -1390,6 +1398,9 @@ func (tree WAVL) balanceInsertL(p *Node) *Node <span class="cov0" title="0">{
 
 // Rebalancing is only necessary when p.r is 0-child, which is when the ranks
 // are equal, given that both p and p.r are non-nil.
+//
+// TODO: this is AVL
+//
 func (tree WAVL) balanceInsertR(p *Node) *Node <span class="cov0" title="0">{
    if tree.isZeroChild(p, p.r) </span><span class="cov0" title="0">{
       if tree.isOneChild(p, p.l) </span><span class="cov0" title="0">{
@@ -2193,7 +2204,7 @@ func (balancer Log) balance(p *Node, s Size) *Node <span class="cov8" title="1">
    if s &lt;= 3 </span><span class="cov8" title="1">{
       return p
    }</span>
-   <span class="cov8" title="1">if !balancer.isBalanced(p.sizeL(), p.sizeR(s)) </span><span class="cov8" title="1">{
+   <span class="cov8" title="1">if !balancer.balanced(p, s) </span><span class="cov8" title="1">{
       p = partition(p, s &gt;&gt; 1)
    }</span>
    <span class="cov8" title="1">p.l = balancer.balance(p.l, p.sizeL())
@@ -2201,9 +2212,13 @@ func (balancer Log) balance(p *Node, s Size) *Node <span class="cov8" title="1">
    return p</span>
 }
 
-func (Log) isBalanced(x, y Size) bool <span class="cov8" title="1">{
-   return GreaterThanOrEqualToMSB(x + 1, (y + 1) &gt;&gt; 1) &amp;&amp;
-          GreaterThanOrEqualToMSB(y + 1, (x + 1) &gt;&gt; 1)
+func (balancer Log) balanced(p *Node, s Size) bool <span class="cov8" title="1">{
+   return balancer.isBalanced(p.sizeL(), p.sizeR(s)) &amp;&amp;
+          balancer.isBalanced(p.sizeR(s), p.sizeL())
+}</span>
+
+func (balancer Log) isBalanced(x, y Size) bool <span class="cov8" title="1">{
+   return GreaterThanOrEqualToMSB(x + 1, (y + 1) &gt;&gt; 1)
 }</span>
 
 func (balancer Log) Restore(tree Tree) Tree <span class="cov8" title="1">{
@@ -3370,7 +3385,7 @@ type LBST struct {
    Tree
 }
 
-func (LBST) isBalanced(x, y Size) bool <span class="cov8" title="1">{
+func (LBST) isBalanced(x, y Size) bool <span class="cov0" title="0">{
    return utility.GreaterThanOrEqualToMSB(x, y &gt;&gt; 1)
 }</span>
 
@@ -4485,7 +4500,7 @@ import (
 //
 // Recap:
 //    The _height_ of a tree is the longest path from the root to any other node.
-//    The _depth_ of a node is the number of links to follow to reach the root.
+//    The _height_ of a node is the number of links to follow to reach the root.
 //    The _weight_ of a tree is equal to its size; the number of reachable nodes.
 //
 //    To guarantee a tree height upper-bound, a weight-balanced tree maintains
@@ -4503,7 +4518,7 @@ import (
 // to reduce its height by at least 1, thereby restoring the height bound.
 //
 // When inserting a new node, we count the number of nodes top-down to determine
-// if the path exceeded the height upper-bound; if the depth exceeds the tree's
+// if the path exceeded the height upper-bound; if the height exceeds the tree's
 // height upper-bound, then at least one node along the insertion path must not
 // be weight-balanced - we call this node the "scapegoat".
 //
@@ -4534,7 +4549,7 @@ import (
 //       sl &gt;= ~sl &amp; (sr &gt;&gt; 1)
 //       sr &gt;= ~sr &amp; (sl &gt;&gt; 1)
 //
-//       Check: size &lt; (1 &lt;&lt; ((depth + 1) &gt;&gt; 1))
+//       Check: size &lt; (1 &lt;&lt; ((height + 1) &gt;&gt; 1))
 //
 //       The maximum height is 2 * ⌊log₂(m)⌋, where `m` is the maximum size
 //       that the tree has reached. Deletions do not consider balance at all.
@@ -4578,231 +4593,189 @@ import (
 
 type LBSTRelaxed struct {
    Tree
+   Log
 }
 
 // Creates a new LBSTRelaxed BST from existing values.
-func (LBSTRelaxed) New() List <span class="cov8" title="1">{
+func (LBSTRelaxed) New() List <span class="cov0" title="0">{
    return &amp;LBSTRelaxed{}
 }</span>
 
-func (tree *LBSTRelaxed) Clone() List <span class="cov8" title="1">{
+func (tree *LBSTRelaxed) Clone() List <span class="cov0" title="0">{
    return &amp;LBSTRelaxed{
       Tree: tree.Tree.Clone(),
    }
 }</span>
 
-func (tree *LBSTRelaxed) Verify() <span class="cov8" title="1">{
+func (tree *LBSTRelaxed) Verify() <span class="cov0" title="0">{
    tree.verifySizes()
 }</span>
 //
-//func (tree *LBSTRelaxed) delete(p **Node, s Size, i Size) (x Data) {
-//   for {
-//      tree.persist(p)
-//      if i == (*p).s {
-//         x := (*p).x
-//         *p = tree.join4((*p).l, (*p).r, (*p).sizeL(), (*p).sizeR(s))
-//         return x
-//      }
-//      if i &lt; (*p).s {
-//         s = (*p).s
-//         (*p).s = (*p).s - 1
-//         p = &amp;(*p).l
-//      } else {
-//         i = i - (*p).s - 1
-//         s = s - (*p).s - 1
-//         p = &amp;(*p).r
-//      }
-//   }
-//}
-//
-//// Deletes the node at position `i` from the tree.
-//// Returns the data that was in the deleted value.
-//func (tree *LBSTRelaxed) Delete(i Position) Data {
-//   // assert(i &lt; tree.size)
-//   x := tree.delete(&amp;tree.root, tree.size, i)
-//   tree.size--
-//   return x
-//}
+func (tree *LBSTRelaxed) delete(p **Node, s Size, i Size) (x Data) <span class="cov0" title="0">{
+   for </span><span class="cov0" title="0">{
+      tree.persist(p)
+      sl := (*p).sizeL()
+      sr := (*p).sizeR(s)
+      if i &lt; sl </span><span class="cov0" title="0">{
+         s = sl
+    (*p).s = sl - 1
+         p = &amp;(*p).l
+         continue</span>
+      }
+      <span class="cov0" title="0">if i &gt; sl </span><span class="cov0" title="0">{
+         s = sr
+         i = i - sl - 1
+         p = &amp;(*p).r
+         continue</span>
+      }
+      <span class="cov0" title="0">x := (*p).x
+      *p = tree.join((*p).l, (*p).r, sl, sr)
+      return x</span>
+   }
+}
 
-// Inserts a value `s` at position `i` in the tree.
-func (tree *LBSTRelaxed) Insert(i Position, x Data) <span class="cov8" title="1">{
-   // assert(i &lt;= tree.Size())
-
+// Deletes the node at position `i` from the tree.
+// Returns the data that was in the deleted value.
+func (tree *LBSTRelaxed) Delete(i Position) Data <span class="cov0" title="0">{
+ assert(i &lt; tree.size)
+ x := tree.delete(&amp;tree.root, tree.size, i)
+ tree.size = tree.size - 1
+ return x
+}</span>
+func (tree *LBSTRelaxed) insert(p **Node, s Size, i Position, x Data) <span class="cov0" title="0">{
    var unbalancedNode **Node // An unbalanced node along the insertion path.
    var unbalancedSize Size   // The size of the unbalanced node.
-   var depth uint64          // The depth of the insertion so far.
+   var height uint64         // The height of the insertion so far.
+   // Search with increasing height until the end of the path is reached.
+   for </span><span class="cov0" title="0">{
+      // Attach a new node at the end of the path.
+      if *p == nil </span><span class="cov0" title="0">{
+         *p = tree.allocate(Node{x: x})
 
-   p := &amp;tree.root
-   s := tree.size
+         // Check if a rebuild is required.
+         if tree.size &lt; 1 &lt;&lt; (height &gt;&gt; 1) </span><span class="cov0" title="0">{
+            tree.rebuild(unbalancedNode, unbalancedSize)
+         }</span>
+         <span class="cov0" title="0">return</span>
+      }
+      <span class="cov0" title="0">tree.persist(p)
+      height++
 
-   // Search with increasing depth until the end of the path is reached.
-   //
-   for *p != nil </span><span class="cov8" title="1">{
-      tree.persist(p)
-      depth++
-
-      sl := (*p).s         // Size of the left subtree.  O(1)
-      sr := s - (*p).s - 1 // Size of the right subtree. O(1)
-
-      if i &lt;= sl </span><span class="cov8" title="1">{
-         //
-         // LEFT
-         //
-         if unbalancedNode == nil &amp;&amp; !tree.isBalanced(sr, sl+1) </span><span class="cov8" title="1">{
+      sl := (*p).sizeL()
+      sr := (*p).sizeR(s)
+      if i &lt;= sl </span><span class="cov0" title="0">{
+         if unbalancedNode == nil &amp;&amp; !tree.isBalanced(sr, sl + 1) </span><span class="cov0" title="0">{
             unbalancedNode = p
             unbalancedSize = s + 1
          }</span>
-         <span class="cov8" title="1">p = insertL(*p)
+         <span class="cov0" title="0">p = insertL(*p)
          s = sl</span>
 
-      } else<span class="cov8" title="1"> {
-         //
-         // RIGHT
-         //
-         if unbalancedNode == nil &amp;&amp; !tree.isBalanced(sl, sr+1) </span><span class="cov8" title="1">{
+      } else<span class="cov0" title="0"> {
+         if unbalancedNode == nil &amp;&amp; !tree.isBalanced(sl, sr + 1) </span><span class="cov0" title="0">{
             unbalancedNode = p
             unbalancedSize = s + 1
          }</span>
-         <span class="cov8" title="1">p = insertR(*p, &amp;i)
+         <span class="cov0" title="0">p = insertR(*p, &amp;i)
          s = sr</span>
       }
    }
-   // Attach a new node at the end of the path.
-   <span class="cov8" title="1">*p = tree.allocate(Node{x: x})
-   tree.size++
-
-   // Check if a rebuild is required.
-   if tree.tooDeep(tree.size, depth) </span><span class="cov8" title="1">{
-      tree.rebuild(unbalancedNode, unbalancedSize)
-   }</span>
 }
+// Inserts a value `s` at position `i` in the tree.
+func (tree *LBSTRelaxed) Insert(i Position, x Data) <span class="cov0" title="0">{
+   // assert(i &lt;= tree.size)
+   tree.size = tree.size + 1
+   tree.insert(&amp;tree.root, tree.size, i, x)
+}</span>
 
-// Determines if the depth at which a new node was inserted was too deep, i.e.
+// Determines if the height at which a new node was inserted was too deep, i.e.
 // if the new height of the tree exceeds the upper-bound for its size.
 //
-//        tooDeep := depth &gt; 2 * ⌊log₂(size)⌋
+//        tooDeep := height &gt; 2 * ⌊log₂(size)⌋
 //
 //     because root.height() &lt;= MaximumPathLength(2 * math.FloorLog2(size))
 //
-//   depth is height + 1 ?
-func (tree *LBSTRelaxed) tooDeep(size Size, depth uint64) bool <span class="cov8" title="1">{
-   return (1 &lt;&lt; ((depth + 1) &gt;&gt; 1)) &gt; size
+//   height is height + 1 ?
+func (tree *LBSTRelaxed) tooDeep(size Size, height uint64) bool <span class="cov0" title="0">{
+   return (1 &lt;&lt; ((height + 1) &gt;&gt; 1)) &gt; size
 }</span>
 
-// Determines if two sizes are balanced.
-func (tree *LBSTRelaxed) isBalanced(sl, sr Size) bool <span class="cov8" title="1">{
-   return LBST{}.isBalanced(sl, sr) //  Log{}.isBalanced(sl, sr)
-}</span>
-
-func (tree *LBSTRelaxed) balance(p *Node, s Size) *Node <span class="cov8" title="1">{
-   if s &lt; 3 </span><span class="cov8" title="1">{
+func (tree *LBSTRelaxed) balance(p *Node, s Size) *Node <span class="cov0" title="0">{
+   if s &lt;= 3 </span><span class="cov0" title="0">{
       return p
    }</span>
-   <span class="cov8" title="1">if !(Weight{}.isBalanced(p.sizeL(), p.sizeR(s))) </span><span class="cov8" title="1">{
+   <span class="cov0" title="0">if !(tree.balanced(p, s)) </span><span class="cov0" title="0">{
       p = tree.partition(p, s &gt;&gt; 1)
    }</span>
-   <span class="cov8" title="1">p.l = tree.balance(p.l, p.sizeL())
+   <span class="cov0" title="0">p.l = tree.balance(p.l, p.sizeL())
    p.r = tree.balance(p.r, p.sizeR(s))
    return p</span>
 }
 
-func (tree *LBSTRelaxed) rebuild(p **Node, s Size) <span class="cov8" title="1">{
+func (tree *LBSTRelaxed) rebuild(p **Node, s Size) <span class="cov0" title="0">{
    *p = tree.balance(*p, s)
 }</span>
 
-func (tree *LBSTRelaxed) partition(p *Node, i uint64) *Node <span class="cov8" title="1">{
-   // assert(i &lt; p.size())
-   // measurement(&amp;partitionCount, 1)
-   n := Node{s: i}
-   l := &amp;n
-   r := &amp;n
-   for i != p.s </span><span class="cov8" title="1">{
-      // measurement(&amp;partitionDepth, 1)
-      tree.persist(&amp;p)
-      if i &lt; p.s </span><span class="cov8" title="1">{
-         p.s = p.s - i - 1
-         r.l = p
-         r = r.l
-         p = p.l
-      }</span> else<span class="cov8" title="1"> {
-         i = i - p.s - 1
-         l.r = p
-         l = l.r
-         p = p.r
-      }</span>
-   }
-   <span class="cov8" title="1">tree.persist(&amp;p)
-   l.r = p.l
-   r.l = p.r
-   p.l = n.r
-   p.r = n.l
-   p.s = n.s
-   return p</span>
-}
 
-func (tree *LBSTRelaxed) Split(i Size) (List, List) <span class="cov8" title="1">{
+func (tree *LBSTRelaxed) Split(i Size) (List, List) <span class="cov0" title="0">{
    // assert(i &lt;= tree.size)
 
    tree.share(tree.root)
    l,r := tree.split(tree.root, i)
 
-   return &amp;LBSTRelaxed{Tree{arena: tree.arena, root: l, size: i}},
-          &amp;LBSTRelaxed{Tree{arena: tree.arena, root: r, size: tree.size - i}}
+   return &amp;LBSTRelaxed{Tree: Tree{arena: tree.arena, root: l, size: i}},
+          &amp;LBSTRelaxed{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
 }</span>
 
-func (tree *LBSTRelaxed) joinLr(l, r *Node, sl, sr Size) *Node <span class="cov8" title="1">{
-   if r == nil </span><span class="cov8" title="1">{
+func (tree *LBSTRelaxed) joinLr(l, r *Node, sl, sr Size) *Node <span class="cov0" title="0">{
+   if r == nil </span><span class="cov0" title="0">{
       return l
    }</span>
-   <span class="cov8" title="1">if tree.isBalanced(sr, sl) </span><span class="cov8" title="1">{ // TODO: wrong way around?
+   <span class="cov0" title="0">if tree.isBalanced(sr, sl) </span><span class="cov0" title="0">{ // TODO: wrong way around?
       p := tree.deleteMax(&amp;l)
       p.l = l
       p.r = r
       p.s = sl - 1
       return p
    }</span>
-   <span class="cov8" title="1">tree.persist(&amp;l)
+   <span class="cov0" title="0">tree.persist(&amp;l)
    l.r = tree.joinlR(l.r, r, sl-l.s-1, sr)
    return l</span>
 }
 
-func (tree *LBSTRelaxed) joinlR(l, r *Node, sl, sr Size) *Node <span class="cov8" title="1">{
-   if l == nil </span><span class="cov8" title="1">{
+func (tree *LBSTRelaxed) joinlR(l, r *Node, sl, sr Size) *Node <span class="cov0" title="0">{
+   if l == nil </span><span class="cov0" title="0">{
       return r
    }</span>
-   <span class="cov8" title="1">if tree.isBalanced(sl, sr) </span><span class="cov8" title="1">{ // TODO: wrong way around?
+   <span class="cov0" title="0">if tree.isBalanced(sl, sr) </span><span class="cov0" title="0">{ // TODO: wrong way around?
       p := tree.deleteMin(&amp;r)
       p.l = l
       p.r = r
       p.s = sl
       return p
    }</span>
-   <span class="cov8" title="1">tree.persist(&amp;r)
+   <span class="cov0" title="0">tree.persist(&amp;r)
    r.l = tree.joinLr(l, r.l, sl, r.s) // wtf shouldn't this be joinlR
    r.s = sl + r.s
    return r</span>
 }
 
-func (tree *LBSTRelaxed) join4(l, r *Node, sl, sr Size) *Node <span class="cov8" title="1">{
-   if sl &gt; sr </span><span class="cov8" title="1">{
+func (tree *LBSTRelaxed) join(l, r *Node, sl, sr Size) *Node <span class="cov0" title="0">{
+   if sl &gt; sr </span><span class="cov0" title="0">{
       return tree.joinLr(l, r, sl, sr)
-   }</span> else<span class="cov8" title="1"> {
+   }</span> else<span class="cov0" title="0"> {
       return tree.joinlR(l, r, sl, sr)
    }</span>
 }
 
-func (tree *LBSTRelaxed) join(l, r *LBSTRelaxed) *LBSTRelaxed <span class="cov8" title="1">{
-   tree.share(l.root)
-   tree.share(r.root)
-   return &amp;LBSTRelaxed{Tree{
+func (tree *LBSTRelaxed) Join(other List) List <span class="cov0" title="0">{
+   tree.share(tree.root)
+   tree.share(other.(*LBSTRelaxed).root)
+   return &amp;LBSTRelaxed{Tree: Tree{
       arena: tree.arena,
-      root:  tree.join4(l.root, r.root, l.size, r.size),
-      size:  l.size + r.size,
+      root:  tree.join(tree.root, other.(*LBSTRelaxed).root, tree.size, other.(*LBSTRelaxed).size),
+      size:  tree.size + other.(*LBSTRelaxed).size,
    }}
-}</span>
-
-func (tree *LBSTRelaxed) Join(other List) List <span class="cov8" title="1">{
-   return tree.join(tree, other.(*LBSTRelaxed))
 }</span>
 </pre>
 		
@@ -5490,11 +5463,14 @@ func averagePathLength(p *Node, depth uint64, totalDepth *uint64, totalNodes *ui
 //    return IPL(t-&gt;l) + IPL(t-&gt;r) + t-&gt;s;
 //   }
 func (p *Node) AveragePathLength() float64 <span class="cov0" title="0">{
-   var totalDepth uint64
+   if p == nil </span><span class="cov0" title="0">{
+      return 0
+   }</span>
+   <span class="cov0" title="0">var totalDepth uint64
    var totalNodes uint64
    averagePathLength(p, 0, &amp;totalDepth, &amp;totalNodes)
-   return float64(totalDepth) / float64(totalNodes)
-}</span>
+   return float64(totalDepth) / float64(totalNodes)</span>
+}
 
 //
 
@@ -5519,7 +5495,7 @@ func rank(p *Node) int <span class="cov0" title="0">{
    }</span>
 }
 
-func (p Node) isLeaf() bool <span class="cov0" title="0">{ // TODO conc can have its own that doesn't check p.r for nil
+func (p Node) isLeaf() bool <span class="cov8" title="1">{ // TODO conc can have its own that doesn't check p.r for nil
    return p.l == nil &amp;&amp; p.r == nil
 }</span>
 
@@ -5609,13 +5585,13 @@ func (p *Node) rotateR() (l *Node) <span class="cov8" title="1">{
 }</span>
 
 // Rotates the LEFT subtree LEFT, then rotates the root RIGHT.
-func (p *Node) rotateLR() *Node <span class="cov0" title="0">{
+func (p *Node) rotateLR() *Node <span class="cov8" title="1">{
    p.l = p.l.rotateL()
    return p.rotateR()
 }</span>
 
 // Rotates the RIGHT subtree RIGHT, then rotates the root LEFT.
-func (p *Node) rotateRL() *Node <span class="cov0" title="0">{
+func (p *Node) rotateRL() *Node <span class="cov8" title="1">{
    p.r = p.r.rotateR()
    return p.rotateL()
 }</span>
@@ -5863,45 +5839,62 @@ func (tree *Tree) replacedByLeftSubtree(p **Node) *Node <span class="cov0" title
 //   }
 //}
 
-func (tree *Tree) deleteMin2(p *Node) (root, min *Node) <span class="cov8" title="1">{
+func (tree *Tree) deleteMin2(r *Node) (root, min *Node) <span class="cov0" title="0">{
    n := Node{}
    l := &amp;n
-   for </span><span class="cov8" title="1">{
-      tree.persist(&amp;p)
-      if p.l == nil </span><span class="cov8" title="1">{ // p is the min
-         l.l = p.r
-         return n.l, p
+   for </span><span class="cov0" title="0">{
+      tree.persist(&amp;r)
+      if r.l == nil </span><span class="cov0" title="0">{
+         l.l = r.r
+         return n.l, r
       }</span>
-      <span class="cov8" title="1">p.s = p.s - 1
-      l.l = p
+      <span class="cov0" title="0">r.s = r.s - 1
+      l.l = r
       l = l.l
-      p = p.l</span>
+      r = r.l</span>
    }
 }
 
-func (tree *Tree) deleteMin(p **Node) *Node <span class="cov8" title="1">{
+func (tree *Tree) deleteMin(p **Node) (min *Node) <span class="cov8" title="1">{
+   //*p, min = tree.deleteMin2(*p)
+   //return
    for </span><span class="cov8" title="1">{
-      tree.persist(p)
-      if (*p).l == nil </span><span class="cov8" title="1">{
-         r := *p
-         *p = (*p).r
-         return r
-      }</span>
-      <span class="cov8" title="1">(*p).s--
-      p = &amp;(*p).l</span>
+     tree.persist(p)
+     if (*p).l == nil </span><span class="cov8" title="1">{
+        r := *p
+        *p = (*p).r
+        return r
+     }</span>
+     <span class="cov8" title="1">(*p).s--
+     p = &amp;(*p).l</span>
    }
 }
-
-func (tree *Tree) deleteMax(p **Node) *Node <span class="cov8" title="1">{
-   for </span><span class="cov8" title="1">{
-      if (*p).r == nil </span><span class="cov8" title="1">{
-         tree.persist(p)
-         l := *p
-         *p = (*p).l
-         return l
+func (tree *Tree) deleteMax2(p *Node) (root, min *Node) <span class="cov0" title="0">{
+   n := Node{}
+   r := &amp;n
+   for </span><span class="cov0" title="0">{
+      tree.persist(&amp;p)
+      if p.r == nil </span><span class="cov0" title="0">{
+         r.r = p.l
+         return n.r, p
       }</span>
-      <span class="cov8" title="1">tree.persist(p)
-      p = &amp;(*p).r</span>
+      <span class="cov0" title="0">r.r = p
+      r = r.r
+      p = p.r</span>
+   }
+}
+func (tree *Tree) deleteMax(p **Node) (max *Node) <span class="cov8" title="1">{
+   //*p, max = tree.deleteMax2(*p)
+   //return
+   for </span><span class="cov8" title="1">{
+     if (*p).r == nil </span><span class="cov8" title="1">{
+        tree.persist(p)
+        l := *p
+        *p = (*p).l
+        return l
+     }</span>
+     <span class="cov8" title="1">tree.persist(p)
+     p = &amp;(*p).r</span>
    }
 }
 
@@ -6248,47 +6241,47 @@ func (tree *Tree) pathR(p *Node, i *Position) **Node {
 }
 */
 // TODO: these are nuts
-func (tree *Tree) pathLeft(p ***Node) <span class="cov0" title="0">{
+func (tree *Tree) pathLeft(p ***Node) <span class="cov8" title="1">{
    // assert((**p).l != nil)
    tree.persist(&amp;(**p).l)
    *p = insertL(**p)
 }</span>
-func (tree *Tree) pathRight(p ***Node, i *Position) <span class="cov0" title="0">{
+func (tree *Tree) pathRight(p ***Node, i *Position) <span class="cov8" title="1">{
    // assert((**p).r != nil)
    tree.persist(&amp;(**p).r)
    *p = insertR(**p, i)
 }</span>
-func (tree *Tree) attach(p **Node, x Data) <span class="cov0" title="0">{
+func (tree *Tree) attach(p **Node, x Data) <span class="cov8" title="1">{
    *p = tree.allocate(Node{x: x})
 }</span>
-func (tree *Tree) attachL(p *Node, x Data) <span class="cov0" title="0">{
+func (tree *Tree) attachL(p *Node, x Data) <span class="cov8" title="1">{
    p.s++
    p.l = tree.allocate(Node{x: x})
 }</span>
 
-func (tree *Tree) attachLL(p *Node, x Data) <span class="cov0" title="0">{
+func (tree *Tree) attachLL(p *Node, x Data) <span class="cov8" title="1">{
    tree.persist(&amp;p.l)
    p.s++
    p.l.s++
    p.l.l = tree.allocate(Node{x: x})
 }</span>
-func (tree *Tree) attachRR(p *Node, x Data) <span class="cov0" title="0">{
+func (tree *Tree) attachRR(p *Node, x Data) <span class="cov8" title="1">{
    tree.persist(&amp;p.r)
    p.r.r = tree.allocate(Node{x: x})
 }</span>
-func (tree *Tree) attachLR(p *Node, x Data) <span class="cov0" title="0">{
+func (tree *Tree) attachLR(p *Node, x Data) <span class="cov8" title="1">{
    tree.persist(&amp;p.l)
    p.s++
    p.l.r = tree.allocate(Node{x: x})
 }</span>
 
-func (tree *Tree) attachRL(p *Node, x Data) <span class="cov0" title="0">{
+func (tree *Tree) attachRL(p *Node, x Data) <span class="cov8" title="1">{
    tree.persist(&amp;p.r)
    p.r.s++
    p.r.l = tree.allocate(Node{x: x})
 }</span>
 
-func (tree *Tree) attachR(p *Node, x Data) <span class="cov0" title="0">{
+func (tree *Tree) attachR(p *Node, x Data) <span class="cov8" title="1">{
    p.r = tree.allocate(Node{x: x})
 }</span>
 
@@ -6296,23 +6289,23 @@ func pathDeletingRightIgnoringIndex(p *Node) **Node <span class="cov0" title="0"
    return &amp;p.r
 }</span>
 
-func (tree Tree) rotateL(p **Node) <span class="cov0" title="0">{
+func (tree Tree) rotateL(p **Node) <span class="cov8" title="1">{
    tree.persist(&amp;(*p).r)
    *p = (*p).rotateL()
 }</span>
 
-func (tree Tree) rotateR(p **Node) <span class="cov0" title="0">{
+func (tree Tree) rotateR(p **Node) <span class="cov8" title="1">{
    tree.persist(&amp;(*p).l)
    *p = (*p).rotateR()
 }</span>
 
-func (tree Tree) rotateRL(p **Node) <span class="cov0" title="0">{
+func (tree Tree) rotateRL(p **Node) <span class="cov8" title="1">{
    tree.persist(&amp;(*p).r)
    tree.persist(&amp;(*p).r.l)
    *p = (*p).rotateRL()
 }</span>
 
-func (tree Tree) rotateLR(p **Node) <span class="cov0" title="0">{
+func (tree Tree) rotateLR(p **Node) <span class="cov8" title="1">{
    tree.persist(&amp;(*p).l)
    tree.persist(&amp;(*p).l.r)
    *p = (*p).rotateLR()
@@ -6477,6 +6470,40 @@ func (tree *Tree) appendL(p **Node, n *Node) <span class="cov0" title="0">{
 </pre>
 		
 		<pre class="file" id="file17" style="display: none">package binarytree
+
+func (tree *Tree) partition(p *Node, i uint64) *Node <span class="cov0" title="0">{
+   // assert(i &lt; p.size())
+   // measurement(&amp;partitionCount, 1)
+
+   n := Node{s: i}
+   l := &amp;n
+   r := &amp;n
+   for i != p.s </span><span class="cov0" title="0">{
+      // measurement(&amp;partitionDepth, 1)
+      tree.persist(&amp;p)
+      if i &lt; p.s </span><span class="cov0" title="0">{
+         p.s = p.s - i - 1
+         r.l = p
+         r = r.l
+         p = p.l
+      }</span> else<span class="cov0" title="0"> {
+         i = i - p.s - 1
+         l.r = p
+         l = l.r
+         p = p.r
+      }</span>
+   }
+   <span class="cov0" title="0">tree.persist(&amp;p)
+   l.r = p.l
+   r.l = p.r
+   p.l = n.r
+   p.r = n.l
+   p.s = n.s
+   return p</span>
+}
+</pre>
+		
+		<pre class="file" id="file18" style="display: none">package binarytree
 
 import (
    . "binarysearch/abstract/list"
@@ -6665,31 +6692,35 @@ func (tree *Randomized) Verify() <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file18" style="display: none">package binarytree
+		<pre class="file" id="file19" style="display: none">package binarytree
 
 // TODO: just inline all of this ? then remove the rank_balanced filename prefix?
 
 type RankBalanced struct {
 }
 
-func (tree RankBalanced) rank(p *Node) int <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
+func (tree RankBalanced) rank(p *Node) int <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
       return -1
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       return int(p.y)
    }</span>
 }
 
-func (tree RankBalanced) rankDifference(parent, child *Node) int <span class="cov0" title="0">{
+func (tree RankBalanced) rankDifference(parent, child *Node) int <span class="cov8" title="1">{
    // assert(tree.rank(parent) &gt;= tree.rank(child))
    return tree.rank(parent) - tree.rank(child)
 }</span>
 
-func (tree RankBalanced) isZeroChild(parent, child *Node) bool <span class="cov0" title="0">{
+func (tree RankBalanced) hasZeroChild(p *Node) bool <span class="cov8" title="1">{
+   return tree.isZeroChild(p, p.l) || tree.isZeroChild(p, p.r)
+}</span>
+
+func (tree RankBalanced) isZeroChild(parent, child *Node) bool <span class="cov8" title="1">{
    return tree.rankDifference(parent, child) == 0
 }</span>
 
-func (tree RankBalanced) isOneChild(parent, child *Node) bool <span class="cov0" title="0">{
+func (tree RankBalanced) isOneChild(parent, child *Node) bool <span class="cov8" title="1">{
    return tree.rankDifference(parent, child) == 1
 }</span>
 
@@ -6701,19 +6732,19 @@ func (tree RankBalanced) isThreeChild(parent, child *Node) bool <span class="cov
    return tree.rankDifference(parent, child) == 3
 }</span>
 
-func (tree RankBalanced) promote(p *Node)<span class="cov0" title="0">{
+func (tree RankBalanced) promote(p *Node)<span class="cov8" title="1">{
    p.y++
 }</span>
 
-func (tree RankBalanced) demote(p *Node) <span class="cov0" title="0">{
+func (tree RankBalanced) demote(p *Node) <span class="cov8" title="1">{
    p.y--
 }</span>
 
-func (tree RankBalanced) isZeroZero(p *Node) bool <span class="cov0" title="0">{
+func (tree RankBalanced) isZeroZero(p *Node) bool <span class="cov8" title="1">{
    return tree.isZeroChild(p, p.l) &amp;&amp; tree.isZeroChild(p, p.r)
 }</span>
 
-func (tree RankBalanced) isOneOne(p *Node) bool <span class="cov0" title="0">{
+func (tree RankBalanced) isOneOne(p *Node) bool <span class="cov8" title="1">{
    return tree.isOneChild(p, p.l) &amp;&amp; tree.isOneChild(p, p.r)
 }</span>
 
@@ -6722,7 +6753,49 @@ func (tree RankBalanced) isTwoTwo(p *Node) bool <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file19" style="display: none">//
+		<pre class="file" id="file20" style="display: none">package binarytree
+
+import (
+   "binarysearch/abstract/list"
+   "math"
+)
+
+type RedBlack struct {
+   RankBalanced
+}
+
+func (tree RedBlack) verifyHeight(p *Node, s list.Size) <span class="cov8" title="1">{
+   // TODO return height, check for every node
+   invariant(p.height() &lt;= 2 * tree.rank(p) + 1)
+   invariant(p.height() &lt;= 2 * int(math.Log2(float64(s))))
+}</span>
+
+func (tree RedBlack) verifyRanks(p *Node) <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
+      return
+   }</span>
+   <span class="cov8" title="1">if p.isLeaf() </span><span class="cov8" title="1">{
+      invariant(tree.rank(p) == 0)
+   }</span>
+   <span class="cov8" title="1">invariant(tree.rank(p) &gt;= tree.rank(p.l))
+   invariant(tree.rank(p) &gt;= tree.rank(p.r))
+
+   // All rank differences are 0 or 1.
+   invariant(tree.isZeroChild(p, p.l) || tree.isOneChild(p, p.l))
+   invariant(tree.isZeroChild(p, p.r) || tree.isOneChild(p, p.r))
+
+   // No parent of a 0-child is a 0-child.
+   invariant(!tree.isZeroChild(p, p.l) || !tree.isZeroChild(p.l, p.l.l))
+   invariant(!tree.isZeroChild(p, p.l) || !tree.isZeroChild(p.l, p.l.r))
+   invariant(!tree.isZeroChild(p, p.r) || !tree.isZeroChild(p.r, p.r.l))
+   invariant(!tree.isZeroChild(p, p.r) || !tree.isZeroChild(p.r, p.r.r))
+
+   tree.verifyRanks(p.l)
+   tree.verifyRanks(p.r)</span>
+}
+</pre>
+		
+		<pre class="file" id="file21" style="display: none">//
 //In a ranked binary tree obeying the red-black rule,
 //the 0-children are the red nodes, the 1-children are the black nodes. All missing nodes have rank
 //difference 1 and are black. The rank of a node is the number of black nodes on a path from the node
@@ -6740,89 +6813,1183 @@ package binarytree
 
 import (
    "binarysearch/abstract/list"
-   "math"
 )
 
 type RedBlackBottomUp struct {
    Tree
-   RankBalanced
+   RedBlack
 }
 
-func (RedBlackBottomUp) New() list.List <span class="cov0" title="0">{
+func (RedBlackBottomUp) New() list.List <span class="cov8" title="1">{
    return &amp;RedBlackBottomUp{}
 }</span>
 
-func (tree *RedBlackBottomUp) Clone() list.List <span class="cov0" title="0">{
+func (tree *RedBlackBottomUp) Clone() list.List <span class="cov8" title="1">{
    return &amp;RedBlackBottomUp{
       Tree: tree.Tree.Clone(),
    }
 }</span>
 
-func (tree RedBlackBottomUp) Verify() <span class="cov0" title="0">{
+func (tree RedBlackBottomUp) Verify() <span class="cov8" title="1">{
    tree.verifySize(tree.root, tree.size)
    tree.verifyRanks(tree.root)
    tree.verifyHeight(tree.root, tree.size)
 }</span>
 
-func (tree RedBlackBottomUp) verifyHeight(p *Node, s list.Size) <span class="cov0" title="0">{
-   invariant(p.height() &lt;= 2 * tree.rank(tree.root) + 1)
-   invariant(p.height() &lt;= 2 * int(math.Floor(math.Log2(float64(s)))))
-}</span>
-
-func (tree RedBlackBottomUp) verifyRanks(p *Node) <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
-      return
-   }</span>
-   <span class="cov0" title="0">if p.isLeaf() </span><span class="cov0" title="0">{
-      invariant(tree.rank(p) == 0)
-   }</span>
-   <span class="cov0" title="0">invariant(tree.rank(p) &gt;= tree.rank(p.l))
-   invariant(tree.rank(p) &gt;= tree.rank(p.r))
-
-   // All rank differences are 0 or 1.
-   invariant(tree.isZeroChild(p, p.l) || tree.isOneChild(p, p.l))
-   invariant(tree.isZeroChild(p, p.r) || tree.isOneChild(p, p.r))
-
-   // No parent of a 0-child is a 0-child.
-   invariant(tree.isOneChild(p, p.l) || tree.isOneChild(p.l, p.l.l))
-   invariant(tree.isOneChild(p, p.l) || tree.isOneChild(p.l, p.l.r))
-   invariant(tree.isOneChild(p, p.r) || tree.isOneChild(p.r, p.r.l))
-   invariant(tree.isOneChild(p, p.r) || tree.isOneChild(p.r, p.r.r))
-
-   tree.verifyRanks(p.l)
-   tree.verifyRanks(p.r)</span>
-}
-
-func (tree *RedBlackBottomUp) Delete(i list.Position) (x list.Data) <span class="cov0" title="0">{
+func (tree *RedBlackBottomUp) Delete(i list.Position) (x list.Data) <span class="cov8" title="1">{
    // assert(i &lt; tree.size)
    tree.size = tree.size - 1
    tree.root = tree.delete(tree.root, i, &amp;x)
    return x
 }</span>
 
-func (tree *RedBlackBottomUp) delete(p *Node, i list.Position, x *list.Data) *Node <span class="cov0" title="0">{
+func (tree *RedBlackBottomUp) delete(p *Node, i list.Position, x *list.Data) *Node <span class="cov8" title="1">{
    tree.persist(&amp;p)
-   if i == p.s </span><span class="cov0" title="0">{
+   if i == p.s </span><span class="cov8" title="1">{
       *x = p.x
       defer tree.free(p)
       return tree.join(p.l, p.r, p.s)
    }</span>
-   <span class="cov0" title="0">if i &lt; p.s </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if i &lt; p.s </span><span class="cov8" title="1">{
       p.s = p.s - 1
       p.l = tree.delete(p.l, i, x)
       return tree.balanceDeleteL(p)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       p.r = tree.delete(p.r, i-p.s-1, x)
       return tree.balanceDeleteR(p)
    }</span>
 }
 
 
-func (tree RedBlackBottomUp) balanceDeleteR(p *Node) *Node <span class="cov0" title="0">{
+func (tree RedBlackBottomUp) balanceDeleteR(p *Node) *Node <span class="cov8" title="1">{
+   if tree.isZeroChild(p, p.r) </span><span class="cov8" title="1">{
+      // assert(tree.isOneChild(p.r, p.r.r))
+      // assert(tree.isOneChild(p.r, p.r.l))
+      return p
+   }</span>
+   <span class="cov8" title="1">if tree.isOneChild(p, p.r) </span><span class="cov8" title="1">{
+      return p
+   }</span>
+   <span class="cov8" title="1">if tree.isZeroChild(p, p.l) </span><span class="cov8" title="1">{
+      // assert(tree.isZeroChild(p, p.l))
+      // assert(tree.isTwoChild(p, p.r))
+      // assert(tree.isOneOne(p.l))
+      tree.rotateR(&amp;p)
+      // assert(tree.isZeroChild(p, p.r))
+      // assert(tree.isOneChild(p, p.l))
+      if tree.isZeroChild(p.r.l, p.r.l.l) </span><span class="cov8" title="1">{
+         // assert(tree.isOneChild(p.r, p.r.l))
+         // assert(tree.isTwoChild(p.r, p.r.r))
+         tree.rotateR(&amp;p.r)
+         tree.promote(p.r)
+         tree.demote(p.r.r)
+         return p
+      }</span>
+      <span class="cov8" title="1">if tree.isZeroChild(p.r.l, p.r.l.r) </span><span class="cov8" title="1">{
+         // assert(tree.isOneChild(p.r, p.r.l))
+         // assert(tree.isTwoChild(p.r, p.r.r))
+         tree.rotateLR(&amp;p.r)
+         tree.promote(p.r)
+         tree.demote(p.r.r)
+         return p
+      }</span>
+      // assert(tree.isOneChild(p.r, p.r.l))
+      // assert(tree.isTwoChild(p.r, p.r.r))
+      // assert(tree.isOneChild(p.r.l, p.r.l.l))
+      // assert(tree.isOneChild(p.r.l, p.r.l.r))
+      <span class="cov8" title="1">tree.demote(p.r)
+      return p</span>
+   } else<span class="cov8" title="1"> {
+      // assert(tree.isOneChild(p, p.l))
+      // assert(tree.isTwoChild(p, p.r))
+      if tree.isZeroChild(p.l, p.l.l) </span><span class="cov8" title="1">{
+         tree.rotateR(&amp;p)
+         tree.promote(p)
+         tree.demote(p.r)
+         return p
+      }</span>
+      <span class="cov8" title="1">if tree.isZeroChild(p.l, p.l.r) </span><span class="cov8" title="1">{
+         tree.rotateLR(&amp;p)
+         tree.promote(p)
+         tree.demote(p.r)
+         return p
+      }</span>
+      // assert(tree.isOneOne(p.l))
+      <span class="cov8" title="1">tree.demote(p)
+      return p</span>
+   }
+}
+
+func (tree RedBlackBottomUp) balanceDeleteL(p *Node) *Node <span class="cov8" title="1">{
+   if tree.isZeroChild(p, p.l) </span><span class="cov8" title="1">{
+      // assert(tree.isOneChild(p.l, p.l.l))
+      // assert(tree.isOneChild(p.l, p.l.r))
+      return p
+   }</span>
+   <span class="cov8" title="1">if tree.isOneChild(p, p.l) </span><span class="cov8" title="1">{
+      return p
+   }</span>
+   <span class="cov8" title="1">if tree.isZeroChild(p, p.r) </span><span class="cov8" title="1">{
+      // assert(tree.isZeroChild(p, p.r))
+      // assert(tree.isTwoChild(p, p.l))
+      // assert(tree.isOneOne(p.r))
+      tree.rotateL(&amp;p)
+      // assert(tree.isZeroChild(p, p.l))
+      // assert(tree.isOneChild(p, p.r))
+      if tree.isZeroChild(p.l.r, p.l.r.r) </span><span class="cov8" title="1">{
+         // assert(tree.isOneChild(p.l, p.l.r))
+         // assert(tree.isTwoChild(p.l, p.l.l))
+         tree.rotateL(&amp;p.l)
+         tree.promote(p.l)
+         tree.demote(p.l.l)
+         return p
+      }</span>
+      <span class="cov8" title="1">if tree.isZeroChild(p.l.r, p.l.r.l) </span><span class="cov8" title="1">{
+         // assert(tree.isOneChild(p.l, p.l.r))
+         // assert(tree.isTwoChild(p.l, p.l.l))
+         tree.rotateRL(&amp;p.l)
+         tree.promote(p.l)
+         tree.demote(p.l.l)
+         return p
+      }</span>
+      // assert(tree.isOneChild(p.l, p.l.r))
+      // assert(tree.isTwoChild(p.l, p.l.l))
+      // assert(tree.isOneChild(p.l.r, p.l.r.r))
+      // assert(tree.isOneChild(p.l.r, p.l.r.l))
+      <span class="cov8" title="1">tree.demote(p.l)
+      return p</span>
+   } else<span class="cov8" title="1"> {
+      // assert(tree.isOneChild(p, p.r))
+      // assert(tree.isTwoChild(p, p.l))
+      if tree.isZeroChild(p.r, p.r.r) </span><span class="cov8" title="1">{
+         tree.rotateL(&amp;p)
+         tree.promote(p)
+         tree.demote(p.l)
+         return p
+      }</span>
+      <span class="cov8" title="1">if tree.isZeroChild(p.r, p.r.l) </span><span class="cov8" title="1">{
+         tree.rotateRL(&amp;p)
+         tree.promote(p)
+         tree.demote(p.l)
+         return p
+      }</span>
+      // assert(tree.isOneOne(p.r))
+      <span class="cov8" title="1">tree.demote(p)
+      return p</span>
+   }
+}
+
+func (tree *RedBlackBottomUp) Insert(i list.Position, x list.Data) <span class="cov8" title="1">{
+   // assert(i &lt;= tree.size)
+   tree.size = tree.size + 1
+   tree.root = tree.insert(tree.root, i, x)
+   return
+}</span>
+
+func (tree *RedBlackBottomUp) insert(p *Node, i list.Position, x list.Data) *Node <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
+      return tree.allocate(Node{x: x})
+   }</span>
+   <span class="cov8" title="1">tree.persist(&amp;p)
+   if i &lt;= p.s </span><span class="cov8" title="1">{
+      p.s = p.s + 1
+      p.l = tree.insert(p.l, i, x)
+      return tree.balanceInsertL(p)
+   }</span> else<span class="cov8" title="1"> {
+      p.r = tree.insert(p.r, i-p.s-1, x)
+      return tree.balanceInsertR(p)
+   }</span>
+}
+
+func (tree RedBlackBottomUp) balanceInsertL(p *Node) *Node <span class="cov8" title="1">{
+   if tree.isZeroChild(p, p.l) </span><span class="cov8" title="1">{
+      if tree.isZeroChild(p, p.r) </span><span class="cov8" title="1">{
+         if tree.isZeroChild(p.l, p.l.l) || tree.isZeroChild(p.l, p.l.r) </span><span class="cov8" title="1">{
+            tree.promote(p)
+            return p
+         }</span>
+      } else<span class="cov8" title="1"> {
+         if tree.isZeroChild(p.l, p.l.l) </span><span class="cov8" title="1">{
+            tree.rotateR(&amp;p)
+            return p
+         }</span>
+         <span class="cov8" title="1">if tree.isZeroChild(p.l, p.l.r) </span><span class="cov8" title="1">{
+            tree.rotateLR(&amp;p)
+            return p
+         }</span>
+      }
+   }
+   <span class="cov8" title="1">return p</span>
+}
+
+func (tree RedBlackBottomUp) balanceInsertR(p *Node) *Node <span class="cov8" title="1">{
+   if tree.isZeroChild(p, p.r) </span><span class="cov8" title="1">{
+      if tree.isZeroChild(p, p.l) </span><span class="cov8" title="1">{
+         if tree.isZeroChild(p.r, p.r.r) || tree.isZeroChild(p.r, p.r.l) </span><span class="cov8" title="1">{
+            tree.promote(p)
+            return p
+         }</span>
+      } else<span class="cov8" title="1"> {
+         if tree.isZeroChild(p.r, p.r.r) </span><span class="cov8" title="1">{
+            tree.rotateL(&amp;p)
+            return p
+         }</span>
+         <span class="cov8" title="1">if tree.isZeroChild(p.r, p.r.l) </span><span class="cov8" title="1">{
+            tree.rotateRL(&amp;p)
+            return p
+         }</span>
+      }
+   }
+   <span class="cov8" title="1">return p</span>
+}
+
+
+func (tree RedBlackBottomUp) split(p *Node, i, s list.Size) (l, r *Node) <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
+      return
+   }</span>
+   <span class="cov8" title="1">tree.persist(&amp;p)
+
+   sl := p.s
+   sr := s - p.s - 1
+
+   if i &lt;= (*p).s </span><span class="cov8" title="1">{
+      l, r = tree.split(p.l, i, sl)
+      r = tree.build(r, p, p.r, sl-i)
+   }</span> else<span class="cov8" title="1"> {
+      l, r = tree.split(p.r, i-sl-1, sr)
+      l = tree.build(p.l, p, l, sl)
+   }</span>
+   <span class="cov8" title="1">return l, r</span>
+}
+
+func (tree RedBlackBottomUp) Split(i list.Position) (list.List, list.List) <span class="cov8" title="1">{
+   // assert(i &lt;= tree.size)
+   tree.share(tree.root)
+   l, r := tree.split(tree.root, i, tree.size)
+   return &amp;RedBlackBottomUp{Tree: Tree{arena: tree.arena, root: l, size: i}},
+      &amp;RedBlackBottomUp{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
+}</span>
+
+func (tree *RedBlackBottomUp) deleteMin(p *Node, min **Node) *Node <span class="cov8" title="1">{
+   tree.persist(&amp;p)
+   if p.l == nil </span><span class="cov8" title="1">{
+      *min = p
+      return p.r
+   }</span>
+   <span class="cov8" title="1">p.s = p.s - 1
+   p.l = tree.deleteMin(p.l, min)
+   return tree.balanceDeleteL(p)</span>
+}
+
+
+func (tree *RedBlackBottomUp) deleteMax(p *Node, max **Node) *Node <span class="cov8" title="1">{
+   tree.persist(&amp;p)
+   if p.r == nil </span><span class="cov8" title="1">{
+      *max = p
+      return p.l
+   }</span>
+   <span class="cov8" title="1">p.r = tree.deleteMax(p.r, max)
+   return tree.balanceDeleteR(p)</span>
+}
+
+func (tree RedBlackBottomUp) buildL(l *Node, p *Node, r *Node, sl list.Size) (root *Node) <span class="cov8" title="1">{
+   // assert(tree.rank(l) &gt;= tree.rank(r))
+   if tree.rank(l) == tree.rank(r) </span><span class="cov8" title="1">{
+      p.l = l
+      p.r = r
+      p.s = sl
+      p.y = uint64(tree.rank(l))
+      if r == nil || tree.hasZeroChild(l) || tree.hasZeroChild(r) </span><span class="cov8" title="1">{
+         tree.promote(p)
+      }</span>
+      <span class="cov8" title="1">return p</span>
+   }
+   <span class="cov8" title="1">tree.persist(&amp;l)
+   l.r = tree.buildL(l.r, p, r, sl-l.s-1)
+   return tree.balanceInsertR(l)</span>
+}
+
+func (tree RedBlackBottomUp) buildR(l *Node, p *Node, r *Node, sl list.Size) (root *Node) <span class="cov8" title="1">{
+   // assert(tree.rank(r) &gt;= tree.rank(l))
+   if tree.rank(r) == tree.rank(l) </span><span class="cov8" title="1">{
+      p.l = l
+      p.r = r
+      p.s = sl
+      p.y = uint64(tree.rank(r))
+      if l == nil || tree.hasZeroChild(l) || tree.hasZeroChild(r) </span><span class="cov8" title="1">{
+         tree.promote(p)
+      }</span>
+      <span class="cov8" title="1">return p</span>
+   }
+   <span class="cov8" title="1">tree.persist(&amp;r)
+   r.s = 1 + sl + r.s
+   r.l = tree.buildR(l, p, r.l, sl)
+   return tree.balanceInsertL(r)</span>
+}
+
+func (tree *RedBlackBottomUp) build(l, p, r *Node, sl list.Size) *Node <span class="cov8" title="1">{
+   if tree.rank(l) &gt;= tree.rank(r) </span><span class="cov8" title="1">{
+      return tree.buildL(l, p, r, sl)
+   }</span> else<span class="cov8" title="1"> {
+      return tree.buildR(l, p, r, sl)
+   }</span>
+}
+
+
+//
+//// TODO: we can do if rank is within 1?
+//func (tree RedBlackBottomUp) build(l, p, r *Node, sl list.Size) *Node {
+//   if tree.rank(l) == tree.rank(r) {
+//      p.l = l
+//      p.r = r
+//      p.s = sl
+//      p.y = uint64(tree.rank(l))
+//      //
+//      //
+//      //
+//      if (l == nil || tree.isZeroChild(l, l.l) || tree.isZeroChild(l, l.r))||
+//         (r == nil || tree.isZeroChild(r, r.l) || tree.isZeroChild(r, r.r)) {
+//        tree.promote(p)
+//      }
+//      //p = tree.balanceInsertL(p)
+//      //p = tree.balanceInsertR(p)
+//      return p
+//   }
+//   if tree.rank(l) &gt; tree.rank(r) &amp;&amp; tree.rank(l) - tree.rank(r) == 1 {
+//      p.l = l
+//      p.r = r
+//      p.s = sl
+//      p.y = uint64(tree.rank(l))
+//      //
+//      //
+//      //
+//      //if (l == nil || tree.isZeroChild(l, l.l) || tree.isZeroChild(l, l.r))||
+//      //   (r == nil || tree.isZeroChild(r, r.l) || tree.isZeroChild(r, r.r)) {
+//      //   tree.promote(p)
+//      //}
+//      p = tree.balanceInsertL2(p)
+//      p = tree.balanceInsertR2(p)
+//      return p
+//   }
+//   if tree.rank(l) &lt; tree.rank(r) {
+//      tree.persist(&amp;r)
+//      r.s = 1 + sl + r.s
+//      r.l = tree.build(l, p, r.l, sl)
+//      return tree.balanceInsertL(r)
+//   } else {
+//      tree.persist(&amp;l)
+//      l.r = tree.build(l.r, p, r, sl-l.s-1)
+//      return tree.balanceInsertR(l)
+//   }
+//}
+
+func (tree RedBlackBottomUp) join(l, r *Node, sl list.Size) (p *Node) <span class="cov8" title="1">{
+   if l == nil </span><span class="cov8" title="1">{ return r }</span>
+   <span class="cov8" title="1">if r == nil </span><span class="cov8" title="1">{ return l }</span>
+   <span class="cov8" title="1">if tree.rank(l) &lt; tree.rank(r) </span><span class="cov8" title="1">{
+      return tree.build(l, p, tree.deleteMin(r, &amp;p), sl)
+   }</span> else<span class="cov8" title="1"> {
+      return tree.build(tree.deleteMax(l, &amp;p), p, r, sl-1)
+   }</span>
+}
+
+func (tree RedBlackBottomUp) Join(other list.List) list.List <span class="cov8" title="1">{
+   tree.share(tree.root)
+   tree.share(other.(*RedBlackBottomUp).root)
+   return &amp;RedBlackBottomUp{
+      Tree: Tree{
+         arena: tree.arena,
+         root:  tree.join(tree.root, other.(*RedBlackBottomUp).root, tree.size),
+         size:  tree.size + other.(*RedBlackBottomUp).size,
+      },
+   }
+}</span>
+</pre>
+		
+		<pre class="file" id="file22" style="display: none">package binarytree
+
+//
+type RedBlackRelaxed struct {
+  //Tree
+  RankBalanced
+}
+//
+//func (tree RedBlackRelaxed) split(p *Node, i, s Size) (l, r *Node) {
+//   if p == nil {
+//      return
+//   }
+//   tree.persist(&amp;p)
+//
+//   sl := p.s
+//   sr := s - p.s - 1
+//
+//   if i &lt;= (*p).s {
+//      l, r = tree.split(p.l, i, sl)
+//      r = tree.build(r, p, p.r, sl-i)
+//   } else {
+//      l, r = tree.split(p.r, i-sl-1, sr)
+//      l = tree.build(p.l, p, l, sl)
+//   }
+//   return l, r
+//}
+//
+//func (tree RedBlackRelaxed) Split(i Position) (RedBlackRelaxed, RedBlackRelaxed) {
+//   // assert(i &lt;= tree.Size())
+//   tree.share(tree.root)
+//   l, r := tree.split(tree.root, i, tree.size)
+//   return RedBlackRelaxed{Tree: Tree{arena: tree.arena, root: l, size: i}},
+//      RedBlackRelaxed{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
+//}
+//
+//func (tree RedBlackRelaxed) build(l, p, r *Node, sl Size) *Node {
+//   if tree.rank(l) == tree.rank(r) {
+//      p.l = l
+//      p.r = r
+//      p.s = sl
+//      p.y = uint64(tree.rank(p.l) + 1)
+//      return p
+//   }
+//   if tree.rank(l) &lt; tree.rank(r) {
+//      tree.persist(&amp;r)
+//      r.s = 1 + sl + r.s
+//      r.l = tree.build(l, p, r.l, sl)
+//      return tree.fixL(r)
+//   } else {
+//      tree.persist(&amp;l)
+//      l.r = tree.build(l.r, p, r, sl-l.s-1)
+//      return tree.fixR(l)
+//   }
+//}
+//
+//func (tree RedBlackRelaxed) join(l, r *Node, sl Size) (p *Node) {
+//   if l == nil {
+//      return r
+//   }
+//   if r == nil {
+//      return l
+//   }
+//   if tree.rank(l) &lt; tree.rank(r) {
+//      return tree.build(l, tree.deleteMin(&amp;r), r, sl)
+//   } else {
+//      return tree.build(l, tree.deleteMax(&amp;l), r, sl-1)
+//   }
+//}
+//
+//func (tree RedBlackRelaxed) Join(other RedBlackRelaxed) RedBlackRelaxed {
+//   tree.share(tree.root)
+//   tree.share(other.root)
+//   return RedBlackRelaxed{
+//      Tree: Tree{
+//         arena: tree.arena,
+//         root:  tree.join(tree.root, other.root, tree.size),
+//         size:  tree.size + other.size,
+//      },
+//   }
+//}
+//
+func (tree RedBlackRelaxed) verifyHeight(p *Node) <span class="cov8" title="1">{
+   // TODO return height, check for every node
+   invariant(p.height() &lt;= 2 * tree.rank(p) + 1)
+}</span>
+
+
+func (tree RedBlackRelaxed) verifyRanks(p *Node) <span class="cov8" title="1">{
+  if p == nil </span><span class="cov8" title="1">{
+     return
+  }</span>
+  <span class="cov8" title="1">invariant(tree.rank(p) &gt;= tree.rank(p.l))
+  invariant(tree.rank(p) &gt;= tree.rank(p.r))
+
+   // No parent of a 0-child is a 0-child.
+   invariant(!tree.isZeroChild(p, p.l) || !tree.isZeroChild(p.l, p.l.l))
+   invariant(!tree.isZeroChild(p, p.l) || !tree.isZeroChild(p.l, p.l.r))
+   invariant(!tree.isZeroChild(p, p.r) || !tree.isZeroChild(p.r, p.r.l))
+   invariant(!tree.isZeroChild(p, p.r) || !tree.isZeroChild(p.r, p.r.r))
+
+  tree.verifyRanks(p.l)
+  tree.verifyRanks(p.r)</span>
+}
+
+//func (tree RedBlackRelaxed) Verify() {
+//   tree.verifySize(tree.root, tree.size)
+//   tree.verifyRanks(tree.root)
+//}
+</pre>
+		
+		<pre class="file" id="file23" style="display: none">package binarytree
+
+import . "binarysearch/abstract/list"
+
+type RedBlackRelaxedBottomUp struct {
+   RedBlackBottomUp
+   RedBlackRelaxed
+}
+
+func (tree RedBlackRelaxedBottomUp) Verify() <span class="cov8" title="1">{
+   tree.Tree.verifySize(tree.root, tree.size)
+   tree.RedBlackRelaxed.verifyRanks(tree.root)
+   tree.RedBlackRelaxed.verifyHeight(tree.root)
+}</span>
+
+func (RedBlackRelaxedBottomUp) New() List <span class="cov8" title="1">{
+   return &amp;RedBlackRelaxedBottomUp{}
+}</span>
+
+func (tree *RedBlackRelaxedBottomUp) Clone() List <span class="cov8" title="1">{
+   return &amp;RedBlackRelaxedBottomUp{
+      RedBlackBottomUp: RedBlackBottomUp{
+         Tree: tree.Tree.Clone(),
+      },
+   }
+}</span>
+
+func (tree *RedBlackRelaxedBottomUp) insert(p *Node, i Position, x Data) *Node <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
+      return tree.allocate(Node{x: x})
+   }</span>
+   <span class="cov8" title="1">tree.persist(&amp;p)
+   if i &lt;= p.s </span><span class="cov8" title="1">{
+      p.s = p.s + 1
+      p.l = tree.insert(p.l, i, x)
+      return tree.balanceInsertL(p)
+   }</span> else<span class="cov8" title="1"> {
+      p.r = tree.insert(p.r, i-p.s-1, x)
+      return tree.balanceInsertR(p)
+   }</span>
+}
+
+func (tree *RedBlackRelaxedBottomUp) Insert(i Position, x Data) <span class="cov8" title="1">{
+   // assert(i &lt;= tree.Size())
+   tree.size = tree.size + 1
+   tree.root = tree.insert(tree.root, i, x)
+   return
+}</span>
+
+func (tree RedBlackRelaxedBottomUp) Join(other List) List <span class="cov8" title="1">{
+   tree.share(tree.root)
+   tree.share(other.(*RedBlackRelaxedBottomUp).root)
+   return &amp;RedBlackRelaxedBottomUp{
+      RedBlackBottomUp: RedBlackBottomUp{
+         Tree: Tree{
+            arena: tree.arena,
+            root:  tree.join(tree.root, other.(*RedBlackRelaxedBottomUp).root, tree.size),
+            size:  tree.size + other.(*RedBlackRelaxedBottomUp).size,
+         },
+      },
+   }
+}</span>
+
+func (tree RedBlackRelaxedBottomUp) Split(i Position) (List, List) <span class="cov8" title="1">{
+   // assert(i &lt;= tree.Size())
+   tree.share(tree.root)
+   l, r := tree.split(tree.root, i, tree.size)
+   return &amp;RedBlackRelaxedBottomUp{RedBlackBottomUp: RedBlackBottomUp{Tree: Tree{arena: tree.arena, root: l, size: i}}},
+          &amp;RedBlackRelaxedBottomUp{RedBlackBottomUp: RedBlackBottomUp{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}}
+}</span>
+</pre>
+		
+		<pre class="file" id="file24" style="display: none">package binarytree
+
+import (
+   . "binarysearch/abstract/list"
+)
+
+type RedBlackRelaxedTopDown struct {
+   RedBlackTopDown
+   RedBlackRelaxed
+}
+
+func (tree RedBlackRelaxedTopDown) Verify() <span class="cov8" title="1">{
+   tree.Tree.verifySize(tree.root, tree.size)
+   tree.RedBlackRelaxed.verifyRanks(tree.root)
+   tree.RedBlackRelaxed.verifyHeight(tree.root)
+}</span>
+
+func (RedBlackRelaxedTopDown) New() List <span class="cov8" title="1">{
+   return &amp;RedBlackRelaxedTopDown{}
+}</span>
+
+// TODO: make all clone syntax the exact same to avoid inconsistency in results
+func (tree *RedBlackRelaxedTopDown) Clone() List <span class="cov8" title="1">{
+   return &amp;RedBlackRelaxedTopDown{
+      RedBlackTopDown: *tree.RedBlackTopDown.Clone().(*RedBlackTopDown),
+   }
+}</span>
+
+// This top-down insertion algorithm was translated and paraphrased from the
+// _Deletion Without Rebalancing in Binary Search Trees_ paper referenced above.
+//func (tree *RedBlackRelaxedTopDown) insert(p **Node, i Position, x Data) {
+   ////
+   //// "If the tree is empty, create a new node of rank zero containing the item
+   ////  to be inserted and make it the root, completing the insertion."
+   ////
+   //if *p == nil {
+   //   tree.attach(p, x)
+   //   return
+   //}
+   //tree.persist(p)
+   ////
+   //// "Otherwise, promote the root if 0,0."
+   ////
+   //if tree.isZeroZero(*p) {
+   //   tree.promote(*p)
+   //}
+   ////
+   //// "This establishes the invariant for the main loop of the algorithm:
+   ////  *p is a non-nil node that is not a 0,0-node and not a 0-child.
+   //for {
+   //   // assert(!tree.isZeroZero(*p))
+   //   //
+   //   // "From *p, take one step down the search path..."
+   //   //
+   //   if i &lt;= (*p).s {
+   //      //
+   //      // LEFT
+   //      //
+   //      // "If the next node on the search path is nil, replace it by a new
+   //      //  node of rank 0 containing the item to be inserted. This completes
+   //      //  the insertion: the new node may be a 0-child, but *p is not."
+   //      //
+   //      if (*p).l == nil {
+   //         tree.attachL(*p, x)
+   //         return
+   //      }
+   //      if !tree.isZeroZero((*p).l) &amp;&amp; !tree.isZeroChild(*p, (*p).l) {
+   //         tree.pathLeft(&amp;p)
+   //         continue
+   //      }
+   //      if tree.isZeroZero((*p).l) {
+   //         tree.pathLeft(&amp;p)
+   //         tree.promote(*p)
+   //         continue
+   //      }
+   //      // In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child
+   //      // assert(tree.isZeroChild(*p, (*p).l))
+   //      // assert(!tree.isZeroChild((*p).l, (*p).l.l))
+   //      // assert(!tree.isZeroChild((*p).l, (*p).l.l))
+   //
+   //      // From y, take one step down the
+   //      // search path to z. If z is null, replace z by a new node of rank 0 containing the item to
+   //      // be inserted; if the new node is a 0-child, do a rotate or double rotate step to restore
+   //      // the rank rule (Figure 6(d), (e), and (f)). This completes the insertion.
+   //      if i &lt;= (*p).l.s {
+   //         //
+   //         // LEFT LEFT
+   //         //
+   //         // "If this node is nil, replace it by a new node containing the
+   //         //  item to be inserted. "
+   //         //
+   //         if (*p).l.l == nil {
+   //            tree.attachLL(*p, x)
+   //            if tree.isZeroChild((*p).l, (*p).l.l) { // or is p.l.rank == 0 ?
+   //               tree.rotateR(p)
+   //            }
+   //            return
+   //         }
+   //         //If z is not a 0,0-node, replace w by y and x by z, completing the
+   //         // step (Figure 6(g)).
+   //         if !tree.isZeroZero((*p).l.l) {
+   //            tree.pathLeft(&amp;p)
+   //            tree.pathLeft(&amp;p)
+   //            continue
+   //         }
+   //         // If z is a 0,0-node but not a 1-child, promote z, and replace w by y and
+   //         // x by z, completing the step (Figure 6(g)).
+   //         if !tree.isOneChild((*p).l, (*p).l.l) {
+   //            tree.pathLeft(&amp;p)
+   //            tree.pathLeft(&amp;p)
+   //            tree.promote(*p)
+   //            continue
+   //         }
+   //         // Otherwise (z is a 0,0-node and a 1-child), do a rotate or double rotate step to restore the rank rule (Figure 6(h) and (i), respectively).
+   //         //  (i) Node z is a 0,0-node and a 1-child, and y and z are both left or
+   //         //both right children: promote z, do a rotate step, and replace w by z and x by the child of z along the search
+   //         //path.
+   //         tree.rotateR(p)
+   //         tree.pathLeft(&amp;p)
+   //         tree.promote(*p)
+   //         continue
+   //
+   //      } else {
+   //         //
+   //         // LEFT RIGHT
+   //         //
+   //         if (*p).l.r == nil {
+   //            tree.attachLR(*p, x)
+   //            if tree.isZeroChild((*p).l, (*p).l.r) { // or is p.l.rank == 0 ?
+   //               tree.rotateLR(p)
+   //            }
+   //            return
+   //         }
+   //         // In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child.
+   //
+   //         //If z is not a 0,0-node, replace w by y and x by z, completing the
+   //         // step (Figure 6(g)).
+   //         if !tree.isZeroZero((*p).l.r) {
+   //            tree.pathLeft(&amp;p)
+   //            tree.pathRight(&amp;p, &amp;i)
+   //            continue
+   //         }
+   //         // If z is a 0,0-node but not a 1-child, promote z, and replace w by y and
+   //         // x by z, completing the step (Figure 6(g)).
+   //         if !tree.isOneChild((*p).l, (*p).l.r) {
+   //            tree.pathLeft(&amp;p)
+   //            tree.pathRight(&amp;p, &amp;i)
+   //            tree.promote(*p)
+   //            continue
+   //         }
+   //         // Otherwise (z is a 0,0-node and a 1-child), do a rotate or double rotate step to restore the rank rule (Figure 6(h) and (i), respectively).
+   //
+   //         // (j) Node z is a 0,0-node and a 1-child, and exactly one of y and z is a left child: promote z, do a double
+   //         //            //rotate step, replace w by whichever of x and y is on the search path from z after the rotations, and replace x
+   //         //            //by the child of the new w on the search path.
+   //         tree.rotateLR(p)
+   //         tree.promote(*p)
+   //         //
+   //         // "If a double rotation is done, take one further step down the
+   //         //  search path after the rotation. Ths completes the step."
+   //         //
+   //         if i &lt;= (*p).s {
+   //            tree.pathLeft(&amp;p) // LRL
+   //         } else {
+   //            tree.pathRight(&amp;p, &amp;i) // LRR
+   //         }
+   //      }
+   //   } else {
+   //      //
+   //      // RIGHT
+   //      //
+   //      // "If the next node on the search path is nil, replace it by a new
+   //      //  node of rank 0 containing the item to be inserted. This completes
+   //      //  the insertion: the new node may be a 0-child, but *p is not."
+   //      //
+   //      if (*p).r == nil {
+   //         tree.attachR(*p, x)
+   //         return
+   //      }
+   //      if !tree.isZeroZero((*p).r) &amp;&amp; !tree.isZeroChild(*p, (*p).r) {
+   //         tree.pathRight(&amp;p, &amp;i)
+   //         continue
+   //      }
+   //      if tree.isZeroZero((*p).r) {
+   //         tree.pathRight(&amp;p, &amp;i)
+   //         tree.promote(*p)
+   //         continue
+   //      }
+   //      // In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child
+   //
+   //      // From y, take one step down the
+   //      // search path to z. If z is null, replace z by a new node of rank 0 containing the item to
+   //      // be inserted; if the new node is a 0-child, do a rotate or double rotate step to restore
+   //      // the rank rule (Figure 6(d), (e), and (f)). This completes the insertion.
+   //      if i &gt; (*p).s + (*p).r.s + 1 {
+   //         //
+   //         // RIGHT RIGHT
+   //         //
+   //         // "If this node is nil, replace it by a new node containing the
+   //         //  item to be inserted. "
+   //         //
+   //         if (*p).r.r == nil {
+   //            tree.attachRR(*p, x)
+   //            if tree.isZeroChild((*p).r, (*p).r.r) { // or is p.r.rank == 0 ?
+   //               tree.rotateL(p)
+   //            }
+   //            return
+   //         }
+   //         // In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child.
+   //
+   //         //If z is not a 0,0-node, replace w by y and x by z, completing the
+   //         // step (Figure 6(g)).
+   //         if !tree.isZeroZero((*p).r.r) {
+   //            tree.pathRight(&amp;p, &amp;i)
+   //            tree.pathRight(&amp;p, &amp;i)
+   //            continue
+   //         }
+   //         // If z is a 0,0-node but not a 1-child, promote z, and replace w by y and
+   //         // x by z, completing the step (Figure 6(g)).
+   //         if !tree.isOneChild((*p).r, (*p).r.r) {
+   //            tree.pathRight(&amp;p, &amp;i)
+   //            tree.pathRight(&amp;p, &amp;i)
+   //            tree.promote(*p)
+   //            continue
+   //         }
+   //         // Otherwise (z is a 0,0-node and a 1-child), do a rotate or double rotate step to restore the rank rule (Figure 6(h) and (i), respectively).
+   //         //  (i) Node z is a 0,0-node and a 1-child, and y and z are both left or
+   //         //both right children: promote z, do a rotate step, and replace w by z and x by the child of z along the search
+   //         //path.
+   //         tree.rotateL(p)
+   //         tree.pathRight(&amp;p, &amp;i)
+   //         tree.promote(*p)
+   //         continue
+   //
+   //      } else {
+   //         //
+   //         // RIGHT LEFT
+   //         //
+   //         if (*p).r.l == nil {
+   //            tree.attachRL(*p, x)
+   //            if tree.isZeroChild((*p).r, (*p).r.l) { // or is p.l.rank == 0 ?
+   //               tree.rotateRL(p)
+   //            }
+   //            return
+   //         }
+   //         // In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child.
+   //
+   //         //If z is not a 0,0-node, replace w by y and x by z, completing the
+   //         // step (Figure 6(g)).
+   //         if !tree.isZeroZero((*p).r.l) {
+   //            tree.pathRight(&amp;p, &amp;i)
+   //            tree.pathLeft(&amp;p)
+   //            continue
+   //         }
+   //         // If z is a 0,0-node but not a 1-child, promote z, and replace w by y and
+   //         // x by z, completing the step (Figure 6(g)).
+   //         if !tree.isOneChild((*p).r, (*p).r.l) {
+   //            tree.pathRight(&amp;p, &amp;i)
+   //            tree.pathLeft(&amp;p)
+   //            tree.promote(*p)
+   //            continue
+   //         }
+   //         // Otherwise (z is a 0,0-node and a 1-child), do a rotate or double rotate step to restore the rank rule (Figure 6(h) and (i), respectively).
+   //
+   //         // (j) Node z is a 0,0-node and a 1-child, and exactly one of y and z is a left child: promote z, do a double
+   //         //            //rotate step, replace w by whichever of x and y is on the search path from z after the rotations, and replace x
+   //         //            //by the child of the new w on the search path.
+   //         tree.rotateRL(p)
+   //         tree.promote(*p)
+   //         //
+   //         // "If a double rotation is done, take one further step down the
+   //         //  search path after the rotation. Ths completes the step."
+   //         //
+   //         if i &gt; (*p).s {
+   //            tree.pathRight(&amp;p, &amp;i) // RLR
+   //         } else {
+   //            tree.pathLeft(&amp;p) // RLL
+   //         }
+   //      }
+   //   }
+   //}
+//}
+
+//func (tree *RedBlackRelaxedTopDown) Insert(i Position, x Data) {
+//   // assert(i &lt;= tree.Size())
+//   tree.size++
+//   tree.insert(&amp;tree.root, i, x)
+//}
+
+
+func (tree RedBlackRelaxedTopDown) Join(other List) List <span class="cov8" title="1">{
+   tree.share(tree.root)
+   tree.share(other.(*RedBlackRelaxedTopDown).root)
+   return &amp;RedBlackRelaxedTopDown{
+      RedBlackTopDown: RedBlackTopDown{
+         Tree: Tree{
+            arena: tree.arena,
+            root:  tree.join(tree.root, other.(*RedBlackRelaxedTopDown).root, tree.size),
+            size:  tree.size + other.(*RedBlackRelaxedTopDown).size,
+         },
+      },
+   }
+}</span>
+
+func (tree RedBlackRelaxedTopDown) Split(i Position) (List, List) <span class="cov8" title="1">{
+   // assert(i &lt;= tree.Size())
+   tree.share(tree.root)
+   l, r := tree.split(tree.root, i, tree.size)
+   return &amp;RedBlackRelaxedTopDown{RedBlackTopDown: RedBlackTopDown{Tree: Tree{arena: tree.arena, root: l, size: i}}},
+          &amp;RedBlackRelaxedTopDown{RedBlackTopDown: RedBlackTopDown{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}}
+}</span>
+
+func (tree RedBlackRelaxedTopDown) split(p *Node, i, s Size) (l, r *Node) <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
+      return
+   }</span>
+   <span class="cov8" title="1">tree.persist(&amp;p)
+
+   sl := p.s
+   sr := s - p.s - 1
+
+   if i &lt;= (*p).s </span><span class="cov8" title="1">{
+      l, r = tree.split(p.l, i, sl)
+      r = tree.build(r, p, p.r, sl-i)
+   }</span> else<span class="cov8" title="1"> {
+      l, r = tree.split(p.r, i-sl-1, sr)
+      l = tree.build(p.l, p, l, sl)
+   }</span>
+   <span class="cov8" title="1">return l, r</span>
+}
+
+func (tree RedBlackRelaxedTopDown) build(l, p, r *Node, sl Size) *Node <span class="cov8" title="1">{
+   if tree.rank(l) == tree.rank(r) </span><span class="cov8" title="1">{
+      p.l = l
+      p.r = r
+      p.s = sl
+      p.y = uint64(tree.rank(p.l) + 1)
+      return p
+   }</span>
+   <span class="cov8" title="1">if tree.rank(l) &lt; tree.rank(r) </span><span class="cov8" title="1">{
+      tree.persist(&amp;r)
+      r.s = 1 + sl + r.s
+      r.l = tree.build(l, p, r.l, sl)
+      return tree.balanceInsertL(r)
+   }</span> else<span class="cov8" title="1"> {
+      tree.persist(&amp;l)
+      l.r = tree.build(l.r, p, r, sl-l.s-1)
+      return tree.balanceInsertR(l)
+   }</span>
+}
+
+func (tree RedBlackRelaxedTopDown) join(l, r *Node, sl Size) (p *Node) <span class="cov8" title="1">{
+   if l == nil </span><span class="cov8" title="1">{
+      return r
+   }</span>
+   <span class="cov8" title="1">if r == nil </span><span class="cov8" title="1">{
+      return l
+   }</span>
+   <span class="cov8" title="1">if tree.rank(l) &lt; tree.rank(r) </span><span class="cov8" title="1">{
+      return tree.build(l, tree.RedBlackTopDown.Tree.deleteMin(&amp;r), r, sl)
+   }</span> else<span class="cov8" title="1"> {
+      return tree.build(l, tree.RedBlackTopDown.Tree.deleteMax(&amp;l), r, sl-1)
+   }</span>
+}
+</pre>
+		
+		<pre class="file" id="file25" style="display: none">package binarytree
+
+import (
+   "binarysearch/abstract/list"
+)
+
+type RedBlackTopDown struct {
+   Tree
+   RedBlack
+}
+
+func (tree RedBlackTopDown) Verify() <span class="cov8" title="1">{
+   tree.verifySize(tree.root, tree.size)
+   tree.RedBlack.verifyRanks(tree.root)
+   tree.RedBlack.verifyHeight(tree.root, tree.size)
+}</span>
+
+func (RedBlackTopDown) New() list.List <span class="cov8" title="1">{
+   return &amp;RedBlackTopDown{}
+}</span>
+
+func (tree *RedBlackTopDown) Clone() list.List <span class="cov8" title="1">{
+   return &amp;RedBlackTopDown{
+      Tree: tree.Tree.Clone(),
+   }
+}</span>
+
+// This top-down insertion algorithm was translated and paraphrased from the
+// _Deletion Without Rebalancing in Binary Search Trees_ paper referenced above.
+func (tree *RedBlackTopDown) insert(p **Node, i list.Position, x list.Data) <span class="cov8" title="1">{
+   //
+   // "If the tree is empty, create a new node of rank zero containing the item
+   //  to be inserted and make it the root, completing the insertion."
+   //
+   if *p == nil </span><span class="cov8" title="1">{
+      tree.attach(p, x)
+      return
+   }</span>
+   <span class="cov8" title="1">tree.persist(p)
+   //
+   // "Otherwise, promote the root if 0,0."
+   //
+   if tree.isZeroZero(*p) </span><span class="cov8" title="1">{
+      tree.promote(*p)
+   }</span>
+   //
+   // "This establishes the invariant for the main loop of the algorithm:
+   //  *p is a non-nil node that is not a 0,0-node and not a 0-child.
+   <span class="cov8" title="1">for </span><span class="cov8" title="1">{
+      // assert(!tree.isZeroZero(*p))
+      //
+      // "From *p, take one step down the search path..."
+      //
+      if i &lt;= (*p).s </span><span class="cov8" title="1">{
+         //
+         // LEFT
+         //
+         if (*p).l == nil </span><span class="cov8" title="1">{
+            tree.attachL(*p, x)
+            return
+         }</span>
+         <span class="cov8" title="1">if !tree.isZeroChild(*p, (*p).l) &amp;&amp; !tree.isZeroZero((*p).l) </span><span class="cov8" title="1">{
+            tree.pathLeft(&amp;p)
+            continue</span>
+         }
+         <span class="cov8" title="1">if tree.isZeroZero((*p).l) </span><span class="cov8" title="1">{
+            tree.pathLeft(&amp;p)
+            tree.promote(*p)
+            continue</span>
+         }
+         // In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child
+         // assert(tree.isZeroChild(*p, (*p).l))
+         // assert(!tree.isZeroChild((*p).l, (*p).l.l))
+         // assert(!tree.isZeroChild((*p).l, (*p).l.l))
+         <span class="cov8" title="1">if i &lt;= (*p).l.s </span><span class="cov8" title="1">{
+            if (*p).l.l == nil </span><span class="cov8" title="1">{
+               tree.attachLL(*p, x)
+               if tree.isZeroChild((*p).l, (*p).l.l) </span><span class="cov8" title="1">{ // or is p.l.rank == 0 ?
+                  tree.rotateR(p)
+               }</span>
+               <span class="cov8" title="1">return</span>
+            }
+            <span class="cov8" title="1">if !tree.isZeroZero((*p).l.l) </span><span class="cov8" title="1">{
+               tree.pathLeft(&amp;p)
+               tree.pathLeft(&amp;p)
+               continue</span>
+            }
+            //if !tree.isOneChild((*p).l, (*p).l.l) {
+            //   tree.pathLeft(&amp;p)
+            //   tree.pathLeft(&amp;p)
+            //   tree.promote(*p)
+            //   continue
+            //}
+            <span class="cov8" title="1">tree.rotateR(p)
+            tree.pathLeft(&amp;p)
+            tree.promote(*p)
+            continue</span>
+
+         } else<span class="cov8" title="1"> {
+            //
+            // LEFT RIGHT
+            //
+            if (*p).l.r == nil </span><span class="cov8" title="1">{
+               tree.attachLR(*p, x)
+               if tree.isZeroChild((*p).l, (*p).l.r) </span><span class="cov8" title="1">{ // or is p.l.rank == 0 ?
+                  tree.rotateLR(p)
+               }</span>
+               <span class="cov8" title="1">return</span>
+            }
+            <span class="cov8" title="1">if !tree.isZeroZero((*p).l.r) </span><span class="cov8" title="1">{
+               tree.pathLeft(&amp;p)
+               tree.pathRight(&amp;p, &amp;i)
+               continue</span>
+            }
+            //if !tree.isOneChild((*p).l, (*p).l.r) {
+            //   tree.pathLeft(&amp;p)
+            //   tree.pathRight(&amp;p, &amp;i)
+            //   tree.promote(*p)
+            //   continue
+            //}
+            <span class="cov8" title="1">tree.rotateLR(p)
+            tree.promote(*p)
+            if i &lt;= (*p).s </span><span class="cov8" title="1">{
+               tree.pathLeft(&amp;p) // LRL
+            }</span> else<span class="cov8" title="1"> {
+               tree.pathRight(&amp;p, &amp;i) // LRR
+            }</span>
+         }
+      } else<span class="cov8" title="1"> {
+         if (*p).r == nil </span><span class="cov8" title="1">{
+            tree.attachR(*p, x)
+            return
+         }</span>
+         <span class="cov8" title="1">if !tree.isZeroZero((*p).r) &amp;&amp; !tree.isZeroChild(*p, (*p).r) </span><span class="cov8" title="1">{
+            tree.pathRight(&amp;p, &amp;i)
+            continue</span>
+         }
+         <span class="cov8" title="1">if tree.isZeroZero((*p).r) </span><span class="cov8" title="1">{
+            tree.pathRight(&amp;p, &amp;i)
+            tree.promote(*p)
+            continue</span>
+         }
+         <span class="cov8" title="1">if i &gt; (*p).s + (*p).r.s + 1 </span><span class="cov8" title="1">{
+            if (*p).r.r == nil </span><span class="cov8" title="1">{
+               tree.attachRR(*p, x)
+               if tree.isZeroChild((*p).r, (*p).r.r) </span><span class="cov8" title="1">{ // or is p.r.rank == 0 ?
+                  tree.rotateL(p)
+               }</span>
+               <span class="cov8" title="1">return</span>
+            }
+            <span class="cov8" title="1">if !tree.isZeroZero((*p).r.r) </span><span class="cov8" title="1">{
+               tree.pathRight(&amp;p, &amp;i)
+               tree.pathRight(&amp;p, &amp;i)
+               continue</span>
+            }
+            //if !tree.isOneChild((*p).r, (*p).r.r) {
+            //   tree.pathRight(&amp;p, &amp;i)
+            //   tree.pathRight(&amp;p, &amp;i)
+            //   tree.promote(*p)
+            //   continue
+            //}
+            <span class="cov8" title="1">tree.rotateL(p)
+            tree.pathRight(&amp;p, &amp;i)
+            tree.promote(*p)
+            continue</span>
+         } else<span class="cov8" title="1"> {
+            //
+            // RIGHT LEFT
+            //
+            if (*p).r.l == nil </span><span class="cov8" title="1">{
+               tree.attachRL(*p, x)
+               if tree.isZeroChild((*p).r, (*p).r.l) </span><span class="cov8" title="1">{ // or is p.l.rank == 0 ?
+                  tree.rotateRL(p)
+               }</span>
+               <span class="cov8" title="1">return</span>
+            }
+            <span class="cov8" title="1">if !tree.isZeroZero((*p).r.l) </span><span class="cov8" title="1">{
+               tree.pathRight(&amp;p, &amp;i)
+               tree.pathLeft(&amp;p)
+               continue</span>
+            }
+            //if !tree.isOneChild((*p).r, (*p).r.l) {
+            //   tree.pathRight(&amp;p, &amp;i)
+            //   tree.pathLeft(&amp;p)
+            //   tree.promote(*p)
+            //   continue
+            //}
+            <span class="cov8" title="1">tree.rotateRL(p)
+            tree.promote(*p)
+            if i &gt; (*p).s </span><span class="cov8" title="1">{
+               tree.pathRight(&amp;p, &amp;i) // RLR
+            }</span> else<span class="cov8" title="1"> {
+               tree.pathLeft(&amp;p) // RLL
+            }</span>
+         }
+      }
+   }
+}
+
+func (tree *RedBlackTopDown) Insert(i list.Position, x list.Data) <span class="cov8" title="1">{
+   // assert(i &lt;= tree.Size())
+   tree.insert(&amp;tree.root, i, x)
+   tree.size++
+}</span>
+
+func (tree *RedBlackTopDown) Delete(i list.Position) (x list.Data) <span class="cov8" title="1">{
+   // assert(i &lt; tree.size)
+   tree.size = tree.size - 1
+   tree.root = tree.delete(tree.root, i, &amp;x)
+   return x
+}</span>
+
+func (tree *RedBlackTopDown) delete(p *Node, i list.Position, x *list.Data) *Node <span class="cov8" title="1">{
+   tree.persist(&amp;p)
+   if i == p.s </span><span class="cov8" title="1">{
+      *x = p.x
+      defer tree.free(p)
+      return tree.join(p.l, p.r, p.s)
+   }</span>
+   <span class="cov8" title="1">if i &lt; p.s </span><span class="cov8" title="1">{
+      p.s = p.s - 1
+      p.l = tree.delete(p.l, i, x)
+      return tree.balanceDeleteL(p)
+   }</span> else<span class="cov8" title="1"> {
+      p.r = tree.delete(p.r, i-p.s-1, x)
+      return tree.balanceDeleteR(p)
+   }</span>
+}
+
+
+func (tree RedBlackTopDown) balanceDeleteR(p *Node) *Node <span class="cov8" title="1">{
    //
    //
    //
-   if tree.isZeroChild(p, p.r) </span><span class="cov0" title="0">{
+   if tree.isZeroChild(p, p.r) </span><span class="cov8" title="1">{
       // assert(tree.isOneChild(p.r, p.r.r))
       // assert(tree.isOneChild(p.r, p.r.l))
       return p
@@ -6830,13 +7997,13 @@ func (tree RedBlackBottomUp) balanceDeleteR(p *Node) *Node <span class="cov0" ti
    //
    //
    //
-   <span class="cov0" title="0">if tree.isOneChild(p, p.r) </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if tree.isOneChild(p, p.r) </span><span class="cov8" title="1">{
       return p
    }</span>
    //
    //
    //
-   <span class="cov0" title="0">if tree.isZeroChild(p, p.l) </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if tree.isZeroChild(p, p.l) </span><span class="cov8" title="1">{
       // assert(tree.isZeroChild(p, p.l))
       // assert(tree.isTwoChild(p, p.r))
       // assert(tree.isOneOne(p.l))
@@ -6849,7 +8016,7 @@ func (tree RedBlackBottomUp) balanceDeleteR(p *Node) *Node <span class="cov0" ti
       //
       //
       //
-      if tree.isZeroChild(p.r.l, p.r.l.l) </span><span class="cov0" title="0">{
+      if tree.isZeroChild(p.r.l, p.r.l.l) </span><span class="cov8" title="1">{
          // assert(tree.isOneChild(p.r, p.r.l))
          // assert(tree.isTwoChild(p.r, p.r.r))
          tree.rotateR(&amp;p.r)
@@ -6860,7 +8027,7 @@ func (tree RedBlackBottomUp) balanceDeleteR(p *Node) *Node <span class="cov0" ti
       //
       //
       //
-      <span class="cov0" title="0">if tree.isZeroChild(p.r.l, p.r.l.r) </span><span class="cov0" title="0">{
+      <span class="cov8" title="1">if tree.isZeroChild(p.r.l, p.r.l.r) </span><span class="cov8" title="1">{
          // assert(tree.isOneChild(p.r, p.r.l))
          // assert(tree.isTwoChild(p.r, p.r.r))
          tree.rotateLR(&amp;p.r)
@@ -6875,10 +8042,10 @@ func (tree RedBlackBottomUp) balanceDeleteR(p *Node) *Node <span class="cov0" ti
       // assert(tree.isTwoChild(p.r, p.r.r))
       // assert(tree.isOneChild(p.r.l, p.r.l.l))
       // assert(tree.isOneChild(p.r.l, p.r.l.r))
-      <span class="cov0" title="0">tree.demote(p.r)
+      <span class="cov8" title="1">tree.demote(p.r)
       return p</span>
 
-   } else<span class="cov0" title="0"> {
+   } else<span class="cov8" title="1"> {
       //
       //
       //
@@ -6887,7 +8054,7 @@ func (tree RedBlackBottomUp) balanceDeleteR(p *Node) *Node <span class="cov0" ti
       //
       //
       //
-      if tree.isZeroChild(p.l, p.l.l) </span><span class="cov0" title="0">{
+      if tree.isZeroChild(p.l, p.l.l) </span><span class="cov8" title="1">{
          tree.rotateR(&amp;p)
          tree.promote(p)
          tree.demote(p.r)
@@ -6896,7 +8063,7 @@ func (tree RedBlackBottomUp) balanceDeleteR(p *Node) *Node <span class="cov0" ti
       //
       //
       //
-      <span class="cov0" title="0">if tree.isZeroChild(p.l, p.l.r) </span><span class="cov0" title="0">{
+      <span class="cov8" title="1">if tree.isZeroChild(p.l, p.l.r) </span><span class="cov8" title="1">{
          tree.rotateLR(&amp;p)
          tree.promote(p)
          tree.demote(p.r)
@@ -6906,172 +8073,108 @@ func (tree RedBlackBottomUp) balanceDeleteR(p *Node) *Node <span class="cov0" ti
       //
       //
       // assert(tree.isOneOne(p.l))
-      <span class="cov0" title="0">tree.demote(p)
+      <span class="cov8" title="1">tree.demote(p)
       return p</span>
    }
 }
 
-func (tree RedBlackBottomUp) balanceDeleteL(p *Node) *Node <span class="cov0" title="0">{
-   if tree.isZeroChild(p, p.l) </span><span class="cov0" title="0">{
-      if tree.isOneOne(p.l.r) &amp;&amp; tree.isOneOne(p.l.l) </span><span class="cov0" title="0">{
+func (tree RedBlackTopDown) balanceDeleteL(p *Node) *Node <span class="cov8" title="1">{
+   if tree.isZeroChild(p, p.l) </span><span class="cov8" title="1">{
+      if tree.isOneOne(p.l.r) &amp;&amp; tree.isOneOne(p.l.l) </span><span class="cov8" title="1">{
          return p
       }</span>
    }
-   <span class="cov0" title="0">if tree.isZeroChild(p, p.l) || tree.isOneChild(p, p.l) </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if tree.isZeroChild(p, p.l) || tree.isOneChild(p, p.l) </span><span class="cov8" title="1">{
       return p
    }</span>
-   <span class="cov0" title="0">if tree.isOneChild(p, p.r) </span><span class="cov0" title="0">{
-      if tree.isOneChild(p.r, p.r.l) &amp;&amp; tree.isOneChild(p.r, p.r.r) </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if tree.isOneChild(p, p.r) </span><span class="cov8" title="1">{
+      if tree.isOneChild(p.r, p.r.l) &amp;&amp; tree.isOneChild(p.r, p.r.r) </span><span class="cov8" title="1">{
          tree.demote(p)
          return p
       }</span>
-      <span class="cov0" title="0">if tree.isZeroChild(p.r, p.r.r) </span><span class="cov0" title="0">{
+      <span class="cov8" title="1">if tree.isZeroChild(p.r, p.r.r) </span><span class="cov8" title="1">{
          tree.rotateL(&amp;p)
          tree.promote(p)
          tree.demote(p.l)
          return p
-      }</span> else<span class="cov0" title="0"> {
+      }</span> else<span class="cov8" title="1"> {
          tree.rotateRL(&amp;p)
          tree.promote(p)
          tree.demote(p.l)
          return p
       }</span>
-   } else<span class="cov0" title="0"> {
+   } else<span class="cov8" title="1"> {
       tree.rotateL(&amp;p)
-      if tree.isOneChild(p.l.r, p.l.r.r) &amp;&amp; tree.isOneChild(p.l.r, p.l.r.l) </span><span class="cov0" title="0">{
+      if tree.isOneChild(p.l.r, p.l.r.r) &amp;&amp; tree.isOneChild(p.l.r, p.l.r.l) </span><span class="cov8" title="1">{
          tree.demote(p.l)
          return p
       }</span>
-      <span class="cov0" title="0">if tree.isZeroChild(p.l.r, p.l.r.r) </span><span class="cov0" title="0">{
+      <span class="cov8" title="1">if tree.isZeroChild(p.l.r, p.l.r.r) </span><span class="cov8" title="1">{
          tree.rotateL(&amp;p.l)
          tree.promote(p.l)
          tree.demote(p.l.l)
          return p
       }</span>
-      <span class="cov0" title="0">tree.rotateRL(&amp;p.l)
+      <span class="cov8" title="1">tree.rotateRL(&amp;p.l)
       tree.promote(p.l)
       tree.demote(p.l.l)
       return p</span>
    }
 }
 
-func (tree *RedBlackBottomUp) Insert(i list.Position, x list.Data) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.size)
-   tree.size = tree.size + 1
-   tree.root = tree.insert(tree.root, i, x)
-   return
-}</span>
 
-func (tree *RedBlackBottomUp) insert(p *Node, i list.Position, x list.Data) *Node <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
-      return tree.allocate(Node{x: x})
-   }</span>
-   <span class="cov0" title="0">tree.persist(&amp;p)
-   if i &lt;= p.s </span><span class="cov0" title="0">{
-      p.s = p.s + 1
-      p.l = tree.insert(p.l, i, x)
-      return tree.balanceInsertL(p)
-   }</span> else<span class="cov0" title="0"> {
-      p.r = tree.insert(p.r, i-p.s-1, x)
-      return tree.balanceInsertR(p)
-   }</span>
-}
-
-func (tree RedBlackBottomUp) balanceInsertL(p *Node) *Node <span class="cov0" title="0">{
-   if tree.isZeroChild(p, p.l) </span><span class="cov0" title="0">{
-      if tree.isZeroChild(p, p.r) </span><span class="cov0" title="0">{
-         if tree.isZeroChild(p.l, p.l.l) || tree.isZeroChild(p.l, p.l.r) </span><span class="cov0" title="0">{
-            tree.promote(p)
-            return p
-         }</span>
-      } else<span class="cov0" title="0"> {
-         if tree.isZeroChild(p.l, p.l.l) </span><span class="cov0" title="0">{
-            tree.rotateR(&amp;p)
-            return p
-         }</span>
-         <span class="cov0" title="0">if tree.isZeroChild(p.l, p.l.r) </span><span class="cov0" title="0">{
-            tree.rotateLR(&amp;p)
-            return p
-         }</span>
-      }
-   }
-   <span class="cov0" title="0">return p</span>
-}
-
-func (tree RedBlackBottomUp) balanceInsertR(p *Node) *Node <span class="cov0" title="0">{
-   if tree.isZeroChild(p, p.r) </span><span class="cov0" title="0">{
-      if tree.isZeroChild(p, p.l) </span><span class="cov0" title="0">{
-         if tree.isZeroChild(p.r, p.r.r) || tree.isZeroChild(p.r, p.r.l) </span><span class="cov0" title="0">{
-            tree.promote(p)
-            return p
-         }</span>
-      } else<span class="cov0" title="0"> {
-         if tree.isZeroChild(p.r, p.r.r) </span><span class="cov0" title="0">{
-            tree.rotateL(&amp;p)
-            return p
-         }</span>
-         <span class="cov0" title="0">if tree.isZeroChild(p.r, p.r.l) </span><span class="cov0" title="0">{
-            tree.rotateRL(&amp;p)
-            return p
-         }</span>
-      }
-   }
-   <span class="cov0" title="0">return p</span>
-}
-
-
-func (tree RedBlackBottomUp) split(p *Node, i, s list.Size) (l, r *Node) <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
+func (tree RedBlackTopDown) split(p *Node, i, s list.Size) (l, r *Node) <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
       return
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;p)
+   <span class="cov8" title="1">tree.persist(&amp;p)
 
    sl := p.s
    sr := s - p.s - 1
 
-   if i &lt;= (*p).s </span><span class="cov0" title="0">{
+   if i &lt;= (*p).s </span><span class="cov8" title="1">{
       l, r = tree.split(p.l, i, sl)
       r = tree.build(r, p, p.r, sl-i)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       l, r = tree.split(p.r, i-sl-1, sr)
       l = tree.build(p.l, p, l, sl)
    }</span>
-   <span class="cov0" title="0">return l, r</span>
+   <span class="cov8" title="1">return l, r</span>
 }
 
-func (tree RedBlackBottomUp) Split(i list.Position) (list.List, list.List) <span class="cov0" title="0">{
+func (tree RedBlackTopDown) Split(i list.Position) (list.List, list.List) <span class="cov8" title="1">{
    // assert(i &lt;= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
-   return &amp;RedBlackBottomUp{Tree: Tree{arena: tree.arena, root: l, size: i}},
-      &amp;RedBlackBottomUp{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
+   return &amp;RedBlackTopDown{Tree: Tree{arena: tree.arena, root: l, size: i}},
+      &amp;RedBlackTopDown{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
 }</span>
 
-func (tree *RedBlackBottomUp) deleteMin(p *Node, min **Node) *Node <span class="cov0" title="0">{
+func (tree *RedBlackTopDown) deleteMin(p *Node, min **Node) *Node <span class="cov8" title="1">{
    tree.persist(&amp;p)
-   if p.l == nil </span><span class="cov0" title="0">{
+   if p.l == nil </span><span class="cov8" title="1">{
       *min = p
       return p.r
    }</span>
-   <span class="cov0" title="0">p.s = p.s - 1
+   <span class="cov8" title="1">p.s = p.s - 1
    p.l = tree.deleteMin(p.l, min)
    return tree.balanceDeleteL(p)</span>
 }
 
 
-func (tree *RedBlackBottomUp) deleteMax(p *Node, max **Node) *Node <span class="cov0" title="0">{
+func (tree *RedBlackTopDown) deleteMax(p *Node, max **Node) *Node <span class="cov8" title="1">{
    tree.persist(&amp;p)
-   if p.r == nil </span><span class="cov0" title="0">{
+   if p.r == nil </span><span class="cov8" title="1">{
       *max = p
       return p.l
    }</span>
-   <span class="cov0" title="0">p.r = tree.deleteMax(p.r, max)
+   <span class="cov8" title="1">p.r = tree.deleteMax(p.r, max)
    return tree.balanceDeleteR(p)</span>
 }
 
 // TODO: we can do if rank is within 1?
-func (tree RedBlackBottomUp) build(l, p, r *Node, sl list.Size) *Node <span class="cov0" title="0">{
-   if tree.rank(l) == tree.rank(r) </span><span class="cov0" title="0">{
+func (tree RedBlackTopDown) build(l, p, r *Node, sl list.Size) *Node <span class="cov8" title="1">{
+   if tree.rank(l) == tree.rank(r) </span><span class="cov8" title="1">{ // TODO: what if in range?
       p.l = l
       p.r = r
       p.s = sl
@@ -7080,577 +8183,95 @@ func (tree RedBlackBottomUp) build(l, p, r *Node, sl list.Size) *Node <span clas
       //
       //
       if (l == nil || tree.isZeroChild(l, l.l) || tree.isZeroChild(l, l.r))||
-         (r == nil || tree.isZeroChild(r, r.l) || tree.isZeroChild(r, r.r)) </span><span class="cov0" title="0">{
+         (r == nil || tree.isZeroChild(r, r.l) || tree.isZeroChild(r, r.r)) </span><span class="cov8" title="1">{
          tree.promote(p)
       }</span>
-      <span class="cov0" title="0">return p</span>
+      <span class="cov8" title="1">return p</span>
    }
-   <span class="cov0" title="0">if tree.rank(l) &lt; tree.rank(r) </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if tree.rank(l) &lt; tree.rank(r) </span><span class="cov8" title="1">{
       tree.persist(&amp;r)
       r.s = 1 + sl + r.s
       r.l = tree.build(l, p, r.l, sl)
       return tree.balanceInsertL(r)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       tree.persist(&amp;l)
       l.r = tree.build(l.r, p, r, sl-l.s-1)
       return tree.balanceInsertR(l)
    }</span>
 }
 
-func (tree RedBlackBottomUp) join(l, r *Node, sl list.Size) (p *Node) <span class="cov0" title="0">{
-   if l == nil </span><span class="cov0" title="0">{ return r }</span>
-   <span class="cov0" title="0">if r == nil </span><span class="cov0" title="0">{ return l }</span>
-   <span class="cov0" title="0">if tree.rank(l) &lt; tree.rank(r) </span><span class="cov0" title="0">{
+func (tree RedBlackTopDown) balanceInsertL(p *Node) *Node <span class="cov8" title="1">{
+   if tree.isZeroChild(p, p.l) </span><span class="cov8" title="1">{
+      if tree.isZeroChild(p, p.r) </span><span class="cov8" title="1">{
+         if tree.isZeroChild(p.l, p.l.l) || tree.isZeroChild(p.l, p.l.r) </span><span class="cov8" title="1">{
+            tree.promote(p)
+            return p
+         }</span>
+      } else<span class="cov8" title="1"> {
+         if tree.isZeroChild(p.l, p.l.l) </span><span class="cov8" title="1">{
+            tree.rotateR(&amp;p)
+            return p
+         }</span>
+         <span class="cov8" title="1">if tree.isZeroChild(p.l, p.l.r) </span><span class="cov0" title="0">{
+            tree.rotateLR(&amp;p)
+            return p
+         }</span>
+      }
+   }
+   <span class="cov8" title="1">return p</span>
+}
+
+func (tree RedBlackTopDown) balanceInsertR(p *Node) *Node <span class="cov8" title="1">{
+   if tree.isZeroChild(p, p.r) </span><span class="cov8" title="1">{
+      if tree.isZeroChild(p, p.l) </span><span class="cov8" title="1">{
+         if tree.isZeroChild(p.r, p.r.r) || tree.isZeroChild(p.r, p.r.l) </span><span class="cov8" title="1">{
+            tree.promote(p)
+            return p
+         }</span>
+      } else<span class="cov8" title="1"> {
+         if tree.isZeroChild(p.r, p.r.r) </span><span class="cov8" title="1">{
+            tree.rotateL(&amp;p)
+            return p
+         }</span>
+         <span class="cov8" title="1">if tree.isZeroChild(p.r, p.r.l) </span><span class="cov0" title="0">{
+            tree.rotateRL(&amp;p)
+            return p
+         }</span>
+      }
+   }
+   <span class="cov8" title="1">return p</span>
+}
+
+func (tree RedBlackTopDown) join(l, r *Node, sl list.Size) (p *Node) <span class="cov8" title="1">{
+   if l == nil </span><span class="cov8" title="1">{ return r }</span>
+   <span class="cov8" title="1">if r == nil </span><span class="cov8" title="1">{ return l }</span>
+   <span class="cov8" title="1">if tree.rank(l) &lt; tree.rank(r) </span><span class="cov8" title="1">{
       return tree.build(l, p, tree.deleteMin(r, &amp;p), sl)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       return tree.build(tree.deleteMax(l, &amp;p), p, r, sl-1)
    }</span>
 }
 
-func (tree RedBlackBottomUp) Join(other list.List) list.List <span class="cov0" title="0">{
+func (tree RedBlackTopDown) Join(other list.List) list.List <span class="cov8" title="1">{
    tree.share(tree.root)
-   tree.share(other.(*RedBlackBottomUp).root)
-   return &amp;RedBlackBottomUp{
+   tree.share(other.(*RedBlackTopDown).root)
+   return &amp;RedBlackTopDown{
       Tree: Tree{
          arena: tree.arena,
-         root:  tree.join(tree.root, other.(*RedBlackBottomUp).root, tree.size),
-         size:  tree.size + other.(*RedBlackBottomUp).size,
+         root:  tree.join(tree.root, other.(*RedBlackTopDown).root, tree.size),
+         size:  tree.size + other.(*RedBlackTopDown).size,
       },
    }
 }</span>
 </pre>
 		
-		<pre class="file" id="file20" style="display: none">package binarytree
-
-import . "binarysearch/abstract/list"
-
-type RedBlackRelaxed struct {
-   Tree
-   RankBalanced
-}
-
-func (tree *RedBlackRelaxed) Delete(i Position) (x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
-   x = tree.Tree.delete(&amp;tree.root, tree.size, i)
-   tree.size--
-   return x
-}</span>
-
-func (tree RedBlackRelaxed) split(p *Node, i, s Size) (l, r *Node) <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
-      return
-   }</span>
-   <span class="cov0" title="0">tree.persist(&amp;p)
-
-   sl := p.s
-   sr := s - p.s - 1
-
-   if i &lt;= (*p).s </span><span class="cov0" title="0">{
-      l, r = tree.split(p.l, i, sl)
-      r = tree.build(r, p, p.r, sl-i)
-   }</span> else<span class="cov0" title="0"> {
-      l, r = tree.split(p.r, i-sl-1, sr)
-      l = tree.build(p.l, p, l, sl)
-   }</span>
-   <span class="cov0" title="0">return l, r</span>
-}
-
-func (tree RedBlackRelaxed) Split(i Position) (RedBlackRelaxed, RedBlackRelaxed) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
-   tree.share(tree.root)
-   l, r := tree.split(tree.root, i, tree.size)
-   return RedBlackRelaxed{Tree: Tree{arena: tree.arena, root: l, size: i}},
-      RedBlackRelaxed{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
-}</span>
-
-func (tree RedBlackRelaxed) build(l, p, r *Node, sl Size) *Node <span class="cov0" title="0">{
-   if tree.rank(l) == tree.rank(r) </span><span class="cov0" title="0">{
-      p.l = l
-      p.r = r
-      p.s = sl
-      p.y = uint64(tree.rank(p.l) + 1)
-      return p
-   }</span>
-   <span class="cov0" title="0">if tree.rank(l) &lt; tree.rank(r) </span><span class="cov0" title="0">{
-      tree.persist(&amp;r)
-      r.s = 1 + sl + r.s
-      r.l = tree.build(l, p, r.l, sl)
-      return tree.fixL(r)
-   }</span> else<span class="cov0" title="0"> {
-      tree.persist(&amp;l)
-      l.r = tree.build(l.r, p, r, sl-l.s-1)
-      return tree.fixR(l)
-   }</span>
-}
-
-func (tree RedBlackRelaxed) join(l, r *Node, sl Size) (p *Node) <span class="cov0" title="0">{
-   if l == nil </span><span class="cov0" title="0">{
-      return r
-   }</span>
-   <span class="cov0" title="0">if r == nil </span><span class="cov0" title="0">{
-      return l
-   }</span>
-   <span class="cov0" title="0">if tree.rank(l) &lt; tree.rank(r) </span><span class="cov0" title="0">{
-      return tree.build(l, tree.deleteMin(&amp;r), r, sl)
-   }</span> else<span class="cov0" title="0"> {
-      return tree.build(l, tree.deleteMax(&amp;l), r, sl-1)
-   }</span>
-}
-
-func (tree RedBlackRelaxed) Join(other RedBlackRelaxed) RedBlackRelaxed <span class="cov0" title="0">{
-   tree.share(tree.root)
-   tree.share(other.root)
-   return RedBlackRelaxed{
-      Tree: Tree{
-         arena: tree.arena,
-         root:  tree.join(tree.root, other.root, tree.size),
-         size:  tree.size + other.size,
-      },
-   }
-}</span>
-
-func (tree RedBlackRelaxed) fixL(p *Node) *Node <span class="cov0" title="0">{
-   if tree.isZeroChild(p, p.l) </span><span class="cov0" title="0">{
-      if tree.isZeroChild(p, p.r) </span><span class="cov0" title="0">{
-         if tree.isZeroChild(p.l, p.l.l) || tree.isZeroChild(p.l, p.l.r) </span><span class="cov0" title="0">{
-            tree.promote(p)
-            return p
-         }</span>
-      } else<span class="cov0" title="0"> {
-         if tree.isZeroChild(p.l, p.l.l) </span><span class="cov0" title="0">{
-            return p.rotateR()
-         }</span>
-         <span class="cov0" title="0">if tree.isZeroChild(p.l, p.l.r) </span><span class="cov0" title="0">{
-            return p.rotateLR()
-         }</span>
-      }
-   }
-   <span class="cov0" title="0">return p</span>
-}
-
-func (tree RedBlackRelaxed) fixR(p *Node) *Node <span class="cov0" title="0">{
-   if tree.isZeroChild(p, p.r) </span><span class="cov0" title="0">{
-      if tree.isZeroChild(p, p.l) </span><span class="cov0" title="0">{
-         if tree.isZeroChild(p.r, p.r.r) || tree.isZeroChild(p.r, p.r.l) </span><span class="cov0" title="0">{
-            tree.promote(p)
-         }</span>
-      } else<span class="cov0" title="0"> {
-         if tree.isZeroChild(p.r, p.r.r) </span><span class="cov0" title="0">{
-            return p.rotateL()
-         }</span>
-         <span class="cov0" title="0">if tree.isZeroChild(p.r, p.r.l) </span><span class="cov0" title="0">{
-            return p.rotateRL()
-         }</span>
-      }
-   }
-   <span class="cov0" title="0">return p</span>
-}
-
-func (tree RedBlackRelaxed) verifyRanks(p *Node) <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
-      return
-   }</span>
-   <span class="cov0" title="0">invariant(tree.rank(p) &gt;= tree.rank(p.l))
-   invariant(tree.rank(p) &gt;= tree.rank(p.r))
-
-   // No zero-child has a zero-child as a parent
-   if tree.isZeroChild(p, p.l) </span><span class="cov0" title="0">{
-      invariant(!tree.isZeroChild(p.l, p.l.l))
-      invariant(!tree.isZeroChild(p.l, p.l.r))
-   }</span>
-   <span class="cov0" title="0">if tree.isZeroChild(p, p.r) </span><span class="cov0" title="0">{
-      invariant(!tree.isZeroChild(p.r, p.r.l))
-      invariant(!tree.isZeroChild(p.r, p.r.r))
-   }</span>
-   <span class="cov0" title="0">tree.verifyRanks(p.l)
-   tree.verifyRanks(p.r)</span>
-}
-
-func (tree RedBlackRelaxed) Verify() <span class="cov0" title="0">{
-   tree.verifySize(tree.root, tree.size)
-   tree.verifyRanks(tree.root)
-}</span>
-</pre>
-		
-		<pre class="file" id="file21" style="display: none">package binarytree
-
-import . "binarysearch/abstract/list"
-
-type RedBlackRelaxedBottomUp struct {
-   RedBlackRelaxed
-}
-
-func (RedBlackRelaxedBottomUp) New() List <span class="cov0" title="0">{
-   return &amp;RedBlackRelaxedBottomUp{}
-}</span>
-
-func (tree *RedBlackRelaxedBottomUp) Clone() List <span class="cov0" title="0">{
-   return &amp;RedBlackRelaxedBottomUp{
-      RedBlackRelaxed: RedBlackRelaxed{
-         Tree: tree.Tree.Clone(),
-      },
-   }
-}</span>
-
-func (tree *RedBlackRelaxedBottomUp) insert(p *Node, i Position, x Data) *Node <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
-      return tree.allocate(Node{x: x})
-   }</span>
-   <span class="cov0" title="0">tree.persist(&amp;p)
-   if i &lt;= p.s </span><span class="cov0" title="0">{
-      p.s = p.s + 1
-      p.l = tree.insert(p.l, i, x)
-      return tree.fixL(p)
-   }</span> else<span class="cov0" title="0"> {
-      p.r = tree.insert(p.r, i-p.s-1, x)
-      return tree.fixR(p)
-   }</span>
-}
-
-func (tree *RedBlackRelaxedBottomUp) Insert(i Position, x Data) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
-   tree.size = tree.size + 1
-   tree.root = tree.insert(tree.root, i, x)
-   return
-}</span>
-
-func (tree *RedBlackRelaxedBottomUp) Select(i Size) Data <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
-   return tree.lookup(tree.root, i)
-}</span>
-
-func (tree *RedBlackRelaxedBottomUp) Update(i Size, x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
-   tree.persist(&amp;tree.root)
-   tree.update(tree.root, i, x)
-}</span>
-
-func (tree *RedBlackRelaxedBottomUp) Join(other List) List <span class="cov0" title="0">{
-   return &amp;RedBlackRelaxedBottomUp{
-      tree.RedBlackRelaxed.Join(other.(*RedBlackRelaxedBottomUp).RedBlackRelaxed),
-   }
-}</span>
-
-func (tree *RedBlackRelaxedBottomUp) Split(i Position) (List, List) <span class="cov0" title="0">{
-   l, r := tree.RedBlackRelaxed.Split(i)
-   return &amp;RedBlackRelaxedBottomUp{l},
-          &amp;RedBlackRelaxedBottomUp{r}
-}</span>
-</pre>
-		
-		<pre class="file" id="file22" style="display: none">package binarytree
-
-import . "binarysearch/abstract/list"
-
-type RedBlackRelaxedTopDown struct {
-   RedBlackRelaxed
-}
-
-func (RedBlackRelaxedTopDown) New() List <span class="cov0" title="0">{
-   return &amp;RedBlackRelaxedTopDown{}
-}</span>
-
-func (tree *RedBlackRelaxedTopDown) Clone() List <span class="cov0" title="0">{
-   return &amp;RedBlackRelaxedTopDown{
-      RedBlackRelaxed: RedBlackRelaxed{
-         Tree: tree.Tree.Clone(),
-      },
-   }
-}</span>
-
-// This top-down insertion algorithm was translated and paraphrased from the
-// _Deletion Without Rebalancing in Binary Search Trees_ paper referenced above.
-func (tree *RedBlackRelaxedTopDown) insert(p **Node, i Position, x Data) <span class="cov0" title="0">{
-   //
-   // "If the tree is empty, create a new node of rank zero containing the item
-   //  to be inserted and make it the root, completing the insertion."
-   //
-   if *p == nil </span><span class="cov0" title="0">{
-      tree.attach(p, x)
-      return
-   }</span>
-   <span class="cov0" title="0">tree.persist(p)
-   //
-   // "Otherwise, promote the root if 0,0."
-   //
-   if tree.isZeroZero(*p) </span><span class="cov0" title="0">{
-      tree.promote(*p)
-   }</span>
-   //
-   // "This establishes the invariant for the main loop of the algorithm:
-   //  *p is a non-nil node that is not a 0,0-node and not a 0-child.
-   <span class="cov0" title="0">for </span><span class="cov0" title="0">{
-      // assert(!tree.isZeroZero(*p))
-      //
-      // "From *p, take one step down the search path..."
-      //
-      if i &lt;= (*p).s </span><span class="cov0" title="0">{
-         //
-         // LEFT
-         //
-         // "If the next node on the search path is nil, replace it by a new
-         //  node of rank 0 containing the item to be inserted. This completes
-         //  the insertion: the new node may be a 0-child, but *p is not."
-         //
-         if (*p).l == nil </span><span class="cov0" title="0">{
-            tree.attachL(*p, x)
-            return
-         }</span>
-         <span class="cov0" title="0">if !tree.isZeroZero((*p).l) &amp;&amp; !tree.isZeroChild(*p, (*p).l) </span><span class="cov0" title="0">{
-            tree.pathLeft(&amp;p)
-            continue</span>
-         }
-         <span class="cov0" title="0">if tree.isZeroZero((*p).l) </span><span class="cov0" title="0">{
-            tree.pathLeft(&amp;p)
-            tree.promote(*p)
-            continue</span>
-         }
-         // In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child
-         // assert(tree.isZeroChild(*p, (*p).l))
-         // assert(!tree.isZeroChild((*p).l, (*p).l.l))
-         // assert(!tree.isZeroChild((*p).l, (*p).l.l))
-
-         // From y, take one step down the
-         // search path to z. If z is null, replace z by a new node of rank 0 containing the item to
-         // be inserted; if the new node is a 0-child, do a rotate or double rotate step to restore
-         // the rank rule (Figure 6(d), (e), and (f)). This completes the insertion.
-         <span class="cov0" title="0">if i &lt;= (*p).l.s </span><span class="cov0" title="0">{
-            //
-            // LEFT LEFT
-            //
-            // "If this node is nil, replace it by a new node containing the
-            //  item to be inserted. "
-            //
-            if (*p).l.l == nil </span><span class="cov0" title="0">{
-               tree.attachLL(*p, x)
-               if tree.isZeroChild((*p).l, (*p).l.l) </span><span class="cov0" title="0">{ // or is p.l.rank == 0 ?
-                  tree.rotateR(p)
-               }</span>
-               <span class="cov0" title="0">return</span>
-            }
-            //If z is not a 0,0-node, replace w by y and x by z, completing the
-            // step (Figure 6(g)).
-            <span class="cov0" title="0">if !tree.isZeroZero((*p).l.l) </span><span class="cov0" title="0">{
-               tree.pathLeft(&amp;p)
-               tree.pathLeft(&amp;p)
-               continue</span>
-            }
-            // If z is a 0,0-node but not a 1-child, promote z, and replace w by y and
-            // x by z, completing the step (Figure 6(g)).
-            <span class="cov0" title="0">if !tree.isOneChild((*p).l, (*p).l.l) </span><span class="cov0" title="0">{
-               tree.pathLeft(&amp;p)
-               tree.pathLeft(&amp;p)
-               tree.promote(*p)
-               continue</span>
-            }
-            // Otherwise (z is a 0,0-node and a 1-child), do a rotate or double rotate step to restore the rank rule (Figure 6(h) and (i), respectively).
-            //  (i) Node z is a 0,0-node and a 1-child, and y and z are both left or
-            //both right children: promote z, do a rotate step, and replace w by z and x by the child of z along the search
-            //path.
-            <span class="cov0" title="0">tree.rotateR(p)
-            tree.pathLeft(&amp;p)
-            tree.promote(*p)
-            continue</span>
-
-         } else<span class="cov0" title="0"> {
-            //
-            // LEFT RIGHT
-            //
-            if (*p).l.r == nil </span><span class="cov0" title="0">{
-               tree.attachLR(*p, x)
-               if tree.isZeroChild((*p).l, (*p).l.r) </span><span class="cov0" title="0">{ // or is p.l.rank == 0 ?
-                  tree.rotateLR(p)
-               }</span>
-               <span class="cov0" title="0">return</span>
-            }
-            // In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child.
-
-            //If z is not a 0,0-node, replace w by y and x by z, completing the
-            // step (Figure 6(g)).
-            <span class="cov0" title="0">if !tree.isZeroZero((*p).l.r) </span><span class="cov0" title="0">{
-               tree.pathLeft(&amp;p)
-               tree.pathRight(&amp;p, &amp;i)
-               continue</span>
-            }
-            // If z is a 0,0-node but not a 1-child, promote z, and replace w by y and
-            // x by z, completing the step (Figure 6(g)).
-            <span class="cov0" title="0">if !tree.isOneChild((*p).l, (*p).l.r) </span><span class="cov0" title="0">{
-               tree.pathLeft(&amp;p)
-               tree.pathRight(&amp;p, &amp;i)
-               tree.promote(*p)
-               continue</span>
-            }
-            // Otherwise (z is a 0,0-node and a 1-child), do a rotate or double rotate step to restore the rank rule (Figure 6(h) and (i), respectively).
-
-            // (j) Node z is a 0,0-node and a 1-child, and exactly one of y and z is a left child: promote z, do a double
-            //            //rotate step, replace w by whichever of x and y is on the search path from z after the rotations, and replace x
-            //            //by the child of the new w on the search path.
-            <span class="cov0" title="0">tree.rotateLR(p)
-            tree.promote(*p)
-            //
-            // "If a double rotation is done, take one further step down the
-            //  search path after the rotation. Ths completes the step."
-            //
-            if i &lt;= (*p).s </span><span class="cov0" title="0">{
-               tree.pathLeft(&amp;p) // LRL
-            }</span> else<span class="cov0" title="0"> {
-               tree.pathRight(&amp;p, &amp;i) // LRR
-            }</span>
-         }
-      } else<span class="cov0" title="0"> {
-         //
-         // RIGHT
-         //
-         // "If the next node on the search path is nil, replace it by a new
-         //  node of rank 0 containing the item to be inserted. This completes
-         //  the insertion: the new node may be a 0-child, but *p is not."
-         //
-         if (*p).r == nil </span><span class="cov0" title="0">{
-            tree.attachR(*p, x)
-            return
-         }</span>
-         <span class="cov0" title="0">if !tree.isZeroZero((*p).r) &amp;&amp; !tree.isZeroChild(*p, (*p).r) </span><span class="cov0" title="0">{
-            tree.pathRight(&amp;p, &amp;i)
-            continue</span>
-         }
-         <span class="cov0" title="0">if tree.isZeroZero((*p).r) </span><span class="cov0" title="0">{
-            tree.pathRight(&amp;p, &amp;i)
-            tree.promote(*p)
-            continue</span>
-         }
-         // In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child
-
-         // From y, take one step down the
-         // search path to z. If z is null, replace z by a new node of rank 0 containing the item to
-         // be inserted; if the new node is a 0-child, do a rotate or double rotate step to restore
-         // the rank rule (Figure 6(d), (e), and (f)). This completes the insertion.
-         <span class="cov0" title="0">if i &gt; (*p).s+(*p).r.s+1 </span><span class="cov0" title="0">{
-            //
-            // RIGHT RIGHT
-            //
-            // "If this node is nil, replace it by a new node containing the
-            //  item to be inserted. "
-            //
-            if (*p).r.r == nil </span><span class="cov0" title="0">{
-               tree.attachRR(*p, x)
-               if tree.isZeroChild((*p).r, (*p).r.r) </span><span class="cov0" title="0">{ // or is p.r.rank == 0 ?
-                  tree.rotateL(p)
-               }</span>
-               <span class="cov0" title="0">return</span>
-            }
-            // In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child.
-
-            //If z is not a 0,0-node, replace w by y and x by z, completing the
-            // step (Figure 6(g)).
-            <span class="cov0" title="0">if !tree.isZeroZero((*p).r.r) </span><span class="cov0" title="0">{
-               tree.pathRight(&amp;p, &amp;i)
-               tree.pathRight(&amp;p, &amp;i)
-               continue</span>
-            }
-            // If z is a 0,0-node but not a 1-child, promote z, and replace w by y and
-            // x by z, completing the step (Figure 6(g)).
-            <span class="cov0" title="0">if !tree.isOneChild((*p).r, (*p).r.r) </span><span class="cov0" title="0">{
-               tree.pathRight(&amp;p, &amp;i)
-               tree.pathRight(&amp;p, &amp;i)
-               tree.promote(*p)
-               continue</span>
-            }
-            // Otherwise (z is a 0,0-node and a 1-child), do a rotate or double rotate step to restore the rank rule (Figure 6(h) and (i), respectively).
-            //  (i) Node z is a 0,0-node and a 1-child, and y and z are both left or
-            //both right children: promote z, do a rotate step, and replace w by z and x by the child of z along the search
-            //path.
-            <span class="cov0" title="0">tree.rotateL(p)
-            tree.pathRight(&amp;p, &amp;i)
-            tree.promote(*p)
-            continue</span>
-
-         } else<span class="cov0" title="0"> {
-            //
-            // RIGHT LEFT
-            //
-            if (*p).r.l == nil </span><span class="cov0" title="0">{
-               tree.attachRL(*p, x)
-               if tree.isZeroChild((*p).r, (*p).r.l) </span><span class="cov0" title="0">{ // or is p.l.rank == 0 ?
-                  tree.rotateRL(p)
-               }</span>
-               <span class="cov0" title="0">return</span>
-            }
-            // In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child.
-
-            //If z is not a 0,0-node, replace w by y and x by z, completing the
-            // step (Figure 6(g)).
-            <span class="cov0" title="0">if !tree.isZeroZero((*p).r.l) </span><span class="cov0" title="0">{
-               tree.pathRight(&amp;p, &amp;i)
-               tree.pathLeft(&amp;p)
-               continue</span>
-            }
-            // If z is a 0,0-node but not a 1-child, promote z, and replace w by y and
-            // x by z, completing the step (Figure 6(g)).
-            <span class="cov0" title="0">if !tree.isOneChild((*p).r, (*p).r.l) </span><span class="cov0" title="0">{
-               tree.pathRight(&amp;p, &amp;i)
-               tree.pathLeft(&amp;p)
-               tree.promote(*p)
-               continue</span>
-            }
-            // Otherwise (z is a 0,0-node and a 1-child), do a rotate or double rotate step to restore the rank rule (Figure 6(h) and (i), respectively).
-
-            // (j) Node z is a 0,0-node and a 1-child, and exactly one of y and z is a left child: promote z, do a double
-            //            //rotate step, replace w by whichever of x and y is on the search path from z after the rotations, and replace x
-            //            //by the child of the new w on the search path.
-            <span class="cov0" title="0">tree.rotateRL(p)
-            tree.promote(*p)
-            //
-            // "If a double rotation is done, take one further step down the
-            //  search path after the rotation. Ths completes the step."
-            //
-            if i &gt; (*p).s </span><span class="cov0" title="0">{
-               tree.pathRight(&amp;p, &amp;i) // RLR
-            }</span> else<span class="cov0" title="0"> {
-               tree.pathLeft(&amp;p) // RLL
-            }</span>
-         }
-      }
-   }
-}
-
-func (tree *RedBlackRelaxedTopDown) Select(i Size) Data <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
-   return tree.lookup(tree.root, i)
-}</span>
-
-func (tree *RedBlackRelaxedTopDown) Update(i Size, x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
-   tree.persist(&amp;tree.root)
-   tree.update(tree.root, i, x)
-}</span>
-
-func (tree *RedBlackRelaxedTopDown) Insert(i Position, x Data) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
-   tree.size++
-   tree.insert(&amp;tree.root, i, x)
-}</span>
-
-func (tree *RedBlackRelaxedTopDown) Join(other List) List <span class="cov0" title="0">{
-   return &amp;RedBlackRelaxedTopDown{
-      tree.RedBlackRelaxed.Join(other.(*RedBlackRelaxedTopDown).RedBlackRelaxed),
-   }
-}</span>
-
-func (tree *RedBlackRelaxedTopDown) Split(i Position) (List, List) <span class="cov0" title="0">{
-   l, r := tree.RedBlackRelaxed.Split(i)
-   return &amp;RedBlackRelaxedTopDown{l},
-      &amp;RedBlackRelaxedTopDown{r}
-}</span>
-</pre>
-		
-		<pre class="file" id="file23" style="display: none">package binarytree
+		<pre class="file" id="file26" style="display: none">package binarytree
 
 import (
    . "binarysearch/abstract/list"
-   "binarysearch/random"
+   "binarysearch/utility"
    "fmt"
    "math"
-   "time"
 )
 
 func init() {<span class="cov8" title="1">
@@ -7789,6 +8410,15 @@ func init() {<span class="cov8" title="1">
 //   ////}
 //}
 
+func heightBound1(height int, size Size) bool <span class="cov0" title="0">{
+   return height &gt; 2 * int(utility.Log2(size))
+}</span>
+func heightBound2(height int, size Size) bool <span class="cov0" title="0">{
+   return size &lt; (1 &lt;&lt; ((height + 1) &gt;&gt; 1))
+}</span>
+func heightBound3(height int, size Size) bool <span class="cov0" title="0">{
+   return (height + 1) / 2 &gt; int(math.Log2(float64(size)))
+}</span>
 func log2_1(x, y int) bool <span class="cov0" title="0">{
    // assert(x &lt;= y)
    return (1 + int(math.Floor(math.Log2(float64(y))))) - (1 + int(math.Floor(math.Log2(float64(x))))) &lt;= 1
@@ -7799,27 +8429,40 @@ func log2_2(x, y int) bool <span class="cov0" title="0">{
 }</span>
 func Sandbox() <span class="cov0" title="0">{
    //
-
-
-
-   random.Seed(4)
-   var d time.Duration
-   for k := 0; k &lt; 3; k++ </span><span class="cov0" title="0">{
-     tree := &amp;Tree{}
-     size := 10_000_000
-
-     for i := 0; i &lt; size; i++ </span><span class="cov0" title="0">{
-        tree.Insert(random.LessThan(tree.Size()+1, random.Uniform()), Data(i))
-     }</span>
-     <span class="cov0" title="0">t := time.Now()
-     for tree.root != nil </span><span class="cov0" title="0">{
-        i := random.LessThan(tree.Size(), random.Uniform())
-        tree.Delete(i)
-     }</span>
-     <span class="cov0" title="0">d += time.Since(t)
-     tree.Free()</span>
+   for i := 1; i &lt; 1000000; i++ </span><span class="cov0" title="0">{
+      for h := 1; h &lt; 32; h++ </span><span class="cov0" title="0">{
+         h1 := heightBound1(h, Size(i))
+         h2 := heightBound2(h, Size(i))
+         h3 := heightBound3(h, Size(i))
+         if int(2 * math.Log2(float64(i))) != int(2 *utility.Log2(uint64(i))) </span><span class="cov0" title="0">{
+         //if h1 != h2 || h1 != h3 || h2 != h3 {
+            panic(fmt.Sprint(i, h, h1, h2, h3, int(2 * math.Log2(float64(i))), int(2 *utility.Log2(uint64(i)))))</span>
+         }
+      }
    }
-   <span class="cov0" title="0">fmt.Println(d)</span>
+
+   //
+   //random.Seed(4)
+   //var d time.Duration
+   //var f float64
+   //for k := 0; k &lt; 100; k++ {
+   //  tree := &amp;LBSTRelaxed{}
+   //  size := 10_000
+   //
+   //  for i := 0; i &lt; size; i++ {
+   //     tree.Insert(random.LessThan(tree.Size()+1, random.Uniform()), Data(i))
+   //  }
+   //  t := time.Now()
+   //  for tree.root != nil {
+   //     i := random.LessThan(tree.Size(), random.Uniform())
+   //     tree.Delete(i)
+   //     //f += tree.root.AveragePathLength()
+   //  }
+   //  d += time.Since(t)
+   //  tree.Free()
+   //}
+   //fmt.Println(f / (3 * 100_000))
+   //fmt.Println(d)
 
    //
    //t := time.Now()
@@ -8957,330 +9600,7 @@ func Sandbox() <span class="cov0" title="0">{
 //}
 </pre>
 		
-		<pre class="file" id="file24" style="display: none">package binarytree
-
-import (
-   . "binarysearch/abstract/list"
-   "binarysearch/random"
-   "math/bits"
-)
-
-type Zip struct {
-   Tree
-   random.Source
-}
-
-func (Zip) New() List <span class="cov0" title="0">{
-   return &amp;Zip{
-      Source: random.New(random.Uint64()),
-   }
-}</span>
-
-func (tree *Zip) Clone() List <span class="cov0" title="0">{
-   return &amp;Zip{
-      Tree:   tree.Tree.Clone(),
-      Source: tree.Source, // TODO: copy?
-   }
-}</span>
-
-func (tree *Zip) randomRank() uint64 <span class="cov0" title="0">{
-   return uint64(bits.LeadingZeros64(tree.Uint64()))
-}</span>
-
-func (tree *Zip) unzip(p *Node, i Position, l, r **Node) <span class="cov0" title="0">{
-   //p.partition(i, &amp;l, &amp;r)
-   for p != nil </span><span class="cov0" title="0">{
-      tree.persist(&amp;p)
-      if i &lt;= p.s </span><span class="cov0" title="0">{
-         *r = p
-         p.s = p.s - i
-         r = &amp;p.l
-         p = *r
-      }</span> else<span class="cov0" title="0"> {
-         *l = p
-         i = i - p.s - 1
-         l = &amp;p.r
-         p = *l
-      }</span>
-   }
-   <span class="cov0" title="0">*l = nil
-   *r = nil</span>
-}
-
-// When the new node's rank is greater than the rank of the current node,
-// we know for sure that we can insert the new node at the current level.
-//
-// Otherwise, the new rank is less than or equal to the current rank.
-//
-//   When branching LEFT: if the ranks are equal, a split at the current
-//   node would make it the right child of the new node, where an equal
-//   rank would be valid. Keep searching if the new rank is less than.
-//
-//   When branching RIGHT: if the ranks are equal, a split at the current
-//   node would make it the left child of the new node, where an equal
-//   rank would NOT be valid.
-func (tree *Zip) Insert(i Position, x Data) <span class="cov0" title="0">{
-   tree.size++
-
-   p := &amp;tree.root                                      // parent, pointer
-   n := tree.allocate(Node{x: x, y: tree.randomRank()}) // new node
-
-   for *p != nil </span><span class="cov0" title="0">{
-      if n.y &gt; (*p).y </span><span class="cov0" title="0">{ // New rank is greater, insert here.
-         break</span>
-      }
-      <span class="cov0" title="0">if i &lt;= (*p).s </span><span class="cov0" title="0">{
-         if n.y == (*p).y </span><span class="cov0" title="0">{ // Branching left and ranks are equal.
-            break</span>
-         }
-         <span class="cov0" title="0">tree.persist(p)
-         (*p).s = (*p).s + 1 // Increase the size of the left subtree.
-         p = &amp;(*p).l</span>         // Path left.
-      } else<span class="cov0" title="0"> {
-         tree.persist(p)
-         i = i - ((*p).s + 1) // Skip the current node and left subtree.
-         p = &amp;(*p).r          // Path right.
-      }</span>
-   }
-   // assert(tree.rank(n) &gt;= tree.rank(*p))
-   <span class="cov0" title="0">tree.unzip(*p, i, &amp;n.l, &amp;n.r) // Unzip the path into the new node.
-   n.s = i                       // Set the size of the left subtree.
-   *p = n</span>                        // Write the new node to the path.
-}
-
-func (tree *Zip) rank(p *Node) uint64 <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
-      return 0
-   }</span> else<span class="cov0" title="0"> {
-      return p.y
-   }</span>
-}
-
-func (tree *Zip) zip(l, r *Node, sl Size) (root *Node) <span class="cov0" title="0">{
-   // assert(sl == l.size())
-   p := &amp;root
-   for </span><span class="cov0" title="0">{
-      if l == nil </span><span class="cov0" title="0">{
-         *p = r
-         return
-      }</span>
-      <span class="cov0" title="0">if r == nil </span><span class="cov0" title="0">{
-         *p = l
-         return
-      }</span>
-
-      <span class="cov0" title="0">if tree.rank(l) &gt;= tree.rank(r) </span><span class="cov0" title="0">{
-         tree.persist(&amp;l)
-         sl = sl - l.s - 1 //l.sizeR(sl)
-         *p = l
-         p = &amp;l.r
-         l = *p
-      }</span> else<span class="cov0" title="0"> {
-         tree.persist(&amp;r)
-         r.s = r.s + sl
-         *p = r
-         p = &amp;r.l
-         r = *p
-      }</span>
-   }
-}
-
-//
-//func (tree *Zip) zipRecursive(x, y *Node, sl Size) *Node {
-//   // assert(sl == x.count())
-//   if x == nil { return y }
-//   if y == nil { return x }
-//   if rank(x) &lt; rank(y) {
-//      tree.pathcopy(&amp;y)
-//      y.i = y.i + sl
-//      y.l = tree.zipRecursive(x, y.l, sl)
-//      return y
-//   } else {
-//      tree.pathcopy(&amp;x)
-//      sl = sl - x.i - 1
-//      x.r = tree.zipRecursive(x.r, y, sl)
-//      return x
-//   }
-//}
-//
-//func (tree *Zip) deleteRecursive(p *Node, i Position, x *Value) *Node {
-//   if p == nil {
-//      return nil
-//   }
-//   tree.pathcopy(&amp;p)
-//   if i == p.i {
-//      // assert(p.i == p.l.count())
-//      *x = p.x
-//      return tree.zipRecursive(p.l, p.r, p.i)
-//   }
-//   if i &lt; p.i {
-//      p.i = p.i - 1
-//      if i == p.l.i {
-//         *x = p.l.x
-//         tree.pathcopy(&amp;p.l)
-//         tree.pathcopy(&amp;p.l.r)
-//         tree.pathcopy(&amp;p.l.l)
-//         p.l = tree.zipRecursive(p.l.l, p.l.r, p.l.i)
-//         return p
-//      } else {
-//         p.l = tree.deleteRecursive(p.l, i, x)
-//         return p
-//      }
-//   } else {
-//      if (i - (p.i + 1)) == p.r.i {
-//         *x = p.r.x
-//         tree.pathcopy(&amp;p.r)
-//         tree.pathcopy(&amp;p.r.r)
-//         tree.pathcopy(&amp;p.r.l)
-//         p.r = tree.zipRecursive(p.r.l, p.r.r, p.r.i)
-//         return p
-//      } else {
-//         p.r = tree.deleteRecursive(p.r, i - (p.i + 1), x)
-//         return p
-//      }
-//   }
-//}
-
-func (tree *Zip) delete(p **Node, i Position, x *Data) <span class="cov0" title="0">{
-   for </span><span class="cov0" title="0">{
-      if i == (*p).s </span><span class="cov0" title="0">{
-         //
-         // Found the node to delete.
-         //
-         defer tree.free(*p)
-         *x = (*p).x
-         if (*p).l == nil &amp;&amp; (*p).r == nil </span><span class="cov0" title="0">{
-            *p = nil
-         }</span> else<span class="cov0" title="0"> {
-            tree.persist(p)
-            *p = tree.zip((*p).l, (*p).r, (*p).s)
-         }</span>
-         <span class="cov0" title="0">return</span>
-      }
-      <span class="cov0" title="0">tree.persist(p)
-      if i &lt; (*p).s </span><span class="cov0" title="0">{
-         (*p).s = (*p).s - 1 // Decrease the size of the left subtree.
-         p = &amp;(*p).l         // Path left.
-      }</span> else<span class="cov0" title="0"> {
-         i = i - ((*p).s + 1) // Skip the current node and left subtree.
-         p = &amp;(*p).r          // Path right.
-      }</span>
-   }
-}
-
-func (tree *Zip) Delete(i Position) (x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
-   //tree.pathcopy(&amp;tree.root)
-   //tree.root = tree.deleteRecursive(tree.root, i, &amp;x)
-   tree.delete(&amp;tree.root, i, &amp;x)
-   tree.size--
-   return
-}</span>
-
-func (tree Zip) split(i Size) (Tree, Tree) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
-   tree.share(tree.root)
-   l, r := tree.Tree.split(tree.root, i)
-
-   return Tree{arena: tree.arena, root: l, size: i},
-      Tree{arena: tree.arena, root: r, size: tree.size - i}
-}</span>
-
-func (tree *Zip) Split(i Position) (List, List) <span class="cov0" title="0">{
-   l, r := tree.split(i)
-
-   return &amp;Zip{l, tree.Source},
-      &amp;Zip{r, tree.Source}
-}</span>
-
-func (tree *Zip) Select(i Size) Data <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
-   return tree.lookup(tree.root, i)
-}</span>
-
-func (tree *Zip) Update(i Size, x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
-   tree.persist(&amp;tree.root)
-   tree.update(tree.root, i, x)
-}</span>
-
-func (tree *Zip) Join(that List) List <span class="cov0" title="0">{
-   tree.share(tree.root)
-   tree.share(that.(*Zip).root)
-
-   root := tree.zip(tree.root, that.(*Zip).root, tree.size)
-   size := tree.size + that.(*Zip).size
-
-   return &amp;Zip{Tree{arena: tree.arena, root: root, size: size}, tree.Source}
-}</span>
-
-func (tree *Zip) verifyRanks(p *Node) <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
-      return
-   }</span>
-   <span class="cov0" title="0">invariant(p.l == nil || p.y &gt; p.l.y)
-   invariant(p.r == nil || p.y &gt; p.r.y || p.y == p.r.y)
-
-   tree.verifyRanks(p.l)
-   tree.verifyRanks(p.r)</span>
-}
-
-//func (tree *Zip) maxHeapify(p *Node) {
-//   if p == nil {
-//      return
-//   }
-//   tree.maxHeapify(p.l)
-//   tree.maxHeapify(p.r)
-//
-//   m := p
-//   if p.l != nil &amp;&amp; rank(p.l) &gt; rank(m) { m = p.l }
-//   if p.r != nil &amp;&amp; rank(p.r) &gt; rank(m) { m = p.r }
-//   if m != p {
-//      y := p.y
-//      p.y = m.y
-//      m.y = y
-//      tree.maxHeapify(m)
-//   } else {
-//      // p is either greater than or equal to both left and right children
-//      // so we need to increase p
-//      p.y++
-//   }
-//}
-
-func (tree *Zip) Verify() <span class="cov0" title="0">{
-   tree.verifySizes()
-   tree.verifyRanks(tree.root)
-}</span>
-
-//func (tree *Zip) assignRanks(p *Node) {
-//   if p == nil {
-//      return
-//   }
-//   p.y = tree.randomRank()
-//   tree.assignRanks(p.l)
-//   tree.assignRanks(p.r)
-//   return
-//  //if p == nil {
-//  //   return
-//  //}
-//  //tree.assignRanks(p.l)
-//  //tree.assignRanks(p.r)
-//  //
-//  //if p.l == nil &amp;&amp; p.r == nil {
-//  //   p.y = 0
-//  //} else {
-//  //   if rank(p.l) == rank(p.r) {
-//  //      p.y = rank(p.l) + 1
-//  //   } else if rank(p.l) &lt; rank(p.r) {
-//  //      p.y = rank(p.r) + (tree.Random.Uint64() &amp; 1)
-//  //   } else {
-//  //      p.y = rank(p.l) + 1
-//  //   }
-//  //}
-//}
-</pre>
-		
-		<pre class="file" id="file25" style="display: none">package binarytree
+		<pre class="file" id="file27" style="display: none">package binarytree
 
 import . "binarysearch/abstract/list"
 
@@ -9514,7 +9834,7 @@ func (tree *Splay) Verify() <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file26" style="display: none">package binarytree
+		<pre class="file" id="file28" style="display: none">package binarytree
 
 import (
    . "binarysearch/abstract/list"
@@ -11880,7 +12200,7 @@ func (tree TreapFingerTree) Verify() <span class="cov0" title="0">{
 //}
 </pre>
 		
-		<pre class="file" id="file27" style="display: none">package binarytree
+		<pre class="file" id="file29" style="display: none">package binarytree
 import . "binarysearch/abstract/list"
 
 import (
@@ -12122,7 +12442,7 @@ func (tree TreapTopDown) Verify() <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file28" style="display: none">package binarytree
+		<pre class="file" id="file30" style="display: none">package binarytree
 
 import (
    "arena"
@@ -12191,22 +12511,48 @@ type Tree struct {
    root *Node
    size list.Size
 }
-
+//
+//func (tree *LBSTRelaxed) partition(p *Node, i uint64) *Node {
+//   // assert(i &lt; p.size())
+//   // measurement(&amp;partitionCount, 1)
+//   n := Node{s: i}
+//   l := &amp;n
+//   r := &amp;n
+//   for i != p.s {
+//      // measurement(&amp;partitionDepth, 1)
+//      tree.persist(&amp;p)
+//      if i &lt; p.s {
+//         p.s = p.s - i - 1
+//         r.l = p
+//         r = r.l
+//         p = p.l
+//      } else {
+//         i = i - p.s - 1
+//         l.r = p
+//         l = l.r
+//         p = p.r
+//      }
+//   }
+//   tree.persist(&amp;p)
+//   l.r = p.l
+//   r.l = p.r
+//   p.l = n.r
+//   p.r = n.l
+//   p.s = n.s
+//   return p
+//}
 // Moves the node at position `i` in the tree of `p` to its root and returns the
 // resulting root. This algorithm is identical to splay with no rotation steps.
 //
-func (tree Tree) partition(p *Node, i uint64) *Node <span class="cov0" title="0">{
-   // assert(i &lt; p.size())
-   // measurement(&amp;partitionCount, 1)
 
-   n := Node{s: i}
+func (tree *Tree) split(p *Node, i uint64) (*Node, *Node) <span class="cov0" title="0">{
+   n := Node{}
    l := &amp;n
    r := &amp;n
-   for i != p.s </span><span class="cov0" title="0">{
-      // measurement(&amp;partitionDepth, 1)
+   for p != nil </span><span class="cov0" title="0">{
       tree.persist(&amp;p)
-      if i &lt; p.s </span><span class="cov0" title="0">{
-         p.s = p.s - i - 1
+      if i &lt;= p.s </span><span class="cov0" title="0">{
+         p.s = p.s - i
          r.l = p
          r = r.l
          p = p.l
@@ -12217,34 +12563,7 @@ func (tree Tree) partition(p *Node, i uint64) *Node <span class="cov0" title="0"
          p = p.r
       }</span>
    }
-   <span class="cov0" title="0">tree.persist(&amp;p)
-   l.r = p.l
-   r.l = p.r
-   p.l = n.r
-   p.r = n.l
-   p.s = n.s
-   return p</span>
-}
-
-func (tree *Tree) split(p *Node, i uint64) (*Node, *Node) <span class="cov8" title="1">{
-   n := Node{}
-   l := &amp;n
-   r := &amp;n
-   for p != nil </span><span class="cov8" title="1">{
-      tree.persist(&amp;p)
-      if i &lt;= p.s </span><span class="cov8" title="1">{
-         p.s = p.s - i
-         r.l = p
-         r = r.l
-         p = p.l
-      }</span> else<span class="cov8" title="1"> {
-         i = i - p.s - 1
-         l.r = p
-         l = l.r
-         p = p.r
-      }</span>
-   }
-   <span class="cov8" title="1">l.r = nil
+   <span class="cov0" title="0">l.r = nil
    r.l = nil
    return n.r, n.l</span>
 }
@@ -12266,7 +12585,7 @@ func (tree Tree) Free() <span class="cov8" title="1">{
 
 // Deletes the node at position `i` from the tree.
 // Returns the data that was in the deleted value.
-func (tree *Tree) Delete(i list.Position) list.Data <span class="cov8" title="1">{
+func (tree *Tree) Delete(i list.Position) list.Data <span class="cov0" title="0">{
    // assert(i &lt; tree.size)
    x := tree.delete(&amp;tree.root, tree.size, i)
    tree.size--
@@ -12429,133 +12748,169 @@ func (tree Tree) Each(visit func(list.Data)) <span class="cov8" title="1">{
 //   }
 //   return p
 //}
+//
+//func (tree *Tree) joinLr(l, r *Node, sl, sr list.Size) *Node {
+//   n := Node{}
+//   p := &amp;n
+//   for {
+//      if l.sizeR(sl) &lt;= sr  {
+//         z := l.y
+//         m := tree.deleteMax(&amp;l)
+//         m.l = l
+//         m.r = r
+//         m.s = sl - 1
+//         m.y = z
+//         p.r = m
+//         break
+//      }
+//      tree.persist(&amp;l)
+//      p.r = l
+//      p = p.r
+//      sl = sl - p.sizeL() - 1
+//      l = l.r
+//   }
+//   return n.r
+//   //if l == nil {
+//   //   return r
+//   //}
+//   //if sl &lt;= sr {
+//   //   p := tree.deleteMax(&amp;l)
+//   //   p.l = l
+//   //   p.r = r
+//   //   p.s = sl - 1
+//   //   return p
+//   //}
+//   //tree.persist(&amp;l)
+//   //l.r = tree.joinLr(l.r, r, sl - l.s - 1, sr)
+//   //return l
+//}
+//
+//func (tree *Tree) joinlR(l, r *Node, sl, sr list.Size) *Node {
+//   n := Node{}
+//   p := &amp;n
+//   for {
+//      // func (tree *Tree) deleteMin2(p *Node) (root, min *Node) {
+//      //   n := Node{}
+//      //   l := &amp;n
+//      //   for {
+//      //      tree.persist(&amp;p)
+//      //      if p.l == nil {
+//      //         l.l = p.r
+//      //         return n.l, p
+//      //      }
+//      //      p.s = p.s - 1
+//      //      l.l = p
+//      //      l = l.l
+//      //      p = p.l
+//      //   }
+//      //}
+//      if r.sizeL() &lt;= sl  {
+//         var m *Node
+//         z := r.y
+//         r, m = tree.deleteMin2(r)
+//         m.l = l
+//         m.r = r
+//         m.s = sl
+//         m.y = z
+//         p.l = m
+//         break
+//      }
+//      tree.persist(&amp;r)
+//      p.l = r
+//      p = p.l
+//      r.s = r.s + sl
+//      r = r.l
+//   }
+//   return n.l
+//   //
+//   //
+//   //if r == nil {
+//   //   return l
+//   //}
+//   //if sr &lt;= sl {
+//   //   p := tree.deleteMin(&amp;r)
+//   //   p.l = l
+//   //   p.r = r
+//   //   p.s = sl
+//   //   return p
+//   //}
+//   //tree.persist(&amp;r)
+//   //r.l = tree.joinlR(l, r.l, sl, r.s)
+//   //r.s = sl + r.s
+//   //return r
+//}
+//
+//func (tree *Tree) join(l, r *Node, sl, sr list.Size) *Node {
+//   if l == nil {
+//      return r
+//   }
+//   if r == nil {
+//      return l
+//   }
+//   if sl &lt;= sr {
+//      tree.persist(&amp;l)
+//      tree.persist(&amp;r)
+//      p := tree.deleteMin(&amp;r)
+//      p.l = l
+//      p.r = r
+//      p.s = sl
+//      return p
+//   } else {
+//      tree.persist(&amp;l)
+//      tree.persist(&amp;r)
+//      p := tree.deleteMax(&amp;l)
+//      p.r = r
+//      p.l = l
+//      p.s = sl - 1
+//      return p
+//   }
+//   //if l == nil {
+//   //   return r
+//   //}
+//   //if sl &lt; sr {
+//   //   return tree.joinlR(l, r, sl, sr)
+//   //} else {
+//   //   return tree.joinLr(l, r, sl, sr)
+//   //}
+//}
 
-func (tree *Tree) joinLr(l, r *Node, sl, sr list.Size) *Node <span class="cov8" title="1">{
-   n := Node{}
-   p := &amp;n
-   for </span><span class="cov8" title="1">{
-      if l.sizeR(sl) &lt;= sr  </span><span class="cov8" title="1">{
-         m := tree.deleteMax(&amp;l)
-         m.l = l
-         m.r = r
-         m.s = sl - 1
-         p.r = m
-         break</span>
-      }
-      <span class="cov8" title="1">tree.persist(&amp;l)
-      p.r = l
-      p = p.r
-      sl = sl - p.sizeL() - 1
-      l = l.r</span>
-   }
-   <span class="cov8" title="1">return n.r</span>
-   //if l == nil {
-   //   return r
-   //}
-   //if sl &lt;= sr {
-   //   p := tree.deleteMax(&amp;l)
-   //   p.l = l
-   //   p.r = r
-   //   p.s = sl - 1
-   //   return p
-   //}
-   //tree.persist(&amp;l)
-   //l.r = tree.joinLr(l.r, r, sl - l.s - 1, sr)
-   //return l
-}
-
-func (tree *Tree) joinlR(l, r *Node, sl, sr list.Size) *Node <span class="cov8" title="1">{
-   n := Node{}
-   p := &amp;n
-   for </span><span class="cov8" title="1">{
-      if r.sizeL() &lt;= sl  </span><span class="cov8" title="1">{
-         r, p.l = tree.deleteMin2(r)
-         //r = q
-         //m := tree.deleteMin(&amp;r)
-         p.l.l = l
-         p.l.r = r
-         p.l.s = sl
-         //p.l = m
-         return n.l
-      }</span>
-      <span class="cov8" title="1">tree.persist(&amp;r)
-      p.l = r
-      p = p.l
-      r.s = r.s + sl
-      r = r.l</span>
-   }
-
-   //
-   //
-   //if r == nil {
-   //   return l
-   //}
-   //if sr &lt;= sl {
-   //   p := tree.deleteMin(&amp;r)
-   //   p.l = l
-   //   p.r = r
-   //   p.s = sl
-   //   return p
-   //}
-   //tree.persist(&amp;r)
-   //r.l = tree.joinlR(l, r.l, sl, r.s)
-   //r.s = sl + r.s
-   //return r
-}
-
-func (tree *Tree) join(l, r *Node, sl, sr list.Size) *Node <span class="cov8" title="1">{
-   if l == nil </span><span class="cov8" title="1">{
-      return r
+func (tree *Tree) dissolve(p *Node, s list.Size) *Node <span class="cov0" title="0">{
+   if p.l == nil </span><span class="cov0" title="0">{
+    return p.r
    }</span>
-   <span class="cov8" title="1">if r == nil </span><span class="cov8" title="1">{
+   <span class="cov0" title="0">if p.r == nil </span><span class="cov0" title="0">{
+      return p.l
+   }</span>
+   <span class="cov0" title="0">if p.sizeL() &lt;= p.sizeR(s) </span><span class="cov0" title="0">{
+      r := tree.deleteMin(&amp;p.r)
+      r.l = p.l
+      r.r = p.r
+      r.s = p.s
+      r.y = p.y
+      return r
+   }</span> else<span class="cov0" title="0"> {
+      l := tree.deleteMax(&amp;p.l)
+      l.r = p.r
+      l.l = p.l
+      l.s = p.s - 1
+      l.y = p.y
       return l
    }</span>
-   <span class="cov8" title="1">if sl &gt; sr </span><span class="cov8" title="1">{
-      return tree.joinLr(l, r, sl, sr)
-   }</span> else<span class="cov8" title="1"> {
-      return tree.joinlR(l, r, sl, sr)
-   }</span>
 }
 
-func (tree *Tree) dissolve(p *Node, s list.Size) *Node <span class="cov8" title="1">{
-   //defer tree.free(p)
-   return tree.join(p.l, p.r, p.sizeL(), p.sizeR(s))
-   //if p.l == nil {
-   //return p.r
-   //}
-   //if p.r == nil {
-   //return p.l
-   //}
-   //if p.sizeL() &lt;= p.sizeR(s) {
-   //r := tree.deleteMin(&amp;p.r)
-   //r.l = p.l
-   //r.r = p.r
-   //r.s = p.s
-   //r.y = p.y
-   //return r
-   //} else {
-   //l := tree.deleteMax(&amp;p.l)
-   //l.r = p.r
-   //l.l = p.l
-   //l.s = p.s - 1
-   //l.y = p.y
-   //return l
-   //}
-}</span>
-
-func (tree *Tree) delete(p **Node, s list.Size, i list.Size) (x list.Data) <span class="cov8" title="1">{
-   for </span><span class="cov8" title="1">{
+func (tree *Tree) delete(p **Node, s list.Size, i list.Size) (x list.Data) <span class="cov0" title="0">{
+   for </span><span class="cov0" title="0">{
       tree.persist(p)
-      if i == (*p).s </span><span class="cov8" title="1">{
+      if i == (*p).s </span><span class="cov0" title="0">{
          x := (*p).x
          *p = tree.dissolve(*p, s)
          return x
       }</span>
-      <span class="cov8" title="1">if i &lt; (*p).s </span><span class="cov8" title="1">{
+      <span class="cov0" title="0">if i &lt; (*p).s </span><span class="cov0" title="0">{
          s = (*p).s
          (*p).s = (*p).s - 1
          p = &amp;(*p).l
-      }</span> else<span class="cov8" title="1"> {
+      }</span> else<span class="cov0" title="0"> {
          i = i - (*p).s - 1
          s = s - (*p).s - 1
          p = &amp;(*p).r
@@ -12587,7 +12942,7 @@ func (tree *Tree) delete(p **Node, s list.Size, i list.Size) (x list.Data) <span
 //   return x
 //}
 
-func (tree Tree) verifySizes() <span class="cov8" title="1">{
+func (tree Tree) verifySizes() <span class="cov0" title="0">{
    tree.verifySize(tree.root, tree.size)
 }</span>
 
@@ -12658,6 +13013,329 @@ func (tree Tree) SymmetricWeightPerLevel() (weights [2][]list.Size) <span class=
    tree.countNodesPerLevel(tree.root.r, &amp;weights[1], 0)
    return</span>
 }
+</pre>
+		
+		<pre class="file" id="file31" style="display: none">package binarytree
+
+import (
+   . "binarysearch/abstract/list"
+   "binarysearch/random"
+   "math/bits"
+)
+
+type Zip struct {
+   Tree
+   random.Source
+}
+
+func (Zip) New() List <span class="cov0" title="0">{
+   return &amp;Zip{
+      Source: random.New(random.Uint64()),
+   }
+}</span>
+
+func (tree *Zip) Clone() List <span class="cov0" title="0">{
+   return &amp;Zip{
+      Tree:   tree.Tree.Clone(),
+      Source: tree.Source, // TODO: copy?
+   }
+}</span>
+
+func (tree *Zip) randomRank() uint64 <span class="cov0" title="0">{
+   return uint64(bits.LeadingZeros64(tree.Uint64()))
+}</span>
+
+func (tree *Zip) unzip(p *Node, i Position, l, r **Node) <span class="cov0" title="0">{
+   //p.partition(i, &amp;l, &amp;r)
+   for p != nil </span><span class="cov0" title="0">{
+      tree.persist(&amp;p)
+      if i &lt;= p.s </span><span class="cov0" title="0">{
+         *r = p
+         p.s = p.s - i
+         r = &amp;p.l
+         p = *r
+      }</span> else<span class="cov0" title="0"> {
+         *l = p
+         i = i - p.s - 1
+         l = &amp;p.r
+         p = *l
+      }</span>
+   }
+   <span class="cov0" title="0">*l = nil
+   *r = nil</span>
+}
+
+// When the new node's rank is greater than the rank of the current node,
+// we know for sure that we can insert the new node at the current level.
+//
+// Otherwise, the new rank is less than or equal to the current rank.
+//
+//   When branching LEFT: if the ranks are equal, a split at the current
+//   node would make it the right child of the new node, where an equal
+//   rank would be valid. Keep searching if the new rank is less than.
+//
+//   When branching RIGHT: if the ranks are equal, a split at the current
+//   node would make it the left child of the new node, where an equal
+//   rank would NOT be valid.
+func (tree *Zip) Insert(i Position, x Data) <span class="cov0" title="0">{
+   tree.size++
+
+   p := &amp;tree.root                                      // parent, pointer
+   n := tree.allocate(Node{x: x, y: tree.randomRank()}) // new node
+
+   for *p != nil </span><span class="cov0" title="0">{
+      if n.y &gt; (*p).y </span><span class="cov0" title="0">{ // New rank is greater, insert here.
+         break</span>
+      }
+      <span class="cov0" title="0">if i &lt;= (*p).s </span><span class="cov0" title="0">{
+         if n.y == (*p).y </span><span class="cov0" title="0">{ // Branching left and ranks are equal.
+            break</span>
+         }
+         <span class="cov0" title="0">tree.persist(p)
+         (*p).s = (*p).s + 1 // Increase the size of the left subtree.
+         p = &amp;(*p).l</span>         // Path left.
+      } else<span class="cov0" title="0"> {
+         tree.persist(p)
+         i = i - ((*p).s + 1) // Skip the current node and left subtree.
+         p = &amp;(*p).r          // Path right.
+      }</span>
+   }
+   // assert(tree.rank(n) &gt;= tree.rank(*p))
+   <span class="cov0" title="0">tree.unzip(*p, i, &amp;n.l, &amp;n.r) // Unzip the path into the new node.
+   n.s = i                       // Set the size of the left subtree.
+   *p = n</span>                        // Write the new node to the path.
+}
+
+func (tree *Zip) rank(p *Node) uint64 <span class="cov0" title="0">{
+   if p == nil </span><span class="cov0" title="0">{
+      return 0
+   }</span> else<span class="cov0" title="0"> {
+      return p.y
+   }</span>
+}
+
+func (tree *Zip) zip(l, r *Node, sl Size) (root *Node) <span class="cov0" title="0">{
+   // assert(sl == l.size())
+   p := &amp;root
+   for </span><span class="cov0" title="0">{
+      if l == nil </span><span class="cov0" title="0">{
+         *p = r
+         return
+      }</span>
+      <span class="cov0" title="0">if r == nil </span><span class="cov0" title="0">{
+         *p = l
+         return
+      }</span>
+
+      <span class="cov0" title="0">if tree.rank(l) &gt;= tree.rank(r) </span><span class="cov0" title="0">{
+         tree.persist(&amp;l)
+         sl = sl - l.s - 1 //l.sizeR(sl)
+         *p = l
+         p = &amp;l.r
+         l = *p
+      }</span> else<span class="cov0" title="0"> {
+         tree.persist(&amp;r)
+         r.s = r.s + sl
+         *p = r
+         p = &amp;r.l
+         r = *p
+      }</span>
+   }
+}
+
+//
+//func (tree *Zip) zipRecursive(x, y *Node, sl Size) *Node {
+//   // assert(sl == x.count())
+//   if x == nil { return y }
+//   if y == nil { return x }
+//   if rank(x) &lt; rank(y) {
+//      tree.pathcopy(&amp;y)
+//      y.i = y.i + sl
+//      y.l = tree.zipRecursive(x, y.l, sl)
+//      return y
+//   } else {
+//      tree.pathcopy(&amp;x)
+//      sl = sl - x.i - 1
+//      x.r = tree.zipRecursive(x.r, y, sl)
+//      return x
+//   }
+//}
+//
+//func (tree *Zip) deleteRecursive(p *Node, i Position, x *Value) *Node {
+//   if p == nil {
+//      return nil
+//   }
+//   tree.pathcopy(&amp;p)
+//   if i == p.i {
+//      // assert(p.i == p.l.count())
+//      *x = p.x
+//      return tree.zipRecursive(p.l, p.r, p.i)
+//   }
+//   if i &lt; p.i {
+//      p.i = p.i - 1
+//      if i == p.l.i {
+//         *x = p.l.x
+//         tree.pathcopy(&amp;p.l)
+//         tree.pathcopy(&amp;p.l.r)
+//         tree.pathcopy(&amp;p.l.l)
+//         p.l = tree.zipRecursive(p.l.l, p.l.r, p.l.i)
+//         return p
+//      } else {
+//         p.l = tree.deleteRecursive(p.l, i, x)
+//         return p
+//      }
+//   } else {
+//      if (i - (p.i + 1)) == p.r.i {
+//         *x = p.r.x
+//         tree.pathcopy(&amp;p.r)
+//         tree.pathcopy(&amp;p.r.r)
+//         tree.pathcopy(&amp;p.r.l)
+//         p.r = tree.zipRecursive(p.r.l, p.r.r, p.r.i)
+//         return p
+//      } else {
+//         p.r = tree.deleteRecursive(p.r, i - (p.i + 1), x)
+//         return p
+//      }
+//   }
+//}
+
+func (tree *Zip) delete(p **Node, i Position, x *Data) <span class="cov0" title="0">{
+   for </span><span class="cov0" title="0">{
+      if i == (*p).s </span><span class="cov0" title="0">{
+         //
+         // Found the node to delete.
+         //
+         defer tree.free(*p)
+         *x = (*p).x
+         if (*p).l == nil &amp;&amp; (*p).r == nil </span><span class="cov0" title="0">{
+            *p = nil
+         }</span> else<span class="cov0" title="0"> {
+            tree.persist(p)
+            *p = tree.zip((*p).l, (*p).r, (*p).s)
+         }</span>
+         <span class="cov0" title="0">return</span>
+      }
+      <span class="cov0" title="0">tree.persist(p)
+      if i &lt; (*p).s </span><span class="cov0" title="0">{
+         (*p).s = (*p).s - 1 // Decrease the size of the left subtree.
+         p = &amp;(*p).l         // Path left.
+      }</span> else<span class="cov0" title="0"> {
+         i = i - ((*p).s + 1) // Skip the current node and left subtree.
+         p = &amp;(*p).r          // Path right.
+      }</span>
+   }
+}
+
+func (tree *Zip) Delete(i Position) (x Data) <span class="cov0" title="0">{
+   // assert(i &lt; tree.Size())
+   //tree.pathcopy(&amp;tree.root)
+   //tree.root = tree.deleteRecursive(tree.root, i, &amp;x)
+   tree.delete(&amp;tree.root, i, &amp;x)
+   tree.size--
+   return
+}</span>
+
+func (tree Zip) split(i Size) (Tree, Tree) <span class="cov0" title="0">{
+   // assert(i &lt;= tree.Size())
+   tree.share(tree.root)
+   l, r := tree.Tree.split(tree.root, i)
+
+   return Tree{arena: tree.arena, root: l, size: i},
+      Tree{arena: tree.arena, root: r, size: tree.size - i}
+}</span>
+
+func (tree *Zip) Split(i Position) (List, List) <span class="cov0" title="0">{
+   l, r := tree.split(i)
+
+   return &amp;Zip{l, tree.Source},
+      &amp;Zip{r, tree.Source}
+}</span>
+
+func (tree *Zip) Select(i Size) Data <span class="cov0" title="0">{
+   // assert(i &lt; tree.Size())
+   return tree.lookup(tree.root, i)
+}</span>
+
+func (tree *Zip) Update(i Size, x Data) <span class="cov0" title="0">{
+   // assert(i &lt; tree.Size())
+   tree.persist(&amp;tree.root)
+   tree.update(tree.root, i, x)
+}</span>
+
+func (tree *Zip) Join(that List) List <span class="cov0" title="0">{
+   tree.share(tree.root)
+   tree.share(that.(*Zip).root)
+
+   root := tree.zip(tree.root, that.(*Zip).root, tree.size)
+   size := tree.size + that.(*Zip).size
+
+   return &amp;Zip{Tree{arena: tree.arena, root: root, size: size}, tree.Source}
+}</span>
+
+func (tree *Zip) verifyRanks(p *Node) <span class="cov0" title="0">{
+   if p == nil </span><span class="cov0" title="0">{
+      return
+   }</span>
+   <span class="cov0" title="0">invariant(p.l == nil || p.y &gt; p.l.y)
+   invariant(p.r == nil || p.y &gt; p.r.y || p.y == p.r.y)
+
+   tree.verifyRanks(p.l)
+   tree.verifyRanks(p.r)</span>
+}
+
+//func (tree *Zip) maxHeapify(p *Node) {
+//   if p == nil {
+//      return
+//   }
+//   tree.maxHeapify(p.l)
+//   tree.maxHeapify(p.r)
+//
+//   m := p
+//   if p.l != nil &amp;&amp; rank(p.l) &gt; rank(m) { m = p.l }
+//   if p.r != nil &amp;&amp; rank(p.r) &gt; rank(m) { m = p.r }
+//   if m != p {
+//      y := p.y
+//      p.y = m.y
+//      m.y = y
+//      tree.maxHeapify(m)
+//   } else {
+//      // p is either greater than or equal to both left and right children
+//      // so we need to increase p
+//      p.y++
+//   }
+//}
+
+func (tree *Zip) Verify() <span class="cov0" title="0">{
+   tree.verifySizes()
+   tree.verifyRanks(tree.root)
+}</span>
+
+//func (tree *Zip) assignRanks(p *Node) {
+//   if p == nil {
+//      return
+//   }
+//   p.y = tree.randomRank()
+//   tree.assignRanks(p.l)
+//   tree.assignRanks(p.r)
+//   return
+//  //if p == nil {
+//  //   return
+//  //}
+//  //tree.assignRanks(p.l)
+//  //tree.assignRanks(p.r)
+//  //
+//  //if p.l == nil &amp;&amp; p.r == nil {
+//  //   p.y = 0
+//  //} else {
+//  //   if rank(p.l) == rank(p.r) {
+//  //      p.y = rank(p.l) + 1
+//  //   } else if rank(p.l) &lt; rank(p.r) {
+//  //      p.y = rank(p.r) + (tree.Random.Uint64() &amp; 1)
+//  //   } else {
+//  //      p.y = rank(p.l) + 1
+//  //   }
+//  //}
+//}
 </pre>
 		
 		</div>

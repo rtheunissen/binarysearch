@@ -65,6 +65,7 @@ func (tree *WAVL) build(l, p, r *Node, sl Size) *Node {
 
 // Rebalancing is only necessary when p.r is 0-child, which is when the ranks
 // are equal, given that both p and p.r are non-nil.
+// TODO: is this AVL?
 func (tree WAVL) balanceInsertL(p *Node) *Node {
    if tree.isZeroChild(p, p.l) {
       if tree.isOneChild(p, p.r) {
@@ -84,6 +85,9 @@ func (tree WAVL) balanceInsertL(p *Node) *Node {
 
 // Rebalancing is only necessary when p.r is 0-child, which is when the ranks
 // are equal, given that both p and p.r are non-nil.
+//
+// TODO: this is AVL
+//
 func (tree WAVL) balanceInsertR(p *Node) *Node {
    if tree.isZeroChild(p, p.r) {
       if tree.isOneChild(p, p.l) {

@@ -18,6 +18,10 @@ func (tree RankBalanced) rankDifference(parent, child *Node) int {
    return tree.rank(parent) - tree.rank(child)
 }
 
+func (tree RankBalanced) hasZeroChild(p *Node) bool {
+   return tree.isZeroChild(p, p.l) || tree.isZeroChild(p, p.r)
+}
+
 func (tree RankBalanced) isZeroChild(parent, child *Node) bool {
    return tree.rankDifference(parent, child) == 0
 }

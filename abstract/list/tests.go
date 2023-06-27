@@ -21,7 +21,7 @@ func (suite TestSuite) Run(t *testing.T) {
    for _, strategy := range suite.Lists {
       strategy := strategy
       t.Run(utility.NameOf(strategy), func(t *testing.T) {
-         t.Parallel()
+         //t.Parallel()
          for _, dist := range suite.Distributions {
             //dist := dist
             t.Run(utility.NameOf(dist), func(t *testing.T) {

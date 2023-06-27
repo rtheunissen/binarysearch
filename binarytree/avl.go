@@ -247,6 +247,7 @@ func (tree *AVLBottomUp) balanceInsertL(p *Node) *Node {
    tree.demote(p.r)
    return p
 }
+
 // Symmetric
 func (tree *AVLBottomUp) balanceInsertR(p *Node) *Node {
    if tree.isZeroChild(p, p.r) {

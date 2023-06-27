@@ -1,4 +1,4 @@
-# Linear lists as balanced binary search trees
+https://rtheunissen.github.io/binarysearch/
 
 `make test`
 
