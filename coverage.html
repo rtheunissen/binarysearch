@@ -59,17 +59,17 @@
 				
 				<option value="file1">binarysearch/binarytree/assert.go (25.0%)</option>
 				
-				<option value="file2">binarysearch/binarytree/avl.go (0.0%)</option>
+				<option value="file2">binarysearch/binarytree/avl.go (100.0%)</option>
 				
-				<option value="file3">binarysearch/binarytree/avl_relaxed_bottomup.go (0.0%)</option>
+				<option value="file3">binarysearch/binarytree/avl_relaxed_bottomup.go (100.0%)</option>
 				
-				<option value="file4">binarysearch/binarytree/avl_relaxed_topdown.go (0.0%)</option>
+				<option value="file4">binarysearch/binarytree/avl_relaxed_topdown.go (100.0%)</option>
 				
-				<option value="file5">binarysearch/binarytree/avl_weak.go (0.0%)</option>
+				<option value="file5">binarysearch/binarytree/avl_weak.go (100.0%)</option>
 				
-				<option value="file6">binarysearch/binarytree/avl_weak_bottomup.go (0.0%)</option>
+				<option value="file6">binarysearch/binarytree/avl_weak_bottomup.go (100.0%)</option>
 				
-				<option value="file7">binarysearch/binarytree/avl_weak_topdown.go (0.0%)</option>
+				<option value="file7">binarysearch/binarytree/avl_weak_topdown.go (100.0%)</option>
 				
 				<option value="file8">binarysearch/binarytree/balancers.go (83.3%)</option>
 				
@@ -87,13 +87,13 @@
 				
 				<option value="file15">binarysearch/binarytree/measurements.go (0.0%)</option>
 				
-				<option value="file16">binarysearch/binarytree/node.go (59.9%)</option>
+				<option value="file16">binarysearch/binarytree/node.go (68.4%)</option>
 				
 				<option value="file17">binarysearch/binarytree/partition.go (0.0%)</option>
 				
 				<option value="file18">binarysearch/binarytree/randomized.go (0.0%)</option>
 				
-				<option value="file19">binarysearch/binarytree/rank_balanced.go (78.6%)</option>
+				<option value="file19">binarysearch/binarytree/rank_balanced.go (100.0%)</option>
 				
 				<option value="file20">binarysearch/binarytree/redblack.go (100.0%)</option>
 				
@@ -105,7 +105,7 @@
 				
 				<option value="file24">binarysearch/binarytree/redblack_relaxed_topdown.go (100.0%)</option>
 				
-				<option value="file25">binarysearch/binarytree/redblack_topdown.go (98.4%)</option>
+				<option value="file25">binarysearch/binarytree/redblack_topdown.go (100.0%)</option>
 				
 				<option value="file26">binarysearch/binarytree/sandbox.go (0.0%)</option>
 				
@@ -115,7 +115,7 @@
 				
 				<option value="file29">binarysearch/binarytree/treap_topdown.go (0.0%)</option>
 				
-				<option value="file30">binarysearch/binarytree/tree.go (26.2%)</option>
+				<option value="file30">binarysearch/binarytree/tree.go (53.3%)</option>
 				
 				<option value="file31">binarysearch/binarytree/zip.go (0.0%)</option>
 				
@@ -339,41 +339,41 @@ type AVLBottomUp struct {
    RankBalanced
 }
 
-func (tree *AVLBottomUp) New() list.List <span class="cov0" title="0">{
+func (tree *AVLBottomUp) New() list.List <span class="cov8" title="1">{
    return &amp;AVLBottomUp{}
 }</span>
 
-func (tree *AVLBottomUp) Clone() list.List <span class="cov0" title="0">{
+func (tree *AVLBottomUp) Clone() list.List <span class="cov8" title="1">{
    return &amp;AVLBottomUp{Tree: tree.Tree.Clone()}
 }</span>
 
-func (tree *AVLBottomUp) Verify() <span class="cov0" title="0">{
+func (tree *AVLBottomUp) Verify() <span class="cov8" title="1">{
    tree.verifySizes(tree.root, tree.size)
    tree.verifyRanks(tree.root, tree.size)
    tree.verifyHeight(tree.root)
 }</span>
 
-func (tree *AVLBottomUp) verifySizes(p *Node, s list.Size) list.Size <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
+func (tree *AVLBottomUp) verifySizes(p *Node, s list.Size) list.Size <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
       return 0
    }</span>
-   <span class="cov0" title="0">sl := tree.verifySizes(p.l, p.sizeL())
+   <span class="cov8" title="1">sl := tree.verifySizes(p.l, p.sizeL())
    sr := tree.verifySizes(p.r, p.sizeR(s))
 
    invariant(s == sl + sr + 1)
    return s</span>
 }
 
-func (tree *AVLBottomUp) verifyHeight(p *Node) <span class="cov0" title="0">{
+func (tree *AVLBottomUp) verifyHeight(p *Node) <span class="cov8" title="1">{
    invariant(tree.rank(p) == tree.root.height())
 }</span>
 
-func (tree *AVLBottomUp) verifyRanks(p *Node, s list.Size) <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
+func (tree *AVLBottomUp) verifyRanks(p *Node, s list.Size) <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
       return
    }</span>
    // AVL rule: Every node is 1,1 or 1,2
-   <span class="cov0" title="0">invariant(tree.isOneChild(p, p.l) || tree.isTwoChild(p, p.l))
+   <span class="cov8" title="1">invariant(tree.isOneChild(p, p.l) || tree.isTwoChild(p, p.l))
    invariant(tree.isOneChild(p, p.r) || tree.isTwoChild(p, p.r))
    invariant(tree.isOneChild(p, p.l) || tree.isOneChild(p, p.r))
    invariant(tree.isOneChild(p, p.r) || tree.isOneChild(p, p.l))
@@ -385,33 +385,33 @@ func (tree *AVLBottomUp) verifyRanks(p *Node, s list.Size) <span class="cov0" ti
    tree.verifyRanks(p.r, p.sizeR(s))</span>
 }
 
-func (tree *AVLBottomUp) Insert(i list.Position, x list.Data) <span class="cov0" title="0">{
+func (tree *AVLBottomUp) Insert(i list.Position, x list.Data) <span class="cov8" title="1">{
    tree.root = tree.insert(tree.root, i, x)
    tree.size = tree.size + 1
 }</span>
 
-func (tree *AVLBottomUp) insert(p *Node, i list.Position, x list.Data) *Node <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
+func (tree *AVLBottomUp) insert(p *Node, i list.Position, x list.Data) *Node <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
       return tree.allocate(Node{x: x})
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;p)
-   if i &lt;= p.sizeL() </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">tree.persist(&amp;p)
+   if i &lt;= p.sizeL() </span><span class="cov8" title="1">{
       p.s = p.sizeL() + 1
       p.l = tree.insert(p.l, i, x)
       return tree.balanceInsertL(p)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       p.r = tree.insert(p.r, i - (p.sizeL() + 1), x)
       return tree.balanceInsertR(p)
    }</span>
 }
 
-func (tree *AVLBottomUp) balanceInsertL(p *Node) *Node <span class="cov0" title="0">{
+func (tree *AVLBottomUp) balanceInsertL(p *Node) *Node <span class="cov8" title="1">{
    //
    // After inserting to the left, there is no need to balance if the height of
    // the left subtree is not equal to the height of its parent, i.e. the height
    // of the left subtree did not increase.
    //
-   if !tree.isZeroChild(p, p.l) </span><span class="cov0" title="0">{
+   if !tree.isZeroChild(p, p.l) </span><span class="cov8" title="1">{
       return p
    }</span>
    // assert(tree.isZeroChild(p, p.l))
@@ -432,7 +432,7 @@ func (tree *AVLBottomUp) balanceInsertL(p *Node) *Node <span class="cov0" title=
    // only if the right subtree is currently a 1-child becoming a 2-child,
    // which results in the parent becoming a 1,2-node, restoring the invariant.
    //
-   <span class="cov0" title="0">if tree.isOneChild(p, p.r) </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if tree.isOneChild(p, p.r) </span><span class="cov8" title="1">{
       tree.promote(p)
       return p
    }</span>
@@ -444,7 +444,7 @@ func (tree *AVLBottomUp) balanceInsertL(p *Node) *Node <span class="cov0" title=
    // and we know that we need to rotate to the right because the left subtree
    // must have increased in height because we inserted somewhere to the left.
    //
-   <span class="cov0" title="0">if tree.isTwoChild(p.l, p.l.r) </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if tree.isTwoChild(p.l, p.l.r) </span><span class="cov8" title="1">{
       //
       //                                  2
       //                          ╭───────┴───────╮
@@ -552,7 +552,7 @@ func (tree *AVLBottomUp) balanceInsertL(p *Node) *Node <span class="cov0" title=
    //                         ╭─┴─╮     ╰─╮
    //                         0   0       0
    //
-   <span class="cov0" title="0">tree.rotateLR(&amp;p)
+   <span class="cov8" title="1">tree.rotateLR(&amp;p)
    tree.promote(p)
    tree.demote(p.l)
    tree.demote(p.r)
@@ -560,48 +560,48 @@ func (tree *AVLBottomUp) balanceInsertL(p *Node) *Node <span class="cov0" title=
 }
 
 // Symmetric
-func (tree *AVLBottomUp) balanceInsertR(p *Node) *Node <span class="cov0" title="0">{
-   if tree.isZeroChild(p, p.r) </span><span class="cov0" title="0">{
-      if tree.isOneChild(p, p.l) </span><span class="cov0" title="0">{
+func (tree *AVLBottomUp) balanceInsertR(p *Node) *Node <span class="cov8" title="1">{
+   if tree.isZeroChild(p, p.r) </span><span class="cov8" title="1">{
+      if tree.isOneChild(p, p.l) </span><span class="cov8" title="1">{
          tree.promote(p)
-      }</span> else<span class="cov0" title="0"> if tree.isTwoChild(p.r, p.r.l) </span><span class="cov0" title="0">{
+      }</span> else<span class="cov8" title="1"> if tree.isTwoChild(p.r, p.r.l) </span><span class="cov8" title="1">{
          tree.rotateL(&amp;p)
          tree.demote(p.l)
-      }</span> else<span class="cov0" title="0"> {
+      }</span> else<span class="cov8" title="1"> {
          tree.rotateRL(&amp;p)
          tree.promote(p)
          tree.demote(p.l)
          tree.demote(p.r)
       }</span>
    }
-   <span class="cov0" title="0">return p</span>
+   <span class="cov8" title="1">return p</span>
 }
 
-func (tree *AVLBottomUp) Delete(i list.Position) (x list.Data) <span class="cov0" title="0">{
+func (tree *AVLBottomUp) Delete(i list.Position) (x list.Data) <span class="cov8" title="1">{
    // assert(i &lt; tree.size)
    tree.root = tree.delete(tree.root, i, &amp;x)
    tree.size = tree.size - 1
    return x
 }</span>
 
-func (tree *AVLBottomUp) delete(p *Node, i list.Position, x *list.Data) *Node <span class="cov0" title="0">{
+func (tree *AVLBottomUp) delete(p *Node, i list.Position, x *list.Data) *Node <span class="cov8" title="1">{
    tree.persist(&amp;p)
-   if i == p.sizeL() </span><span class="cov0" title="0">{
+   if i == p.sizeL() </span><span class="cov8" title="1">{
       *x = p.x
       defer tree.free(p)
       return tree.join(p.l, p.r, p.s)
    }</span>
-   <span class="cov0" title="0">if i &lt; p.sizeL() </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if i &lt; p.sizeL() </span><span class="cov8" title="1">{
       p.s = p.sizeL() - 1
       p.l = tree.delete(p.l, i, x)
       return tree.balanceDeleteL(p)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       p.r = tree.delete(p.r, i - (p.sizeL() + 1), x)
       return tree.balanceDeleteR(p)
    }</span>
 }
 
-func (tree *AVLBottomUp) balanceDeleteL(p *Node) *Node <span class="cov0" title="0">{
+func (tree *AVLBottomUp) balanceDeleteL(p *Node) *Node <span class="cov8" title="1">{
    //
    // Deleting a node should not increase the height of the tree, and therefore
    // should not increase the rank of a node, except as needed after a rotation.
@@ -627,7 +627,7 @@ func (tree *AVLBottomUp) balanceDeleteL(p *Node) *Node <span class="cov0" title=
    //        ╭─╯
    //     →  0
    //
-   if tree.isTwoTwo(p) </span><span class="cov0" title="0">{
+   if tree.isTwoTwo(p) </span><span class="cov8" title="1">{
       tree.demote(p)
       return p
    }</span>
@@ -635,7 +635,7 @@ func (tree *AVLBottomUp) balanceDeleteL(p *Node) *Node <span class="cov0" title=
    // Otherwise, it is possible that the left subtree was a 2-child before the
    // deletion, which would make it a 3-child if the deletion decreased height.
    //
-   <span class="cov0" title="0">if tree.isThreeChild(p, p.l) </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if tree.isThreeChild(p, p.l) </span><span class="cov8" title="1">{
       //
       //                                3
       //                        ╭───────┴───────╮
@@ -678,7 +678,7 @@ func (tree *AVLBottomUp) balanceDeleteL(p *Node) *Node <span class="cov0" title=
       // sibling is then the subtree with the greater height because its rank is
       // closer to its parent.
       //
-      if tree.isTwoChild(p.r, p.r.r) </span><span class="cov0" title="0">{
+      if tree.isTwoChild(p.r, p.r.r) </span><span class="cov8" title="1">{
          //
          //                             3
          //                     ╭───────┴───────╮
@@ -732,7 +732,7 @@ func (tree *AVLBottomUp) balanceDeleteL(p *Node) *Node <span class="cov0" title=
       //                      ╭───────┴───────╮
       //          3-child →   0               2
       //                                  ╭───┴───╮
-      //           1-child or 2-child →   ?       1   ← 1-child
+      //          1-child or 2-child →   1|2      1   ← 1-child
       //                                          ╰─╮
       //                                            0
       //
@@ -741,7 +741,7 @@ func (tree *AVLBottomUp) balanceDeleteL(p *Node) *Node <span class="cov0" title=
       // indicates that it either has the same or greater height than its
       // sibling, the left subtree of the right subtree of the parent.
       //
-      <span class="cov0" title="0">if tree.isTwoChild(p.r, p.r.l) </span><span class="cov0" title="0">{
+      <span class="cov8" title="1">if tree.isTwoChild(p.r, p.r.l) </span><span class="cov8" title="1">{
          //
          //                              3
          //                      ╭───────┴───────╮
@@ -785,7 +785,7 @@ func (tree *AVLBottomUp) balanceDeleteL(p *Node) *Node <span class="cov0" title=
          tree.demote(p.l)
          return p
 
-      }</span> else<span class="cov0" title="0"> {
+      }</span> else<span class="cov8" title="1"> {
          // assert(tree.isOneChild(p.r, p.r.l))
          // assert(tree.isOneChild(p.r, p.r.r))
          //
@@ -837,57 +837,57 @@ func (tree *AVLBottomUp) balanceDeleteL(p *Node) *Node <span class="cov0" title=
          return p
       }</span>
    }
-   <span class="cov0" title="0">return p</span>
+   <span class="cov8" title="1">return p</span>
 }
 
 // Symmetric
-func (tree *AVLBottomUp) balanceDeleteR(p *Node) *Node <span class="cov0" title="0">{
-   if tree.isTwoTwo(p) </span><span class="cov0" title="0">{
+func (tree *AVLBottomUp) balanceDeleteR(p *Node) *Node <span class="cov8" title="1">{
+   if tree.isTwoTwo(p) </span><span class="cov8" title="1">{
       tree.demote(p)
       return p
    }</span>
-   <span class="cov0" title="0">if tree.isThreeChild(p, p.r) </span><span class="cov0" title="0">{
-      if tree.isTwoChild(p.l, p.l.l) </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if tree.isThreeChild(p, p.r) </span><span class="cov8" title="1">{
+      if tree.isTwoChild(p.l, p.l.l) </span><span class="cov8" title="1">{
          tree.rotateLR(&amp;p)
          tree.promote(p)
          tree.demote(p.l)
          tree.demote(p.r)
          tree.demote(p.r)
-      }</span> else<span class="cov0" title="0"> {
-         if tree.isTwoChild(p.l, p.l.r) </span><span class="cov0" title="0">{
+      }</span> else<span class="cov8" title="1"> {
+         if tree.isTwoChild(p.l, p.l.r) </span><span class="cov8" title="1">{
             tree.rotateR(&amp;p)
             tree.demote(p.r)
             tree.demote(p.r)
-         }</span> else<span class="cov0" title="0"> {
+         }</span> else<span class="cov8" title="1"> {
             tree.rotateR(&amp;p)
             tree.promote(p)
             tree.demote(p.r)
          }</span>
       }
    }
-   <span class="cov0" title="0">return p</span>
+   <span class="cov8" title="1">return p</span>
 }
 
 // Returns the result of deleting the left-most node of p.
-func (tree *AVLBottomUp) deleteMin(p *Node, min **Node) *Node <span class="cov0" title="0">{
+func (tree *AVLBottomUp) deleteMin(p *Node, min **Node) *Node <span class="cov8" title="1">{
    tree.persist(&amp;p)
-   if p.l == nil </span><span class="cov0" title="0">{
+   if p.l == nil </span><span class="cov8" title="1">{
       *min = p
       return p.r
    }</span>
-   <span class="cov0" title="0">p.s = p.s - 1
+   <span class="cov8" title="1">p.s = p.s - 1
    p.l = tree.deleteMin(p.l, min)
    return tree.balanceDeleteL(p)</span>
 }
 
 // Returns the result of deleting the right-most node of p.
-func (tree *AVLBottomUp) deleteMax(p *Node, max **Node) *Node <span class="cov0" title="0">{
+func (tree *AVLBottomUp) deleteMax(p *Node, max **Node) *Node <span class="cov8" title="1">{
    tree.persist(&amp;p)
-   if p.r == nil </span><span class="cov0" title="0">{
+   if p.r == nil </span><span class="cov8" title="1">{
       *max = p
       return p.l
    }</span>
-   <span class="cov0" title="0">p.r = tree.deleteMax(p.r, max)
+   <span class="cov8" title="1">p.r = tree.deleteMax(p.r, max)
    return tree.balanceDeleteR(p)</span>
 }
 
@@ -908,16 +908,16 @@ func (tree *AVLBottomUp) deleteMax(p *Node, max **Node) *Node <span class="cov0"
 // Follow the left spine of `r` to find a subtree that is similar in rank to `l`
 // then build a new subtree with parent `p`, left subtree `l` and right `r`.
 //
-func (tree *AVLBottomUp) buildL(l, p, r *Node, sl list.Size) *Node <span class="cov0" title="0">{
+func (tree *AVLBottomUp) buildL(l, p, r *Node, sl list.Size) *Node <span class="cov8" title="1">{
    // assert(tree.rank(r) &gt;= tree.rank(l))
-   if tree.rankDifference(r, l) &lt;= 1 </span><span class="cov0" title="0">{
+   if tree.rankDifference(r, l) &lt;= 1 </span><span class="cov8" title="1">{
       p.l = l
       p.r = r
       p.s = sl
       p.y = uint64(tree.rank(r) + 1)
       return p
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;r)
+   <span class="cov8" title="1">tree.persist(&amp;r)
    //
    // To update the size of `r`, which is the eventual size of its left subtree,
    // consider that the left subtree of `r` will consist of all the nodes in `l`,
@@ -929,27 +929,27 @@ func (tree *AVLBottomUp) buildL(l, p, r *Node, sl list.Size) *Node <span class="
 }
 
 // Symmetric
-func (tree *AVLBottomUp) buildR(l, p, r *Node, sl list.Size) *Node <span class="cov0" title="0">{
+func (tree *AVLBottomUp) buildR(l, p, r *Node, sl list.Size) *Node <span class="cov8" title="1">{
    // assert(tree.rank(l) &gt;= tree.rank(r))
-   if tree.rankDifference(l, r) &lt;= 1 </span><span class="cov0" title="0">{
+   if tree.rankDifference(l, r) &lt;= 1 </span><span class="cov8" title="1">{
       p.l = l
       p.r = r
       p.s = sl
       p.y = uint64(tree.rank(l) + 1)
       return p
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;l)
+   <span class="cov8" title="1">tree.persist(&amp;l)
    l.r = tree.buildR(l.r, p, r, l.sizeR(sl))
    return tree.balanceInsertR(l)</span>
 }
 
 // Constructs a balanced tree with root p where all nodes of l are to the left
 // of p and all nodes in r are to the right of p.
-func (tree *AVLBottomUp) build(l, p, r *Node, sl list.Size) *Node <span class="cov0" title="0">{
+func (tree *AVLBottomUp) build(l, p, r *Node, sl list.Size) *Node <span class="cov8" title="1">{
    // assert(sl == l.size())
-   if tree.rank(l) &lt; tree.rank(r) </span><span class="cov0" title="0">{
+   if tree.rank(l) &lt; tree.rank(r) </span><span class="cov8" title="1">{
       return tree.buildL(l, p, r, sl)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       return tree.buildR(l, p, r, sl)
    }</span>
 }
@@ -961,39 +961,39 @@ func (tree *AVLBottomUp) build(l, p, r *Node, sl list.Size) *Node <span class="c
 // delete it, all the way back up as the recursion unwinds, then descend again
 // along the same path anyway.
 //
-func (tree *AVLBottomUp) joinL(l, r *Node, sl list.Size) (p *Node) <span class="cov0" title="0">{
-   if tree.rankDifference(r, l) &lt;= 1 </span><span class="cov0" title="0">{
+func (tree *AVLBottomUp) joinL(l, r *Node, sl list.Size) (p *Node) <span class="cov8" title="1">{
+   if tree.rankDifference(r, l) &lt;= 1 </span><span class="cov8" title="1">{
       return tree.build(l, p, tree.deleteMin(r, &amp;p), sl)
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;r)
+   <span class="cov8" title="1">tree.persist(&amp;r)
    r.s = r.sizeL() + sl
    r.l = tree.joinL(l, r.l, sl)
    return tree.balanceInsertL(r)</span>
 }
 
 // Symmetric
-func (tree *AVLBottomUp) joinR(l, r *Node, sl list.Size) (p *Node) <span class="cov0" title="0">{
-   if tree.rankDifference(l, r) &lt;= 1 </span><span class="cov0" title="0">{
+func (tree *AVLBottomUp) joinR(l, r *Node, sl list.Size) (p *Node) <span class="cov8" title="1">{
+   if tree.rankDifference(l, r) &lt;= 1 </span><span class="cov8" title="1">{
       return tree.build(tree.deleteMax(l, &amp;p), p, r, sl - 1)
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;l)
+   <span class="cov8" title="1">tree.persist(&amp;l)
    l.r = tree.joinR(l.r, r, l.sizeR(sl))
    return tree.balanceInsertR(l)</span>
 }
 
 // Constructs a balanced tree with root `p` where all nodes in `l` are to the
 // left of `p` and all nodes in `r` to the right of `p`.
-func (tree *AVLBottomUp) join(l, r *Node, sl list.Size) (p *Node) <span class="cov0" title="0">{
-   if l == nil </span><span class="cov0" title="0">{ return r }</span>
-   <span class="cov0" title="0">if r == nil </span><span class="cov0" title="0">{ return l }</span>
-   <span class="cov0" title="0">if tree.rank(l) &lt; tree.rank(r) </span><span class="cov0" title="0">{
+func (tree *AVLBottomUp) join(l, r *Node, sl list.Size) (p *Node) <span class="cov8" title="1">{
+   if l == nil </span><span class="cov8" title="1">{ return r }</span>
+   <span class="cov8" title="1">if r == nil </span><span class="cov8" title="1">{ return l }</span>
+   <span class="cov8" title="1">if tree.rank(l) &lt; tree.rank(r) </span><span class="cov8" title="1">{
       return tree.joinL(l, r, sl)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       return tree.joinR(l, r, sl)
    }</span>
 }
 
-func (tree *AVLBottomUp) Join(other list.List) list.List <span class="cov0" title="0">{
+func (tree *AVLBottomUp) Join(other list.List) list.List <span class="cov8" title="1">{
    tree.share(tree.root)
    tree.share(other.(*AVLBottomUp).root)
    return &amp;AVLBottomUp{
@@ -1007,23 +1007,23 @@ func (tree *AVLBottomUp) Join(other list.List) list.List <span class="cov0" titl
 
 // Splits the tree of `p` into two trees `l` and `r` at position `i`, such that
 // the resulting size of `l` is equal to `i`.
-func (tree *AVLBottomUp) split(p *Node, i, s list.Size) (l, r *Node) <span class="cov0" title="0">{
+func (tree *AVLBottomUp) split(p *Node, i, s list.Size) (l, r *Node) <span class="cov8" title="1">{
    // assert(s == p.size())
-   if p == nil </span><span class="cov0" title="0">{
+   if p == nil </span><span class="cov8" title="1">{
       return
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;p)
-   if i &lt;= (*p).sizeL() </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">tree.persist(&amp;p)
+   if i &lt;= (*p).sizeL() </span><span class="cov8" title="1">{
       l, r = tree.split(p.l, i, p.sizeL())
          r = tree.build(r, p, p.r, p.sizeL() - i)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       l, r = tree.split(p.r, i - (p.sizeL() + 1), p.sizeR(s))
          l = tree.build(p.l, p, l, p.sizeL())
    }</span>
-   <span class="cov0" title="0">return l, r</span>
+   <span class="cov8" title="1">return l, r</span>
 }
 
-func (tree *AVLBottomUp) Split(i list.Position) (list.List, list.List) <span class="cov0" title="0">{
+func (tree *AVLBottomUp) Split(i list.Position) (list.List, list.List) <span class="cov8" title="1">{
    // assert(i &lt;= tree.size)
    tree.share(tree.root)
 
@@ -1042,11 +1042,11 @@ type AVLRelaxedBottomUp struct {
    AVLWeakBottomUp
 }
 
-func (tree AVLRelaxedBottomUp) verifyRanks(p *Node) <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
+func (tree AVLRelaxedBottomUp) verifyRanks(p *Node) <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
       return
    }</span>
-   <span class="cov0" title="0">invariant(tree.rank(p) &gt;= p.height())
+   <span class="cov8" title="1">invariant(tree.rank(p) &gt;= p.height())
    invariant(tree.rank(p) &gt; tree.rank(p.l))
    invariant(tree.rank(p) &gt; tree.rank(p.r))
 
@@ -1054,18 +1054,18 @@ func (tree AVLRelaxedBottomUp) verifyRanks(p *Node) <span class="cov0" title="0"
    tree.verifyRanks(p.r)</span>
 }
 
-func (tree AVLRelaxedBottomUp) Verify() <span class="cov0" title="0">{
+func (tree AVLRelaxedBottomUp) Verify() <span class="cov8" title="1">{
    tree.verifySizes()
    tree.verifyRanks(tree.root)
 }</span>
 
-func (AVLRelaxedBottomUp) New() List <span class="cov0" title="0">{
+func (AVLRelaxedBottomUp) New() List <span class="cov8" title="1">{
    return &amp;AVLRelaxedBottomUp{
       AVLWeakBottomUp: *AVLWeakBottomUp{}.New().(*AVLWeakBottomUp), // TODO: ew
    }
 }</span>
 
-func (tree *AVLRelaxedBottomUp) Clone() List <span class="cov0" title="0">{
+func (tree *AVLRelaxedBottomUp) Clone() List <span class="cov8" title="1">{
    return &amp;AVLRelaxedBottomUp{
       AVLWeakBottomUp: AVLWeakBottomUp{
          WAVL: WAVL{
@@ -1075,60 +1075,60 @@ func (tree *AVLRelaxedBottomUp) Clone() List <span class="cov0" title="0">{
    }
 }</span>
 
-func (tree *AVLRelaxedBottomUp) Delete(i Position) Data <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+func (tree *AVLRelaxedBottomUp) Delete(i Position) Data <span class="cov8" title="1">{
+   // assert(i &lt; tree.size)
    x := tree.Tree.delete(&amp;tree.root, tree.size, i)
    tree.size--
    return x
 }</span>
 
 
-func (tree AVLRelaxedBottomUp) buildL(l *Node, p *Node, r *Node, sl Size) (root *Node) <span class="cov0" title="0">{
-   if tree.rank(l) - tree.rank(r) &lt;= 1 </span><span class="cov0" title="0">{
+func (tree AVLRelaxedBottomUp) buildL(l *Node, p *Node, r *Node, sl Size) (root *Node) <span class="cov8" title="1">{
+   if tree.rank(l) - tree.rank(r) &lt;= 1 </span><span class="cov8" title="1">{
       p.l = l
       p.r = r
       p.s = sl
       p.y = uint64(tree.rank(l) + 1)
       return p
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;l)
+   <span class="cov8" title="1">tree.persist(&amp;l)
    l.r = tree.build(l.r, p, r, sl-l.s-1)
    return tree.balanceInsertR(l)</span>
 }
 
-func (tree AVLRelaxedBottomUp) buildR(l *Node, p *Node, r *Node, sl Size) (root *Node) <span class="cov0" title="0">{
-   if tree.rank(r) - tree.rank(l) &lt;= 1 </span><span class="cov0" title="0">{
+func (tree AVLRelaxedBottomUp) buildR(l *Node, p *Node, r *Node, sl Size) (root *Node) <span class="cov8" title="1">{
+   if tree.rank(r) - tree.rank(l) &lt;= 1 </span><span class="cov8" title="1">{
       p.l = l
       p.r = r
       p.s = sl
       p.y = uint64(tree.rank(r) + 1)
       return p
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;r)
+   <span class="cov8" title="1">tree.persist(&amp;r)
    r.s = 1 + sl + r.s
    r.l = tree.build(l, p, r.l, sl)
    return tree.balanceInsertL(r)</span>
 }
 
-func (tree *AVLRelaxedBottomUp) build(l, p, r *Node, sl Size) *Node <span class="cov0" title="0">{
-   if tree.rank(l) &lt;= tree.rank(r) </span><span class="cov0" title="0">{
+func (tree *AVLRelaxedBottomUp) build(l, p, r *Node, sl Size) *Node <span class="cov8" title="1">{
+   if tree.rank(l) &lt;= tree.rank(r) </span><span class="cov8" title="1">{
       return tree.buildR(l, p, r, sl)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       return tree.buildL(l, p, r, sl)
    }</span>
 }
 
-func (tree AVLRelaxedBottomUp) join(l, r *Node, sl Size) (p *Node) <span class="cov0" title="0">{
-   if l == nil </span><span class="cov0" title="0">{ return r }</span>
-   <span class="cov0" title="0">if r == nil </span><span class="cov0" title="0">{ return l }</span>
-   <span class="cov0" title="0">if tree.rank(l) &lt;= tree.rank(r) </span><span class="cov0" title="0">{
+func (tree AVLRelaxedBottomUp) join(l, r *Node, sl Size) (p *Node) <span class="cov8" title="1">{
+   if l == nil </span><span class="cov8" title="1">{ return r }</span>
+   <span class="cov8" title="1">if r == nil </span><span class="cov8" title="1">{ return l }</span>
+   <span class="cov8" title="1">if tree.rank(l) &lt;= tree.rank(r) </span><span class="cov8" title="1">{
       return tree.build(l, tree.deleteMin(&amp;r), r, sl)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       return tree.build(l, tree.deleteMax(&amp;l), r, sl-1)
    }</span>
 }
 
-func (tree AVLRelaxedBottomUp) Join(other List) List <span class="cov0" title="0">{
+func (tree AVLRelaxedBottomUp) Join(other List) List <span class="cov8" title="1">{
    l := tree
    r := other.(*AVLRelaxedBottomUp)
 
@@ -1148,27 +1148,27 @@ func (tree AVLRelaxedBottomUp) Join(other List) List <span class="cov0" title="0
    }
 }</span>
 
-func (tree AVLRelaxedBottomUp) split(p *Node, i, s Size) (l, r *Node) <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
+func (tree AVLRelaxedBottomUp) split(p *Node, i, s Size) (l, r *Node) <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
       return
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;p)
+   <span class="cov8" title="1">tree.persist(&amp;p)
 
    sl := p.s
    sr := s - p.s - 1
 
-   if i &lt;= (*p).s </span><span class="cov0" title="0">{
+   if i &lt;= (*p).s </span><span class="cov8" title="1">{
       l, r = tree.split(p.l, i, sl)
          r = tree.build(r, p, p.r, sl-i)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       l, r = tree.split(p.r, i-sl-1, sr)
          l = tree.build(p.l, p, l, sl)
    }</span>
-   <span class="cov0" title="0">return l, r</span>
+   <span class="cov8" title="1">return l, r</span>
 }
 
-func (tree AVLRelaxedBottomUp) Split(i Position) (List, List) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
+func (tree AVLRelaxedBottomUp) Split(i Position) (List, List) <span class="cov8" title="1">{
+   // assert(i &lt;= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
 
@@ -1185,13 +1185,13 @@ type AVLRelaxedTopDown struct {
    AVLWeakTopDown
 }
 
-func (AVLRelaxedTopDown) New() List <span class="cov0" title="0">{
+func (AVLRelaxedTopDown) New() List <span class="cov8" title="1">{
    return &amp;AVLRelaxedTopDown{
       AVLWeakTopDown: *AVLWeakTopDown{}.New().(*AVLWeakTopDown),
    }
 }</span>
 
-func (tree *AVLRelaxedTopDown) Clone() List <span class="cov0" title="0">{
+func (tree *AVLRelaxedTopDown) Clone() List <span class="cov8" title="1">{
    return &amp;AVLRelaxedTopDown{
       AVLWeakTopDown: AVLWeakTopDown{
          WAVL: WAVL{
@@ -1201,16 +1201,16 @@ func (tree *AVLRelaxedTopDown) Clone() List <span class="cov0" title="0">{
    }
 }</span>
 
-func (tree AVLRelaxedTopDown) Verify() <span class="cov0" title="0">{
+func (tree AVLRelaxedTopDown) Verify() <span class="cov8" title="1">{
    tree.verifySizes()
    tree.verifyRanks(tree.root)
 }</span>
 
-func (tree AVLRelaxedTopDown) verifyRanks(p *Node) <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
+func (tree AVLRelaxedTopDown) verifyRanks(p *Node) <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
       return
    }</span>
-   <span class="cov0" title="0">invariant(tree.rank(p) &gt;= p.height())
+   <span class="cov8" title="1">invariant(tree.rank(p) &gt;= p.height())
    invariant(tree.rank(p) &gt; tree.rank(p.l))
    invariant(tree.rank(p) &gt; tree.rank(p.r))
 
@@ -1218,59 +1218,59 @@ func (tree AVLRelaxedTopDown) verifyRanks(p *Node) <span class="cov0" title="0">
    tree.verifyRanks(p.r)</span>
 }
 
-func (tree *AVLRelaxedTopDown) Delete(i Position) Data <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+func (tree *AVLRelaxedTopDown) Delete(i Position) Data <span class="cov8" title="1">{
+   // assert(i &lt; tree.size)
    x := tree.Tree.delete(&amp;tree.root, tree.size, i)
    tree.size--
    return x
 }</span>
 
-func (tree AVLRelaxedTopDown) buildL(l *Node, p *Node, r *Node, sl Size) (root *Node) <span class="cov0" title="0">{
-   if tree.rank(l) - tree.rank(r) &lt;= 1 </span><span class="cov0" title="0">{
+func (tree AVLRelaxedTopDown) buildL(l *Node, p *Node, r *Node, sl Size) (root *Node) <span class="cov8" title="1">{
+   if tree.rank(l) - tree.rank(r) &lt;= 1 </span><span class="cov8" title="1">{
       p.l = l
       p.r = r
       p.s = sl
       p.y = uint64(tree.rank(l) + 1)
       return p
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;l)
+   <span class="cov8" title="1">tree.persist(&amp;l)
    l.r = tree.build(l.r, p, r, sl-l.s-1)
    return tree.balanceInsertR(l)</span>
 }
 
-func (tree AVLRelaxedTopDown) buildR(l *Node, p *Node, r *Node, sl Size) (root *Node) <span class="cov0" title="0">{
-   if tree.rank(r) - tree.rank(l) &lt;= 1 </span><span class="cov0" title="0">{
+func (tree AVLRelaxedTopDown) buildR(l *Node, p *Node, r *Node, sl Size) (root *Node) <span class="cov8" title="1">{
+   if tree.rank(r) - tree.rank(l) &lt;= 1 </span><span class="cov8" title="1">{
       p.l = l
       p.r = r
       p.s = sl
       p.y = uint64(tree.rank(r) + 1)
       return p
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;r)
+   <span class="cov8" title="1">tree.persist(&amp;r)
    r.s = 1 + sl + r.s
    r.l = tree.build(l, p, r.l, sl)
    return tree.balanceInsertL(r)</span>
 }
 
-func (tree *AVLRelaxedTopDown) build(l, p, r *Node, sl Size) *Node <span class="cov0" title="0">{
-   if tree.rank(l) &lt;= tree.rank(r) </span><span class="cov0" title="0">{
+func (tree *AVLRelaxedTopDown) build(l, p, r *Node, sl Size) *Node <span class="cov8" title="1">{
+   if tree.rank(l) &lt;= tree.rank(r) </span><span class="cov8" title="1">{
       return tree.buildR(l, p, r, sl)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       return tree.buildL(l, p, r, sl)
    }</span>
 }
 
-func (tree AVLRelaxedTopDown) join(l, r *Node, sl Size) (p *Node) <span class="cov0" title="0">{
-   if l == nil </span><span class="cov0" title="0">{ return r }</span>
-   <span class="cov0" title="0">if r == nil </span><span class="cov0" title="0">{ return l }</span>
-   <span class="cov0" title="0">if tree.rank(l) &lt;= tree.rank(r) </span><span class="cov0" title="0">{
+func (tree AVLRelaxedTopDown) join(l, r *Node, sl Size) (p *Node) <span class="cov8" title="1">{
+   if l == nil </span><span class="cov8" title="1">{ return r }</span>
+   <span class="cov8" title="1">if r == nil </span><span class="cov8" title="1">{ return l }</span>
+   <span class="cov8" title="1">if tree.rank(l) &lt;= tree.rank(r) </span><span class="cov8" title="1">{
       return tree.build(l, tree.Tree.deleteMin(&amp;r), r, sl)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       return tree.build(l, tree.Tree.deleteMax(&amp;l), r, sl-1)
    }</span>
 }
 
-func (tree AVLRelaxedTopDown) Join(other List) List <span class="cov0" title="0">{
+func (tree AVLRelaxedTopDown) Join(other List) List <span class="cov8" title="1">{
    l := tree
    r := other.(*AVLRelaxedTopDown)
    tree.share(l.root)
@@ -1282,27 +1282,27 @@ func (tree AVLRelaxedTopDown) Join(other List) List <span class="cov0" title="0"
 }</span>
 
 
-func (tree AVLRelaxedTopDown) split(p *Node, i, s Size) (l, r *Node) <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
+func (tree AVLRelaxedTopDown) split(p *Node, i, s Size) (l, r *Node) <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
       return
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;p)
+   <span class="cov8" title="1">tree.persist(&amp;p)
 
    sl := p.s
    sr := s - p.s - 1
 
-   if i &lt;= (*p).s </span><span class="cov0" title="0">{
+   if i &lt;= (*p).s </span><span class="cov8" title="1">{
       l, r = tree.split(p.l, i, sl)
          r = tree.build(r, p, p.r, sl - i)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       l, r = tree.split(p.r, i - sl - 1, sr)
          l = tree.build(p.l, p, l, sl)
    }</span>
-   <span class="cov0" title="0">return l, r</span>
+   <span class="cov8" title="1">return l, r</span>
 }
 
-func (tree AVLRelaxedTopDown) Split(i Position) (List, List) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
+func (tree AVLRelaxedTopDown) Split(i Position) (List, List) <span class="cov8" title="1">{
+   // assert(i &lt;= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
 
@@ -1333,45 +1333,45 @@ type WAVL struct {
 //   tree.calculateRank(p)
 //}
 
-func (tree WAVL) Verify() <span class="cov0" title="0">{
+func (tree WAVL) Verify() <span class="cov8" title="1">{
    tree.verifySizes()
    tree.verifyRanks(tree.root)
    tree.verifyHeight(tree.root, tree.size)
 }</span>
 
-func (tree WAVL) buildL(l *Node, p *Node, r *Node, sl Size) (root *Node) <span class="cov0" title="0">{
+func (tree WAVL) buildL(l *Node, p *Node, r *Node, sl Size) (root *Node) <span class="cov8" title="1">{
    // assert(tree.rank(l) &gt;= tree.rank(r))
-   if tree.rank(l) - tree.rank(r) &lt;= 1 </span><span class="cov0" title="0">{
+   if tree.rank(l) - tree.rank(r) &lt;= 1 </span><span class="cov8" title="1">{
       p.l = l
       p.r = r
       p.s = sl
       p.y = uint64(tree.rank(l) + 1)
       return p
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;l)
+   <span class="cov8" title="1">tree.persist(&amp;l)
    l.r = tree.buildL(l.r, p, r, sl-l.s-1)
    return tree.balanceInsertR(l)</span>
 }
 
-func (tree WAVL) buildR(l *Node, p *Node, r *Node, sl Size) (root *Node) <span class="cov0" title="0">{
+func (tree WAVL) buildR(l *Node, p *Node, r *Node, sl Size) (root *Node) <span class="cov8" title="1">{
    // assert(tree.rank(r) &gt;= tree.rank(l))
-   if tree.rank(r) &lt;= tree.rank(l) + 1 </span><span class="cov0" title="0">{
+   if tree.rank(r) &lt;= tree.rank(l) + 1 </span><span class="cov8" title="1">{
       p.l = l
       p.r = r
       p.s = sl
       p.y = uint64(tree.rank(r) + 1)
       return p
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;r)
+   <span class="cov8" title="1">tree.persist(&amp;r)
    r.s = 1 + sl + r.s
    r.l = tree.buildR(l, p, r.l, sl)
    return tree.balanceInsertL(r)</span>
 }
 
-func (tree *WAVL) build(l, p, r *Node, sl Size) *Node <span class="cov0" title="0">{
-   if tree.rank(l) &lt;= tree.rank(r) </span><span class="cov0" title="0">{
+func (tree *WAVL) build(l, p, r *Node, sl Size) *Node <span class="cov8" title="1">{
+   if tree.rank(l) &lt;= tree.rank(r) </span><span class="cov8" title="1">{
       return tree.buildR(l, p, r, sl)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       return tree.buildL(l, p, r, sl)
    }</span>
 }
@@ -1379,21 +1379,21 @@ func (tree *WAVL) build(l, p, r *Node, sl Size) *Node <span class="cov0" title="
 // Rebalancing is only necessary when p.r is 0-child, which is when the ranks
 // are equal, given that both p and p.r are non-nil.
 // TODO: is this AVL?
-func (tree WAVL) balanceInsertL(p *Node) *Node <span class="cov0" title="0">{
-   if tree.isZeroChild(p, p.l) </span><span class="cov0" title="0">{
-      if tree.isOneChild(p, p.r) </span><span class="cov0" title="0">{
+func (tree WAVL) balanceInsertL(p *Node) *Node <span class="cov8" title="1">{
+   if tree.isZeroChild(p, p.l) </span><span class="cov8" title="1">{
+      if tree.isOneChild(p, p.r) </span><span class="cov8" title="1">{
          tree.promote(p)
-      }</span> else<span class="cov0" title="0"> if tree.isTwoChild(p.l, p.l.r) </span><span class="cov0" title="0">{
+      }</span> else<span class="cov8" title="1"> if tree.isTwoChild(p.l, p.l.r) </span><span class="cov8" title="1">{
          tree.rotateR(&amp;p)
          tree.demote(p.r)
-      }</span> else<span class="cov0" title="0"> {
+      }</span> else<span class="cov8" title="1"> {
          tree.rotateLR(&amp;p)
          tree.promote(p)
          tree.demote(p.l)
          tree.demote(p.r)
       }</span>
    }
-   <span class="cov0" title="0">return p</span>
+   <span class="cov8" title="1">return p</span>
 }
 
 // Rebalancing is only necessary when p.r is 0-child, which is when the ranks
@@ -1401,21 +1401,21 @@ func (tree WAVL) balanceInsertL(p *Node) *Node <span class="cov0" title="0">{
 //
 // TODO: this is AVL
 //
-func (tree WAVL) balanceInsertR(p *Node) *Node <span class="cov0" title="0">{
-   if tree.isZeroChild(p, p.r) </span><span class="cov0" title="0">{
-      if tree.isOneChild(p, p.l) </span><span class="cov0" title="0">{
+func (tree WAVL) balanceInsertR(p *Node) *Node <span class="cov8" title="1">{
+   if tree.isZeroChild(p, p.r) </span><span class="cov8" title="1">{
+      if tree.isOneChild(p, p.l) </span><span class="cov8" title="1">{
          tree.promote(p)
-      }</span> else<span class="cov0" title="0"> if tree.isTwoChild(p.r, p.r.l) </span><span class="cov0" title="0">{
+      }</span> else<span class="cov8" title="1"> if tree.isTwoChild(p.r, p.r.l) </span><span class="cov8" title="1">{
          tree.rotateL(&amp;p)
          tree.demote(p.l)
-      }</span> else<span class="cov0" title="0"> {
+      }</span> else<span class="cov8" title="1"> {
          tree.rotateRL(&amp;p)
          tree.promote(p)
          tree.demote(p.l)
          tree.demote(p.r)
       }</span>
    }
-   <span class="cov0" title="0">return p</span>
+   <span class="cov8" title="1">return p</span>
 }
 
 //func (tree WAVL) verify(root *Node, size Size) {
@@ -1423,11 +1423,11 @@ func (tree WAVL) balanceInsertR(p *Node) *Node <span class="cov0" title="0">{
 //   tree.verifyRanks(root)
 //}
 
-func (tree WAVL) verifyHeight(root *Node, size Size) <span class="cov0" title="0">{
-   if root == nil </span><span class="cov0" title="0">{
+func (tree WAVL) verifyHeight(root *Node, size Size) <span class="cov8" title="1">{
+   if root == nil </span><span class="cov8" title="1">{
       return
    }</span>
-   <span class="cov0" title="0">height := root.height()
+   <span class="cov8" title="1">height := root.height()
 
    invariant(tree.rank(root) &gt;= height || height == 0)
    invariant(tree.rank(root) &lt;= 2*height)
@@ -1436,20 +1436,20 @@ func (tree WAVL) verifyHeight(root *Node, size Size) <span class="cov0" title="0
 }
 
 // TODO split into L and R?
-func (tree WAVL) rebalanceOnDelete(p *Node) *Node <span class="cov0" title="0">{
-   if p.isLeaf() &amp;&amp; tree.isTwoTwo(p) </span><span class="cov0" title="0">{
+func (tree WAVL) rebalanceOnDelete(p *Node) *Node <span class="cov8" title="1">{
+   if p.isLeaf() &amp;&amp; tree.isTwoTwo(p) </span><span class="cov8" title="1">{
       tree.demote(p)
       return p
    }</span>
-   <span class="cov0" title="0">if tree.isThreeChild(p, p.r) </span><span class="cov0" title="0">{
-      if tree.isTwoChild(p, p.l) </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if tree.isThreeChild(p, p.r) </span><span class="cov8" title="1">{
+      if tree.isTwoChild(p, p.l) </span><span class="cov8" title="1">{
          tree.demote(p)
 
-      }</span> else<span class="cov0" title="0"> if tree.isTwoTwo(p.l) </span><span class="cov0" title="0">{
+      }</span> else<span class="cov8" title="1"> if tree.isTwoTwo(p.l) </span><span class="cov8" title="1">{
          tree.demote(p.l)
          tree.demote(p)
 
-      }</span> else<span class="cov0" title="0"> if tree.isOneChild(p.l, p.l.l) </span><span class="cov0" title="0">{
+      }</span> else<span class="cov8" title="1"> if tree.isOneChild(p.l, p.l.l) </span><span class="cov8" title="1">{
          tree.rotateR(&amp;p)
          tree.promote(p)
          tree.demote(p.r)
@@ -1457,11 +1457,11 @@ func (tree WAVL) rebalanceOnDelete(p *Node) *Node <span class="cov0" title="0">{
          // assert(tree.isTwoChild(p, p.l))
          // assert(tree.isOneChild(p, p.r))
 
-         if p.r.l == nil </span><span class="cov0" title="0">{
+         if p.r.l == nil </span><span class="cov8" title="1">{
             // assert(tree.isTwoTwo(p.r))
             tree.demote(p.r)
          }</span>
-      } else<span class="cov0" title="0"> {
+      } else<span class="cov8" title="1"> {
          tree.rotateLR(&amp;p)
          tree.promote(p)
          tree.promote(p)
@@ -1472,15 +1472,15 @@ func (tree WAVL) rebalanceOnDelete(p *Node) *Node <span class="cov0" title="0">{
          // assert(tree.isTwoChild(p, p.l))
          // assert(tree.isTwoChild(p, p.r))
       }</span>
-   } else<span class="cov0" title="0"> if tree.isThreeChild(p, p.l) </span><span class="cov0" title="0">{
-      if tree.isTwoChild(p, p.r) </span><span class="cov0" title="0">{
+   } else<span class="cov8" title="1"> if tree.isThreeChild(p, p.l) </span><span class="cov8" title="1">{
+      if tree.isTwoChild(p, p.r) </span><span class="cov8" title="1">{
          tree.demote(p)
 
-      }</span> else<span class="cov0" title="0"> if tree.isTwoTwo(p.r) </span><span class="cov0" title="0">{
+      }</span> else<span class="cov8" title="1"> if tree.isTwoTwo(p.r) </span><span class="cov8" title="1">{
          tree.demote(p.r)
          tree.demote(p)
 
-      }</span> else<span class="cov0" title="0"> if tree.isOneChild(p.r, p.r.r) </span><span class="cov0" title="0">{
+      }</span> else<span class="cov8" title="1"> if tree.isOneChild(p.r, p.r.r) </span><span class="cov8" title="1">{
          tree.rotateL(&amp;p)
          tree.promote(p)
          tree.demote(p.l)
@@ -1488,11 +1488,11 @@ func (tree WAVL) rebalanceOnDelete(p *Node) *Node <span class="cov0" title="0">{
          // assert(tree.isOneChild(p, p.l))
          // assert(tree.isTwoChild(p, p.r))
 
-         if p.l.r == nil </span><span class="cov0" title="0">{
+         if p.l.r == nil </span><span class="cov8" title="1">{
             // assert(tree.isTwoTwo(p.l))
             tree.demote(p.l)
          }</span>
-      } else<span class="cov0" title="0"> {
+      } else<span class="cov8" title="1"> {
          tree.rotateRL(&amp;p)
          tree.promote(p)
          tree.promote(p)
@@ -1504,18 +1504,18 @@ func (tree WAVL) rebalanceOnDelete(p *Node) *Node <span class="cov0" title="0">{
          // assert(tree.isTwoChild(p, p.r))
       }</span>
    }
-   <span class="cov0" title="0">return p</span>
+   <span class="cov8" title="1">return p</span>
 }
 
 // rank/2 &lt;= h &lt;= rank
-func (tree WAVL) verifyRanks(p *Node) <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
+func (tree WAVL) verifyRanks(p *Node) <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
       return
    }</span>
-   <span class="cov0" title="0">if p.isLeaf() </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if p.isLeaf() </span><span class="cov8" title="1">{
       invariant(tree.rank(p) == 0)
    }</span>
-   <span class="cov0" title="0">invariant(tree.rank(p) &gt; tree.rank(p.l))
+   <span class="cov8" title="1">invariant(tree.rank(p) &gt; tree.rank(p.l))
    invariant(tree.rank(p) &gt; tree.rank(p.r))
 
    invariant(tree.isOneChild(p, p.l) || tree.isTwoChild(p, p.l))
@@ -1534,11 +1534,11 @@ type AVLWeakBottomUp struct {
    WAVL // TODO: just use tree
 }
 
-func (AVLWeakBottomUp) New() List <span class="cov0" title="0">{
+func (AVLWeakBottomUp) New() List <span class="cov8" title="1">{
    return &amp;AVLWeakBottomUp{}
 }</span>
 
-func (tree *AVLWeakBottomUp) Clone() List <span class="cov0" title="0">{
+func (tree *AVLWeakBottomUp) Clone() List <span class="cov8" title="1">{
    return &amp;AVLWeakBottomUp{
       WAVL{
          Tree: tree.Tree.Clone(),
@@ -1546,16 +1546,16 @@ func (tree *AVLWeakBottomUp) Clone() List <span class="cov0" title="0">{
    }
 }</span>
 
-func (tree *AVLWeakBottomUp) insert(p *Node, i Position, x Data) *Node <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
+func (tree *AVLWeakBottomUp) insert(p *Node, i Position, x Data) *Node <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
       return tree.allocate(Node{x: x})
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;p)
-   if i &lt;= p.s </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">tree.persist(&amp;p)
+   if i &lt;= p.s </span><span class="cov8" title="1">{
       p.s = p.s + 1
       p.l = tree.insert(p.l, i, x)
       return tree.balanceInsertL(p)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       p.r = tree.insert(p.r, i-p.s-1, x)
       return tree.balanceInsertR(p)
    }</span>
@@ -1579,68 +1579,68 @@ func (tree *AVLWeakBottomUp) insert(p *Node, i Position, x Data) *Node <span cla
 //    return tree.rebalanceDeletingRight(p)
 // }
 
-func (tree AVLWeakBottomUp) delete(p *Node, i Position, x *Data) *Node <span class="cov0" title="0">{
+func (tree AVLWeakBottomUp) delete(p *Node, i Position, x *Data) *Node <span class="cov8" title="1">{
    tree.persist(&amp;p)
-   if i == p.s </span><span class="cov0" title="0">{
+   if i == p.s </span><span class="cov8" title="1">{
       *x = p.x
       defer tree.free(p)
       return tree.join(p.l, p.r, p.s)
    }</span>
-   <span class="cov0" title="0">if i &lt; p.s </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if i &lt; p.s </span><span class="cov8" title="1">{
       p.s = p.s - 1
       p.l = tree.delete(p.l, i, x)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       p.r = tree.delete(p.r, i-p.s-1, x)
    }</span>
-   <span class="cov0" title="0">return tree.rebalanceOnDelete(p)</span>
+   <span class="cov8" title="1">return tree.rebalanceOnDelete(p)</span>
 }
 
-func (tree *AVLWeakBottomUp) Delete(i Position) (x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+func (tree *AVLWeakBottomUp) Delete(i Position) (x Data) <span class="cov8" title="1">{
+   // assert(i &lt; tree.size)
    tree.root = tree.delete(tree.root, i, &amp;x)
    tree.size = tree.size - 1
    return
 }</span>
 
-func (tree *AVLWeakBottomUp) Insert(i Position, x Data) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
+func (tree *AVLWeakBottomUp) Insert(i Position, x Data) <span class="cov8" title="1">{
+   // assert(i &lt;= tree.size)
    tree.size = tree.size + 1
    tree.root = tree.insert(tree.root, i, x)
 }</span>
 
-func (tree AVLWeakBottomUp) extractMin(p *Node, min **Node) *Node <span class="cov0" title="0">{
-   if p.l == nil </span><span class="cov0" title="0">{
+func (tree AVLWeakBottomUp) extractMin(p *Node, min **Node) *Node <span class="cov8" title="1">{
+   if p.l == nil </span><span class="cov8" title="1">{
       *min = tree.replacedByRightSubtree(&amp;p)
       return p
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;p)
+   <span class="cov8" title="1">tree.persist(&amp;p)
    p.s--
    p.l = tree.extractMin(p.l, min)
    return tree.rebalanceOnDelete(p)</span>
 }
 
 // TODO: rename to deleteMin and sort out conflicts with relaxed which embeds it
-func (tree AVLWeakBottomUp) extractMax(p *Node, max **Node) *Node <span class="cov0" title="0">{
-   if p.r == nil </span><span class="cov0" title="0">{
+func (tree AVLWeakBottomUp) extractMax(p *Node, max **Node) *Node <span class="cov8" title="1">{
+   if p.r == nil </span><span class="cov8" title="1">{
       *max = tree.replacedByLeftSubtree(&amp;p)
       return p
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;p)
+   <span class="cov8" title="1">tree.persist(&amp;p)
    p.r = tree.extractMax(p.r, max)
    return tree.rebalanceOnDelete(p)</span>
 }
 
-func (tree AVLWeakBottomUp) join(l, r *Node, sl Size) (p *Node) <span class="cov0" title="0">{
-   if l == nil </span><span class="cov0" title="0">{ return r }</span>
-   <span class="cov0" title="0">if r == nil </span><span class="cov0" title="0">{ return l }</span>
-   <span class="cov0" title="0">if tree.rank(l) &lt;= tree.rank(r) </span><span class="cov0" title="0">{
+func (tree AVLWeakBottomUp) join(l, r *Node, sl Size) (p *Node) <span class="cov8" title="1">{
+   if l == nil </span><span class="cov8" title="1">{ return r }</span>
+   <span class="cov8" title="1">if r == nil </span><span class="cov8" title="1">{ return l }</span>
+   <span class="cov8" title="1">if tree.rank(l) &lt;= tree.rank(r) </span><span class="cov8" title="1">{
       return tree.build(l, p, tree.extractMin(r, &amp;p), sl)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       return tree.build(tree.extractMax(l, &amp;p), p, r, sl-1)
    }</span>
 }
 
-func (tree AVLWeakBottomUp) Join(that List) List <span class="cov0" title="0">{
+func (tree AVLWeakBottomUp) Join(that List) List <span class="cov8" title="1">{
    tree.share(tree.root)
    tree.share(that.(*AVLWeakBottomUp).root)
    return &amp;AVLWeakBottomUp{
@@ -1655,27 +1655,27 @@ func (tree AVLWeakBottomUp) Join(that List) List <span class="cov0" title="0">{
 }</span>
 
 
-func (tree AVLWeakBottomUp) split(p *Node, i, s Size) (l, r *Node) <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
+func (tree AVLWeakBottomUp) split(p *Node, i, s Size) (l, r *Node) <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
       return
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;p)
+   <span class="cov8" title="1">tree.persist(&amp;p)
 
    sl := p.s
    sr := s - p.s - 1
 
-   if i &lt;= (*p).s </span><span class="cov0" title="0">{
+   if i &lt;= (*p).s </span><span class="cov8" title="1">{
       l, r = tree.split(p.l, i, sl)
       r = tree.build(r, p, p.r, sl-i)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       l, r = tree.split(p.r, i-sl-1, sr)
       l = tree.build(p.l, p, l, sl)
    }</span>
-   <span class="cov0" title="0">return l, r</span>
+   <span class="cov8" title="1">return l, r</span>
 }
 
-func (tree AVLWeakBottomUp) Split(i Position) (List, List) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
+func (tree AVLWeakBottomUp) Split(i Position) (List, List) <span class="cov8" title="1">{
+   // assert(i &lt;= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
 
@@ -1692,11 +1692,11 @@ type AVLWeakTopDown struct {
    WAVL
 }
 
-func (AVLWeakTopDown) New() List <span class="cov0" title="0">{
+func (AVLWeakTopDown) New() List <span class="cov8" title="1">{
    return &amp;AVLWeakTopDown{}
 }</span>
 
-func (tree *AVLWeakTopDown) Clone() List <span class="cov0" title="0">{
+func (tree *AVLWeakTopDown) Clone() List <span class="cov8" title="1">{
    return &amp;AVLWeakTopDown{
       WAVL{
          Tree: tree.Tree.Clone(),
@@ -1706,33 +1706,33 @@ func (tree *AVLWeakTopDown) Clone() List <span class="cov0" title="0">{
 
 // This top-down insertion algorithm was translated and paraphrased from the
 // _Deletion Without Rebalancing in Binary Search Trees_ paper referenced above.
-func (tree *AVLWeakTopDown) insert(p **Node, i Position, x Data) <span class="cov0" title="0">{
+func (tree *AVLWeakTopDown) insert(p **Node, i Position, x Data) <span class="cov8" title="1">{
    //
    // "If the tree is empty, create a new node containing the item to be inserted
    //  and make it the root, completing the insertion."
    //
-   if *p == nil </span><span class="cov0" title="0">{
+   if *p == nil </span><span class="cov8" title="1">{
       tree.attach(p, x)
       return
    }</span>
-   <span class="cov0" title="0">tree.persist(p)
+   <span class="cov8" title="1">tree.persist(p)
    //
    // "Otherwise, tree.promote the root if it is not 1,1."
    //
    // TODO: ^ this contradicts?
    //
-   if tree.isOneOne(*p) </span><span class="cov0" title="0">{
+   if tree.isOneOne(*p) </span><span class="cov8" title="1">{
       tree.promote(*p)
    }</span>
    // "This establishes the invariant for the main loop for the algorithm:
    //  *p is a non-nil node that is not a 1,1-node."
    //
-   <span class="cov0" title="0">for </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">for </span><span class="cov8" title="1">{
       // assert(!tree.isOneOne(*p))
 
       // "From *p, take one step down the search path..."
       //
-      if i &lt;= (*p).s </span><span class="cov0" title="0">{
+      if i &lt;= (*p).s </span><span class="cov8" title="1">{
          //
          // LEFT
          //
@@ -1742,21 +1742,21 @@ func (tree *AVLWeakTopDown) insert(p **Node, i Position, x Data) <span class="co
          //  The new node cannot be a 0-child since the parent is not a 1,1-node
          //  and hence has positive rank."
          //
-         if (*p).l == nil </span><span class="cov0" title="0">{
+         if (*p).l == nil </span><span class="cov8" title="1">{
             tree.attachL(*p, x)
             return
          }</span>
          //
          // "If the next node on the search path is not a 1,1-node, continue."
          //
-         <span class="cov0" title="0">if !tree.isOneOne((*p).l) </span><span class="cov0" title="0">{
+         <span class="cov8" title="1">if !tree.isOneOne((*p).l) </span><span class="cov8" title="1">{
             tree.pathLeft(&amp;p)
             continue</span>
          }
          // "If the next node on the search path is not a 1-child, tree.promote it,
          //  then continue to the next step."
          //
-         <span class="cov0" title="0">if !tree.isOneChild(*p, (*p).l) </span><span class="cov0" title="0">{
+         <span class="cov8" title="1">if !tree.isOneChild(*p, (*p).l) </span><span class="cov8" title="1">{
             tree.pathLeft(&amp;p)
             tree.promote(*p)
             continue</span>
@@ -1767,7 +1767,7 @@ func (tree *AVLWeakTopDown) insert(p **Node, i Position, x Data) <span class="co
          //
          // "From this node, take one further step down the search path..."
          //
-         <span class="cov0" title="0">if i &lt;= (*p).l.s </span><span class="cov0" title="0">{
+         <span class="cov8" title="1">if i &lt;= (*p).l.s </span><span class="cov8" title="1">{
             //
             // LEFT LEFT
             //
@@ -1776,7 +1776,7 @@ func (tree *AVLWeakTopDown) insert(p **Node, i Position, x Data) <span class="co
             //  left children, or, symmetrically, both right children, do a
             //  rotate step, completing the insertion."
             //
-            if (*p).l.l == nil </span><span class="cov0" title="0">{
+            if (*p).l.l == nil </span><span class="cov8" title="1">{
                tree.attachLL(*p, x)
                tree.rotateR(p)
                tree.promote(*p)
@@ -1792,7 +1792,7 @@ func (tree *AVLWeakTopDown) insert(p **Node, i Position, x Data) <span class="co
             //
             // "If this node is not a 1,1-node, continue with both search steps."
             //
-            <span class="cov0" title="0">if !tree.isOneOne((*p).l.l) </span><span class="cov0" title="0">{
+            <span class="cov8" title="1">if !tree.isOneOne((*p).l.l) </span><span class="cov8" title="1">{
                tree.pathLeft(&amp;p)
                tree.pathLeft(&amp;p)
                continue</span>
@@ -1800,14 +1800,14 @@ func (tree *AVLWeakTopDown) insert(p **Node, i Position, x Data) <span class="co
             // "Otherwise tree.promote the new node and its parent, making its parent
             //  a 0-child, then do a rotate or double rotate step to make all
             //  rank differences positive."
-            <span class="cov0" title="0">tree.rotateR(p)
+            <span class="cov8" title="1">tree.rotateR(p)
             tree.promote(*p)
             tree.demote((*p).r)
             tree.pathLeft(&amp;p)
             tree.promote(*p)
             continue</span>
 
-         } else<span class="cov0" title="0"> {
+         } else<span class="cov8" title="1"> {
             //
             // LEFT RIGHT
             //
@@ -1819,7 +1819,7 @@ func (tree *AVLWeakTopDown) insert(p **Node, i Position, x Data) <span class="co
             //  which requires a double rotation, follows by the right and left
             //  steps down the search path after the rotation.
             //
-            if (*p).l.r == nil </span><span class="cov0" title="0">{
+            if (*p).l.r == nil </span><span class="cov8" title="1">{
                tree.attachLR(*p, x)
                tree.rotateLR(p)
                tree.promote(*p)
@@ -1829,7 +1829,7 @@ func (tree *AVLWeakTopDown) insert(p **Node, i Position, x Data) <span class="co
             //
             // "If this node is not a 1,1-node, continue with both search steps."
             //
-            <span class="cov0" title="0">if !tree.isOneOne((*p).l.r) </span><span class="cov0" title="0">{
+            <span class="cov8" title="1">if !tree.isOneOne((*p).l.r) </span><span class="cov8" title="1">{
                tree.pathLeft(&amp;p)
                tree.pathRight(&amp;p, &amp;i)
                continue</span>
@@ -1838,7 +1838,7 @@ func (tree *AVLWeakTopDown) insert(p **Node, i Position, x Data) <span class="co
             //  a 0-child, then do a rotate or double rotate step to make all
             //  rank differences positive."
             //
-            <span class="cov0" title="0">tree.rotateLR(p)
+            <span class="cov8" title="1">tree.rotateLR(p)
             tree.promote(*p)
             tree.promote(*p)
             tree.demote((*p).r)
@@ -1846,79 +1846,79 @@ func (tree *AVLWeakTopDown) insert(p **Node, i Position, x Data) <span class="co
             // "If a double rotation is done, take one further step down the
             //  search path after the rotation. Ths completes the step."
             //
-            if i &lt;= (*p).s </span><span class="cov0" title="0">{
+            if i &lt;= (*p).s </span><span class="cov8" title="1">{
                tree.pathLeft(&amp;p) // LRL
-            }</span> else<span class="cov0" title="0"> {
+            }</span> else<span class="cov8" title="1"> {
                tree.pathRight(&amp;p, &amp;i) // LRR
             }</span>
          }
-      } else<span class="cov0" title="0"> {
+      } else<span class="cov8" title="1"> {
          //
          // RIGHT
          //
          // Comments follow symmetrically from above.
          //
-         if (*p).r == nil </span><span class="cov0" title="0">{
+         if (*p).r == nil </span><span class="cov8" title="1">{
             tree.attachR(*p, x)
             return
          }</span>
-         <span class="cov0" title="0">if !tree.isOneOne((*p).r) </span><span class="cov0" title="0">{
+         <span class="cov8" title="1">if !tree.isOneOne((*p).r) </span><span class="cov8" title="1">{
             tree.pathRight(&amp;p, &amp;i)
             continue</span>
          }
-         <span class="cov0" title="0">if !tree.isOneChild(*p, (*p).r) </span><span class="cov0" title="0">{
+         <span class="cov8" title="1">if !tree.isOneChild(*p, (*p).r) </span><span class="cov8" title="1">{
             tree.pathRight(&amp;p, &amp;i)
             tree.promote(*p)
             continue</span>
          }
 
-         <span class="cov0" title="0">if i &gt; (*p).s+(*p).r.s+1 </span><span class="cov0" title="0">{
+         <span class="cov8" title="1">if i &gt; (*p).s+(*p).r.s+1 </span><span class="cov8" title="1">{
             //
             // RIGHT RIGHT
             //
-            if (*p).r.r == nil </span><span class="cov0" title="0">{
+            if (*p).r.r == nil </span><span class="cov8" title="1">{
                tree.attachRR(*p, x)
                tree.rotateL(p)
                tree.promote(*p)
                tree.demote((*p).l)
                return
             }</span>
-            <span class="cov0" title="0">if !tree.isOneOne((*p).r.r) </span><span class="cov0" title="0">{
+            <span class="cov8" title="1">if !tree.isOneOne((*p).r.r) </span><span class="cov8" title="1">{
                tree.pathRight(&amp;p, &amp;i)
                tree.pathRight(&amp;p, &amp;i)
                continue</span>
             }
-            <span class="cov0" title="0">tree.rotateL(p)
+            <span class="cov8" title="1">tree.rotateL(p)
             tree.promote(*p)
             tree.demote((*p).l)
             tree.pathRight(&amp;p, &amp;i)
             tree.promote(*p)
             continue</span>
 
-         } else<span class="cov0" title="0"> {
+         } else<span class="cov8" title="1"> {
             //
             // RIGHT LEFT
             //
-            if (*p).r.l == nil </span><span class="cov0" title="0">{
+            if (*p).r.l == nil </span><span class="cov8" title="1">{
                tree.attachRL(*p, x)
                tree.rotateRL(p)
                tree.demote((*p).l)
                tree.promote(*p)
                return
             }</span>
-            <span class="cov0" title="0">if !tree.isOneOne((*p).r.l) </span><span class="cov0" title="0">{
+            <span class="cov8" title="1">if !tree.isOneOne((*p).r.l) </span><span class="cov8" title="1">{
                tree.pathRight(&amp;p, &amp;i)
                tree.pathLeft(&amp;p)
                continue</span>
             }
-            <span class="cov0" title="0">tree.rotateRL(p)
+            <span class="cov8" title="1">tree.rotateRL(p)
             tree.promote(*p)
             tree.promote(*p)
             tree.demote((*p).l)
 
-            if i &gt; (*p).s </span><span class="cov0" title="0">{
+            if i &gt; (*p).s </span><span class="cov8" title="1">{
                tree.pathRight(&amp;p, &amp;i) // RLR
-            }</span> else<span class="cov0" title="0"> {
+            }</span> else<span class="cov8" title="1"> {
                tree.pathLeft(&amp;p) // RLL
             }</span>
          }
@@ -1926,48 +1926,48 @@ func (tree *AVLWeakTopDown) insert(p **Node, i Position, x Data) <span class="co
    }
 }
 
-func (tree *AVLWeakTopDown) dissolve(p **Node, x *Data) <span class="cov0" title="0">{
+func (tree *AVLWeakTopDown) dissolve(p **Node, x *Data) <span class="cov8" title="1">{
    tree.persist(p)
    defer tree.free(*p)
    *x = (*p).x
    *p = tree.join((*p).l, (*p).r, (*p).s)
 }</span>
 
-func (tree *AVLWeakTopDown) Update(i Size, x Data) <span class="cov0" title="0">{
+func (tree *AVLWeakTopDown) Update(i Size, x Data) <span class="cov8" title="1">{
    // assert(i &lt; tree.size)
    tree.persist(&amp;tree.root)
    tree.update(tree.root, i, x)
 }</span>
 
-func (tree *AVLWeakTopDown) Select(i Size) Data <span class="cov0" title="0">{
+func (tree *AVLWeakTopDown) Select(i Size) Data <span class="cov8" title="1">{
    // assert(i &lt; tree.size)
    return tree.lookup(tree.root, i)
 }</span>
 
-func (tree *AVLWeakTopDown) Insert(i Position, x Data) <span class="cov0" title="0">{
+func (tree *AVLWeakTopDown) Insert(i Position, x Data) <span class="cov8" title="1">{
    // assert(i &lt;= tree.size)
    tree.size++
    tree.insert(&amp;tree.root, i, x)
 }</span>
 
-func (tree *AVLWeakTopDown) Delete(i Position) (x Data) <span class="cov0" title="0">{
+func (tree *AVLWeakTopDown) Delete(i Position) (x Data) <span class="cov8" title="1">{
    // assert(i &lt; tree.size)
    x = tree.delete(&amp;tree.root, i)
    tree.size--
    return
 }</span>
 
-func (tree AVLWeakTopDown) join(l, r *Node, sl Size) (p *Node) <span class="cov0" title="0">{
-   if l == nil </span><span class="cov0" title="0">{ return r }</span>
-   <span class="cov0" title="0">if r == nil </span><span class="cov0" title="0">{ return l }</span>
-   <span class="cov0" title="0">if tree.rank(l) &lt;= tree.rank(r) </span><span class="cov0" title="0">{
+func (tree AVLWeakTopDown) join(l, r *Node, sl Size) (p *Node) <span class="cov8" title="1">{
+   if l == nil </span><span class="cov8" title="1">{ return r }</span>
+   <span class="cov8" title="1">if r == nil </span><span class="cov8" title="1">{ return l }</span>
+   <span class="cov8" title="1">if tree.rank(l) &lt;= tree.rank(r) </span><span class="cov8" title="1">{
       return tree.build(l, tree.deleteMin(&amp;r), r, sl)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       return tree.build(l, tree.deleteMax(&amp;l), r, sl-1)
    }</span>
 }
 
-func (tree AVLWeakTopDown) Join(other List) List <span class="cov0" title="0">{
+func (tree AVLWeakTopDown) Join(other List) List <span class="cov8" title="1">{
    l := tree
    r := other.(*AVLWeakTopDown)
    tree.share(l.root)
@@ -1984,27 +1984,27 @@ func (tree AVLWeakTopDown) Join(other List) List <span class="cov0" title="0">{
 }</span>
 
 
-func (tree AVLWeakTopDown) split(p *Node, i, s Size) (l, r *Node) <span class="cov0" title="0">{
-   if p == nil </span><span class="cov0" title="0">{
+func (tree AVLWeakTopDown) split(p *Node, i, s Size) (l, r *Node) <span class="cov8" title="1">{
+   if p == nil </span><span class="cov8" title="1">{
       return
    }</span>
-   <span class="cov0" title="0">tree.persist(&amp;p)
+   <span class="cov8" title="1">tree.persist(&amp;p)
 
    sl := p.s
    sr := s - p.s - 1
 
-   if i &lt;= (*p).s </span><span class="cov0" title="0">{
+   if i &lt;= (*p).s </span><span class="cov8" title="1">{
       l, r = tree.split(p.l, i, sl)
          r = tree.build(r, p, p.r, sl-i)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       l, r = tree.split(p.r, i-sl-1, sr)
          l = tree.build(p.l, p, l, sl)
    }</span>
-   <span class="cov0" title="0">return l, r</span>
+   <span class="cov8" title="1">return l, r</span>
 }
 
 
-func (tree AVLWeakTopDown) Split(i Position) (List, List) <span class="cov0" title="0">{
+func (tree AVLWeakTopDown) Split(i Position) (List, List) <span class="cov8" title="1">{
    // assert(i &lt;= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
@@ -2018,71 +2018,71 @@ func (tree AVLWeakTopDown) Split(i Position) (List, List) <span class="cov0" tit
 //   is 2,2, we can force a reset on the next search step by demoting the
 //   current node in the former case, or the current node and its 1-child
 //   in the latter, and rebalancing top-down from the safe node."
-func (tree AVLWeakTopDown) resetSafeNode(p *Node) bool <span class="cov0" title="0">{
-   if tree.isTwoTwo(p) </span><span class="cov0" title="0">{
+func (tree AVLWeakTopDown) resetSafeNode(p *Node) bool <span class="cov8" title="1">{
+   if tree.isTwoTwo(p) </span><span class="cov8" title="1">{
       tree.demote(p)
       return true
    }</span>
-   <span class="cov0" title="0">if tree.isTwoChild(p, p.l) &amp;&amp; tree.isTwoTwo(p.r) </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if tree.isTwoChild(p, p.l) &amp;&amp; tree.isTwoTwo(p.r) </span><span class="cov8" title="1">{
       // assert(tree.isOneChild(p, p.r))
       tree.persist(&amp;p.r)
       tree.demote(p)
       tree.demote(p.r)
       return true
    }</span>
-   <span class="cov0" title="0">if tree.isTwoChild(p, p.r) &amp;&amp; tree.isTwoTwo(p.l) </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if tree.isTwoChild(p, p.r) &amp;&amp; tree.isTwoTwo(p.l) </span><span class="cov8" title="1">{
       // assert(tree.isOneChild(p, p.l))
       tree.persist(&amp;p.l)
       tree.demote(p)
       tree.demote(p.l)
       return true
    }</span>
-   <span class="cov0" title="0">return false</span> // Could not reset the safe node.
+   <span class="cov8" title="1">return false</span> // Could not reset the safe node.
 }
 
-func (tree AVLWeakTopDown) rebalanceTopDownOnDelete(p **Node) <span class="cov0" title="0">{
+func (tree AVLWeakTopDown) rebalanceTopDownOnDelete(p **Node) <span class="cov8" title="1">{
    *p = tree.rebalanceOnDelete(*p)
 }</span>
 
 // "Deletion of a unary node converts the child that replaces it
 //
 //   into a 2- or 3-child; the latter violates the rank rule."
-func (tree AVLWeakTopDown) rebalanceAfterDissolve(g **Node, p **Node) <span class="cov0" title="0">{
+func (tree AVLWeakTopDown) rebalanceAfterDissolve(g **Node, p **Node) <span class="cov8" title="1">{
    //
    // "Deletion of a leaf may convert its parent, previously a 1,2 node
    //  into a 2,2 leaf, violating the rank rule. In this case we begin
    //  by demoting the parent, which may make it a 3-child."
    //
-   if (*p).isLeaf() &amp;&amp; tree.isTwoTwo(*p) </span><span class="cov0" title="0">{
+   if (*p).isLeaf() &amp;&amp; tree.isTwoTwo(*p) </span><span class="cov8" title="1">{
       tree.demote(*p)
       tree.rebalanceTopDownOnDelete(g)
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       tree.rebalanceTopDownOnDelete(p)
    }</span>
 }
 
-func (tree AVLWeakTopDown) delete(p **Node, i Position) (x Data) <span class="cov0" title="0">{
+func (tree AVLWeakTopDown) delete(p **Node, i Position) (x Data) <span class="cov8" title="1">{
    //
    // Deleting the root does not require any rebalancing steps because a join
    // will always produce a valid tree.
    //
-   if (*p).s == i </span><span class="cov0" title="0">{
+   if (*p).s == i </span><span class="cov8" title="1">{
       tree.dissolve(p, &amp;x)
       return
    }</span>
    // This is the parent of the current node; the grandparent and "safe node".
-   <span class="cov0" title="0">g := p
-   for </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">g := p
+   for </span><span class="cov8" title="1">{
       tree.persist(p)
-      if tree.resetSafeNode(*p) </span><span class="cov0" title="0">{
+      if tree.resetSafeNode(*p) </span><span class="cov8" title="1">{
          tree.rebalanceTopDownOnDelete(g)
       }</span>
-      <span class="cov0" title="0">if i &lt; (*p).s </span><span class="cov0" title="0">{
+      <span class="cov8" title="1">if i &lt; (*p).s </span><span class="cov8" title="1">{
          //
          // LEFT
          //
          l := deleteL(*p)
-         if (*l).s == i </span><span class="cov0" title="0">{
+         if (*l).s == i </span><span class="cov8" title="1">{
             //
             // The node delete is on the left; path to it then replace it by a
             // join of its subtrees, followed by a rebalancing step.
@@ -2091,15 +2091,15 @@ func (tree AVLWeakTopDown) delete(p **Node, i Position) (x Data) <span class="co
             tree.rebalanceAfterDissolve(g, p)
             return
          }</span>
-         <span class="cov0" title="0">g = p
+         <span class="cov8" title="1">g = p
          p = l</span>
 
-      } else<span class="cov0" title="0"> {
+      } else<span class="cov8" title="1"> {
          //
          // RIGHT
          //
          r := deleteR(*p, &amp;i)
-         if (*r).s == i </span><span class="cov0" title="0">{
+         if (*r).s == i </span><span class="cov8" title="1">{
             //
             // The node delete is on the right; path to it then replace it by a
             // join of its subtrees, followed by a rebalancing step.
@@ -2108,49 +2108,49 @@ func (tree AVLWeakTopDown) delete(p **Node, i Position) (x Data) <span class="co
             tree.rebalanceAfterDissolve(g, p)
             return
          }</span>
-         <span class="cov0" title="0">g = p
+         <span class="cov8" title="1">g = p
          p = r</span>
       }
    }
 }
-func (tree AVLWeakTopDown) deleteMax(p **Node) (max *Node) <span class="cov0" title="0">{
+func (tree AVLWeakTopDown) deleteMax(p **Node) (max *Node) <span class="cov8" title="1">{
    g := p
-   if (*p).r == nil </span><span class="cov0" title="0">{
+   if (*p).r == nil </span><span class="cov8" title="1">{
       return tree.replacedByLeftSubtree(p)
    }</span>
-   <span class="cov0" title="0">for </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">for </span><span class="cov8" title="1">{
       tree.persist(p)
       right := pathDeletingRightIgnoringIndex(*p)
-      if tree.resetSafeNode(*p) </span><span class="cov0" title="0">{
+      if tree.resetSafeNode(*p) </span><span class="cov8" title="1">{
          tree.rebalanceTopDownOnDelete(g)
       }</span>
-      <span class="cov0" title="0">if (*p).r.r == nil </span><span class="cov0" title="0">{
+      <span class="cov8" title="1">if (*p).r.r == nil </span><span class="cov8" title="1">{
          max = tree.replacedByLeftSubtree(right)
          tree.rebalanceAfterDissolve(g, p)
          return
       }</span>
-      <span class="cov0" title="0">g = p
+      <span class="cov8" title="1">g = p
       p = right</span>
    }
 }
 
-func (tree AVLWeakTopDown) deleteMin(p **Node) (min *Node) <span class="cov0" title="0">{
+func (tree AVLWeakTopDown) deleteMin(p **Node) (min *Node) <span class="cov8" title="1">{
    g := p
-   if (*p).l == nil </span><span class="cov0" title="0">{
+   if (*p).l == nil </span><span class="cov8" title="1">{
       return tree.replacedByRightSubtree(p)
    }</span>
-   <span class="cov0" title="0">for </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">for </span><span class="cov8" title="1">{
       tree.persist(p)
       left := deleteL(*p)
-      if tree.resetSafeNode(*p) </span><span class="cov0" title="0">{
+      if tree.resetSafeNode(*p) </span><span class="cov8" title="1">{
          tree.rebalanceTopDownOnDelete(g)
       }</span>
-      <span class="cov0" title="0">if (*p).l.l == nil </span><span class="cov0" title="0">{
+      <span class="cov8" title="1">if (*p).l.l == nil </span><span class="cov8" title="1">{
          min = tree.replacedByRightSubtree(left)
          tree.rebalanceAfterDissolve(g, p)
          return
       }</span>
-      <span class="cov0" title="0">g = p
+      <span class="cov8" title="1">g = p
       p = left</span>
    }
 }
@@ -2956,7 +2956,7 @@ func (tree *Conc) concat(l, r *Node) *Node <span class="cov0" title="0">{
 }
 
 func (tree Conc) Select(i Position) (x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    return tree.lookup(tree.root, i).x
 }</span>
 
@@ -2973,7 +2973,7 @@ func (tree Conc) lookup(p *Node, i Position) *Node <span class="cov0" title="0">
 }
 
 func (tree *Conc) Update(i Position, x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    tree.root = tree.update(tree.root, i, x)
 }</span>
 
@@ -2989,7 +2989,7 @@ func (tree *Conc) update(p *Node, i Position, x Data) *Node <span class="cov0" t
 }
 
 func (tree *Conc) Insert(i Position, x Data) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
+   // assert(i &lt;= tree.size)
    tree.size++
    if tree.root == nil </span><span class="cov0" title="0">{
       tree.root = tree.asLeaf(x)
@@ -3014,7 +3014,7 @@ func (tree *Conc) insert(p *Node, i Position, x Data) *Node <span class="cov0" t
 }
 
 func (tree *Conc) Delete(i Position) (x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    tree.size--
    tree.root = tree.delete(tree.root, i, &amp;x)
    return
@@ -3033,7 +3033,7 @@ func (tree *Conc) delete(p *Node, i Position, x *Data) *Node <span class="cov0" 
 }
 
 func (tree Conc) Split(i Position) (List, List) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
+   // assert(i &lt;= tree.size)
    if i == 0 </span><span class="cov0" title="0">{
       return &amp;Conc{Tree: Tree{arena: tree.arena}},
          &amp;Conc{Tree: Tree{arena: tree.arena, root: tree.root, size: tree.size}}
@@ -3900,13 +3900,13 @@ import (
 // }
 //
 // func (tree *LBST) Insert(i Position, s Value) {
-//    // assert(i &lt;= tree.Size())
+//    // assert(i &lt;= tree.size)
 //    tree.root = tree.insert(tree.root, tree.size, i, s)
 //    tree.size++
 // }
 //
 // func (tree *LBST) Delete(i Position) (s Value) {
-//    // assert(i &lt; tree.Size())
+//    // assert(i &lt; tree.size)
 //    tree.root = tree.delete(tree.root, tree.size, i, &amp;s)
 //    tree.size--
 //    return
@@ -4003,7 +4003,7 @@ import (
 // }
 //
 // func (tree LBST) Split(i Position) (List, List) {
-//    // assert(i &lt;= tree.Size())
+//    // assert(i &lt;= tree.size)
 //
 //    l, r := tree.split(tree.root.share(), i, tree.size)
 //
@@ -4152,24 +4152,24 @@ func (tree *LBSTBottomUp) delete(p *Node, s Size, i Position, x *Data) *Node <sp
 }
 
 func (tree *LBSTBottomUp) Select(i Size) Data <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    return tree.lookup(tree.root, i)
 }</span>
 
 func (tree *LBSTBottomUp) Update(i Size, x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    tree.persist(&amp;tree.root)
    tree.update(tree.root, i, x)
 }</span>
 
 func (tree *LBSTBottomUp) Insert(i Position, x Data) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
+   // assert(i &lt;= tree.size)
    tree.root = tree.insert(tree.root, tree.size, i, x)
    tree.size++
 }</span>
 
 func (tree *LBSTBottomUp) Delete(i Position) (x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    tree.root = tree.delete(tree.root, tree.size, i, &amp;x)
    tree.size--
    return
@@ -4460,7 +4460,7 @@ func (tree LBSTBottomUp) Join(that List) List <span class="cov0" title="0">{
 // }
 //
 // func (tree LBSTDownUp) Split(i Position) (List, List) {
-//    // assert(i &lt;= tree.Size())
+//    // assert(i &lt;= tree.size)
 //
 //    l, r := tree.split(tree.root.share(), i, tree.size)
 //
@@ -5056,13 +5056,13 @@ func (tree *LBSTTopDown) deleteR(p ***Node, s *Size, i *Position) <span class="c
 }</span>
 
 func (tree *LBSTTopDown) Insert(i Position, x Data) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
+   // assert(i &lt;= tree.size)
    tree.insert(&amp;tree.root, tree.size, i, x)
    tree.size++
 }</span>
 
 func (tree *LBSTTopDown) Delete(i Position) (x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    x = tree.delete(&amp;tree.root, tree.size, i).x
    tree.size--
    return
@@ -5791,14 +5791,14 @@ func (tree Tree) verifySize(p *Node, s Size) Size <span class="cov8" title="1">{
 //   }
 //}
 
-func (tree *Tree) replacedByRightSubtree(p **Node) *Node <span class="cov0" title="0">{
+func (tree *Tree) replacedByRightSubtree(p **Node) *Node <span class="cov8" title="1">{
    tree.persist(p)
    r := *p
    *p = (*p).r
    return r
 }</span>
 
-func (tree *Tree) replacedByLeftSubtree(p **Node) *Node <span class="cov0" title="0">{
+func (tree *Tree) replacedByLeftSubtree(p **Node) *Node <span class="cov8" title="1">{
    tree.persist(p)
    l := *p
    *p = (*p).l
@@ -6215,13 +6215,13 @@ func insertR(p *Node, i *Position) **Node <span class="cov8" title="1">{
    return &amp;p.r
 }</span>
 
-func deleteL(p *Node) **Node <span class="cov0" title="0">{
+func deleteL(p *Node) **Node <span class="cov8" title="1">{
    //println("deleteL")
    p.s--
    return &amp;p.l
 }</span>
 
-func deleteR(p *Node, i *Position) **Node <span class="cov0" title="0">{
+func deleteR(p *Node, i *Position) **Node <span class="cov8" title="1">{
    //println("deleteR")
    *i = *i - p.s - 1
    return &amp;p.r
@@ -6285,7 +6285,7 @@ func (tree *Tree) attachR(p *Node, x Data) <span class="cov8" title="1">{
    p.r = tree.allocate(Node{x: x})
 }</span>
 
-func pathDeletingRightIgnoringIndex(p *Node) **Node <span class="cov0" title="0">{
+func pathDeletingRightIgnoringIndex(p *Node) **Node <span class="cov8" title="1">{
    return &amp;p.r
 }</span>
 
@@ -6572,7 +6572,7 @@ func (tree *Randomized) Insert(i Position, x Data) <span class="cov0" title="0">
 }
 
 func (tree *Randomized) Delete(i Position) Data <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    p := &amp;tree.root
    s := tree.size
    tree.size--
@@ -6626,12 +6626,12 @@ func (tree *Randomized) join(l *Node, r *Node, sl, sr Size) (root *Node) <span c
 }
 
 func (tree *Randomized) Select(i Size) Data <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    return tree.lookup(tree.root, i)
 }</span>
 
 func (tree *Randomized) Update(i Size, x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    tree.persist(&amp;tree.root)
    tree.update(tree.root, i, x)
 }</span>
@@ -6656,7 +6656,7 @@ func (tree *Randomized) splitInto(p *Node, i uint64, l, r **Node) <span class="c
 }
 
 func (tree *Randomized) split(i Size) (Tree, Tree) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
+   // assert(i &lt;= tree.size)
    tree.share(tree.root)
    var l, r *Node
    tree.splitInto(tree.root, i, &amp;l, &amp;r)
@@ -6724,11 +6724,11 @@ func (tree RankBalanced) isOneChild(parent, child *Node) bool <span class="cov8"
    return tree.rankDifference(parent, child) == 1
 }</span>
 
-func (tree RankBalanced) isTwoChild(parent, child *Node) bool <span class="cov0" title="0">{
+func (tree RankBalanced) isTwoChild(parent, child *Node) bool <span class="cov8" title="1">{
    return tree.rankDifference(parent, child) == 2
 }</span>
 
-func (tree RankBalanced) isThreeChild(parent, child *Node) bool <span class="cov0" title="0">{
+func (tree RankBalanced) isThreeChild(parent, child *Node) bool <span class="cov8" title="1">{
    return tree.rankDifference(parent, child) == 3
 }</span>
 
@@ -6748,7 +6748,7 @@ func (tree RankBalanced) isOneOne(p *Node) bool <span class="cov8" title="1">{
    return tree.isOneChild(p, p.l) &amp;&amp; tree.isOneChild(p, p.r)
 }</span>
 
-func (tree RankBalanced) isTwoTwo(p *Node) bool <span class="cov0" title="0">{
+func (tree RankBalanced) isTwoTwo(p *Node) bool <span class="cov8" title="1">{
    return tree.isTwoChild(p, p.l) &amp;&amp; tree.isTwoChild(p, p.r)
 }</span>
 </pre>
@@ -6766,8 +6766,9 @@ type RedBlack struct {
 
 func (tree RedBlack) verifyHeight(p *Node, s list.Size) <span class="cov8" title="1">{
    // TODO return height, check for every node
-   invariant(p.height() &lt;= 2 * tree.rank(p) + 1)
-   invariant(p.height() &lt;= 2 * int(math.Log2(float64(s))))
+   h := p.height()
+   invariant(h &lt;= 2 * tree.rank(p) + 1)
+   invariant(h &lt;= 2 * int(math.Log2(float64(s))))
 }</span>
 
 func (tree RedBlack) verifyRanks(p *Node) <span class="cov8" title="1">{
@@ -6845,13 +6846,13 @@ func (tree *RedBlackBottomUp) Delete(i list.Position) (x list.Data) <span class=
 
 func (tree *RedBlackBottomUp) delete(p *Node, i list.Position, x *list.Data) *Node <span class="cov8" title="1">{
    tree.persist(&amp;p)
-   if i == p.s </span><span class="cov8" title="1">{
+   if i == p.sizeL() </span><span class="cov8" title="1">{
       *x = p.x
       defer tree.free(p)
       return tree.join(p.l, p.r, p.s)
    }</span>
-   <span class="cov8" title="1">if i &lt; p.s </span><span class="cov8" title="1">{
-      p.s = p.s - 1
+   <span class="cov8" title="1">if i &lt; p.sizeL() </span><span class="cov8" title="1">{
+      p.s = p.sizeL() - 1
       p.l = tree.delete(p.l, i, x)
       return tree.balanceDeleteL(p)
    }</span> else<span class="cov8" title="1"> {
@@ -6859,7 +6860,6 @@ func (tree *RedBlackBottomUp) delete(p *Node, i list.Position, x *list.Data) *No
       return tree.balanceDeleteR(p)
    }</span>
 }
-
 
 func (tree RedBlackBottomUp) balanceDeleteR(p *Node) *Node <span class="cov8" title="1">{
    if tree.isZeroChild(p, p.r) </span><span class="cov8" title="1">{
@@ -7068,7 +7068,7 @@ func (tree RedBlackBottomUp) Split(i list.Position) (list.List, list.List) <span
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
    return &amp;RedBlackBottomUp{Tree: Tree{arena: tree.arena, root: l, size: i}},
-      &amp;RedBlackBottomUp{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
+          &amp;RedBlackBottomUp{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
 }</span>
 
 func (tree *RedBlackBottomUp) deleteMin(p *Node, min **Node) *Node <span class="cov8" title="1">{
@@ -7092,26 +7092,43 @@ func (tree *RedBlackBottomUp) deleteMax(p *Node, max **Node) *Node <span class="
    <span class="cov8" title="1">p.r = tree.deleteMax(p.r, max)
    return tree.balanceDeleteR(p)</span>
 }
+//
+//func (tree RedBlackBottomUp) buildL(l *Node, p *Node, r *Node, sl list.Size) (root *Node) {
+//   // assert(tree.rank(l) != tree.rank(r))
+//   //if tree.rank(l) == tree.rank(r) {
+//   //   p.l = l
+//   //   p.r = r
+//   //   p.s = sl
+//   //   p.y = uint64(tree.rank(l))
+//   //   if r == nil || tree.hasZeroChild(l) || tree.hasZeroChild(r) {
+//   //      tree.promote(p)
+//   //   }
+//   //   return p
+//   //}
+//   tree.persist(&amp;l)
+//   l.r = tree.build(l.r, p, r, sl-l.s-1)
+//   return tree.balanceInsertR(l)
+//}
+//
+//func (tree RedBlackBottomUp) buildR(l *Node, p *Node, r *Node, sl list.Size) (root *Node) {
+//   // assert(tree.rank(r) != tree.rank(l))
+//   //if tree.rank(r) == tree.rank(l) {
+//   //   p.l = l
+//   //   p.r = r
+//   //   p.s = sl
+//   //   p.y = uint64(tree.rank(r))
+//   //   if l == nil || tree.hasZeroChild(l) || tree.hasZeroChild(r) {
+//   //      tree.promote(p)
+//   //   }
+//   //   return p
+//   //}
+//   tree.persist(&amp;r)
+//   r.s = 1 + sl + r.s
+//   r.l = tree.build(l, p, r.l, sl)
+//   return tree.balanceInsertL(r)
+//}
 
-func (tree RedBlackBottomUp) buildL(l *Node, p *Node, r *Node, sl list.Size) (root *Node) <span class="cov8" title="1">{
-   // assert(tree.rank(l) &gt;= tree.rank(r))
-   if tree.rank(l) == tree.rank(r) </span><span class="cov8" title="1">{
-      p.l = l
-      p.r = r
-      p.s = sl
-      p.y = uint64(tree.rank(l))
-      if r == nil || tree.hasZeroChild(l) || tree.hasZeroChild(r) </span><span class="cov8" title="1">{
-         tree.promote(p)
-      }</span>
-      <span class="cov8" title="1">return p</span>
-   }
-   <span class="cov8" title="1">tree.persist(&amp;l)
-   l.r = tree.buildL(l.r, p, r, sl-l.s-1)
-   return tree.balanceInsertR(l)</span>
-}
-
-func (tree RedBlackBottomUp) buildR(l *Node, p *Node, r *Node, sl list.Size) (root *Node) <span class="cov8" title="1">{
-   // assert(tree.rank(r) &gt;= tree.rank(l))
+func (tree *RedBlackBottomUp) build(l, p, r *Node, sl list.Size) *Node <span class="cov8" title="1">{
    if tree.rank(r) == tree.rank(l) </span><span class="cov8" title="1">{
       p.l = l
       p.r = r
@@ -7122,17 +7139,15 @@ func (tree RedBlackBottomUp) buildR(l *Node, p *Node, r *Node, sl list.Size) (ro
       }</span>
       <span class="cov8" title="1">return p</span>
    }
-   <span class="cov8" title="1">tree.persist(&amp;r)
-   r.s = 1 + sl + r.s
-   r.l = tree.buildR(l, p, r.l, sl)
-   return tree.balanceInsertL(r)</span>
-}
-
-func (tree *RedBlackBottomUp) build(l, p, r *Node, sl list.Size) *Node <span class="cov8" title="1">{
-   if tree.rank(l) &gt;= tree.rank(r) </span><span class="cov8" title="1">{
-      return tree.buildL(l, p, r, sl)
+   <span class="cov8" title="1">if tree.rank(l) &lt; tree.rank(r) </span><span class="cov8" title="1">{
+      tree.persist(&amp;r)
+      r.s = 1 + sl + r.s
+      r.l = tree.build(l, p, r.l, sl)
+      return tree.balanceInsertL(r)
    }</span> else<span class="cov8" title="1"> {
-      return tree.buildR(l, p, r, sl)
+      tree.persist(&amp;l)
+      l.r = tree.build(l.r, p, r, sl-l.s-1)
+      return tree.balanceInsertR(l)
    }</span>
 }
 
@@ -7235,7 +7250,7 @@ type RedBlackRelaxed struct {
 //}
 //
 //func (tree RedBlackRelaxed) Split(i Position) (RedBlackRelaxed, RedBlackRelaxed) {
-//   // assert(i &lt;= tree.Size())
+//   // assert(i &lt;= tree.size)
 //   tree.share(tree.root)
 //   l, r := tree.split(tree.root, i, tree.size)
 //   return RedBlackRelaxed{Tree: Tree{arena: tree.arena, root: l, size: i}},
@@ -7319,7 +7334,7 @@ func (tree RedBlackRelaxed) verifyRanks(p *Node) <span class="cov8" title="1">{
 		
 		<pre class="file" id="file23" style="display: none">package binarytree
 
-import . "binarysearch/abstract/list"
+import "binarysearch/abstract/list"
 
 type RedBlackRelaxedBottomUp struct {
    RedBlackBottomUp
@@ -7332,47 +7347,41 @@ func (tree RedBlackRelaxedBottomUp) Verify() <span class="cov8" title="1">{
    tree.RedBlackRelaxed.verifyHeight(tree.root)
 }</span>
 
-func (RedBlackRelaxedBottomUp) New() List <span class="cov8" title="1">{
+func (RedBlackRelaxedBottomUp) New() list.List <span class="cov8" title="1">{
    return &amp;RedBlackRelaxedBottomUp{}
 }</span>
 
-func (tree *RedBlackRelaxedBottomUp) Clone() List <span class="cov8" title="1">{
+func (tree *RedBlackRelaxedBottomUp) Clone() list.List <span class="cov8" title="1">{
    return &amp;RedBlackRelaxedBottomUp{
-      RedBlackBottomUp: RedBlackBottomUp{
-         Tree: tree.Tree.Clone(),
-      },
+      RedBlackBottomUp: *tree.RedBlackBottomUp.Clone().(*RedBlackBottomUp),
    }
 }</span>
 
-func (tree *RedBlackRelaxedBottomUp) insert(p *Node, i Position, x Data) *Node <span class="cov8" title="1">{
-   if p == nil </span><span class="cov8" title="1">{
-      return tree.allocate(Node{x: x})
-   }</span>
-   <span class="cov8" title="1">tree.persist(&amp;p)
-   if i &lt;= p.s </span><span class="cov8" title="1">{
-      p.s = p.s + 1
-      p.l = tree.insert(p.l, i, x)
-      return tree.balanceInsertL(p)
+func (tree *RedBlackRelaxedBottomUp) Insert(i list.Position, x list.Data) <span class="cov8" title="1">{
+   tree.RedBlackBottomUp.Insert(i, x)
+}</span>
+
+func (tree *RedBlackRelaxedBottomUp) Delete(i list.Position) (x list.Data) <span class="cov8" title="1">{
+   return tree.Tree.Delete(i)
+}</span>
+
+func (tree *RedBlackRelaxedBottomUp) join(l, r *Node, sl list.Size) (p *Node) <span class="cov8" title="1">{
+   if l == nil </span><span class="cov8" title="1">{ return r }</span>
+   <span class="cov8" title="1">if r == nil </span><span class="cov8" title="1">{ return l }</span>
+   <span class="cov8" title="1">if tree.rank(l) &lt;= tree.rank(r) </span><span class="cov8" title="1">{
+      return tree.RedBlackBottomUp.build(l, tree.Tree.deleteMin(&amp;r), r, sl)
    }</span> else<span class="cov8" title="1"> {
-      p.r = tree.insert(p.r, i-p.s-1, x)
-      return tree.balanceInsertR(p)
+      return tree.RedBlackBottomUp.build(l, tree.Tree.deleteMax(&amp;l), r, sl-1)
    }</span>
 }
 
-func (tree *RedBlackRelaxedBottomUp) Insert(i Position, x Data) <span class="cov8" title="1">{
-   // assert(i &lt;= tree.Size())
-   tree.size = tree.size + 1
-   tree.root = tree.insert(tree.root, i, x)
-   return
-}</span>
-
-func (tree RedBlackRelaxedBottomUp) Join(other List) List <span class="cov8" title="1">{
+func (tree *RedBlackRelaxedBottomUp) Join(other list.List) list.List <span class="cov8" title="1">{
    tree.share(tree.root)
    tree.share(other.(*RedBlackRelaxedBottomUp).root)
    return &amp;RedBlackRelaxedBottomUp{
       RedBlackBottomUp: RedBlackBottomUp{
          Tree: Tree{
-            arena: tree.arena,
+            arena: tree.arena, // TODO maybe leave this nil? should probably have its own
             root:  tree.join(tree.root, other.(*RedBlackRelaxedBottomUp).root, tree.size),
             size:  tree.size + other.(*RedBlackRelaxedBottomUp).size,
          },
@@ -7380,20 +7389,23 @@ func (tree RedBlackRelaxedBottomUp) Join(other List) List <span class="cov8" tit
    }
 }</span>
 
-func (tree RedBlackRelaxedBottomUp) Split(i Position) (List, List) <span class="cov8" title="1">{
-   // assert(i &lt;= tree.Size())
-   tree.share(tree.root)
-   l, r := tree.split(tree.root, i, tree.size)
-   return &amp;RedBlackRelaxedBottomUp{RedBlackBottomUp: RedBlackBottomUp{Tree: Tree{arena: tree.arena, root: l, size: i}}},
-          &amp;RedBlackRelaxedBottomUp{RedBlackBottomUp: RedBlackBottomUp{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}}
+//
+//func (tree RedBlackRelaxedBottomUp) Join(other list.List) list.List {
+//   return &amp;RedBlackRelaxedBottomUp{
+//      RedBlackBottomUp: *tree.RedBlackBottomUp.Join(&amp;other.(*RedBlackRelaxedBottomUp).RedBlackBottomUp).(*RedBlackBottomUp),
+//   }
+//}
+
+func (tree RedBlackRelaxedBottomUp) Split(i list.Position) (list.List, list.List) <span class="cov8" title="1">{
+   l, r := tree.RedBlackBottomUp.Split(i)
+   return &amp;RedBlackRelaxedBottomUp{RedBlackBottomUp: *l.(*RedBlackBottomUp)},
+          &amp;RedBlackRelaxedBottomUp{RedBlackBottomUp: *r.(*RedBlackBottomUp)}
 }</span>
 </pre>
 		
 		<pre class="file" id="file24" style="display: none">package binarytree
 
-import (
-   . "binarysearch/abstract/list"
-)
+import "binarysearch/abstract/list"
 
 type RedBlackRelaxedTopDown struct {
    RedBlackTopDown
@@ -7406,16 +7418,81 @@ func (tree RedBlackRelaxedTopDown) Verify() <span class="cov8" title="1">{
    tree.RedBlackRelaxed.verifyHeight(tree.root)
 }</span>
 
-func (RedBlackRelaxedTopDown) New() List <span class="cov8" title="1">{
+func (RedBlackRelaxedTopDown) New() list.List <span class="cov8" title="1">{
    return &amp;RedBlackRelaxedTopDown{}
 }</span>
 
-// TODO: make all clone syntax the exact same to avoid inconsistency in results
-func (tree *RedBlackRelaxedTopDown) Clone() List <span class="cov8" title="1">{
+func (tree *RedBlackRelaxedTopDown) Clone() list.List <span class="cov8" title="1">{
    return &amp;RedBlackRelaxedTopDown{
       RedBlackTopDown: *tree.RedBlackTopDown.Clone().(*RedBlackTopDown),
    }
 }</span>
+
+func (tree *RedBlackRelaxedTopDown) Insert(i list.Position, x list.Data) <span class="cov8" title="1">{
+   tree.RedBlackTopDown.Insert(i, x)
+}</span>
+
+func (tree *RedBlackRelaxedTopDown) Delete(i list.Position) (x list.Data) <span class="cov8" title="1">{
+   return tree.Tree.Delete(i)
+}</span>
+
+func (tree *RedBlackRelaxedTopDown) join(l, r *Node, sl list.Size) (p *Node) <span class="cov8" title="1">{
+   if l == nil </span><span class="cov8" title="1">{ return r }</span>
+   <span class="cov8" title="1">if r == nil </span><span class="cov8" title="1">{ return l }</span>
+   <span class="cov8" title="1">if tree.rank(l) &lt;= tree.rank(r) </span><span class="cov8" title="1">{
+      return tree.RedBlackTopDown.build(l, tree.Tree.deleteMin(&amp;r), r, sl)
+   }</span> else<span class="cov8" title="1"> {
+      return tree.RedBlackTopDown.build(l, tree.Tree.deleteMax(&amp;l), r, sl-1)
+   }</span>
+}
+
+func (tree *RedBlackRelaxedTopDown) Join(other list.List) list.List <span class="cov8" title="1">{
+   tree.share(tree.root)
+   tree.share(other.(*RedBlackRelaxedTopDown).root)
+   return &amp;RedBlackRelaxedTopDown{
+      RedBlackTopDown: RedBlackTopDown{
+         Tree: Tree{
+            root:  tree.join(tree.root, other.(*RedBlackRelaxedTopDown).root, tree.size),
+            size:  tree.size + other.(*RedBlackRelaxedTopDown).size,
+            arena: tree.arena, // TODO maybe leave this nil? should probably have its own
+         },
+      },
+   }
+}</span>
+
+func (tree *RedBlackRelaxedTopDown) Split(i list.Position) (list.List, list.List) <span class="cov8" title="1">{
+   l, r := tree.RedBlackTopDown.Split(i)
+   return &amp;RedBlackRelaxedTopDown{RedBlackTopDown: *l.(*RedBlackTopDown)},
+          &amp;RedBlackRelaxedTopDown{RedBlackTopDown: *r.(*RedBlackTopDown)}
+}</span>
+
+
+//
+//import (
+//   . "binarysearch/abstract/list"
+//)
+//
+//type RedBlackRelaxedTopDown struct {
+//   RedBlackTopDown
+//   RedBlackRelaxed
+//}
+//
+//func (tree RedBlackRelaxedTopDown) Verify() {
+//   tree.Tree.verifySize(tree.root, tree.size)
+//   tree.RedBlackRelaxed.verifyRanks(tree.root)
+//   tree.RedBlackRelaxed.verifyHeight(tree.root)
+//}
+//
+//func (RedBlackRelaxedTopDown) New() List {
+//   return &amp;RedBlackRelaxedTopDown{}
+//}
+//
+//// TODO: make all clone syntax the exact same to avoid inconsistency in results
+//func (tree *RedBlackRelaxedTopDown) Clone() List {
+//   return &amp;RedBlackRelaxedTopDown{
+//      RedBlackTopDown: *tree.RedBlackTopDown.Clone().(*RedBlackTopDown),
+//   }
+//}
 
 // This top-down insertion algorithm was translated and paraphrased from the
 // _Deletion Without Rebalancing in Binary Search Trees_ paper referenced above.
@@ -7673,86 +7750,86 @@ func (tree *RedBlackRelaxedTopDown) Clone() List <span class="cov8" title="1">{
 //}
 
 //func (tree *RedBlackRelaxedTopDown) Insert(i Position, x Data) {
-//   // assert(i &lt;= tree.Size())
+//   // assert(i &lt;= tree.size)
 //   tree.size++
 //   tree.insert(&amp;tree.root, i, x)
 //}
 
-
-func (tree RedBlackRelaxedTopDown) Join(other List) List <span class="cov8" title="1">{
-   tree.share(tree.root)
-   tree.share(other.(*RedBlackRelaxedTopDown).root)
-   return &amp;RedBlackRelaxedTopDown{
-      RedBlackTopDown: RedBlackTopDown{
-         Tree: Tree{
-            arena: tree.arena,
-            root:  tree.join(tree.root, other.(*RedBlackRelaxedTopDown).root, tree.size),
-            size:  tree.size + other.(*RedBlackRelaxedTopDown).size,
-         },
-      },
-   }
-}</span>
-
-func (tree RedBlackRelaxedTopDown) Split(i Position) (List, List) <span class="cov8" title="1">{
-   // assert(i &lt;= tree.Size())
-   tree.share(tree.root)
-   l, r := tree.split(tree.root, i, tree.size)
-   return &amp;RedBlackRelaxedTopDown{RedBlackTopDown: RedBlackTopDown{Tree: Tree{arena: tree.arena, root: l, size: i}}},
-          &amp;RedBlackRelaxedTopDown{RedBlackTopDown: RedBlackTopDown{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}}
-}</span>
-
-func (tree RedBlackRelaxedTopDown) split(p *Node, i, s Size) (l, r *Node) <span class="cov8" title="1">{
-   if p == nil </span><span class="cov8" title="1">{
-      return
-   }</span>
-   <span class="cov8" title="1">tree.persist(&amp;p)
-
-   sl := p.s
-   sr := s - p.s - 1
-
-   if i &lt;= (*p).s </span><span class="cov8" title="1">{
-      l, r = tree.split(p.l, i, sl)
-      r = tree.build(r, p, p.r, sl-i)
-   }</span> else<span class="cov8" title="1"> {
-      l, r = tree.split(p.r, i-sl-1, sr)
-      l = tree.build(p.l, p, l, sl)
-   }</span>
-   <span class="cov8" title="1">return l, r</span>
-}
-
-func (tree RedBlackRelaxedTopDown) build(l, p, r *Node, sl Size) *Node <span class="cov8" title="1">{
-   if tree.rank(l) == tree.rank(r) </span><span class="cov8" title="1">{
-      p.l = l
-      p.r = r
-      p.s = sl
-      p.y = uint64(tree.rank(p.l) + 1)
-      return p
-   }</span>
-   <span class="cov8" title="1">if tree.rank(l) &lt; tree.rank(r) </span><span class="cov8" title="1">{
-      tree.persist(&amp;r)
-      r.s = 1 + sl + r.s
-      r.l = tree.build(l, p, r.l, sl)
-      return tree.balanceInsertL(r)
-   }</span> else<span class="cov8" title="1"> {
-      tree.persist(&amp;l)
-      l.r = tree.build(l.r, p, r, sl-l.s-1)
-      return tree.balanceInsertR(l)
-   }</span>
-}
-
-func (tree RedBlackRelaxedTopDown) join(l, r *Node, sl Size) (p *Node) <span class="cov8" title="1">{
-   if l == nil </span><span class="cov8" title="1">{
-      return r
-   }</span>
-   <span class="cov8" title="1">if r == nil </span><span class="cov8" title="1">{
-      return l
-   }</span>
-   <span class="cov8" title="1">if tree.rank(l) &lt; tree.rank(r) </span><span class="cov8" title="1">{
-      return tree.build(l, tree.RedBlackTopDown.Tree.deleteMin(&amp;r), r, sl)
-   }</span> else<span class="cov8" title="1"> {
-      return tree.build(l, tree.RedBlackTopDown.Tree.deleteMax(&amp;l), r, sl-1)
-   }</span>
-}
+//
+//func (tree RedBlackRelaxedTopDown) Join(other List) List {
+//   tree.share(tree.root)
+//   tree.share(other.(*RedBlackRelaxedTopDown).root)
+//   return &amp;RedBlackRelaxedTopDown{
+//      RedBlackTopDown: RedBlackTopDown{
+//         Tree: Tree{
+//            arena: tree.arena,
+//            root:  tree.join(tree.root, other.(*RedBlackRelaxedTopDown).root, tree.size),
+//            size:  tree.size + other.(*RedBlackRelaxedTopDown).size,
+//         },
+//      },
+//   }
+//}
+//
+//func (tree RedBlackRelaxedTopDown) Split(i Position) (List, List) {
+//   // assert(i &lt;= tree.size)
+//   tree.share(tree.root)
+//   l, r := tree.split(tree.root, i, tree.size)
+//   return &amp;RedBlackRelaxedTopDown{RedBlackTopDown: RedBlackTopDown{Tree: Tree{arena: tree.arena, root: l, size: i}}},
+//          &amp;RedBlackRelaxedTopDown{RedBlackTopDown: RedBlackTopDown{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}}
+//}
+//
+//func (tree RedBlackRelaxedTopDown) split(p *Node, i, s Size) (l, r *Node) {
+//   if p == nil {
+//      return
+//   }
+//   tree.persist(&amp;p)
+//
+//   sl := p.s
+//   sr := s - p.s - 1
+//
+//   if i &lt;= (*p).s {
+//      l, r = tree.split(p.l, i, sl)
+//      r = tree.build(r, p, p.r, sl-i)
+//   } else {
+//      l, r = tree.split(p.r, i-sl-1, sr)
+//      l = tree.build(p.l, p, l, sl)
+//   }
+//   return l, r
+//}
+//
+//func (tree RedBlackRelaxedTopDown) build(l, p, r *Node, sl Size) *Node {
+//   if tree.rank(l) == tree.rank(r) {
+//      p.l = l
+//      p.r = r
+//      p.s = sl
+//      p.y = uint64(tree.rank(p.l) + 1)
+//      return p
+//   }
+//   if tree.rank(l) &lt; tree.rank(r) {
+//      tree.persist(&amp;r)
+//      r.s = 1 + sl + r.s
+//      r.l = tree.build(l, p, r.l, sl)
+//      return tree.balanceInsertL(r)
+//   } else {
+//      tree.persist(&amp;l)
+//      l.r = tree.build(l.r, p, r, sl-l.s-1)
+//      return tree.balanceInsertR(l)
+//   }
+//}
+//
+//func (tree RedBlackRelaxedTopDown) join(l, r *Node, sl Size) (p *Node) {
+//   if l == nil {
+//      return r
+//   }
+//   if r == nil {
+//      return l
+//   }
+//   if tree.rank(l) &lt; tree.rank(r) {
+//      return tree.build(l, tree.RedBlackTopDown.Tree.deleteMin(&amp;r), r, sl)
+//   } else {
+//      return tree.build(l, tree.RedBlackTopDown.Tree.deleteMax(&amp;l), r, sl-1)
+//   }
+//}
 </pre>
 		
 		<pre class="file" id="file25" style="display: none">package binarytree
@@ -7842,12 +7919,12 @@ func (tree *RedBlackTopDown) insert(p **Node, i list.Position, x list.Data) <spa
                tree.pathLeft(&amp;p)
                continue</span>
             }
-            //if !tree.isOneChild((*p).l, (*p).l.l) {
-            //   tree.pathLeft(&amp;p)
-            //   tree.pathLeft(&amp;p)
-            //   tree.promote(*p)
-            //   continue
-            //}
+            <span class="cov8" title="1">if !tree.isOneChild((*p).l, (*p).l.l) </span><span class="cov8" title="1">{
+              tree.pathLeft(&amp;p)
+              tree.pathLeft(&amp;p)
+              tree.promote(*p)
+              continue</span>
+            }
             <span class="cov8" title="1">tree.rotateR(p)
             tree.pathLeft(&amp;p)
             tree.promote(*p)
@@ -7869,12 +7946,12 @@ func (tree *RedBlackTopDown) insert(p **Node, i list.Position, x list.Data) <spa
                tree.pathRight(&amp;p, &amp;i)
                continue</span>
             }
-            //if !tree.isOneChild((*p).l, (*p).l.r) {
-            //   tree.pathLeft(&amp;p)
-            //   tree.pathRight(&amp;p, &amp;i)
-            //   tree.promote(*p)
-            //   continue
-            //}
+            <span class="cov8" title="1">if !tree.isOneChild((*p).l, (*p).l.r) </span><span class="cov8" title="1">{
+              tree.pathLeft(&amp;p)
+              tree.pathRight(&amp;p, &amp;i)
+              tree.promote(*p)
+              continue</span>
+            }
             <span class="cov8" title="1">tree.rotateLR(p)
             tree.promote(*p)
             if i &lt;= (*p).s </span><span class="cov8" title="1">{
@@ -7910,12 +7987,12 @@ func (tree *RedBlackTopDown) insert(p **Node, i list.Position, x list.Data) <spa
                tree.pathRight(&amp;p, &amp;i)
                continue</span>
             }
-            //if !tree.isOneChild((*p).r, (*p).r.r) {
-            //   tree.pathRight(&amp;p, &amp;i)
-            //   tree.pathRight(&amp;p, &amp;i)
-            //   tree.promote(*p)
-            //   continue
-            //}
+            <span class="cov8" title="1">if !tree.isOneChild((*p).r, (*p).r.r) </span><span class="cov8" title="1">{
+              tree.pathRight(&amp;p, &amp;i)
+              tree.pathRight(&amp;p, &amp;i)
+              tree.promote(*p)
+              continue</span>
+            }
             <span class="cov8" title="1">tree.rotateL(p)
             tree.pathRight(&amp;p, &amp;i)
             tree.promote(*p)
@@ -7936,12 +8013,12 @@ func (tree *RedBlackTopDown) insert(p **Node, i list.Position, x list.Data) <spa
                tree.pathLeft(&amp;p)
                continue</span>
             }
-            //if !tree.isOneChild((*p).r, (*p).r.l) {
-            //   tree.pathRight(&amp;p, &amp;i)
-            //   tree.pathLeft(&amp;p)
-            //   tree.promote(*p)
-            //   continue
-            //}
+            <span class="cov8" title="1">if !tree.isOneChild((*p).r, (*p).r.l) </span><span class="cov8" title="1">{
+              tree.pathRight(&amp;p, &amp;i)
+              tree.pathLeft(&amp;p)
+              tree.promote(*p)
+              continue</span>
+            }
             <span class="cov8" title="1">tree.rotateRL(p)
             tree.promote(*p)
             if i &gt; (*p).s </span><span class="cov8" title="1">{
@@ -7955,7 +8032,7 @@ func (tree *RedBlackTopDown) insert(p **Node, i list.Position, x list.Data) <spa
 }
 
 func (tree *RedBlackTopDown) Insert(i list.Position, x list.Data) <span class="cov8" title="1">{
-   // assert(i &lt;= tree.Size())
+   // assert(i &lt;= tree.size)
    tree.insert(&amp;tree.root, i, x)
    tree.size++
 }</span>
@@ -8134,20 +8211,20 @@ func (tree RedBlackTopDown) split(p *Node, i, s list.Size) (l, r *Node) <span cl
 
    if i &lt;= (*p).s </span><span class="cov8" title="1">{
       l, r = tree.split(p.l, i, sl)
-      r = tree.build(r, p, p.r, sl-i)
+         r = tree.build(r, p, p.r, sl-i)
    }</span> else<span class="cov8" title="1"> {
       l, r = tree.split(p.r, i-sl-1, sr)
-      l = tree.build(p.l, p, l, sl)
+         l = tree.build(p.l, p, l, sl)
    }</span>
    <span class="cov8" title="1">return l, r</span>
 }
 
-func (tree RedBlackTopDown) Split(i list.Position) (list.List, list.List) <span class="cov8" title="1">{
+func (tree *RedBlackTopDown) Split(i list.Position) (list.List, list.List) <span class="cov8" title="1">{
    // assert(i &lt;= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
    return &amp;RedBlackTopDown{Tree: Tree{arena: tree.arena, root: l, size: i}},
-      &amp;RedBlackTopDown{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
+          &amp;RedBlackTopDown{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
 }</span>
 
 func (tree *RedBlackTopDown) deleteMin(p *Node, min **Node) *Node <span class="cov8" title="1">{
@@ -8172,18 +8249,15 @@ func (tree *RedBlackTopDown) deleteMax(p *Node, max **Node) *Node <span class="c
    return tree.balanceDeleteR(p)</span>
 }
 
-// TODO: we can do if rank is within 1?
-func (tree RedBlackTopDown) build(l, p, r *Node, sl list.Size) *Node <span class="cov8" title="1">{
-   if tree.rank(l) == tree.rank(r) </span><span class="cov8" title="1">{ // TODO: what if in range?
+// TODO: Refactor, simplify.
+func (tree *RedBlackTopDown) build(l, p, r *Node, sl list.Size) *Node <span class="cov8" title="1">{
+   if tree.rank(l) == tree.rank(r) </span><span class="cov8" title="1">{
       p.l = l
       p.r = r
       p.s = sl
-      p.y = uint64(tree.rank(p.l))
-      //
-      //
-      //
-      if (l == nil || tree.isZeroChild(l, l.l) || tree.isZeroChild(l, l.r))||
-         (r == nil || tree.isZeroChild(r, r.l) || tree.isZeroChild(r, r.r)) </span><span class="cov8" title="1">{
+      p.y = uint64(tree.rank(l))
+      if l == nil || tree.isZeroChild(l, l.l) || tree.isZeroChild(l, l.r) ||
+         r == nil || tree.isZeroChild(r, r.l) || tree.isZeroChild(r, r.r) </span><span class="cov8" title="1">{
          tree.promote(p)
       }</span>
       <span class="cov8" title="1">return p</span>
@@ -8192,57 +8266,41 @@ func (tree RedBlackTopDown) build(l, p, r *Node, sl list.Size) *Node <span class
       tree.persist(&amp;r)
       r.s = 1 + sl + r.s
       r.l = tree.build(l, p, r.l, sl)
-      return tree.balanceInsertL(r)
-   }</span> else<span class="cov8" title="1"> {
+      if tree.isZeroChild(r, r.l) </span><span class="cov8" title="1">{
+         if tree.isZeroChild(r, r.r) </span><span class="cov8" title="1">{
+            if tree.isZeroChild(r.l, r.l.l) </span><span class="cov8" title="1">{
+               tree.promote(r)
+               return r
+            }</span>
+         } else<span class="cov8" title="1"> {
+            if tree.isZeroChild(r.l, r.l.l) </span><span class="cov8" title="1">{
+               tree.rotateR(&amp;r)
+               return r
+            }</span>
+         }
+      }
+      <span class="cov8" title="1">return r</span>
+   } else<span class="cov8" title="1"> {
       tree.persist(&amp;l)
       l.r = tree.build(l.r, p, r, sl-l.s-1)
-      return tree.balanceInsertR(l)
-   }</span>
-}
-
-func (tree RedBlackTopDown) balanceInsertL(p *Node) *Node <span class="cov8" title="1">{
-   if tree.isZeroChild(p, p.l) </span><span class="cov8" title="1">{
-      if tree.isZeroChild(p, p.r) </span><span class="cov8" title="1">{
-         if tree.isZeroChild(p.l, p.l.l) || tree.isZeroChild(p.l, p.l.r) </span><span class="cov8" title="1">{
-            tree.promote(p)
-            return p
-         }</span>
-      } else<span class="cov8" title="1"> {
-         if tree.isZeroChild(p.l, p.l.l) </span><span class="cov8" title="1">{
-            tree.rotateR(&amp;p)
-            return p
-         }</span>
-         <span class="cov8" title="1">if tree.isZeroChild(p.l, p.l.r) </span><span class="cov0" title="0">{
-            tree.rotateLR(&amp;p)
-            return p
-         }</span>
+      if tree.isZeroChild(l, l.r) </span><span class="cov8" title="1">{
+         if tree.isZeroChild(l, l.l) </span><span class="cov8" title="1">{
+            if tree.isZeroChild(l.r, l.r.r) </span><span class="cov8" title="1">{
+               tree.promote(l)
+               return l
+            }</span>
+         } else<span class="cov8" title="1"> {
+            if tree.isZeroChild(l.r, l.r.r) </span><span class="cov8" title="1">{
+               tree.rotateL(&amp;l)
+               return l
+            }</span>
+         }
       }
+      <span class="cov8" title="1">return l</span>
    }
-   <span class="cov8" title="1">return p</span>
 }
 
-func (tree RedBlackTopDown) balanceInsertR(p *Node) *Node <span class="cov8" title="1">{
-   if tree.isZeroChild(p, p.r) </span><span class="cov8" title="1">{
-      if tree.isZeroChild(p, p.l) </span><span class="cov8" title="1">{
-         if tree.isZeroChild(p.r, p.r.r) || tree.isZeroChild(p.r, p.r.l) </span><span class="cov8" title="1">{
-            tree.promote(p)
-            return p
-         }</span>
-      } else<span class="cov8" title="1"> {
-         if tree.isZeroChild(p.r, p.r.r) </span><span class="cov8" title="1">{
-            tree.rotateL(&amp;p)
-            return p
-         }</span>
-         <span class="cov8" title="1">if tree.isZeroChild(p.r, p.r.l) </span><span class="cov0" title="0">{
-            tree.rotateRL(&amp;p)
-            return p
-         }</span>
-      }
-   }
-   <span class="cov8" title="1">return p</span>
-}
-
-func (tree RedBlackTopDown) join(l, r *Node, sl list.Size) (p *Node) <span class="cov8" title="1">{
+func (tree *RedBlackTopDown) join(l, r *Node, sl list.Size) (p *Node) <span class="cov8" title="1">{
    if l == nil </span><span class="cov8" title="1">{ return r }</span>
    <span class="cov8" title="1">if r == nil </span><span class="cov8" title="1">{ return l }</span>
    <span class="cov8" title="1">if tree.rank(l) &lt; tree.rank(r) </span><span class="cov8" title="1">{
@@ -8252,7 +8310,7 @@ func (tree RedBlackTopDown) join(l, r *Node, sl list.Size) (p *Node) <span class
    }</span>
 }
 
-func (tree RedBlackTopDown) Join(other list.List) list.List <span class="cov8" title="1">{
+func (tree *RedBlackTopDown) Join(other list.List) list.List <span class="cov8" title="1">{
    tree.share(tree.root)
    tree.share(other.(*RedBlackTopDown).root)
    return &amp;RedBlackTopDown{
@@ -9717,7 +9775,7 @@ func (tree *Splay) Size() Size <span class="cov0" title="0">{
 // 1. Splay the node at `i`
 // 2. Return the root.
 func (tree *Splay) Select(i Position) (x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    tree.Splay(i)
    return tree.root.x
 }</span>
@@ -9726,7 +9784,7 @@ func (tree *Splay) Select(i Position) (x Data) <span class="cov0" title="0">{
 // 2. Update the root's data.
 // 3. Return the root.
 func (tree *Splay) Update(i Position, x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    tree.Splay(i)
    tree.root.x = x
 }</span>
@@ -9736,7 +9794,7 @@ func (tree *Splay) Update(i Position, x Data) <span class="cov0" title="0">{
 //     that the first `i` nodes are on the left and the rest on the right.
 //  3. Replace the previous root with the new node.
 func (tree *Splay) Insert(i Position, x Data) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
+   // assert(i &lt;= tree.size)
    //
    //
    if i == tree.size </span><span class="cov0" title="0">{
@@ -9753,7 +9811,7 @@ func (tree *Splay) Insert(i Position, x Data) <span class="cov0" title="0">{
 // 2. Replace the root by a join of its left and right subtrees.
 // 3. Return the deleted node.
 func (tree *Splay) Delete(i Position) (x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
 
    tree.Splay(i)
    defer tree.free(tree.root) // TODO: defer is difficult to translate, avoid it.
@@ -9764,7 +9822,7 @@ func (tree *Splay) Delete(i Position) (x Data) <span class="cov0" title="0">{
 }</span>
 
 func (tree *Splay) Split(i Position) (List, List) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
+   // assert(i &lt;= tree.size)
    tree.share(tree.root)
 
    if i == tree.size </span><span class="cov0" title="0">{
@@ -10093,7 +10151,7 @@ func (tree *TreapFingerTree) insertAsFirst(x Data) <span class="cov0" title="0">
 }</span>
 
 func (tree TreapFingerTree) Select(i Position) Data <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    switch </span>{
    case i &lt; tree.root.s:<span class="cov0" title="0">
       return tree.accessFromHead(i)</span>
@@ -10105,7 +10163,7 @@ func (tree TreapFingerTree) Select(i Position) Data <span class="cov0" title="0"
 }
 
 func (tree *TreapFingerTree) Update(i Position, x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    switch </span>{
    case i &lt; tree.root.s:<span class="cov0" title="0">
       tree.updateFromHead(x, i)</span>
@@ -10395,7 +10453,7 @@ func (tree *TreapFingerTree) insertFromTail(x Data, i Position) <span class="cov
 //
 //   old root node will
 func (tree *TreapFingerTree) Insert(i Position, x Data) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
+   // assert(i &lt;= tree.size)
    if tree.root == nil </span><span class="cov0" title="0">{
       tree.root = tree.allocate(Node{x: x, y: tree.randomRank()})
       tree.size = 1
@@ -12377,14 +12435,14 @@ func (tree *TreapTopDown) Insert(i Position, x Data) <span class="cov0" title="0
 }</span>
 
 func (tree *TreapTopDown) Delete(i Position) (x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    tree.delete(&amp;tree.root, i, &amp;x)
    tree.size--
    return
 }</span>
 
 func (tree TreapTopDown) split(i Size) (Tree, Tree) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
+   // assert(i &lt;= tree.size)
    tree.share(tree.root)
    l, r := tree.Tree.split(tree.root, i)
 
@@ -12393,19 +12451,19 @@ func (tree TreapTopDown) split(i Size) (Tree, Tree) <span class="cov0" title="0"
 }</span>
 
 func (tree TreapTopDown) Split(i Position) (List, List) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
+   // assert(i &lt;= tree.size)
    l, r := tree.split(i)
    return &amp;TreapTopDown{Tree: l, Source: tree.Source},
       &amp;TreapTopDown{Tree: r, Source: tree.Source}
 }</span>
 
 func (tree *TreapTopDown) Select(i Size) Data <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    return tree.lookup(tree.root, i)
 }</span>
 
 func (tree *TreapTopDown) Update(i Size, x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    tree.persist(&amp;tree.root)
    tree.update(tree.root, i, x)
 }</span>
@@ -12570,7 +12628,7 @@ func (tree *Tree) split(p *Node, i uint64) (*Node, *Node) <span class="cov0" tit
 
 // Clone creates a shallow copy of the tree and shares its root with the copy.
 func (tree *Tree) Clone() Tree <span class="cov8" title="1">{
-   if tree.arena == nil </span><span class="cov8" title="1">{
+   if tree.arena == nil </span><span class="cov0" title="0">{
       tree.arena = arena.NewArena()
    }</span>
    <span class="cov8" title="1">tree.share(tree.root)
@@ -12585,7 +12643,7 @@ func (tree Tree) Free() <span class="cov8" title="1">{
 
 // Deletes the node at position `i` from the tree.
 // Returns the data that was in the deleted value.
-func (tree *Tree) Delete(i list.Position) list.Data <span class="cov0" title="0">{
+func (tree *Tree) Delete(i list.Position) list.Data <span class="cov8" title="1">{
    // assert(i &lt; tree.size)
    x := tree.delete(&amp;tree.root, tree.size, i)
    tree.size--
@@ -12693,12 +12751,12 @@ func (tree Tree) lookup(p *Node, i list.Size) list.Data <span class="cov8" title
 }
 
 //func (tree *Tree) Select(i Size) Data {
-//  // assert(i &lt; tree.Size())
+//  // assert(i &lt; tree.size)
 //  return tree.lookup(tree.root, i)
 //}
 
 //func (tree *Tree) Update(i Size, x Data) {
-//   // assert(i &lt; tree.Size())
+//   // assert(i &lt; tree.size)
 //   tree.pathcopy(&amp;tree.root)
 //   tree.update(tree.root, i, x)
 //}
@@ -12874,21 +12932,21 @@ func (tree Tree) Each(visit func(list.Data)) <span class="cov8" title="1">{
 //   //}
 //}
 
-func (tree *Tree) dissolve(p *Node, s list.Size) *Node <span class="cov0" title="0">{
-   if p.l == nil </span><span class="cov0" title="0">{
+func (tree *Tree) dissolve(p *Node, s list.Size) *Node <span class="cov8" title="1">{
+   if p.l == nil </span><span class="cov8" title="1">{
     return p.r
    }</span>
-   <span class="cov0" title="0">if p.r == nil </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if p.r == nil </span><span class="cov8" title="1">{
       return p.l
    }</span>
-   <span class="cov0" title="0">if p.sizeL() &lt;= p.sizeR(s) </span><span class="cov0" title="0">{
+   <span class="cov8" title="1">if p.sizeL() &lt;= p.sizeR(s) </span><span class="cov8" title="1">{
       r := tree.deleteMin(&amp;p.r)
       r.l = p.l
       r.r = p.r
       r.s = p.s
       r.y = p.y
       return r
-   }</span> else<span class="cov0" title="0"> {
+   }</span> else<span class="cov8" title="1"> {
       l := tree.deleteMax(&amp;p.l)
       l.r = p.r
       l.l = p.l
@@ -12898,19 +12956,19 @@ func (tree *Tree) dissolve(p *Node, s list.Size) *Node <span class="cov0" title=
    }</span>
 }
 
-func (tree *Tree) delete(p **Node, s list.Size, i list.Size) (x list.Data) <span class="cov0" title="0">{
-   for </span><span class="cov0" title="0">{
+func (tree *Tree) delete(p **Node, s list.Size, i list.Size) (x list.Data) <span class="cov8" title="1">{
+   for </span><span class="cov8" title="1">{
       tree.persist(p)
-      if i == (*p).s </span><span class="cov0" title="0">{
+      if i == (*p).s </span><span class="cov8" title="1">{
          x := (*p).x
          *p = tree.dissolve(*p, s)
          return x
       }</span>
-      <span class="cov0" title="0">if i &lt; (*p).s </span><span class="cov0" title="0">{
+      <span class="cov8" title="1">if i &lt; (*p).s </span><span class="cov8" title="1">{
          s = (*p).s
          (*p).s = (*p).s - 1
          p = &amp;(*p).l
-      }</span> else<span class="cov0" title="0"> {
+      }</span> else<span class="cov8" title="1"> {
          i = i - (*p).s - 1
          s = s - (*p).s - 1
          p = &amp;(*p).r
@@ -12936,13 +12994,13 @@ func (tree *Tree) delete(p **Node, s list.Size, i list.Size) (x list.Data) <span
 // Deletes the node at position `i` from the tree.
 // Returns the data that was in the deleted Data.
 //func (tree *Tree) Delete(i Size) Data {
-//   // assert(i &lt; tree.Size())
+//   // assert(i &lt; tree.size)
 //   x := tree.delete(&amp;tree.root, tree.size, i)
 //   tree.size--
 //   return x
 //}
 
-func (tree Tree) verifySizes() <span class="cov0" title="0">{
+func (tree Tree) verifySizes() <span class="cov8" title="1">{
    tree.verifySize(tree.root, tree.size)
 }</span>
 
@@ -13227,7 +13285,7 @@ func (tree *Zip) delete(p **Node, i Position, x *Data) <span class="cov0" title=
 }
 
 func (tree *Zip) Delete(i Position) (x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    //tree.pathcopy(&amp;tree.root)
    //tree.root = tree.deleteRecursive(tree.root, i, &amp;x)
    tree.delete(&amp;tree.root, i, &amp;x)
@@ -13236,7 +13294,7 @@ func (tree *Zip) Delete(i Position) (x Data) <span class="cov0" title="0">{
 }</span>
 
 func (tree Zip) split(i Size) (Tree, Tree) <span class="cov0" title="0">{
-   // assert(i &lt;= tree.Size())
+   // assert(i &lt;= tree.size)
    tree.share(tree.root)
    l, r := tree.Tree.split(tree.root, i)
 
@@ -13252,12 +13310,12 @@ func (tree *Zip) Split(i Position) (List, List) <span class="cov0" title="0">{
 }</span>
 
 func (tree *Zip) Select(i Size) Data <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    return tree.lookup(tree.root, i)
 }</span>
 
 func (tree *Zip) Update(i Size, x Data) <span class="cov0" title="0">{
-   // assert(i &lt; tree.Size())
+   // assert(i &lt; tree.size)
    tree.persist(&amp;tree.root)
    tree.update(tree.root, i, x)
 }</span>

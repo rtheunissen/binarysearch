@@ -11,8 +11,9 @@ type RedBlack struct {
 
 func (tree RedBlack) verifyHeight(p *Node, s list.Size) {
    // TODO return height, check for every node
-   invariant(p.height() <= 2 * tree.rank(p) + 1)
-   invariant(p.height() <= 2 * int(math.Log2(float64(s))))
+   h := p.height()
+   invariant(h <= 2 * tree.rank(p) + 1)
+   invariant(h <= 2 * int(math.Log2(float64(s))))
 }
 
 func (tree RedBlack) verifyRanks(p *Node) {

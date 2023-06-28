@@ -63,6 +63,64 @@ func (tree *RedBlackBottomUp) delete(p *Node, i list.Position, x *list.Data) *No
    }
 }
 
+func (tree RedBlackBottomUp) balanceDeleteL(p *Node) *Node {
+   if tree.isZeroChild(p, p.l) {
+      assert(tree.isOneChild(p.l, p.l.l))
+      assert(tree.isOneChild(p.l, p.l.r))
+      return p
+   }
+   if tree.isOneChild(p, p.l) {
+      return p
+   }
+   if tree.isZeroChild(p, p.r) {
+      assert(tree.isZeroChild(p, p.r))
+      assert(tree.isTwoChild(p, p.l))
+      assert(tree.isOneOne(p.r))
+      tree.rotateL(&p)
+      assert(tree.isZeroChild(p, p.l))
+      assert(tree.isOneChild(p, p.r))
+      if tree.isZeroChild(p.l.r, p.l.r.r) {
+         assert(tree.isOneChild(p.l, p.l.r))
+         assert(tree.isTwoChild(p.l, p.l.l))
+         tree.rotateL(&p.l)
+         tree.promote(p.l)
+         tree.demote(p.l.l)
+         return p
+      }
+      if tree.isZeroChild(p.l.r, p.l.r.l) {
+         assert(tree.isOneChild(p.l, p.l.r))
+         assert(tree.isTwoChild(p.l, p.l.l))
+         tree.rotateRL(&p.l)
+         tree.promote(p.l)
+         tree.demote(p.l.l)
+         return p
+      }
+      assert(tree.isOneChild(p.l, p.l.r))
+      assert(tree.isTwoChild(p.l, p.l.l))
+      assert(tree.isOneChild(p.l.r, p.l.r.r))
+      assert(tree.isOneChild(p.l.r, p.l.r.l))
+      tree.demote(p.l)
+      return p
+   } else {
+      assert(tree.isOneChild(p, p.r))
+      assert(tree.isTwoChild(p, p.l))
+      if tree.isZeroChild(p.r, p.r.r) {
+         tree.rotateL(&p)
+         tree.promote(p)
+         tree.demote(p.l)
+         return p
+      }
+      if tree.isZeroChild(p.r, p.r.l) {
+         tree.rotateRL(&p)
+         tree.promote(p)
+         tree.demote(p.l)
+         return p
+      }
+      assert(tree.isOneOne(p.r))
+      tree.demote(p)
+      return p
+   }
+}
 
 func (tree RedBlackBottomUp) balanceDeleteR(p *Node) *Node {
    if tree.isZeroChild(p, p.r) {
@@ -118,65 +176,6 @@ func (tree RedBlackBottomUp) balanceDeleteR(p *Node) *Node {
          return p
       }
       assert(tree.isOneOne(p.l))
-      tree.demote(p)
-      return p
-   }
-}
-
-func (tree RedBlackBottomUp) balanceDeleteL(p *Node) *Node {
-   if tree.isZeroChild(p, p.l) {
-      assert(tree.isOneChild(p.l, p.l.l))
-      assert(tree.isOneChild(p.l, p.l.r))
-      return p
-   }
-   if tree.isOneChild(p, p.l) {
-      return p
-   }
-   if tree.isZeroChild(p, p.r) {
-      assert(tree.isZeroChild(p, p.r))
-      assert(tree.isTwoChild(p, p.l))
-      assert(tree.isOneOne(p.r))
-      tree.rotateL(&p)
-      assert(tree.isZeroChild(p, p.l))
-      assert(tree.isOneChild(p, p.r))
-      if tree.isZeroChild(p.l.r, p.l.r.r) {
-         assert(tree.isOneChild(p.l, p.l.r))
-         assert(tree.isTwoChild(p.l, p.l.l))
-         tree.rotateL(&p.l)
-         tree.promote(p.l)
-         tree.demote(p.l.l)
-         return p
-      }
-      if tree.isZeroChild(p.l.r, p.l.r.l) {
-         assert(tree.isOneChild(p.l, p.l.r))
-         assert(tree.isTwoChild(p.l, p.l.l))
-         tree.rotateRL(&p.l)
-         tree.promote(p.l)
-         tree.demote(p.l.l)
-         return p
-      }
-      assert(tree.isOneChild(p.l, p.l.r))
-      assert(tree.isTwoChild(p.l, p.l.l))
-      assert(tree.isOneChild(p.l.r, p.l.r.r))
-      assert(tree.isOneChild(p.l.r, p.l.r.l))
-      tree.demote(p.l)
-      return p
-   } else {
-      assert(tree.isOneChild(p, p.r))
-      assert(tree.isTwoChild(p, p.l))
-      if tree.isZeroChild(p.r, p.r.r) {
-         tree.rotateL(&p)
-         tree.promote(p)
-         tree.demote(p.l)
-         return p
-      }
-      if tree.isZeroChild(p.r, p.r.l) {
-         tree.rotateRL(&p)
-         tree.promote(p)
-         tree.demote(p.l)
-         return p
-      }
-      assert(tree.isOneOne(p.r))
       tree.demote(p)
       return p
    }
@@ -271,7 +270,7 @@ func (tree RedBlackBottomUp) Split(i list.Position) (list.List, list.List) {
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
    return &RedBlackBottomUp{Tree: Tree{arena: tree.arena, root: l, size: i}},
-      &RedBlackBottomUp{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
+          &RedBlackBottomUp{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
 }
 
 func (tree *RedBlackBottomUp) deleteMin(p *Node, min **Node) *Node {
@@ -296,25 +295,7 @@ func (tree *RedBlackBottomUp) deleteMax(p *Node, max **Node) *Node {
    return tree.balanceDeleteR(p)
 }
 
-func (tree RedBlackBottomUp) buildL(l *Node, p *Node, r *Node, sl list.Size) (root *Node) {
-   assert(tree.rank(l) >= tree.rank(r))
-   if tree.rank(l) == tree.rank(r) {
-      p.l = l
-      p.r = r
-      p.s = sl
-      p.y = uint64(tree.rank(l))
-      if r == nil || tree.hasZeroChild(l) || tree.hasZeroChild(r) {
-         tree.promote(p)
-      }
-      return p
-   }
-   tree.persist(&l)
-   l.r = tree.buildL(l.r, p, r, sl-l.s-1)
-   return tree.balanceInsertR(l)
-}
-
-func (tree RedBlackBottomUp) buildR(l *Node, p *Node, r *Node, sl list.Size) (root *Node) {
-   assert(tree.rank(r) >= tree.rank(l))
+func (tree *RedBlackBottomUp) build(l, p, r *Node, sl list.Size) *Node {
    if tree.rank(r) == tree.rank(l) {
       p.l = l
       p.r = r
@@ -325,67 +306,17 @@ func (tree RedBlackBottomUp) buildR(l *Node, p *Node, r *Node, sl list.Size) (ro
       }
       return p
    }
-   tree.persist(&r)
-   r.s = 1 + sl + r.s
-   r.l = tree.buildR(l, p, r.l, sl)
-   return tree.balanceInsertL(r)
-}
-
-func (tree *RedBlackBottomUp) build(l, p, r *Node, sl list.Size) *Node {
-   if tree.rank(l) >= tree.rank(r) {
-      return tree.buildL(l, p, r, sl)
+   if tree.rank(l) < tree.rank(r) {
+      tree.persist(&r)
+      r.s = 1 + sl + r.s
+      r.l = tree.build(l, p, r.l, sl)
+      return tree.balanceInsertL(r)
    } else {
-      return tree.buildR(l, p, r, sl)
+      tree.persist(&l)
+      l.r = tree.build(l.r, p, r, sl-l.s-1)
+      return tree.balanceInsertR(l)
    }
 }
-
-
-//
-//// TODO: we can do if rank is within 1?
-//func (tree RedBlackBottomUp) build(l, p, r *Node, sl list.Size) *Node {
-//   if tree.rank(l) == tree.rank(r) {
-//      p.l = l
-//      p.r = r
-//      p.s = sl
-//      p.y = uint64(tree.rank(l))
-//      //
-//      //
-//      //
-//      if (l == nil || tree.isZeroChild(l, l.l) || tree.isZeroChild(l, l.r))||
-//         (r == nil || tree.isZeroChild(r, r.l) || tree.isZeroChild(r, r.r)) {
-//        tree.promote(p)
-//      }
-//      //p = tree.balanceInsertL(p)
-//      //p = tree.balanceInsertR(p)
-//      return p
-//   }
-//   if tree.rank(l) > tree.rank(r) && tree.rank(l) - tree.rank(r) == 1 {
-//      p.l = l
-//      p.r = r
-//      p.s = sl
-//      p.y = uint64(tree.rank(l))
-//      //
-//      //
-//      //
-//      //if (l == nil || tree.isZeroChild(l, l.l) || tree.isZeroChild(l, l.r))||
-//      //   (r == nil || tree.isZeroChild(r, r.l) || tree.isZeroChild(r, r.r)) {
-//      //   tree.promote(p)
-//      //}
-//      p = tree.balanceInsertL2(p)
-//      p = tree.balanceInsertR2(p)
-//      return p
-//   }
-//   if tree.rank(l) < tree.rank(r) {
-//      tree.persist(&r)
-//      r.s = 1 + sl + r.s
-//      r.l = tree.build(l, p, r.l, sl)
-//      return tree.balanceInsertL(r)
-//   } else {
-//      tree.persist(&l)
-//      l.r = tree.build(l.r, p, r, sl-l.s-1)
-//      return tree.balanceInsertR(l)
-//   }
-//}
 
 func (tree RedBlackBottomUp) join(l, r *Node, sl list.Size) (p *Node) {
    if l == nil { return r }

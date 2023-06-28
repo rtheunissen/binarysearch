@@ -1,8 +1,6 @@
 package binarytree
 
-import (
-   . "binarysearch/abstract/list"
-)
+import "binarysearch/abstract/list"
 
 type RedBlackRelaxedTopDown struct {
    RedBlackTopDown
@@ -15,16 +13,81 @@ func (tree RedBlackRelaxedTopDown) Verify() {
    tree.RedBlackRelaxed.verifyHeight(tree.root)
 }
 
-func (RedBlackRelaxedTopDown) New() List {
+func (RedBlackRelaxedTopDown) New() list.List {
    return &RedBlackRelaxedTopDown{}
 }
 
-// TODO: make all clone syntax the exact same to avoid inconsistency in results
-func (tree *RedBlackRelaxedTopDown) Clone() List {
+func (tree *RedBlackRelaxedTopDown) Clone() list.List {
    return &RedBlackRelaxedTopDown{
       RedBlackTopDown: *tree.RedBlackTopDown.Clone().(*RedBlackTopDown),
    }
 }
+
+func (tree *RedBlackRelaxedTopDown) Insert(i list.Position, x list.Data) {
+   tree.RedBlackTopDown.Insert(i, x)
+}
+
+func (tree *RedBlackRelaxedTopDown) Delete(i list.Position) (x list.Data) {
+   return tree.Tree.Delete(i)
+}
+
+func (tree *RedBlackRelaxedTopDown) join(l, r *Node, sl list.Size) (p *Node) {
+   if l == nil { return r }
+   if r == nil { return l }
+   if tree.rank(l) <= tree.rank(r) {
+      return tree.RedBlackTopDown.build(l, tree.Tree.deleteMin(&r), r, sl)
+   } else {
+      return tree.RedBlackTopDown.build(l, tree.Tree.deleteMax(&l), r, sl-1)
+   }
+}
+
+func (tree *RedBlackRelaxedTopDown) Join(other list.List) list.List {
+   tree.share(tree.root)
+   tree.share(other.(*RedBlackRelaxedTopDown).root)
+   return &RedBlackRelaxedTopDown{
+      RedBlackTopDown: RedBlackTopDown{
+         Tree: Tree{
+            root:  tree.join(tree.root, other.(*RedBlackRelaxedTopDown).root, tree.size),
+            size:  tree.size + other.(*RedBlackRelaxedTopDown).size,
+            arena: tree.arena, // TODO maybe leave this nil? should probably have its own
+         },
+      },
+   }
+}
+
+func (tree *RedBlackRelaxedTopDown) Split(i list.Position) (list.List, list.List) {
+   l, r := tree.RedBlackTopDown.Split(i)
+   return &RedBlackRelaxedTopDown{RedBlackTopDown: *l.(*RedBlackTopDown)},
+          &RedBlackRelaxedTopDown{RedBlackTopDown: *r.(*RedBlackTopDown)}
+}
+
+
+//
+//import (
+//   . "binarysearch/abstract/list"
+//)
+//
+//type RedBlackRelaxedTopDown struct {
+//   RedBlackTopDown
+//   RedBlackRelaxed
+//}
+//
+//func (tree RedBlackRelaxedTopDown) Verify() {
+//   tree.Tree.verifySize(tree.root, tree.size)
+//   tree.RedBlackRelaxed.verifyRanks(tree.root)
+//   tree.RedBlackRelaxed.verifyHeight(tree.root)
+//}
+//
+//func (RedBlackRelaxedTopDown) New() List {
+//   return &RedBlackRelaxedTopDown{}
+//}
+//
+//// TODO: make all clone syntax the exact same to avoid inconsistency in results
+//func (tree *RedBlackRelaxedTopDown) Clone() List {
+//   return &RedBlackRelaxedTopDown{
+//      RedBlackTopDown: *tree.RedBlackTopDown.Clone().(*RedBlackTopDown),
+//   }
+//}
 
 // This top-down insertion algorithm was translated and paraphrased from the
 // _Deletion Without Rebalancing in Binary Search Trees_ paper referenced above.
@@ -287,78 +350,78 @@ func (tree *RedBlackRelaxedTopDown) Clone() List {
 //   tree.insert(&tree.root, i, x)
 //}
 
-
-func (tree RedBlackRelaxedTopDown) Join(other List) List {
-   tree.share(tree.root)
-   tree.share(other.(*RedBlackRelaxedTopDown).root)
-   return &RedBlackRelaxedTopDown{
-      RedBlackTopDown: RedBlackTopDown{
-         Tree: Tree{
-            arena: tree.arena,
-            root:  tree.join(tree.root, other.(*RedBlackRelaxedTopDown).root, tree.size),
-            size:  tree.size + other.(*RedBlackRelaxedTopDown).size,
-         },
-      },
-   }
-}
-
-func (tree RedBlackRelaxedTopDown) Split(i Position) (List, List) {
-   assert(i <= tree.size)
-   tree.share(tree.root)
-   l, r := tree.split(tree.root, i, tree.size)
-   return &RedBlackRelaxedTopDown{RedBlackTopDown: RedBlackTopDown{Tree: Tree{arena: tree.arena, root: l, size: i}}},
-          &RedBlackRelaxedTopDown{RedBlackTopDown: RedBlackTopDown{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}}
-}
-
-func (tree RedBlackRelaxedTopDown) split(p *Node, i, s Size) (l, r *Node) {
-   if p == nil {
-      return
-   }
-   tree.persist(&p)
-
-   sl := p.s
-   sr := s - p.s - 1
-
-   if i <= (*p).s {
-      l, r = tree.split(p.l, i, sl)
-      r = tree.build(r, p, p.r, sl-i)
-   } else {
-      l, r = tree.split(p.r, i-sl-1, sr)
-      l = tree.build(p.l, p, l, sl)
-   }
-   return l, r
-}
-
-func (tree RedBlackRelaxedTopDown) build(l, p, r *Node, sl Size) *Node {
-   if tree.rank(l) == tree.rank(r) {
-      p.l = l
-      p.r = r
-      p.s = sl
-      p.y = uint64(tree.rank(p.l) + 1)
-      return p
-   }
-   if tree.rank(l) < tree.rank(r) {
-      tree.persist(&r)
-      r.s = 1 + sl + r.s
-      r.l = tree.build(l, p, r.l, sl)
-      return tree.balanceInsertL(r)
-   } else {
-      tree.persist(&l)
-      l.r = tree.build(l.r, p, r, sl-l.s-1)
-      return tree.balanceInsertR(l)
-   }
-}
-
-func (tree RedBlackRelaxedTopDown) join(l, r *Node, sl Size) (p *Node) {
-   if l == nil {
-      return r
-   }
-   if r == nil {
-      return l
-   }
-   if tree.rank(l) < tree.rank(r) {
-      return tree.build(l, tree.RedBlackTopDown.Tree.deleteMin(&r), r, sl)
-   } else {
-      return tree.build(l, tree.RedBlackTopDown.Tree.deleteMax(&l), r, sl-1)
-   }
-}
+//
+//func (tree RedBlackRelaxedTopDown) Join(other List) List {
+//   tree.share(tree.root)
+//   tree.share(other.(*RedBlackRelaxedTopDown).root)
+//   return &RedBlackRelaxedTopDown{
+//      RedBlackTopDown: RedBlackTopDown{
+//         Tree: Tree{
+//            arena: tree.arena,
+//            root:  tree.join(tree.root, other.(*RedBlackRelaxedTopDown).root, tree.size),
+//            size:  tree.size + other.(*RedBlackRelaxedTopDown).size,
+//         },
+//      },
+//   }
+//}
+//
+//func (tree RedBlackRelaxedTopDown) Split(i Position) (List, List) {
+//   assert(i <= tree.size)
+//   tree.share(tree.root)
+//   l, r := tree.split(tree.root, i, tree.size)
+//   return &RedBlackRelaxedTopDown{RedBlackTopDown: RedBlackTopDown{Tree: Tree{arena: tree.arena, root: l, size: i}}},
+//          &RedBlackRelaxedTopDown{RedBlackTopDown: RedBlackTopDown{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}}
+//}
+//
+//func (tree RedBlackRelaxedTopDown) split(p *Node, i, s Size) (l, r *Node) {
+//   if p == nil {
+//      return
+//   }
+//   tree.persist(&p)
+//
+//   sl := p.s
+//   sr := s - p.s - 1
+//
+//   if i <= (*p).s {
+//      l, r = tree.split(p.l, i, sl)
+//      r = tree.build(r, p, p.r, sl-i)
+//   } else {
+//      l, r = tree.split(p.r, i-sl-1, sr)
+//      l = tree.build(p.l, p, l, sl)
+//   }
+//   return l, r
+//}
+//
+//func (tree RedBlackRelaxedTopDown) build(l, p, r *Node, sl Size) *Node {
+//   if tree.rank(l) == tree.rank(r) {
+//      p.l = l
+//      p.r = r
+//      p.s = sl
+//      p.y = uint64(tree.rank(p.l) + 1)
+//      return p
+//   }
+//   if tree.rank(l) < tree.rank(r) {
+//      tree.persist(&r)
+//      r.s = 1 + sl + r.s
+//      r.l = tree.build(l, p, r.l, sl)
+//      return tree.balanceInsertL(r)
+//   } else {
+//      tree.persist(&l)
+//      l.r = tree.build(l.r, p, r, sl-l.s-1)
+//      return tree.balanceInsertR(l)
+//   }
+//}
+//
+//func (tree RedBlackRelaxedTopDown) join(l, r *Node, sl Size) (p *Node) {
+//   if l == nil {
+//      return r
+//   }
+//   if r == nil {
+//      return l
+//   }
+//   if tree.rank(l) < tree.rank(r) {
+//      return tree.build(l, tree.RedBlackTopDown.Tree.deleteMin(&r), r, sl)
+//   } else {
+//      return tree.build(l, tree.RedBlackTopDown.Tree.deleteMax(&l), r, sl-1)
+//   }
+//}

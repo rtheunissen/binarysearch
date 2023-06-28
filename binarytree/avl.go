@@ -96,30 +96,33 @@ func (tree *AVLBottomUp) insert(p *Node, i list.Position, x list.Data) *Node {
 
 func (tree *AVLBottomUp) balanceInsertL(p *Node) *Node {
    //
-   // After inserting to the left, there is no need to balance if the height of
-   // the left subtree is not equal to the height of its parent, i.e. the height
-   // of the left subtree did not increase.
+   // The AVL rule is that every node is 1,1 or 1,2
+   //
+   // Balancing is only necessary when the height of the subtree has increased
+   // by more than the rank difference allowed. Inserting into the 2-child of a
+   // a 1,2-node might increase its height and therefore rank, making the parent
+   // a 1,1-node and therefore valid. It is only when the 1-child increased in
+   // rank to become a 0-child that we need to fix the rank invariant.
    //
    if !tree.isZeroChild(p, p.l) {
+      assert(tree.isOneChild(p, p.l) || tree.isTwoChild(p, p.l))
       return p
    }
    assert(tree.isZeroChild(p, p.l))
    assert(tree.isOneChild(p, p.r) || tree.isTwoChild(p, p.r))
    //
-   // Otherwise, the height of the left subtree increased.
+   // The left subtree is now a 0-child, so we would like to make it a 1-child.
    //
-   // The AVL rule is that every node is 1,1 or 1,2 and the left subtree is now
-   // a 0-child, so we would like to make it a 1-child. It would not make sense
-   // to demote the left subtree because we know that it is balanced and valid.
+   // We could demote the subtree to make it a 1-child, but that might make one
+   // of its subtrees a 0-child. The goal is to move valid invariants further up
+   // the tree, so demoting the subtree would be moving in the wrong direction.
    //
-   // Our only options are to either promote the parent or to rotate to somehow
-   // resolve the invariant. Promoting the parent would change the left subtree
-   // from a 0-child to a 1-child, and the right subtree from either a 1-child
-   // to a 2-child or from a 2-child to a 3-child.
+   // Promoting the parent would change the 0-child to a 1-child, and the right
+   // subtree from either a 1-child to a 2-child, or a 2-child to a 3-child.
    //
-   // Therefore, we can promote the parent to make the left subtree a 1-child
-   // only if the right subtree is currently a 1-child becoming a 2-child,
-   // which results in the parent becoming a 1,2-node, restoring the invariant.
+   // Having a 3-child in the right subtree would not be valid, so we can only
+   // promote the parent to make the 0-child a 1-child if the right subtree is
+   // a 1-child. Promoting the parent makes a 1,2-node, restoring the invariant.
    //
    if tree.isOneChild(p, p.r) {
       tree.promote(p)
@@ -128,45 +131,46 @@ func (tree *AVLBottomUp) balanceInsertL(p *Node) *Node {
    assert(tree.isZeroChild(p, p.l))
    assert(tree.isTwoChild(p, p.r))
    //
-   // The parent is a 0,2-node because we could not promote it without creating
-   // a 3-child in the right subtree. The only way to resolve this is to rotate,
+   // The parent is a 0,2-node and we could not promote it without creating a
+   // 3-child in the right subtree. The only way to resolve this is to rotate,
    // and we know that we need to rotate to the right because the left subtree
-   // must have increased in height because we inserted somewhere to the left.
+   // must have increased in height because we inserted to the left. Rotating
+   // to the right decreases the height of the left subtree and increases the
+   // height of the right subtree.
+   //
+   //                                  2
+   //                          ╭───────┴───────╮
+   //                          2               0   ← 2-child
+   //                      ╭───┴───╮
+   //                      1       0
+   //                    ╭─╯
+   //                    0
+   //
+   // Consider what a right rotation would do here: the parent with rank 2 is
+   // pushed down to the right, pulling its left subtree with rank 2 up into
+   // its place, and the right subtree with rank 0 at p.l.r would move sideways
+   // to the right to become the left subtree of the current parent.
+   //
+   //                        AFTER A RIGHT ROTATION
+   //
+   //                                  2
+   //                              ╭───┴───╮
+   //                              1       2   ← Should have rank 1
+   //                            ╭─╯     ╭─┴─╮
+   //                            0       0   0
+   //
+   // This creates a valid AVL-rule structure, but the height of the right
+   // subtree is actually 1 when its rank is 2, so we need to demote it.
+   //
+   //                  AFTER A RIGHT ROTATION AND DEMOTION
+   //
+   //                                  2
+   //                              ╭───┴───╮
+   //                              1       1
+   //                            ╭─╯     ╭─┴─╮
+   //                            0       0   0
    //
    if tree.isTwoChild(p.l, p.l.r) {
-      //
-      //                                  2
-      //                          ╭───────┴───────╮
-      //                          2               0   ← 2-child
-      //                      ╭───┴───╮
-      //                      1       0
-      //                    ╭─╯
-      //                    0
-      //
-      // Consider what a right rotation would do here: the parent with rank 2
-      // is pushed down to the right, pulling its left subtree with rank 2 up
-      // into its place, and the right subtree with rank 0 at p.l.r will move
-      // sideways to the right to become the left subtree of the current parent.
-      //
-      //                        AFTER A RIGHT ROTATION
-      //
-      //                                  2
-      //                              ╭───┴───╮
-      //                              1       2   ← Should have rank 1
-      //                            ╭─╯     ╭─┴─╮
-      //                            0       0   0
-      //
-      // This creates a valid AVL-rule structure, but the height of the right
-      // subtree is actually 1 when its rank is 2, so we need to demote it.
-      //
-      //                  AFTER A RIGHT ROTATION AND DEMOTION
-      //
-      //                                  2
-      //                              ╭───┴───╮
-      //                              1       1
-      //                            ╭─╯     ╭─┴─╮
-      //                            0       0   0
-      //
       tree.rotateR(&p)
       tree.demote(p.r)
       return p
@@ -421,7 +425,7 @@ func (tree *AVLBottomUp) balanceDeleteL(p *Node) *Node {
       //                      ╭───────┴───────╮
       //          3-child →   0               2
       //                                  ╭───┴───╮
-      //           1-child or 2-child →   ?       1   ← 1-child
+      //          1-child or 2-child →   1|2      1   ← 1-child
       //                                          ╰─╮
       //                                            0
       //

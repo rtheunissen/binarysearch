@@ -247,17 +247,6 @@ func (tree *AVLWeakTopDown) dissolve(p **Node, x *Data) {
    *p = tree.join((*p).l, (*p).r, (*p).s)
 }
 
-func (tree *AVLWeakTopDown) Update(i Size, x Data) {
-   assert(i < tree.size)
-   tree.persist(&tree.root)
-   tree.update(tree.root, i, x)
-}
-
-func (tree *AVLWeakTopDown) Select(i Size) Data {
-   assert(i < tree.size)
-   return tree.lookup(tree.root, i)
-}
-
 func (tree *AVLWeakTopDown) Insert(i Position, x Data) {
    assert(i <= tree.size)
    tree.size++

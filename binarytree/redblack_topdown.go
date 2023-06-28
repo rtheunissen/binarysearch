@@ -38,20 +38,21 @@ func (tree *RedBlackTopDown) insert(p **Node, i list.Position, x list.Data) {
    }
    tree.persist(p)
    //
-   // "Otherwise, promote the root if 0,0."
+   // "Otherwise, promote the root if it is 0,0."
    //
    if tree.isZeroZero(*p) {
       tree.promote(*p)
    }
    //
    // "This establishes the invariant for the main loop of the algorithm:
-   //  *p is a non-nil node that is not a 0,0-node and not a 0-child.
+   //  *p is a non-nil node that is not a 0,0-node and not a 0-child."
+   //
    for {
       assert(!tree.isZeroZero(*p))
       //
       // "From *p, take one step down the search path..."
       //
-      if i <= (*p).s {
+      if i <= (*p).sizeL() {
          //
          // LEFT
          //
@@ -72,7 +73,8 @@ func (tree *RedBlackTopDown) insert(p **Node, i list.Position, x list.Data) {
          assert(tree.isZeroChild(*p, (*p).l))
          assert(!tree.isZeroChild((*p).l, (*p).l.l))
          assert(!tree.isZeroChild((*p).l, (*p).l.l))
-         if i <= (*p).l.s {
+
+         if i <= (*p).l.sizeL() {
             if (*p).l.l == nil {
                tree.attachLL(*p, x)
                if tree.isZeroChild((*p).l, (*p).l.l) { // or is p.l.rank == 0 ?
@@ -85,12 +87,12 @@ func (tree *RedBlackTopDown) insert(p **Node, i list.Position, x list.Data) {
                tree.pathLeft(&p)
                continue
             }
-            //if !tree.isOneChild((*p).l, (*p).l.l) {
-            //   tree.pathLeft(&p)
-            //   tree.pathLeft(&p)
-            //   tree.promote(*p)
-            //   continue
-            //}
+            if !tree.isOneChild((*p).l, (*p).l.l) {
+              tree.pathLeft(&p)
+              tree.pathLeft(&p)
+              tree.promote(*p)
+              continue
+            }
             tree.rotateR(p)
             tree.pathLeft(&p)
             tree.promote(*p)
@@ -112,15 +114,15 @@ func (tree *RedBlackTopDown) insert(p **Node, i list.Position, x list.Data) {
                tree.pathRight(&p, &i)
                continue
             }
-            //if !tree.isOneChild((*p).l, (*p).l.r) {
-            //   tree.pathLeft(&p)
-            //   tree.pathRight(&p, &i)
-            //   tree.promote(*p)
-            //   continue
-            //}
+            if !tree.isOneChild((*p).l, (*p).l.r) {
+              tree.pathLeft(&p)
+              tree.pathRight(&p, &i)
+              tree.promote(*p)
+              continue
+            }
             tree.rotateLR(p)
             tree.promote(*p)
-            if i <= (*p).s {
+            if i <= (*p).sizeL() {
                tree.pathLeft(&p) // LRL
             } else {
                tree.pathRight(&p, &i) // LRR
@@ -140,7 +142,7 @@ func (tree *RedBlackTopDown) insert(p **Node, i list.Position, x list.Data) {
             tree.promote(*p)
             continue
          }
-         if i > (*p).s + (*p).r.s + 1 {
+         if i > (*p).sizeL() + (*p).r.sizeL() + 1 {
             if (*p).r.r == nil {
                tree.attachRR(*p, x)
                if tree.isZeroChild((*p).r, (*p).r.r) { // or is p.r.rank == 0 ?
@@ -153,12 +155,12 @@ func (tree *RedBlackTopDown) insert(p **Node, i list.Position, x list.Data) {
                tree.pathRight(&p, &i)
                continue
             }
-            //if !tree.isOneChild((*p).r, (*p).r.r) {
-            //   tree.pathRight(&p, &i)
-            //   tree.pathRight(&p, &i)
-            //   tree.promote(*p)
-            //   continue
-            //}
+            if !tree.isOneChild((*p).r, (*p).r.r) {
+              tree.pathRight(&p, &i)
+              tree.pathRight(&p, &i)
+              tree.promote(*p)
+              continue
+            }
             tree.rotateL(p)
             tree.pathRight(&p, &i)
             tree.promote(*p)
@@ -179,15 +181,15 @@ func (tree *RedBlackTopDown) insert(p **Node, i list.Position, x list.Data) {
                tree.pathLeft(&p)
                continue
             }
-            //if !tree.isOneChild((*p).r, (*p).r.l) {
-            //   tree.pathRight(&p, &i)
-            //   tree.pathLeft(&p)
-            //   tree.promote(*p)
-            //   continue
-            //}
+            if !tree.isOneChild((*p).r, (*p).r.l) {
+              tree.pathRight(&p, &i)
+              tree.pathLeft(&p)
+              tree.promote(*p)
+              continue
+            }
             tree.rotateRL(p)
             tree.promote(*p)
-            if i > (*p).s {
+            if i > (*p).sizeL() {
                tree.pathRight(&p, &i) // RLR
             } else {
                tree.pathLeft(&p) // RLL
@@ -377,20 +379,20 @@ func (tree RedBlackTopDown) split(p *Node, i, s list.Size) (l, r *Node) {
 
    if i <= (*p).s {
       l, r = tree.split(p.l, i, sl)
-      r = tree.build(r, p, p.r, sl-i)
+         r = tree.build(r, p, p.r, sl-i)
    } else {
       l, r = tree.split(p.r, i-sl-1, sr)
-      l = tree.build(p.l, p, l, sl)
+         l = tree.build(p.l, p, l, sl)
    }
    return l, r
 }
 
-func (tree RedBlackTopDown) Split(i list.Position) (list.List, list.List) {
+func (tree *RedBlackTopDown) Split(i list.Position) (list.List, list.List) {
    assert(i <= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
    return &RedBlackTopDown{Tree: Tree{arena: tree.arena, root: l, size: i}},
-      &RedBlackTopDown{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
+          &RedBlackTopDown{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
 }
 
 func (tree *RedBlackTopDown) deleteMin(p *Node, min **Node) *Node {
@@ -415,18 +417,15 @@ func (tree *RedBlackTopDown) deleteMax(p *Node, max **Node) *Node {
    return tree.balanceDeleteR(p)
 }
 
-// TODO: we can do if rank is within 1?
-func (tree RedBlackTopDown) build(l, p, r *Node, sl list.Size) *Node {
-   if tree.rank(l) == tree.rank(r) { // TODO: what if in range?
+// TODO: Refactor, simplify.
+func (tree *RedBlackTopDown) build(l, p, r *Node, sl list.Size) *Node {
+   if tree.rank(l) == tree.rank(r) {
       p.l = l
       p.r = r
       p.s = sl
-      p.y = uint64(tree.rank(p.l))
-      //
-      //
-      //
-      if (l == nil || tree.isZeroChild(l, l.l) || tree.isZeroChild(l, l.r))||
-         (r == nil || tree.isZeroChild(r, r.l) || tree.isZeroChild(r, r.r)) {
+      p.y = uint64(tree.rank(l))
+      if l == nil || tree.isZeroChild(l, l.l) || tree.isZeroChild(l, l.r) ||
+         r == nil || tree.isZeroChild(r, r.l) || tree.isZeroChild(r, r.r) {
          tree.promote(p)
       }
       return p
@@ -435,57 +434,41 @@ func (tree RedBlackTopDown) build(l, p, r *Node, sl list.Size) *Node {
       tree.persist(&r)
       r.s = 1 + sl + r.s
       r.l = tree.build(l, p, r.l, sl)
-      return tree.balanceInsertL(r)
+      if tree.isZeroChild(r, r.l) {
+         if tree.isZeroChild(r, r.r) {
+            if tree.isZeroChild(r.l, r.l.l) {
+               tree.promote(r)
+               return r
+            }
+         } else {
+            if tree.isZeroChild(r.l, r.l.l) {
+               tree.rotateR(&r)
+               return r
+            }
+         }
+      }
+      return r
    } else {
       tree.persist(&l)
       l.r = tree.build(l.r, p, r, sl-l.s-1)
-      return tree.balanceInsertR(l)
-   }
-}
-
-func (tree RedBlackTopDown) balanceInsertL(p *Node) *Node {
-   if tree.isZeroChild(p, p.l) {
-      if tree.isZeroChild(p, p.r) {
-         if tree.isZeroChild(p.l, p.l.l) || tree.isZeroChild(p.l, p.l.r) {
-            tree.promote(p)
-            return p
-         }
-      } else {
-         if tree.isZeroChild(p.l, p.l.l) {
-            tree.rotateR(&p)
-            return p
-         }
-         if tree.isZeroChild(p.l, p.l.r) {
-            tree.rotateLR(&p)
-            return p
+      if tree.isZeroChild(l, l.r) {
+         if tree.isZeroChild(l, l.l) {
+            if tree.isZeroChild(l.r, l.r.r) {
+               tree.promote(l)
+               return l
+            }
+         } else {
+            if tree.isZeroChild(l.r, l.r.r) {
+               tree.rotateL(&l)
+               return l
+            }
          }
       }
+      return l
    }
-   return p
 }
 
-func (tree RedBlackTopDown) balanceInsertR(p *Node) *Node {
-   if tree.isZeroChild(p, p.r) {
-      if tree.isZeroChild(p, p.l) {
-         if tree.isZeroChild(p.r, p.r.r) || tree.isZeroChild(p.r, p.r.l) {
-            tree.promote(p)
-            return p
-         }
-      } else {
-         if tree.isZeroChild(p.r, p.r.r) {
-            tree.rotateL(&p)
-            return p
-         }
-         if tree.isZeroChild(p.r, p.r.l) {
-            tree.rotateRL(&p)
-            return p
-         }
-      }
-   }
-   return p
-}
-
-func (tree RedBlackTopDown) join(l, r *Node, sl list.Size) (p *Node) {
+func (tree *RedBlackTopDown) join(l, r *Node, sl list.Size) (p *Node) {
    if l == nil { return r }
    if r == nil { return l }
    if tree.rank(l) < tree.rank(r) {
@@ -495,7 +478,7 @@ func (tree RedBlackTopDown) join(l, r *Node, sl list.Size) (p *Node) {
    }
 }
 
-func (tree RedBlackTopDown) Join(other list.List) list.List {
+func (tree *RedBlackTopDown) Join(other list.List) list.List {
    tree.share(tree.root)
    tree.share(other.(*RedBlackTopDown).root)
    return &RedBlackTopDown{
