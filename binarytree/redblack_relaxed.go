@@ -26,7 +26,7 @@ type RedBlackRelaxed struct {
 //}
 //
 //func (tree RedBlackRelaxed) Split(i Position) (RedBlackRelaxed, RedBlackRelaxed) {
-//   // assert(i <= tree.Size())
+//   assert(i <= tree.size)
 //   tree.share(tree.root)
 //   l, r := tree.split(tree.root, i, tree.size)
 //   return RedBlackRelaxed{Tree: Tree{arena: tree.arena, root: l, size: i}},

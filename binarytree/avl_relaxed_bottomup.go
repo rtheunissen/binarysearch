@@ -40,7 +40,7 @@ func (tree *AVLRelaxedBottomUp) Clone() List {
 }
 
 func (tree *AVLRelaxedBottomUp) Delete(i Position) Data {
-   // assert(i < tree.Size())
+   assert(i < tree.size)
    x := tree.Tree.delete(&tree.root, tree.size, i)
    tree.size--
    return x
@@ -132,7 +132,7 @@ func (tree AVLRelaxedBottomUp) split(p *Node, i, s Size) (l, r *Node) {
 }
 
 func (tree AVLRelaxedBottomUp) Split(i Position) (List, List) {
-   // assert(i <= tree.Size())
+   assert(i <= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
 

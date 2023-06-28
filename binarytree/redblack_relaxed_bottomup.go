@@ -19,33 +19,10 @@ func (RedBlackRelaxedBottomUp) New() List {
 
 func (tree *RedBlackRelaxedBottomUp) Clone() List {
    return &RedBlackRelaxedBottomUp{
-      RedBlackBottomUp: RedBlackBottomUp{
-         Tree: tree.Tree.Clone(),
-      },
+      RedBlackBottomUp: *tree.RedBlackBottomUp.Clone().(*RedBlackBottomUp),
    }
 }
 
-func (tree *RedBlackRelaxedBottomUp) insert(p *Node, i Position, x Data) *Node {
-   if p == nil {
-      return tree.allocate(Node{x: x})
-   }
-   tree.persist(&p)
-   if i <= p.s {
-      p.s = p.s + 1
-      p.l = tree.insert(p.l, i, x)
-      return tree.balanceInsertL(p)
-   } else {
-      p.r = tree.insert(p.r, i-p.s-1, x)
-      return tree.balanceInsertR(p)
-   }
-}
-
-func (tree *RedBlackRelaxedBottomUp) Insert(i Position, x Data) {
-   // assert(i <= tree.Size())
-   tree.size = tree.size + 1
-   tree.root = tree.insert(tree.root, i, x)
-   return
-}
 
 func (tree RedBlackRelaxedBottomUp) Join(other List) List {
    tree.share(tree.root)
@@ -62,9 +39,8 @@ func (tree RedBlackRelaxedBottomUp) Join(other List) List {
 }
 
 func (tree RedBlackRelaxedBottomUp) Split(i Position) (List, List) {
-   // assert(i <= tree.Size())
-   tree.share(tree.root)
-   l, r := tree.split(tree.root, i, tree.size)
-   return &RedBlackRelaxedBottomUp{RedBlackBottomUp: RedBlackBottomUp{Tree: Tree{arena: tree.arena, root: l, size: i}}},
-          &RedBlackRelaxedBottomUp{RedBlackBottomUp: RedBlackBottomUp{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}}
+   assert(i <= tree.size)
+   l, r := tree.RedBlackBottomUp.Split(i)
+   return &RedBlackRelaxedBottomUp{RedBlackBottomUp: *l.(*RedBlackBottomUp)},
+          &RedBlackRelaxedBottomUp{RedBlackBottomUp: *r.(*RedBlackBottomUp)}
 }

@@ -157,7 +157,7 @@ package references
 //
 //
 //func (tree FingerTreeDisjointGeometric) Access(i Position) Value {
-//   assert(i < tree.Size())
+//   assert(i < tree.size)
 //   if i < tree.head.size {
 //      return tree.accessFromHead(i)
 //   } else {
@@ -185,7 +185,7 @@ package references
 //
 //
 //func (tree *FingerTreeDisjointGeometric) Update(i Position, x Value) {
-//   assert(i < tree.Size())
+//   assert(i < tree.size)
 //   if i < tree.head.size {
 //      tree.updateFromHead(x, i)
 //   } else {
