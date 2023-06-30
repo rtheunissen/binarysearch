@@ -57,7 +57,7 @@ func (tree *AVLWeakTopDown) insert(p **Node, i Position, x Data) {
   //  *p is a non-nil node that is not a 1,1-node."
   //
   for {
-     // assert(!tree.isOneOne(*p))
+     assert(!tree.isOneOne(*p))
 
      // "From *p, take one step down the search path..."
      //
@@ -259,7 +259,7 @@ func (tree *AVLWeakTopDown) Insert(i Position, x Data) {
 }
 
 func (tree *AVLWeakTopDown) Delete(i Position) (x Data) {
-   // assert(i < tree.size)
+   assert(i < tree.size)
    x = tree.delete(&tree.root, i)
    tree.size--
    return
@@ -315,7 +315,7 @@ func (tree AVLWeakTopDown) split(p *Node, i, s Size) (l, r *Node) {
 
 
 func (tree AVLWeakTopDown) Split(i Position) (List, List) {
-   // assert(i <= tree.size)
+   assert(i <= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
    return &AVLWeakTopDown{AVLWeakBottomUp{AVLBottomUp: AVLBottomUp{Tree: Tree{arena: tree.arena, root: l, size: i}}}},
@@ -330,11 +330,11 @@ func (tree AVLWeakTopDown) rebalanceOnDelete(p *Node) *Node {
          tree.promote(p)
          tree.demote(p.r)
 
-         // assert(tree.isTwoChild(p, p.l))
-         // assert(tree.isOneChild(p, p.r))
+         assert(tree.isTwoChild(p, p.l))
+         assert(tree.isOneChild(p, p.r))
 
          if p.r.l == nil {
-            // assert(tree.isTwoTwo(p.r))
+            assert(tree.isTwoTwo(p.r))
             tree.demote(p.r)
          }
       } else {
@@ -345,8 +345,8 @@ func (tree AVLWeakTopDown) rebalanceOnDelete(p *Node) *Node {
          tree.demote(p.r)
          tree.demote(p.r)
 
-         // assert(tree.isTwoChild(p, p.l))
-         // assert(tree.isTwoChild(p, p.r))
+         assert(tree.isTwoChild(p, p.l))
+         assert(tree.isTwoChild(p, p.r))
       }
    } else if tree.isThreeChild(p, p.l) {
       if tree.isOneChild(p.r, p.r.r) {
@@ -354,11 +354,11 @@ func (tree AVLWeakTopDown) rebalanceOnDelete(p *Node) *Node {
          tree.promote(p)
          tree.demote(p.l)
 
-         // assert(tree.isOneChild(p, p.l))
-         // assert(tree.isTwoChild(p, p.r))
+         assert(tree.isOneChild(p, p.l))
+         assert(tree.isTwoChild(p, p.r))
 
          if p.l.r == nil {
-            // assert(tree.isTwoTwo(p.l))
+            assert(tree.isTwoTwo(p.l))
             tree.demote(p.l)
          }
       } else {
@@ -369,8 +369,8 @@ func (tree AVLWeakTopDown) rebalanceOnDelete(p *Node) *Node {
          tree.demote(p.l)
          tree.demote(p.r)
 
-         // assert(tree.isTwoChild(p, p.l))
-         // assert(tree.isTwoChild(p, p.r))
+         assert(tree.isTwoChild(p, p.l))
+         assert(tree.isTwoChild(p, p.r))
       }
    }
    return p
@@ -402,13 +402,13 @@ func (tree AVLWeakTopDown) resetSafeNode(p *Node) bool {
       tree.demote(p)
       return true
    } else if tree.isTwoChild(p, p.l) && tree.isTwoTwo(p.r) {
-      // assert(tree.isOneChild(p, p.r))
+      assert(tree.isOneChild(p, p.r))
       tree.persist(&p.r)
       tree.demote(p)
       tree.demote(p.r)
       return true
    } else if tree.isTwoChild(p, p.r) && tree.isTwoTwo(p.l) {
-      // assert(tree.isOneChild(p, p.l))
+      assert(tree.isOneChild(p, p.l))
       tree.persist(&p.l)
       tree.demote(p)
       tree.demote(p.l)
