@@ -2,9 +2,9 @@ package main
 
 import (
    "binarysearch/abstract/list"
+   operations2 "binarysearch/abstract/list/operations"
    "binarysearch/binarytree"
    "binarysearch/distribution"
-   "binarysearch/operations"
    "binarysearch/utility"
    "flag"
    "fmt"
@@ -18,37 +18,39 @@ func main() {
    flag.Parse()
 
    TreeBenchmark{
-      Scale:      10_000_000,
-      Samples:          100,
-      Iterations:        10,
+      Scale:       1_000_000,
+      Samples:          1000,
+      Iterations:         10,
       Operation: utility.Resolve(*operation, []list.Operation{
-         //&operations.Insert{},
-         //&operations.InsertPersistent{},
-         //&operations.InsertDelete{},
-         //&operations.InsertDeletePersistent{},
-         &operations.InsertDeleteCycles{},
-         //&operations.InsertDeleteCyclesPersistent{},
-         //&operations.SplitJoin{},
+         &operations2.Insert{},
+         &operations2.InsertPersistent{},
+         &operations2.InsertDelete{},
+         &operations2.InsertDeletePersistent{},
+         &operations2.InsertDeleteCycles{},
+         &operations2.InsertDeleteCyclesPersistent{},
+         &operations2.InsertDeleteSearch{},
+         &operations2.InsertDeleteSearchPersistent{},
       }),
       Distributions: []distribution.Distribution{
          &distribution.Uniform{},
-         //&distribution.Normal{},
-         //&distribution.Skewed{},
-         //&distribution.Zipf{},
-         //&distribution.Maximum{},
+         &distribution.Normal{},
+         &distribution.Skewed{},
+         &distribution.Zipf{},
+         &distribution.Maximum{},
       },
       Strategies: []list.List{
-         //&binarytree.AVLBottomUp{},
-         //&binarytree.AVLWeakTopDown{},
-         //&binarytree.AVLWeakBottomUp{},
-         //&binarytree.AVLRelaxedTopDown{},
-         //&binarytree.AVLRelaxedBottomUp{},
-         //&binarytree.RedBlackBottomUp{},
-         //&binarytree.RedBlackRelaxedBottomUp{},
-         //&binarytree.RedBlackRelaxedTopDown{},
-         &binarytree.LBSTBottomUp{},
+         &binarytree.AVLBottomUp{},
+         &binarytree.AVLWeakTopDown{},
+         &binarytree.AVLWeakBottomUp{},
+         &binarytree.AVLRelaxedTopDown{},
+         &binarytree.AVLRelaxedBottomUp{},
+         &binarytree.RedBlackBottomUp{},
+         &binarytree.RedBlackTopDown{},
+         &binarytree.RedBlackRelaxedBottomUp{},
+         &binarytree.RedBlackRelaxedTopDown{},
+         //&binarytree.LBSTBottomUp{},
          //&binarytree.LBSTTopDown{},
-         &binarytree.LBSTRelaxed{},
+         //&binarytree.LBSTRelaxed{},
          //&binarytree.TreapTopDown{},
          //&binarytree.TreapFingerTree{},
          //&binarytree.Randomized{},

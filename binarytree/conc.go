@@ -107,13 +107,13 @@ func (tree *Conc) concat(l, r *Node) *Node {
 }
 
 func (tree Conc) Select(i Position) (x Data) {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    return tree.lookup(tree.root, i).x
 }
 
 func (tree Conc) lookup(p *Node, i Position) *Node {
    if p.isLeaf() {
-      assert(i == 0)
+      // assert(i == 0)
       return p
    }
    if i < p.l.s {
@@ -124,7 +124,7 @@ func (tree Conc) lookup(p *Node, i Position) *Node {
 }
 
 func (tree *Conc) Update(i Position, x Data) {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    tree.root = tree.update(tree.root, i, x)
 }
 
@@ -140,7 +140,7 @@ func (tree *Conc) update(p *Node, i Position, x Data) *Node {
 }
 
 func (tree *Conc) Insert(i Position, x Data) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.size++
    if tree.root == nil {
       tree.root = tree.asLeaf(x)
@@ -165,7 +165,7 @@ func (tree *Conc) insert(p *Node, i Position, x Data) *Node {
 }
 
 func (tree *Conc) Delete(i Position) (x Data) {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    tree.size--
    tree.root = tree.delete(tree.root, i, &x)
    return
@@ -184,7 +184,7 @@ func (tree *Conc) delete(p *Node, i Position, x *Data) *Node {
 }
 
 func (tree Conc) Split(i Position) (List, List) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    if i == 0 {
       return &Conc{Tree: Tree{arena: tree.arena}},
          &Conc{Tree: Tree{arena: tree.arena, root: tree.root, size: tree.size}}

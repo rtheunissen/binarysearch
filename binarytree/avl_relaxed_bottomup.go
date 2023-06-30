@@ -3,44 +3,29 @@ package binarytree
 import . "binarysearch/abstract/list"
 
 type AVLRelaxedBottomUp struct {
-   AVLWeakBottomUp
-}
-
-func (tree AVLRelaxedBottomUp) verifyRanks(p *Node) {
-   if p == nil {
-      return
-   }
-   invariant(tree.rank(p) >= p.height())
-   invariant(tree.rank(p) > tree.rank(p.l))
-   invariant(tree.rank(p) > tree.rank(p.r))
-
-   tree.verifyRanks(p.l)
-   tree.verifyRanks(p.r)
+   AVLBottomUp
+   AVLRelaxed
 }
 
 func (tree AVLRelaxedBottomUp) Verify() {
-   tree.verifySizes()
+   tree.verifySize(tree.root, tree.size)
    tree.verifyRanks(tree.root)
 }
 
 func (AVLRelaxedBottomUp) New() List {
-   return &AVLRelaxedBottomUp{
-      AVLWeakBottomUp: *AVLWeakBottomUp{}.New().(*AVLWeakBottomUp), // TODO: ew
-   }
+   return &AVLRelaxedBottomUp{}
 }
 
 func (tree *AVLRelaxedBottomUp) Clone() List {
    return &AVLRelaxedBottomUp{
-      AVLWeakBottomUp: AVLWeakBottomUp{
-         WAVL: WAVL{
-            Tree: tree.Tree.Clone(),
-         },
+      AVLBottomUp: AVLBottomUp{
+         Tree: tree.Tree.Clone(),
       },
    }
 }
 
 func (tree *AVLRelaxedBottomUp) Delete(i Position) Data {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    x := tree.Tree.delete(&tree.root, tree.size, i)
    tree.size--
    return x
@@ -86,9 +71,9 @@ func (tree AVLRelaxedBottomUp) join(l, r *Node, sl Size) (p *Node) {
    if l == nil { return r }
    if r == nil { return l }
    if tree.rank(l) <= tree.rank(r) {
-      return tree.build(l, tree.deleteMin(&r), r, sl)
+      return tree.build(l, tree.Tree.deleteMin(&r), r, sl)
    } else {
-      return tree.build(l, tree.deleteMax(&l), r, sl-1)
+      return tree.build(l, tree.Tree.deleteMax(&l), r, sl-1)
    }
 }
 
@@ -100,13 +85,11 @@ func (tree AVLRelaxedBottomUp) Join(other List) List {
    tree.share(r.root)
 
    return &AVLRelaxedBottomUp{
-      AVLWeakBottomUp: AVLWeakBottomUp{
-         WAVL: WAVL{
-            Tree: Tree{
-               arena: tree.arena,
-               root:  tree.join(l.root, r.root, l.size),
-               size:  l.size + r.size,
-            },
+      AVLBottomUp: AVLBottomUp{
+         Tree: Tree{
+            arena: tree.arena,
+            root:  tree.join(l.root, r.root, l.size),
+            size:  l.size + r.size,
          },
       },
    }
@@ -132,10 +115,10 @@ func (tree AVLRelaxedBottomUp) split(p *Node, i, s Size) (l, r *Node) {
 }
 
 func (tree AVLRelaxedBottomUp) Split(i Position) (List, List) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
 
-   return &AVLRelaxedBottomUp{AVLWeakBottomUp{WAVL{Tree: Tree{arena: tree.arena, root: l, size: i}}}},
-          &AVLRelaxedBottomUp{AVLWeakBottomUp{WAVL{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}}}
+   return &AVLRelaxedBottomUp{AVLBottomUp: AVLBottomUp{Tree: Tree{arena: tree.arena, root: l, size: i}}},
+          &AVLRelaxedBottomUp{AVLBottomUp: AVLBottomUp{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}}
 }

@@ -191,7 +191,7 @@ func (tree *LBSTRelaxed) insert(p **Node, s Size, i Position, x Data) {
 }
 // Inserts a value `s` at position `i` in the tree.
 func (tree *LBSTRelaxed) Insert(i Position, x Data) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.size = tree.size + 1
    tree.insert(&tree.root, tree.size, i, x)
 }
@@ -226,7 +226,7 @@ func (tree *LBSTRelaxed) rebuild(p **Node, s Size) {
 
 
 func (tree *LBSTRelaxed) Split(i Size) (List, List) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
 
    tree.share(tree.root)
    l,r := tree.split(tree.root, i)

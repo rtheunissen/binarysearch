@@ -12,7 +12,7 @@ animation: animate
 
 # Run the test suite.
 test: assertions-on measurements-off
-	${GO} test -count 1 ./binarytree
+	${GO} test ./binarytree
 
 # Runs the test suite and collects code coverage.
 coverage: assertions-off measurements-off
@@ -88,7 +88,8 @@ OPERATIONS := \
 	InsertDeletePersistent \
 	InsertDeleteCycles \
 	InsertDeleteCyclesPersistent \
-	SplitJoin \
+	InsertDeleteSearch \
+	InsertDeleteSearchPersistent \
 
 
 operation-benchmarks-%:

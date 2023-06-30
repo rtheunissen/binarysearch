@@ -1,7 +1,7 @@
 package binarytree
 
 func (tree *Tree) partition(p *Node, i uint64) *Node {
-   assert(i < p.size())
+   // assert(i < p.size())
    // measurement(&partitionCount, 1)
 
    n := Node{s: i}

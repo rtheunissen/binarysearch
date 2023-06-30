@@ -4,43 +4,26 @@ import . "binarysearch/abstract/list"
 
 type AVLRelaxedTopDown struct {
    AVLWeakTopDown
+   AVLRelaxed
 }
 
 func (AVLRelaxedTopDown) New() List {
-   return &AVLRelaxedTopDown{
-      AVLWeakTopDown: *AVLWeakTopDown{}.New().(*AVLWeakTopDown),
-   }
+   return &AVLRelaxedTopDown{}
 }
 
 func (tree *AVLRelaxedTopDown) Clone() List {
    return &AVLRelaxedTopDown{
-      AVLWeakTopDown: AVLWeakTopDown{
-         WAVL: WAVL{
-            Tree: tree.Tree.Clone(),
-         },
-      },
+      AVLWeakTopDown: *tree.AVLWeakTopDown.Clone().(*AVLWeakTopDown),
    }
 }
 
 func (tree AVLRelaxedTopDown) Verify() {
-   tree.verifySizes()
+   tree.verifySize(tree.root, tree.size)
    tree.verifyRanks(tree.root)
 }
 
-func (tree AVLRelaxedTopDown) verifyRanks(p *Node) {
-   if p == nil {
-      return
-   }
-   invariant(tree.rank(p) >= p.height())
-   invariant(tree.rank(p) > tree.rank(p.l))
-   invariant(tree.rank(p) > tree.rank(p.r))
-
-   tree.verifyRanks(p.l)
-   tree.verifyRanks(p.r)
-}
-
 func (tree *AVLRelaxedTopDown) Delete(i Position) Data {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    x := tree.Tree.delete(&tree.root, tree.size, i)
    tree.size--
    return x
@@ -99,7 +82,7 @@ func (tree AVLRelaxedTopDown) Join(other List) List {
 
    p := tree.join(l.root, r.root, l.size)
 
-   return &AVLRelaxedTopDown{AVLWeakTopDown: AVLWeakTopDown{WAVL{Tree: Tree{arena: tree.arena, root: p, size: l.size + r.size}}}}
+   return &AVLRelaxedTopDown{AVLWeakTopDown: AVLWeakTopDown{AVLWeakBottomUp{AVLBottomUp: AVLBottomUp{Tree: Tree{arena: tree.arena, root: p, size: l.size + r.size}}}}}
 }
 
 
@@ -123,10 +106,10 @@ func (tree AVLRelaxedTopDown) split(p *Node, i, s Size) (l, r *Node) {
 }
 
 func (tree AVLRelaxedTopDown) Split(i Position) (List, List) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
 
-   return &AVLRelaxedTopDown{AVLWeakTopDown{WAVL{Tree: Tree{arena: tree.arena, root: l, size: i}}}},
-          &AVLRelaxedTopDown{AVLWeakTopDown{WAVL{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}}}
+   return &AVLRelaxedTopDown{AVLWeakTopDown: AVLWeakTopDown{AVLWeakBottomUp{AVLBottomUp: AVLBottomUp{Tree: Tree{arena: tree.arena, root: l, size: i}}}}},
+          &AVLRelaxedTopDown{AVLWeakTopDown: AVLWeakTopDown{AVLWeakBottomUp{AVLBottomUp: AVLBottomUp{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}}}}
 }

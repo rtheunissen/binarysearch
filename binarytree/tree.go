@@ -39,7 +39,7 @@ type BinaryTree interface {
 //   if reflect.DataOf(p).IsNil() {
 //      return 0
 //   }
-//   assert(p.Count() == s)
+//   // assert(p.Count() == s)
 //   iL := InternalPathLength(p.Left(), p.SizeOfLeftSubtree(s))
 //   iR := InternalPathLength(p.Right(), p.SizeOfRightSubtree(s))
 //   return s - 1 + iL + iR // TODO reference this
@@ -69,7 +69,7 @@ type Tree struct {
 }
 //
 //func (tree *LBSTRelaxed) partition(p *Node, i uint64) *Node {
-//   assert(i < p.size())
+//   // assert(i < p.size())
 //   // measurement(&partitionCount, 1)
 //   n := Node{s: i}
 //   l := &n
@@ -101,29 +101,6 @@ type Tree struct {
 // resulting root. This algorithm is identical to splay with no rotation steps.
 //
 
-func (tree *Tree) split(p *Node, i uint64) (*Node, *Node) {
-   n := Node{}
-   l := &n
-   r := &n
-   for p != nil {
-      tree.persist(&p)
-      if i <= p.s {
-         p.s = p.s - i
-         r.l = p
-         r = r.l
-         p = p.l
-      } else {
-         i = i - p.s - 1
-         l.r = p
-         l = l.r
-         p = p.r
-      }
-   }
-   l.r = nil
-   r.l = nil
-   return n.r, n.l
-}
-
 // Clone creates a shallow copy of the tree and shares its root with the copy.
 func (tree *Tree) Clone() Tree {
    if tree.arena == nil {
@@ -142,7 +119,7 @@ func (tree Tree) Free() {
 // Deletes the node at position `i` from the tree.
 // Returns the data that was in the deleted value.
 func (tree *Tree) Delete(i list.Position) list.Data {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    x := tree.delete(&tree.root, tree.size, i)
    tree.size--
    return x
@@ -150,12 +127,12 @@ func (tree *Tree) Delete(i list.Position) list.Data {
 
 
 func (tree *Tree) Select(i list.Size) list.Data {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    return tree.lookup(tree.root, i)
 }
 
 func (tree *Tree) Update(i list.Size, x list.Data) {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }
@@ -210,7 +187,7 @@ func (tree *Tree) Insert(i list.Size, x list.Data) {
 }
 
 //func (tree *Tree) Split(i Size) (Tree, Tree) {
-//   assert(i <= tree.size)
+//   // assert(i <= tree.size)
 //
 //   var l, r *Node
 //   tree.partition(tree.root, i, &l, &r)
@@ -249,12 +226,12 @@ func (tree Tree) lookup(p *Node, i list.Size) list.Data {
 }
 
 //func (tree *Tree) Select(i Size) Data {
-//  assert(i < tree.size)
+//  // assert(i < tree.size)
 //  return tree.lookup(tree.root, i)
 //}
 
 //func (tree *Tree) Update(i Size, x Data) {
-//   assert(i < tree.size)
+//   // assert(i < tree.size)
 //   tree.pathcopy(&tree.root)
 //   tree.update(tree.root, i, x)
 //}
@@ -474,6 +451,47 @@ func (tree *Tree) delete(p **Node, s list.Size, i list.Size) (x list.Data) {
    }
 }
 
+
+func (tree *Tree) split(p *Node, i uint64) (*Node, *Node) {
+   n := Node{}
+   l := &n
+   r := &n
+   for p != nil {
+      tree.persist(&p)
+      if i <= p.s {
+        p.s = p.s - i
+        r.l = p
+          r = r.l
+          p = p.l
+      } else {
+          i = i - p.s - 1
+        l.r = p
+          l = l.r
+          p = p.r
+      }
+   }
+   l.r = nil
+   r.l = nil
+   return n.r, n.l
+}
+
+func (tree Tree) Split(i list.Size, split func(p *Node, i, s list.Size) (l, r *Node)) (Tree, Tree) {
+   tree.share(tree.root)
+   l, r := split(tree.root, i, tree.size)
+   return Tree{arena: tree.arena, root: l, size: i}, // TODO: new arenas?
+          Tree{arena: tree.arena, root: r, size: tree.size - i}
+}
+
+func (tree Tree) Join(other Tree, join func(l, r *Node, sl list.Size) *Node) Tree {
+   tree.share(tree.root)
+   tree.share(other.root)
+   return Tree{
+      arena: tree.arena, // TODO: remove?
+      size:  tree.size + other.size,
+      root:  join(tree.root, other.root, tree.size),
+   }
+}
+
 //func (p *Node) deleteL(r **Node, s Size, i Position) (**Node, Size, Position) {
 //   s = p.i
 //   p.i--
@@ -492,7 +510,7 @@ func (tree *Tree) delete(p **Node, s list.Size, i list.Size) (x list.Data) {
 // Deletes the node at position `i` from the tree.
 // Returns the data that was in the deleted Data.
 //func (tree *Tree) Delete(i Size) Data {
-//   assert(i < tree.size)
+//   // assert(i < tree.size)
 //   x := tree.delete(&tree.root, tree.size, i)
 //   tree.size--
 //   return x

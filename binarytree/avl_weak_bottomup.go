@@ -3,7 +3,14 @@ package binarytree
 import . "binarysearch/abstract/list"
 
 type AVLWeakBottomUp struct {
-   WAVL // TODO: just use tree
+   AVLWeak
+   AVLBottomUp
+}
+
+func (tree AVLWeakBottomUp) Verify() {
+   tree.verifySize(tree.root, tree.size)
+   tree.AVLWeak.verifyRanks(tree.root)
+   tree.AVLWeak.verifyHeight(tree.root, tree.size)
 }
 
 func (AVLWeakBottomUp) New() List {
@@ -12,27 +19,11 @@ func (AVLWeakBottomUp) New() List {
 
 func (tree *AVLWeakBottomUp) Clone() List {
    return &AVLWeakBottomUp{
-      WAVL{
+      AVLBottomUp: AVLBottomUp{
          Tree: tree.Tree.Clone(),
       },
    }
 }
-
-func (tree *AVLWeakBottomUp) insert(p *Node, i Position, x Data) *Node {
-   if p == nil {
-      return tree.allocate(Node{x: x})
-   }
-   tree.persist(&p)
-   if i <= p.s {
-      p.s = p.s + 1
-      p.l = tree.insert(p.l, i, x)
-      return tree.balanceInsertL(p)
-   } else {
-      p.r = tree.insert(p.r, i-p.s-1, x)
-      return tree.balanceInsertR(p)
-   }
-}
-
 //
 // "Deletion of a leaf may convert its parent, previously a 1,2 node
 //  into a 2,2 leaf, violating the rank rule. In this case we begin
@@ -68,16 +59,86 @@ func (tree AVLWeakBottomUp) delete(p *Node, i Position, x *Data) *Node {
 }
 
 func (tree *AVLWeakBottomUp) Delete(i Position) (x Data) {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    tree.root = tree.delete(tree.root, i, &x)
    tree.size = tree.size - 1
    return
 }
 
 func (tree *AVLWeakBottomUp) Insert(i Position, x Data) {
-   assert(i <= tree.size)
-   tree.size = tree.size + 1
-   tree.root = tree.insert(tree.root, i, x)
+   tree.AVLBottomUp.Insert(i, x)
+}
+
+// TODO split into L and R?
+func (tree AVLWeakBottomUp) rebalanceOnDelete(p *Node) *Node {
+   if p.isLeaf() && tree.isTwoTwo(p) {
+      tree.demote(p)
+      return p
+   }
+   if tree.isThreeChild(p, p.r) {
+      if tree.isTwoChild(p, p.l) {
+         tree.demote(p)
+
+      } else if tree.isTwoTwo(p.l) {
+         tree.demote(p.l)
+         tree.demote(p)
+
+      } else if tree.isOneChild(p.l, p.l.l) {
+         tree.rotateR(&p)
+         tree.promote(p)
+         tree.demote(p.r)
+
+         // assert(tree.isTwoChild(p, p.l))
+         // assert(tree.isOneChild(p, p.r))
+
+         if p.r.l == nil {
+            // assert(tree.isTwoTwo(p.r))
+            tree.demote(p.r)
+         }
+      } else {
+         tree.rotateLR(&p)
+         tree.promote(p)
+         tree.promote(p)
+         tree.demote(p.l)
+         tree.demote(p.r)
+         tree.demote(p.r)
+
+         // assert(tree.isTwoChild(p, p.l))
+         // assert(tree.isTwoChild(p, p.r))
+      }
+   } else if tree.isThreeChild(p, p.l) {
+      if tree.isTwoChild(p, p.r) {
+         tree.demote(p)
+
+      } else if tree.isTwoTwo(p.r) {
+         tree.demote(p.r)
+         tree.demote(p)
+
+      } else if tree.isOneChild(p.r, p.r.r) {
+         tree.rotateL(&p)
+         tree.promote(p)
+         tree.demote(p.l)
+
+         // assert(tree.isOneChild(p, p.l))
+         // assert(tree.isTwoChild(p, p.r))
+
+         if p.l.r == nil {
+            // assert(tree.isTwoTwo(p.l))
+            tree.demote(p.l)
+         }
+      } else {
+         tree.rotateRL(&p)
+         tree.promote(p)
+         tree.promote(p)
+         tree.demote(p.l)
+         tree.demote(p.l)
+         tree.demote(p.r)
+
+         // assert(tree.isTwoChild(p, p.l))
+         // assert(tree.isTwoChild(p, p.r))
+      }
+   }
+   return p
 }
 
 func (tree AVLWeakBottomUp) extractMin(p *Node, min **Node) *Node {
@@ -86,7 +147,7 @@ func (tree AVLWeakBottomUp) extractMin(p *Node, min **Node) *Node {
       return p
    }
    tree.persist(&p)
-   p.s--
+   p.s = p.s - 1
    p.l = tree.extractMin(p.l, min)
    return tree.rebalanceOnDelete(p)
 }
@@ -102,21 +163,83 @@ func (tree AVLWeakBottomUp) extractMax(p *Node, max **Node) *Node {
    return tree.rebalanceOnDelete(p)
 }
 
-func (tree AVLWeakBottomUp) join(l, r *Node, sl Size) (p *Node) {
-   if l == nil { return r }
-   if r == nil { return l }
-   if tree.rank(l) <= tree.rank(r) {
-      return tree.build(l, p, tree.extractMin(r, &p), sl)
-   } else {
-      return tree.build(tree.extractMax(l, &p), p, r, sl-1)
+
+// Constructs a balanced tree with root `p` where all nodes in `l` are to the
+// left of `p` and all nodes in `r` to the right of `p`.
+//
+// The rank of `r` is greater than or equal to the rank of `l`.
+//
+//                                    p
+//                                    .       r
+//                              l            ↙
+//                             ↙            /\
+//                            /\           /\ \
+//                           /  \      ~l /  \ \
+//                          /____\       /____\_\
+//
+//
+// Follow the left spine of `r` to find a subtree that is similar in rank to `l`
+// then build a new subtree with parent `p`, left subtree `l` and right `r`.
+//
+// To update the size of `r`, which is the eventual size of its left subtree,
+// consider that the left subtree of `r` will consist of all the nodes in `l`,
+// then `p`,all the nodes currently in that subtree.
+//
+func (tree *AVLWeakBottomUp) buildL(l, p, r *Node, sl Size) *Node {
+   // assert(tree.rank(r) >= tree.rank(l))
+   if tree.rankDifference(r, l) <= 1 {
+      p.l = l
+      p.r = r
+      p.s = sl
+      p.y = uint64(tree.rank(r) + 1)
+      return p
    }
+   tree.persist(&r)
+   r.s = r.sizeL() + sl + 1
+   r.l = tree.buildL(l, p, r.l, sl)
+   return tree.balanceInsertL(r)
+}
+
+// Symmetric
+func (tree *AVLWeakBottomUp) buildR(l, p, r *Node, sl Size) *Node {
+   // assert(tree.rank(l) >= tree.rank(r))
+   if tree.rankDifference(l, r) <= 1 {
+      p.l = l
+      p.r = r
+      p.s = sl
+      p.y = uint64(tree.rank(l) + 1)
+      return p
+   }
+   tree.persist(&l)
+   l.r = tree.buildR(l.r, p, r, l.sizeR(sl))
+   return tree.balanceInsertR(l)
+}
+
+// Constructs a balanced tree with root p where all nodes of l are to the left
+// of p and all nodes in r are to the right of p.
+func (tree *AVLWeakBottomUp) build(l, p, r *Node, sl Size) *Node {
+   if tree.rank(l) < tree.rank(r) {
+      return tree.buildL(l, p, r, sl)
+   } else {
+      return tree.buildR(l, p, r, sl)
+   }
+}
+
+func (tree AVLWeakBottomUp) join(l, r *Node, sl Size) (p *Node) {
+  if l == nil { return r }
+  if r == nil { return l }
+  if tree.rank(l) <= tree.rank(r) {
+     return tree.build(l, p, tree.extractMin(r, &p), sl)
+  } else {
+     return tree.build(tree.extractMax(l, &p), p, r, sl-1)
+  }
 }
 
 func (tree AVLWeakBottomUp) Join(that List) List {
    tree.share(tree.root)
    tree.share(that.(*AVLWeakBottomUp).root)
    return &AVLWeakBottomUp{
-      WAVL{
+      AVLBottomUp: AVLBottomUp{
          Tree: Tree{
             arena: tree.arena,
             root:  tree.join(tree.root, that.(*AVLWeakBottomUp).root, tree.size),
@@ -125,7 +248,6 @@ func (tree AVLWeakBottomUp) Join(that List) List {
       },
    }
 }
-
 
 func (tree AVLWeakBottomUp) split(p *Node, i, s Size) (l, r *Node) {
    if p == nil {
@@ -147,10 +269,10 @@ func (tree AVLWeakBottomUp) split(p *Node, i, s Size) (l, r *Node) {
 }
 
 func (tree AVLWeakBottomUp) Split(i Position) (List, List) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
 
-   return &AVLWeakBottomUp{WAVL{Tree: Tree{arena: tree.arena, root: l, size: i}}},
-          &AVLWeakBottomUp{WAVL{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}}
+   return &AVLWeakBottomUp{AVLBottomUp: AVLBottomUp{Tree: Tree{arena: tree.arena, root: l, size: i}}},
+          &AVLWeakBottomUp{AVLBottomUp: AVLBottomUp{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}}
 }

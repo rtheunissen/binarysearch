@@ -21,7 +21,7 @@ func (suite TestSuite) Run(t *testing.T) {
    for _, strategy := range suite.Lists {
       strategy := strategy
       t.Run(utility.NameOf(strategy), func(t *testing.T) {
-         //t.Parallel()
+         t.Parallel()
          for _, dist := range suite.Distributions {
             //dist := dist
             t.Run(utility.NameOf(dist), func(t *testing.T) {
@@ -89,13 +89,6 @@ func fromReference(impl List, reference Reference) List {
       instance.Insert(instance.Size(), x)
    }
    return instance
-}
-
-func TestNew(t *testing.T, impl List, size Size, position distribution.Distribution) {
-   ref := referenceOfSize(size).(*Reference)
-   instance := fromReference(impl, *ref)
-   instance.Verify()
-   instance.Free()
 }
 
 func TestDelete(t *testing.T, impl List, size Size, position distribution.Distribution) {

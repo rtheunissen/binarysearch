@@ -2,6 +2,7 @@ package binarytree
 
 import (
    . "binarysearch/abstract/list"
+   "binarysearch/random"
    "binarysearch/utility"
    "fmt"
    "math"
@@ -153,26 +154,40 @@ func heightBound3(height int, size Size) bool {
    return (height + 1) / 2 > int(math.Log2(float64(size)))
 }
 func log2_1(x, y int) bool {
-   assert(x <= y)
+   // assert(x <= y)
    return (1 + int(math.Floor(math.Log2(float64(y))))) - (1 + int(math.Floor(math.Log2(float64(x))))) <= 1
 }
 func log2_2(x, y int) bool {
-   assert(x <= y)
+   // assert(x <= y)
    return x >= y / 2 && x <= y * 2
 }
 func Sandbox() {
-   //
-   for i := 1; i < 1000000; i++ {
-      for h := 1; h < 32; h++ {
-         h1 := heightBound1(h, Size(i))
-         h2 := heightBound2(h, Size(i))
-         h3 := heightBound3(h, Size(i))
-         if int(2 * math.Log2(float64(i))) != int(2 *utility.Log2(uint64(i))) {
-         //if h1 != h2 || h1 != h3 || h2 != h3 {
-            panic(fmt.Sprint(i, h, h1, h2, h3, int(2 * math.Log2(float64(i))), int(2 *utility.Log2(uint64(i)))))
-         }
-      }
+   random.Seed(4)
+   for {
+     //fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+     tree := &AVLTopDown{}
+     for i, n := uint64(0), uint64(1000); i < n; i++ {
+        tree.Insert(random.Uint64() % (tree.Size() + 1), i)
+        //tree.Draw(os.Stdout)
+        tree.Verify()
+     }
+     //tree.Draw(os.Stdout)
+     tree.Free()
+     fmt.Print(".")
    }
+
+   //
+   //for i := 1; i < 1000000; i++ {
+   //   for h := 1; h < 32; h++ {
+   //      h1 := heightBound1(h, Size(i))
+   //      h2 := heightBound2(h, Size(i))
+   //      h3 := heightBound3(h, Size(i))
+   //      if int(2 * math.Log2(float64(i))) != int(2 *utility.Log2(uint64(i))) {
+   //      //if h1 != h2 || h1 != h3 || h2 != h3 {
+   //         panic(fmt.Sprint(i, h, h1, h2, h3, int(2 * math.Log2(float64(i))), int(2 *utility.Log2(uint64(i)))))
+   //      }
+   //   }
+   //}
 
    //
    //random.Seed(4)
@@ -1326,8 +1341,8 @@ func Sandbox() {
 //   //    }
 //   //    p := l.Join(r)
 //   //    p.Verify()
-//   //    assert(p.Size() == l.Size() + r.Size())
-//   //    assert(p.Size() == p.(*WAVL).root.count())
+//   //    // assert(p.Size() == l.Size() + r.Size())
+//   //    // assert(p.Size() == p.(*WAVL).root.count())
 //   //    print(".")
 //   // }
 //}

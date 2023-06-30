@@ -2,6 +2,7 @@ package main
 
 import (
    "binarysearch/abstract/list"
+   "binarysearch/abstract/list/operations"
    . "binarysearch/binarytree"
    "binarysearch/binarytree/animations"
    console2 "binarysearch/console"
@@ -47,9 +48,9 @@ func prompt() console2.Animation {
 
 func chooseOperation() list.Operation {
    return console2.Choose[list.Operation]("Operation",
-      &operations2.Insert{},
+      &operations.Insert{},
       &operations2.Delete{},
-      &operations2.InsertDeleteCycles{},
+      &operations.InsertDeleteCycles{},
       &operations2.SplitJoin{},
    )
 }

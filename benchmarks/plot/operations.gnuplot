@@ -7,44 +7,43 @@ load "benchmarks/plot/colors.gnuplot"
 ##################################################################
 
 AVLBottomUp                = 1
-AVLJoinBased               = 2
+AVLTopDown                 = 2
 AVLWeakTopDown             = 3
 AVLWeakBottomUp            = 4
-AVLWeakJoinBased           = 5
-AVLRelaxedTopDown          = 6
-AVLRelaxedBottomUp         = 7
-RedBlackRelaxedBottomUp    = 8
-RedBlackRelaxedTopDown     = 9
-LBSTBottomUp               = 10
-LBSTTopDown                = 11
-LBSTJoinBased              = 12
+AVLRelaxedTopDown          = 5
+AVLRelaxedBottomUp         = 6
+RedBlackBottomUp           = 7
+RedBlackTopDown            = 8
+RedBlackRelaxedBottomUp    = 9
+RedBlackRelaxedTopDown     = 10
+LBSTBottomUp               = 11
+LBSTTopDown                = 12
 LBSTRelaxed                = 13
 TreapTopDown               = 14
-TreapJoinBased             = 15
-TreapFingerTree            = 16
-Randomized                 = 17
-Zip                        = 18
-Splay                      = 19
-Conc                       = 20
-RedBlackBottomUp           = 21
+TreapFingerTree            = 15
+Randomized                 = 16
+Zip                        = 17
+Splay                      = 18
+Conc                       = 19
+
+
+
 
 
 set style line AVLBottomUp                  dashtype 1 ps 1 lw 1 pt   1 pn 2 lc rgb COLOR_BLACK
-set style line AVLJoinBased                 dashtype 3 ps 1 lw 1 pt   2 pn 2 lc rgb COLOR_CYAN
+set style line AVLTopDown                   dashtype 3 ps 1 lw 1 pt   2 pn 2 lc rgb COLOR_CYAN
 set style line AVLWeakBottomUp              dashtype 1 ps 1 lw 1 pt   4 pn 2 lc rgb COLOR_BLUE
 set style line AVLWeakTopDown               dashtype 5 ps 1 lw 1 pt   3 pn 2 lc rgb COLOR_GREEN
-set style line AVLWeakJoinBased             dashtype 3 ps 1 lw 1 pt   5 pn 2 lc rgb COLOR_CYAN
 set style line AVLRelaxedTopDown            dashtype 5 ps 1 lw 1 pt   6 pn 2 lc rgb COLOR_BLUE
 set style line AVLRelaxedBottomUp           dashtype 1 ps 1 lw 1 pt   7 pn 2 lc rgb COLOR_YELLOW
 set style line RedBlackBottomUp             dashtype 1 ps 1 lw 1 pt  12 pn 2 lc rgb COLOR_RED
+set style line RedBlackTopDown              dashtype 3 ps 1 lw 1 pt   5 pn 2 lc rgb COLOR_BLUE
 set style line RedBlackRelaxedBottomUp      dashtype 1 ps 1 lw 1 pt   8 pn 2 lc rgb COLOR_GREEN
 set style line RedBlackRelaxedTopDown       dashtype 5 ps 1 lw 1 pt   9 pn 2 lc rgb COLOR_CYAN
 set style line LBSTBottomUp                 dashtype 1 ps 1 lw 1 pt  10 pn 2 lc rgb COLOR_GREEN
 set style line LBSTTopDown                  dashtype 5 ps 1 lw 1 pt  11 pn 2 lc rgb COLOR_BLUE
-set style line LBSTJoinBased                dashtype 3 ps 1 lw 1 pt  12 pn 2 lc rgb COLOR_YELLOW
 set style line LBSTRelaxed                  dashtype 1 ps 1 lw 1 pt  13 pn 2 lc rgb COLOR_RED
 set style line TreapTopDown                 dashtype 5 ps 1 lw 1 pt  14 pn 2 lc rgb COLOR_RED
-set style line TreapJoinBased               dashtype 3 ps 1 lw 1 pt  15 pn 2 lc rgb COLOR_CYAN
 set style line TreapFingerTree              dashtype 1 ps 1 lw 1 pt  16 pn 2 lc rgb COLOR_BLUE
 set style line Randomized                   dashtype 1 ps 1 lw 1 pt  17 pn 2 lc rgb COLOR_YELLOW
 set style line Zip                          dashtype 1 ps 1 lw 1 pt  18 pn 2 lc rgb COLOR_GREEN
@@ -58,17 +57,16 @@ set style line Conc                         dashtype 3 ps 1 lw 1 pt  20 pn 2 lc 
 #
 ##################################################################
 
-AVLRedBlack            = "AVLBottomUp RedBlackBottomUp"
-AVLWeakRedBlack        = "AVLBottomUp RedBlackBottomUp AVLWeakBottomUp AVLWeakTopDown"
-AVLWeak                = "AVLBottomUp AVLWeakJoinBased AVLWeakBottomUp AVLWeakTopDown"
-AVLConc                = "AVLBottomUp AVLWeakBottomUp AVLWeakTopDown AVLRelaxedTopDown AVLRelaxedBottomUp Conc"
-AVLRelaxed             = "AVLRelaxedBottomUp AVLRelaxedTopDown RedBlackRelaxedBottomUp RedBlackRelaxedTopDown"
+AVLRedBlack            = "AVLBottomUp RedBlackBottomUp RedBlackTopDown"
+AVLWeak                = "AVLBottomUp AVLWeakBottomUp AVLWeakTopDown"
+AVLRelaxed             = "AVLBottomUp AVLRelaxedBottomUp AVLRelaxedTopDown"
+RedBlackRelaxed        = "RedBlackBottomUp RedBlackTopDown RedBlackRelaxedBottomUp RedBlackRelaxedTopDown"
 
-RedBlack               = "AVLBottomUp AVLWeakBottomUp RedBlackBottomUp RedBlackRelaxedBottomUp RedBlackRelaxedTopDown"
-RankBalanced           = "AVLWeakBottomUp AVLWeakTopDown AVLRelaxedBottomUp RedBlackRelaxedTopDown"
-HeightBalanced         = "AVLBottomUp RedBlackBottomUp AVLWeakBottomUp AVLRelaxedBottomUp Conc"
+RankBalanced          = "AVLWeakBottomUp AVLWeakTopDown AVLRelaxedBottomUp RedBlackRelaxedTopDown"
+HeightBalanced        = "AVLBottomUp RedBlackBottomUp AVLWeakBottomUp AVLRelaxedBottomUp Conc"
 
-WeightBalanced         = "LBSTBottomUp LBSTTopDown LBSTJoinBased LBSTRelaxed"
+
+WeightBalanced         = "LBSTBottomUp LBSTTopDown LBSTRelaxed"
 WeightBalancedRelaxed  = "LBSTBottomUp LBSTRelaxed"
 Probabilistic          = "TreapTopDown TreapFingerTree Randomized Zip"
 Combination            = "AVLRelaxedBottomUp AVLWeakBottomUp LBSTBottomUp TreapTopDown"
@@ -76,13 +74,13 @@ CombinationSplay       = "AVLRelaxedBottomUp AVLWeakBottomUp LBSTBottomUp TreapT
 SizeOnly               = "LBSTBottomUp LBSTRelaxed Randomized Splay"
 
 GROUPS = "AVLWeakRedBlack AVLRelaxed RedBlack"
-GROUPS = "WeightBalancedRelaxed"
+GROUPS = "AVLRedBlack AVLWeak AVLRelaxed RedBlackRelaxed"
 
-OPERATIONS = "InsertPersistent InsertDeleteCyclesPersistent Insert InsertDeleteCycles InsertDelete InsertDeletePersistent InsertDeleteCycles"
-OPERATIONS = "InsertDeleteCycles InsertDeleteCyclesPersistent"
+OPERATIONS = "Insert InsertPersistent InsertDelete InsertDeletePersistent InsertDeleteCycles InsertDeleteCyclesPersistent InsertDeleteSearch InsertDeleteSearchPersistent"
+OPERATIONS = "Insert InsertPersistent InsertDelete InsertDeletePersistent InsertDeleteCycles InsertDeleteCyclesPersistent InsertDeleteSearch InsertDeleteSearchPersistent"
 
 DISTRIBUTIONS = "Uniform Normal Skewed Zipf Maximum"
-DISTRIBUTIONS = "Uniform"
+DISTRIBUTIONS = "Uniform Normal Skewed Zipf Maximum"
 
 do for [GROUP in GROUPS] {
 
