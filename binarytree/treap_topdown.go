@@ -28,7 +28,7 @@ func (tree *TreapTopDown) Clone() List {
 }
 
 func (tree *TreapTopDown) join(l, r *Node, sl Size) (root *Node) {
-   assert(sl == l.size())
+   // assert(sl == l.size())
    p := &root
    for {
       if l == nil {
@@ -169,20 +169,20 @@ func (tree *TreapTopDown) insert(p **Node, i Position, n *Node) {
 }
 
 func (tree *TreapTopDown) Insert(i Position, x Data) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.size++
    tree.insert(&tree.root, i, tree.allocate(Node{x: x, y: tree.Source.Uint64()}))
 }
 
 func (tree *TreapTopDown) Delete(i Position) (x Data) {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    tree.delete(&tree.root, i, &x)
    tree.size--
    return
 }
 
 func (tree TreapTopDown) split(i Size) (Tree, Tree) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.share(tree.root)
    l, r := tree.Tree.split(tree.root, i)
 
@@ -191,19 +191,19 @@ func (tree TreapTopDown) split(i Size) (Tree, Tree) {
 }
 
 func (tree TreapTopDown) Split(i Position) (List, List) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    l, r := tree.split(i)
    return &TreapTopDown{Tree: l, Source: tree.Source},
       &TreapTopDown{Tree: r, Source: tree.Source}
 }
 
 func (tree *TreapTopDown) Select(i Size) Data {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    return tree.lookup(tree.root, i)
 }
 
 func (tree *TreapTopDown) Update(i Size, x Data) {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }

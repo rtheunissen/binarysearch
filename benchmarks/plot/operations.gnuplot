@@ -57,14 +57,14 @@ set style line Conc                         dashtype 3 ps 1 lw 1 pt  20 pn 2 lc 
 #
 ##################################################################
 
-AVLRedBlack            = "AVLBottomUp RedBlackBottomUp RedBlackTopDown"
-AVLWeak                = "AVLBottomUp AVLWeakBottomUp AVLWeakTopDown"
-AVLRelaxed             = "AVLBottomUp AVLRelaxedBottomUp AVLRelaxedTopDown"
+AVL                    = "AVLBottomUp AVLTopDown"
+AVLRedBlack            = "AVLBottomUp AVLTopDown RedBlackBottomUp RedBlackTopDown"
+AVLWeak                = "AVLBottomUp AVLTopDown AVLWeakBottomUp AVLWeakTopDown"
+AVLRelaxed             = "AVLBottomUp AVLTopDown AVLRelaxedBottomUp AVLRelaxedTopDown"
 RedBlackRelaxed        = "RedBlackBottomUp RedBlackTopDown RedBlackRelaxedBottomUp RedBlackRelaxedTopDown"
 
 RankBalanced          = "AVLWeakBottomUp AVLWeakTopDown AVLRelaxedBottomUp RedBlackRelaxedTopDown"
 HeightBalanced        = "AVLBottomUp RedBlackBottomUp AVLWeakBottomUp AVLRelaxedBottomUp Conc"
-
 
 WeightBalanced         = "LBSTBottomUp LBSTTopDown LBSTRelaxed"
 WeightBalancedRelaxed  = "LBSTBottomUp LBSTRelaxed"
@@ -74,10 +74,10 @@ CombinationSplay       = "AVLRelaxedBottomUp AVLWeakBottomUp LBSTBottomUp TreapT
 SizeOnly               = "LBSTBottomUp LBSTRelaxed Randomized Splay"
 
 GROUPS = "AVLWeakRedBlack AVLRelaxed RedBlack"
-GROUPS = "AVLRedBlack AVLWeak AVLRelaxed RedBlackRelaxed"
+GROUPS = "AVL"
 
 OPERATIONS = "Insert InsertPersistent InsertDelete InsertDeletePersistent InsertDeleteCycles InsertDeleteCyclesPersistent InsertDeleteSearch InsertDeleteSearchPersistent"
-OPERATIONS = "Insert InsertPersistent InsertDelete InsertDeletePersistent InsertDeleteCycles InsertDeleteCyclesPersistent InsertDeleteSearch InsertDeleteSearchPersistent"
+OPERATIONS = "Insert InsertDelete InsertDeleteCycles"
 
 DISTRIBUTIONS = "Uniform Normal Skewed Zipf Maximum"
 DISTRIBUTIONS = "Uniform Normal Skewed Zipf Maximum"

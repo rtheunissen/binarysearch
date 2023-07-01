@@ -49,8 +49,8 @@ func (tree *LBSTTopDown) singleRotation(x, y Size) bool {
 }
 
 func (tree *LBSTTopDown) insert(p **Node, s Size, i Position, x Data) {
-   assert(i <= s)
-   assert(s == (*p).size())
+   // assert(i <= s)
+   // assert(s == (*p).size())
    for {
       if *p == nil {
          *p = tree.allocate(Node{x: x})
@@ -61,8 +61,8 @@ func (tree *LBSTTopDown) insert(p **Node, s Size, i Position, x Data) {
       sl := (*p).sizeL()
       sr := (*p).sizeR(s)
 
-      assert(tree.isBalanced(sr, sl))
-      assert(tree.isBalanced(sl, sr))
+      // assert(tree.isBalanced(sr, sl))
+      // assert(tree.isBalanced(sl, sr))
 
       if i <= (*p).s {
          if tree.isBalanced(sr, sl+1) {
@@ -167,16 +167,16 @@ func (tree *LBSTTopDown) insert(p **Node, s Size, i Position, x Data) {
 }
 
 func (tree *LBSTTopDown) delete(p **Node, s Size, i Position) (deleted *Node) {
-   assert(i < s)
-   assert(s == (*p).size())
+   // assert(i < s)
+   // assert(s == (*p).size())
    for {
       tree.persist(p)
 
       sl := (*p).s
       sr := s - (*p).s - 1
 
-      assert(tree.isBalanced(sl, sr))
-      assert(tree.isBalanced(sr, sl))
+      // assert(tree.isBalanced(sl, sr))
+      // assert(tree.isBalanced(sr, sl))
 
       if i == (*p).s {
          defer tree.free(*p)
@@ -275,13 +275,13 @@ func (tree *LBSTTopDown) deleteR(p ***Node, s *Size, i *Position) {
 }
 
 func (tree *LBSTTopDown) Insert(i Position, x Data) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.insert(&tree.root, tree.size, i, x)
    tree.size++
 }
 
 func (tree *LBSTTopDown) Delete(i Position) (x Data) {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    x = tree.delete(&tree.root, tree.size, i).x
    tree.size--
    return
@@ -379,7 +379,7 @@ func (tree LBSTTopDown) split(p *Node, i, s Size) (l, r *Node) {
 }
 
 func (tree LBSTTopDown) Split(i Position) (List, List) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
 

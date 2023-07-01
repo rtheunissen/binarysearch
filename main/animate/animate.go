@@ -5,19 +5,18 @@ import (
    "binarysearch/abstract/list/operations"
    . "binarysearch/binarytree"
    "binarysearch/binarytree/animations"
-   console2 "binarysearch/console"
+   "binarysearch/console"
    "binarysearch/distribution"
-   operations2 "binarysearch/operations"
    "flag"
    "os"
 )
 
 func main() {
    flag.Parse()
-   console2.Animate(prompt())
+   console.Animate(prompt())
 }
 
-func prompt() console2.Animation {
+func prompt() console.Animation {
    //var binaryTree BST = &Splay{} // TODO what about an unbalanced tree? Can BST be List?
    //var distribution number.Distribution = &Uniform{}
 
@@ -39,7 +38,7 @@ func prompt() console2.Animation {
       Size:         1_000_000,
       Height:       40,
    }
-   return console2.Choose[console2.Animation]("Animation",
+   return console.Choose[console.Animation]("Animation",
       &animations.ExteriorHeights{BinaryTreeAnimation: animation},
       &animations.InteriorHeights{BinaryTreeAnimation: animation},
       &animations.WeightsPerLevel{BinaryTreeAnimation: animation},
@@ -47,16 +46,22 @@ func prompt() console2.Animation {
 }
 
 func chooseOperation() list.Operation {
-   return console2.Choose[list.Operation]("Operation",
+   return console.Choose[list.Operation]("Operation",
       &operations.Insert{},
-      &operations2.Delete{},
+      &operations.InsertPersistent{},
+      &operations.InsertDelete{},
+      &operations.InsertDeletePersistent{},
       &operations.InsertDeleteCycles{},
-      &operations2.SplitJoin{},
+      &operations.InsertDeleteCyclesPersistent{},
+      &operations.InsertDeleteSearch{},
+      &operations.InsertDeleteSearchPersistent{},
+      &operations.InsertDeleteSplitJoin{},
+      &operations.InsertDeleteSplitJoinPersistent{},
    )
 }
 
 func chooseDistribution() distribution.Distribution {
-   return console2.Choose[distribution.Distribution]("Distribution",
+   return console.Choose[distribution.Distribution]("Distribution",
       &distribution.Uniform{},
       &distribution.Normal{},
       &distribution.Skewed{},
@@ -75,7 +80,8 @@ func chooseDistribution() distribution.Distribution {
 }
 
 func chooseStrategy() list.List {
-   return console2.Choose[list.List]("Strategy",
+   return console.Choose[list.List]("Strategy",
+      &AVLTopDown{},
       &AVLBottomUp{},
       &AVLWeakTopDown{},
       &AVLWeakBottomUp{},
