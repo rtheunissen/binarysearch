@@ -1,10 +1,10 @@
 package main
 
 import (
-   "binarysearch/abstract/list"
-   "binarysearch/binarytree"
-   "binarysearch/distribution"
-   "binarysearch/utility"
+   "bst/abstract/list"
+   "bst/trees"
+   "bst/utility"
+   "bst/utility/random/distribution"
    "fmt"
    "os"
    "path/filepath"
@@ -19,13 +19,13 @@ func main() {
      Distributions: []distribution.Distribution{
         &distribution.Uniform{},
      },
-     Strategies: []binarytree.Balancer{
-        &binarytree.Median{},
-        &binarytree.Height{},
-        &binarytree.Weight{},
-        &binarytree.Log{},
-        &binarytree.Cost{},
-        &binarytree.DSW{},
+     Strategies: []trees.Balancer{
+        &trees.Median{},
+        &trees.Height{},
+        &trees.Weight{},
+        &trees.Log{},
+        &trees.Cost{},
+        &trees.DSW{},
      },
   }.Run()
 }
@@ -34,7 +34,7 @@ func main() {
 type BalancerBenchmark struct {
   Scale         int
   Samples       int
-  Strategies    []binarytree.Balancer
+  Strategies    []trees.Balancer
   Distributions []distribution.Distribution
   Duration      time.Duration
 }
@@ -72,7 +72,7 @@ func (benchmark BalancerBenchmark) Run() {
 
      step := benchmark.Scale / benchmark.Samples
 
-     instance := binarytree.Splay{}.New().(*binarytree.Splay)
+     instance := trees.Splay{}.New().(*trees.Splay)
 
 
      for position := step; position <= benchmark.Scale; position += step {

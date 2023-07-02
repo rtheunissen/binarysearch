@@ -1,7 +1,7 @@
 package main
 
 import (
-   "binarysearch/binarytree"
+   "bst/trees"
    "math"
 )
 
@@ -32,7 +32,7 @@ func A(height, size uint64) bool {
 // d is a
 
 func main() {
-   binarytree.Sandbox()
+   trees.Sandbox()
    //
    //
    //height := 20

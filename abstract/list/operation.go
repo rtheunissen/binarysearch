@@ -1,7 +1,7 @@
 package list
 
 import (
-   "binarysearch/distribution"
+   "bst/utility/random/distribution"
 )
 
 type Operation interface {

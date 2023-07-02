@@ -1,22 +1,21 @@
 package main
 
 import (
-   "binarysearch/abstract/list"
-   "binarysearch/abstract/list/operations"
-   . "binarysearch/binarytree"
-   "binarysearch/binarytree/animations"
-   "binarysearch/console"
-   "binarysearch/distribution"
+   "bst/abstract/list"
+   "bst/abstract/list/operations"
+   "bst/trees/animations"
+   console2 "bst/utility/console"
+   "bst/utility/random/distribution"
    "flag"
    "os"
 )
 
 func main() {
    flag.Parse()
-   console.Animate(prompt())
+   console2.Animate(prompt())
 }
 
-func prompt() console.Animation {
+func prompt() console2.Animation {
    //var binaryTree BST = &Splay{} // TODO what about an unbalanced tree? Can BST be List?
    //var distribution number.Distribution = &Uniform{}
 
@@ -38,7 +37,7 @@ func prompt() console.Animation {
       Size:         1_000_000,
       Height:       40,
    }
-   return console.Choose[console.Animation]("Animation",
+   return console2.Choose[console2.Animation]("Animation",
       &animations.ExteriorHeights{BinaryTreeAnimation: animation},
       &animations.InteriorHeights{BinaryTreeAnimation: animation},
       &animations.WeightsPerLevel{BinaryTreeAnimation: animation},
@@ -46,7 +45,7 @@ func prompt() console.Animation {
 }
 
 func chooseOperation() list.Operation {
-   return console.Choose[list.Operation]("Operation",
+   return console2.Choose[list.Operation]("Operation",
       &operations.Insert{},
       &operations.InsertPersistent{},
       &operations.InsertDelete{},
@@ -61,7 +60,7 @@ func chooseOperation() list.Operation {
 }
 
 func chooseDistribution() distribution.Distribution {
-   return console.Choose[distribution.Distribution]("Distribution",
+   return console2.Choose[distribution.Distribution]("Distribution",
       &distribution.Uniform{},
       &distribution.Normal{},
       &distribution.Skewed{},
@@ -80,7 +79,7 @@ func chooseDistribution() distribution.Distribution {
 }
 
 func chooseStrategy() list.List {
-   return console.Choose[list.List]("Strategy",
+   return console2.Choose[list.List]("Strategy",
       &AVLTopDown{},
       &AVLBottomUp{},
       &AVLWeakTopDown{},

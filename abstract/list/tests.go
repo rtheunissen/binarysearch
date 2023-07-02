@@ -1,9 +1,9 @@
 package list
 
 import (
-   "binarysearch/distribution"
-   "binarysearch/random"
-   "binarysearch/utility"
+   "bst/utility"
+   "bst/utility/random"
+   "bst/utility/random/distribution"
    "fmt"
    "testing"
 )

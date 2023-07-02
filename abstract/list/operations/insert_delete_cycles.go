@@ -1,9 +1,9 @@
 package operations
 
 import (
-   "binarysearch/abstract/list"
-   "binarysearch/distribution"
-   "binarysearch/random"
+   "bst/abstract/list"
+   "bst/utility/random"
+   "bst/utility/random/distribution"
 )
 
 type InsertDeleteCycles struct {
@@ -18,10 +18,15 @@ func (operation *InsertDeleteCycles) Valid(instance list.List, scale list.Size) 
 }
 
 func (operation *InsertDeleteCycles) Setup(strategy list.List, scale list.Size) list.List {
+   operation.Source = random.New(scale)
    operation.inserting = true
    operation.cycles = 10
-   operation.scale = scale / operation.cycles
-   operation.Source = random.New(scale)
+
+   if operation.scale > operation.cycles {
+      operation.scale = scale / operation.cycles
+   } else {
+      operation.scale = scale
+   }
    return strategy.New() // TODO: do any operations actually use the strategy? Maybe new is worthless and we just seed random as needed in the lists
 }
 

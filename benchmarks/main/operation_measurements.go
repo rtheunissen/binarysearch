@@ -1,11 +1,11 @@
 package main
 
 import (
-   "binarysearch/abstract/list"
-   operations2 "binarysearch/abstract/list/operations"
-   "binarysearch/binarytree"
-   "binarysearch/distribution"
-   "binarysearch/utility"
+   "bst/abstract/list"
+   "bst/abstract/list/operations"
+   "bst/trees"
+   "bst/utility"
+   "bst/utility/random/distribution"
    "flag"
    "fmt"
    "os"
@@ -20,7 +20,7 @@ type OperationMeasurement struct {
    Operation     list.Operation
    Distributions []distribution.Distribution
    Strategies    []list.List
-   Measurements  []binarytree.Measurement
+   Measurements  []trees.Measurement
 }
 
 func main() {
@@ -31,31 +31,27 @@ func main() {
       Scale:         1_000_000,
       Samples:           1_000,
       Operation: utility.Resolve(*operation, []list.Operation{
-         &operations2.Insert{},
-         //&operations2.InsertPersistent{},
-         &operations2.InsertDelete{},
-         //&operations2.InsertDeletePersistent{},
-         &operations2.InsertDeleteCycles{},
-         //&operations2.InsertDeleteCyclesPersistent{},
-         //&operations2.InsertDeleteSearch{},
-         //&operations2.InsertDeleteSearchPersistent{},
+         &operations.Insert{},
+         &operations.InsertDelete{},
+         &operations.InsertDeleteCycles{},
+         &operations.InsertDeleteSearch{},
       }),
       Distributions: []distribution.Distribution{
          &distribution.Uniform{},
-         //&distribution.Normal{},
-         //&distribution.Skewed{},
+         &distribution.Normal{},
+         &distribution.Skewed{},
          &distribution.Zipf{},
-         //&distribution.Maximum{},
+         &distribution.Maximum{},
       },
       Strategies: []list.List{
-         &binarytree.AVLBottomUp{},
-         &binarytree.AVLTopDown{},
-         //&binarytree.AVLWeakTopDown{},
-         //&binarytree.AVLWeakBottomUp{},
+         &trees.AVLBottomUp{},
+         &trees.AVLTopDown{},
+         //&trees.AVLWeakTopDown{},
+         //&trees.AVLWeakBottomUp{},
          //&binarytree.AVLRelaxedTopDown{},
          //&binarytree.AVLRelaxedBottomUp{},
-         //&binarytree.RedBlackBottomUp{},
-         //&binarytree.RedBlackTopDown{},
+         &trees.RedBlackBottomUp{},
+         &trees.RedBlackTopDown{},
          //&binarytree.RedBlackRelaxedBottomUp{},
          //&binarytree.RedBlackRelaxedTopDown{},
          //&binarytree.LBSTBottomUp{},
@@ -68,13 +64,13 @@ func main() {
          //&binarytree.Splay{},
          //&binarytree.Conc{},
       },
-      Measurements: []binarytree.Measurement{
-         &binarytree.PartitionCount{},
-         &binarytree.PartitionDepth{},
-         &binarytree.AveragePathLength{},
-         &binarytree.MaximumPathLength{},
-         &binarytree.Rotations{},
-         &binarytree.Allocations{},
+      Measurements: []trees.Measurement{
+         &trees.PartitionCount{},
+         &trees.PartitionDepth{},
+         &trees.AveragePathLength{},
+         &trees.MaximumPathLength{},
+         &trees.Rotations{},
+         &trees.Allocations{},
       },
    }.Run()
 }
@@ -157,7 +153,7 @@ func (measurement OperationMeasurement) Run() {
             }
             //
             for _, measurement := range measurement.Measurements {
-               row = append(row, fmt.Sprint(measurement.Measure(instance.(binarytree.BinaryTree))))
+               row = append(row, fmt.Sprint(measurement.Measure(instance.(trees.BinaryTree))))
             }
             fmt.Fprintln(file, row...)
          }

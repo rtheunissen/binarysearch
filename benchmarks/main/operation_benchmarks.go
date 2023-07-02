@@ -1,11 +1,11 @@
 package main
 
 import (
-   "binarysearch/abstract/list"
-   operations2 "binarysearch/abstract/list/operations"
-   "binarysearch/binarytree"
-   "binarysearch/distribution"
-   "binarysearch/utility"
+   "bst/abstract/list"
+   operations2 "bst/abstract/list/operations"
+   "bst/trees"
+   "bst/utility"
+   "bst/utility/random/distribution"
    "flag"
    "fmt"
    "os"
@@ -19,30 +19,30 @@ func main() {
 
    TreeBenchmark{
       Scale:       1_000_000,
-      Samples:          1000,
+      Samples:         1_000,
       Iterations:         10,
       Operation: utility.Resolve(*operation, []list.Operation{
          &operations2.Insert{},
-         //&operations2.InsertPersistent{},
-         &operations2.InsertDelete{},
+         &operations2.InsertPersistent{},
+         //&operations2.InsertDelete{},
          //&operations2.InsertDeletePersistent{},
-         &operations2.InsertDeleteCycles{},
+         //&operations2.InsertDeleteCycles{},
          //&operations2.InsertDeleteCyclesPersistent{},
          //&operations2.InsertDeleteSearch{},
          //&operations2.InsertDeleteSearchPersistent{},
       }),
       Distributions: []distribution.Distribution{
          &distribution.Uniform{},
-         //&distribution.Normal{},
-         //&distribution.Skewed{},
+         &distribution.Normal{},
+         &distribution.Skewed{},
          &distribution.Zipf{},
-         //&distribution.Maximum{},
+         &distribution.Maximum{},
       },
       Strategies: []list.List{
-         &binarytree.AVLBottomUp{},
-         &binarytree.AVLTopDown{},
-         //&binarytree.AVLWeakTopDown{},
-         //&binarytree.AVLWeakBottomUp{},
+         //&binarytree.AVLBottomUp{},
+         //&binarytree.AVLTopDown{},
+         &trees.AVLWeakTopDown{},
+         &trees.AVLWeakBottomUp{},
          //&binarytree.AVLRelaxedTopDown{},
          //&binarytree.AVLRelaxedBottomUp{},
          //&binarytree.RedBlackBottomUp{},

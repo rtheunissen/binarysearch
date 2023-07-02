@@ -1,9 +1,9 @@
 package operations
 
 import (
-   "binarysearch/abstract/list"
-   "binarysearch/distribution"
-   "binarysearch/random"
+   "bst/abstract/list"
+   "bst/utility/random"
+   "bst/utility/random/distribution"
 )
 
 type InsertDeleteSplitJoin struct {

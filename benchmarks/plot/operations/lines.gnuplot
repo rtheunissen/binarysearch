@@ -1,9 +1,13 @@
 load "benchmarks/plot/graph.gnuplot"
 load "benchmarks/plot/functions.gnuplot"
 
-set tmargin 9
-set bmargin 5
-set lmargin 5
+set tmargin 4
+set bmargin 1
+set lmargin 4
+set rmargin 5
+
+set title offset 0,2.5
+set key at graph 0.5, screen 0.9
 
 SVG = sprintf("benchmarks/svg/operations/%s/%s/%s__%s.svg", OPERATION, GROUP, MEASUREMENT, SMOOTH)
 system mkdir(SVG)
@@ -20,7 +24,6 @@ plot for [i=1:words(@GROUP)] $TABLE \
     index (i-1) \
     using 1:2 \
     axes x1y2 \
-    smooth @SMOOTH \
     with linespoints \
     linestyle value(word(@GROUP,i)) \
     title word(@GROUP,i)
@@ -42,7 +45,6 @@ do for [DISTRIBUTION in DISTRIBUTIONS] {
         index (i-1) \
         using 1:2 \
         axes x1y2 \
-        smooth mcsplines \
         with linespoints \
         linestyle value(word(@GROUP,i)) \
         title word(@GROUP,i)

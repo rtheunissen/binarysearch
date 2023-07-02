@@ -1,8 +1,8 @@
 package operations
 
 import (
-   "binarysearch/abstract/list"
-   "binarysearch/distribution"
+   "bst/abstract/list"
+   "bst/utility/random/distribution"
 )
 
 type Insert struct {

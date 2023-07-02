@@ -3,7 +3,7 @@ services:
     network_mode: 'host'
     build:
       context: .
-    working_dir: /project
+    working_dir: /bst
     command: /bin/sh
     volumes:
-      - ./:/project
+      - ./:/bst

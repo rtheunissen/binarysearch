@@ -1,4 +1,4 @@
-module binarysearch
+module bst
 
 go 1.20
 

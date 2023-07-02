@@ -1,10 +1,10 @@
 package main
 
 import (
-   "binarysearch/abstract/list"
-   "binarysearch/binarytree"
-   "binarysearch/distribution"
-   "binarysearch/utility"
+   "bst/abstract/list"
+   "bst/trees"
+   "bst/utility"
+   "bst/utility/random/distribution"
    "flag"
    "fmt"
    "os"
@@ -20,21 +20,21 @@ func main() {
       Iterations:        1,
       Samples:      10_000,
       Scale:     1_000_000,
-      Measurements: []binarytree.Measurement{
-         &binarytree.PartitionCount{},
-         &binarytree.PartitionDepth{},
-         &binarytree.AveragePathLength{},
-         &binarytree.MaximumPathLength{},
-         &binarytree.Rotations{},
+      Measurements: []trees.Measurement{
+         &trees.PartitionCount{},
+         &trees.PartitionDepth{},
+         &trees.AveragePathLength{},
+         &trees.MaximumPathLength{},
+         &trees.Rotations{},
       },
       Distributions: []distribution.Distribution{
          &distribution.Uniform{},
       },
-      Strategy: utility.Resolve[binarytree.Balancer](*strategy, []binarytree.Balancer{
+      Strategy: utility.Resolve[trees.Balancer](*strategy, []trees.Balancer{
          //&binarytree.Median{},
          //&binarytree.Height{},
-         &binarytree.Weight{},
-         &binarytree.Log{},
+         &trees.Weight{},
+         &trees.Log{},
          //&binarytree.Cost{},
          //&binarytree.DSW{},
       }),
@@ -46,8 +46,8 @@ type BalancerMeasurement struct {
    Iterations    int
    Scale         int
    Samples       int
-   Strategy      binarytree.Balancer
-   Measurements  []binarytree.Measurement
+   Strategy      trees.Balancer
+   Measurements  []trees.Measurement
    Distributions []distribution.Distribution
 }
 
@@ -81,7 +81,7 @@ func (measurement BalancerMeasurement) Run() {
    }
    fmt.Fprintln(file, header...)
 
-   instance := binarytree.Splay{}.New().(*binarytree.Splay)
+   instance := trees.Splay{}.New().(*trees.Splay)
 
    step := measurement.Scale / measurement.Samples
 

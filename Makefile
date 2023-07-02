@@ -12,7 +12,7 @@ animation: animate
 
 # Run the test suite.
 test: assertions-on measurements-off
-	${GO} test ./binarytree
+	${GO} test ./trees
 
 # Runs the test suite and collects code coverage.
 coverage: assertions-off measurements-off
@@ -21,23 +21,23 @@ coverage: assertions-off measurements-off
 	open coverage.html
 
 profile: assertions-off measurements-off
-	${GO} test ./binarytree -cpuprofile cpu.out
+	${GO} test ./trees -cpuprofile cpu.out
 	go tool pprof cpu.out
 
 animate: assertions-off measurements-off
 	${GO} run main/animate/animate.go
 
 assertions-on:
-	${GO} run main/replace/replace.go -dir "./binarytree" -find "// assert(" -replace "assert("
+	${GO} run main/replace/replace.go -dir "./trees" -find "// assert(" -replace "assert("
 
 assertions-off:
-	${GO} run main/replace/replace.go -dir "./binarytree" -find "  assert(" -replace "  // assert("
+	${GO} run main/replace/replace.go -dir "./trees" -find "  assert(" -replace "  // assert("
 
 measurements-on:
-	${GO} run main/replace/replace.go -dir "./binarytree" -find "// measurement(" -replace "measurement("
+	${GO} run main/replace/replace.go -dir "./trees" -find "// measurement(" -replace "measurement("
 
 measurements-off:
-	${GO} run main/replace/replace.go -dir "./binarytree" -find "  measurement(" -replace "  // measurement("
+	${GO} run main/replace/replace.go -dir "./trees" -find "  measurement(" -replace "  // measurement("
 
 sandbox:
 	${GO} run main/sandbox/sandbox.go

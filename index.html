@@ -36,7 +36,7 @@
         }
 
         html {
-            font-size: 1em;
+            font-size: 1.2em;
         }
 
         /**
@@ -58,7 +58,7 @@
         }
 
         h2 span {
-            display: block;
+            display: block !important;
             font-size: 1.0rem;
             text-transform: uppercase;
             font-weight: normal;
@@ -89,24 +89,13 @@
         h3 { margin: 5.0rem 0 1.0rem 0 }
         h4 { margin: 1.0rem 0 0.5rem 0 }
 
-        article {
-            font-family: Charter, 'Bitstream Charter', Cambria, serif; /* Transitional */
-            /*font-family: system-ui, sans-serif;*/
-            /*font-family: sans-serif;*/
-        }
-
-        /*pre.code {*/
-        /*    background-color: #fafafa;*/
-        /*    border-radius: 8px;*/
-        /*    padding: 20px;*/
-        /*    margin-left: 0;*/
-        /*}*/
 
         a {
             color: #000;
         }
 
         article {
+            font-family: "Charter", "Bitstream Charter", "Cambria", "Noto Serif", serif;
             display: block;
             margin: auto;
             max-width: 38rem;
@@ -119,12 +108,14 @@
             text-underline-offset: 2px;
             text-decoration-thickness: 2px;
         }
+        article p > span {
+            white-space: nowrap;
+        }
         cite {
             display: inline-block;
             font-style: normal;
         }
         cite a {
-
             text-decoration: none;
         }
         cite:before {
@@ -192,6 +183,7 @@
 
 
         .indent {
+            white-space: initial;
             display: inline-block;
             margin-left: 2rem;
         }
@@ -1349,7 +1341,7 @@ func balance(p *Node, s Size) *Node {
                     Looking at duration cumulatively, it seems that the total duration is practically identical between median-balance, height-balance and cost-optimized balance.
                 </p>
                 <p>
-                    The two weight-balance strategies are equal, both $\sim25\%$ faster than median-balance and height-balance, and $\sim30\%$ faster than DSW.
+                    The two weight-balance strategies are equal, both $\sim25\%$ faster than median- and height-balance, and $\sim30\%$ faster than DSW.
                     This suggests that weight-balance with a constant factor is likely the better choice because it takes the same amount of time as logarithmic weight-balance but achieves better balance.
                     However, logarithmic weight-balance requires fewer calls to partition and visits fewer nodes overall, which might offer some benefit on other machines.
                 </p>
@@ -1401,43 +1393,43 @@ func balance(p *Node, s Size) *Node {
         </p>
 
         <section id="height-balanced-trees">
-            <h3>Height-balanced trees</h3>
+            <h3>Rank-balanced trees</h3>
             <p>
-                The original self-balancing binary search tree was published in 1962 as <em>an algorithm for the organization of information</em> by <strong>A</strong>delson-<strong>V</strong>elskii and <strong>L</strong>andis.
-                <a href="https://en.wikipedia.org/wiki/AVL_tree">AVL trees</a> store the height of each node as part of the node structure and uses rotations based on these heights to maintain height-balance.
-                Balancing after an insertion requires at most 2 rotations, but deletion may require a rotation at every node along the search path.
+                The original self-balancing binary search tree was published in 1962 as <em>an algorithm for the organization of information</em> by <strong>A</strong>delson-<strong>V</strong>elsky and <strong>L</strong>andis.
+                <a href="https://en.wikipedia.org/wiki/AVL_tree">AVL trees</a> store the height of every node as part of the node structure, then uses rotations along the search path to maintain height-balance.
             </p>
             <p>
-                All operations on an AVL tree start from the root, descend down the tree, then ascend back up to the root along the search path.
-                Concurrency is therefore not viable because another operation would need to wait for the current operation to return to the root to potentially adjust it in some way.
-                Generally, in an AVL tree only one operation can be performed at a time due to the recursive bottom-up nature of its algorithms.
+                The most common approach to implement an AVL is tree to use recursive algorithms, where all operations start from the root, traverse along a search path, then backtrack to the root along the search path.
+                Another operation on the same tree would need to wait for the current operation to return to the root to potentially adjust it in some way before it can interact with it.
+                A recursive algorithm therefore only supports one operation at a time.
             </p>
-
+            <p>
+                There is however one variation of the AVL insertion algorithm that provides some support for concurrency.
+                In Volume 3 of <em>The Art of Computer Programming</em> [in section 6.2.3], Knuth describes how balancing is only necessary at the topmost node affected by balancing, commonly referred to as the <span><em>safe node</em></span>.
+                This node is either the root or the last node along the search path with subtree heights not equal to each other.
+                After a new node is inserted at the bottom of the tree, the path from the safe node is traversed again to update node heights, then balanced at the safe node using a subset of the bottom-up deletion balancing algorithm.
+                This algorithm is not purely top-down because the search path is traversed multiple times in some cases, but space is constant and everything above the safe node is safe to modify concurrently.
+            </p>
             <p>
                 Since the invention of AVL trees, many self-balancing strategies have been proposed, the most common being the <a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree">red-black tree</a> of Guibas and Sedgewick in 1978.
                 Instead of directly storing the height of every node as in AVL trees, red-black trees use a color field in the node structure to track whether a node is <span class="rb-red">red</span> or <span class="rb-black">black</span>.
-                The color red was chosen because it was the best-looking color produced by the laser printer available to the authors at the time, and they also used red and black pens to draw trees by hand.
-                A set of rules based on these colors are used determine where to make rotations during an update to maintain balance: (i) a red node cannot link to other red nodes, and every path must have the same number of black nodes.
+                The color red was chosen because it was the best-looking color produced by the laser printer available to the authors at the time, and they used red and black pens to draw trees by hand.
+                A set of rules based on these colors determine where to make rotations along the search path to maintain balance.
             </p>
-
+            <p>
+                Red-black trees are not height-balanced because the heights of two subtrees may differ by more than one in some cases, but the color-based rules do impose a height upper-bound of $2\log_{2}(n)$ where $n$ is the size of the tree.
+                The same bound for AVL trees is $\sim 1.44\log_{2}n$, so AVL trees maintain better balance but rotate more often to maintain that balance.
+            </p>
             <p>
                 Inserting into a red-black tree requires at most two rotations, and deleting at most three.
-                Inserting into an AVL also requires at most two rotations, but deletion may require a rotation at every node along the search path, proportional to the logarithm of the size of the tree.
+                Inserting into an AVL also requires at most two rotations, but deletion may require a rotation at every node along the search path.
                 The primary advantage of red-black trees is that the balancing overhead per operation is constant.
             </p>
             <p>
-                Compared to red-black trees, AVL trees are more balanced but rotate more often to maintain that balance.
-                Red-black trees are not strictly height-balanced because the heights of two subtrees differ by more than one in some cases.
-                The color-based rules do however provide an upper-bound on the height of the tree, which is at most $2\log_{2}n$ where $n$ is the size of the tree, and the corresponding bound for AVL trees is $\sim 1.44\log_{2}n$.
-            </p>
-            <p>
-                A <a href="https://stackoverflow.com/questions/13852870/red-black-tree-over-avl-tree/23277366#23277366">common response</a> and misconception to the recurring question of <span class="quote">should I use an AVL tree or a red-black tree</span> is to use an AVL tree when mostly searching because the average path length is lower, but to use red-black trees when mostly inserting and deleting because they require fewer rotations.
-                Consider that inserting and deleting both require a search from the root to the bottom of the tree, which is exactly affected by average path length.
-                A red-black tree uses fewer rotations by relaxing the balance, but that relaxed balance results in search traversing longer paths during insert and delete.
+                A common response to the recurring question of <em>should I use an AVL tree or a red-black tree</em> is the suggestion to use AVL trees when mostly searching because the balance is better, but to use red-black trees when mostly inserting and deleting because they require fewer rotations.
+                This is however a misconception, because inserting and deleting both require a search from the root to the bottom of the tree, which is exactly affected by average path length.
+                A red-black tree uses fewer rotations by relaxing the balance, but the relaxed balance results in longer search paths during insert and delete.
                 There is a trade-off between the cost of doing more rotations and the cost of traversing longer paths.
-                How likely is it that the shorter paths of an AVL tree provides better savings than the lower number of rotations in red-black trees?
-<!--                The benchmarks confirm this, showing that AVL trees are generally faster than an red-black trees even though they require more rotations on average.-->
-<!--                When inserting and deleting in cycles, the path length of red-black trees slowly gets worse over time which correlates with a decrease in performance.-->
             </p>
 
 <!--            <div class="graphs">-->
@@ -1453,27 +1445,19 @@ func balance(p *Node, s Size) *Node {
 -->
 
             <p>
-                Red-black trees are very common in lecture notes and in practice.
-                Many of the C++ standard library <span class="code">set</span> implementations use red-black trees, as well as Java's <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/TreeMap.html#:~:text=A-,Red%2DBlack%20tree,-based%20NavigableMap%20implementation">TreeMap</a>, and parts of the <a href="https://github.com/torvalds/linux/blob/master/include/linux/rbtree.h">Linux kernel</a>.
+                Red-black trees are very common in pedagogy and practice.
+                Many of the implementations of the C++ standard library use a red-black tree for sorted sets, as well as Java's <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/TreeMap.html#:~:text=A-,Red%2DBlack%20tree,-based%20NavigableMap%20implementation">TreeMap</a>, and parts of the <a href="https://github.com/torvalds/linux/blob/master/include/linux/rbtree.h">Linux kernel</a>.
                 They are generally considered to be a decent all-rounder when it comes to self-balancing binary search trees, but attempting to implement them from reference material often results in frustration.
-                A quick scroll through the Wikipedia page of <a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree">red-black trees</a> should provide some evidence as to why that may be.
-                Most implementations are recursive, and many use parent pointers.
-                Tarjan showed how top-down red-black trees work in 1985, but good implementations of this algorithm are rare.
-<!--                https://www.cs.princeton.edu/research/techreps/TR-006-85-->
+                Most implementations are recursive and many use parent pointers.
             </p>
             <p>
-                In 2013, Haeupler, Sen & Tarjan introduced <a href="https://en.wikipedia.org/wiki/WAVL_tree">rank-balanced trees</a> which unify many height-based balanced trees under a single framework.
+                In 2013, Haeupler, Sen & Tarjan introduced <a href="https://en.wikipedia.org/wiki/WAVL_tree">rank-balanced trees</a>, which unify many height-based balanced trees under a single framework.
                 Rank-balanced trees store in each node an integer rank and use various rank-based rules to define AVL trees, red-black trees, and others.
-                They describe the AVL rule and the red-black rule, and how to represent them using ranks and rank differences.
             </p>
             <p>
                 A new strategy emerged from this framework: the <em>weak</em> AVL tree, which effectively combines the insertion of AVL trees with the deletion of red-black trees such that the height bound degrades gracefully from that of an AVL tree as the number of deletions increase, and is never worse than that of a red-black tree.
-                Insertion and deletion in a weak AVL tree both require at most two rotations, which is fewer than AVL trees and red-black trees.
-            </p>
-            <p>
-                Unlike AVL trees, concurrency is well-supported by weak AVL trees because both insertion and deletion can be implemented purely top-down with no need to return back to the root.
-                The top-down algorithms are more complex and result in slightly different trees in some cases, but nonetheless produce valid weak AVL trees.
-
+                Insertion and deletion in a weak AVL tree require at most two rotations, which is fewer than AVL trees and red-black trees.
+                Concurrency is well-supported by weak AVL trees because both insertion and deletion can be implemented purely top-down.
             </p>
 
 <!--            <p>-->
@@ -1511,10 +1495,29 @@ func balance(p *Node, s Size) *Node {
 
             <p>
                 Following on from this work in 2018, Sen, Tarjan & Kim introduced <a href="http://sidsen.azurewebsites.net//papers/ravl-trees-journal.pdf">relaxed rank-balanced trees</a> where balancing is only done after insertion, not deletion.
-                The balance of relaxed rank-balanced trees improves as nodes are inserted, and degrades very slowly as nodes are deleted.
-                A key difference is that the height bound is proportional to the number of insertions specifically, rather than the size of the tree.
-                The relaxed variants of AVL trees and red-black trees are implemented here as described in their paper, both bottom-up and top-down.
+                The balance of relaxed rank-balanced trees improves as nodes are inserted, and degrades slowly as nodes are deleted.
+                A key difference between the relaxed variants and their conventional counterparts is that the height bound is proportional to the number of insertions rather than the size of the tree.
             </p>
+
+<!--            <p>-->
+<!--                How do these strategies compare?-->
+<!--            </p>-->
+
+<!--            <p>-->
+<!--                This project implements 10 different rank-balanced strategies as pairs of bottom-up and top-down variations.-->
+<!--                The results are averaged across multiple access distributions to provide an indicator for the overall expected behavior of each strategy.-->
+<!--            </p>-->
+<!--            <p>-->
+<!--                <em>Insert</em> is an operation where a tree is grown by repeatedly inserting new values until the tree reaches the scale of the benchmark.-->
+<!--                This operation indicates how the tree grows and is the most common binary search tree benchmark.-->
+<!--            </p>-->
+<!--            <p>-->
+<!--                <em>InsertDeleteCycles</em> is an operation that grows a tree by insertion, then reduces the tree by half using deletion, then inserts back to scale again for a total of 10 cycles.-->
+<!--                This operations indicates how balance changes over time as a result of insertions and deletions.-->
+<!--            </p>-->
+<!--            <p>-->
+<!--                We start by comparing the standard AVL and red-black trees, both bottom-up and top-down.-->
+<!--            </p>-->
 
 <!--            <div class="graphs">-->
 <!--                <img src="benchmarks/svg/operations/Insert/AVLRelaxed/Duration__sbezier.svg">-->
@@ -1526,7 +1529,9 @@ func balance(p *Node, s Size) *Node {
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/AveragePathLength__sbezier.svg">-->
 <!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/MaximumPathLength__sbezier.svg">-->
 <!--            </div>-->
-
+        </section>
+        <section id="height-balanced-trees">
+            <h3>Height-balanced trees</h3>
             <p>
                 On a completely different track, Prokopec and Odersky presented <a href="https://en.wikipedia.org/wiki/Conc-tree_list">conc-tree lists</a> in 2017, where nodes either have two subtrees or no subtrees.
                 Nodes with subtrees are used only for routing purposes, and nodes without subtrees contain the values of the sequence.
@@ -1540,7 +1545,7 @@ func balance(p *Node, s Size) *Node {
   (a)  (b)
             </pre>
             <p>
-                Conc-trees are very simple to implement and do not use rotations or explicit copying.
+                Conc-trees are simple to implement and do not use rotations or explicit copying.
                 Instead, they make use of functional composition and smart constructors, where rather than copying and modifying an existing node it allocates and composes a new node by combining properties of other nodes.
                 Conceptually, conc-trees <em>construct</em> the resulting path more than they modify the existing one.
             </p>
@@ -1610,11 +1615,17 @@ func balance(p *Node, s Size) *Node {
                 It seems ideal then to use this information for balancing, rather than heights or ranks stored additionally in each node.
             </p>
             <p>
-                The original paper by Nievergelt & Reingold in 1972 introduced <em>trees of bounded balance</em> or BB[$\alpha$] trees, where $\alpha$ is a parameter between better balance and fewer rotations and $0 \leq \alpha \leq \frac{1}{2}$.
-                Since then, other frameworks have used two related parameters: $\Delta$ to determine if a node is balanced, and $\Gamma$ to determine whether one or two rotations should be used to restore balance.
+                The original paper by Nievergelt & Reingold in 1972 introduced <span>BB[$\alpha$]</span> trees or <em>trees of bounded balance</em>, where $\alpha$ is a parameter that adjusts between better balance and fewer rotations.
+                They showed that balance can be maintained by rotations along the search path by keeping subtree weights within a factor of $\alpha$.
             </p>
             <p>
-                The valid range for these parameters are complex, and their evaluation involves either floating-point arithmetic or multiplication with the potential for integer overflow at very large sizes.
+                Since then, other frameworks have used two related parameters: $\Delta$ to determine if a node is balanced, and $\Gamma$ to determine whether one or two rotations should be used to restore balance.
+                For example, after insertion into the right subtree, a node is balanced if the weight of the left subtree multiplied by $\Delta$ is greater than or equal to the weight of the right subtree.
+            </p>
+            <p>
+            </p>
+            <p>
+                The valid range for these parameters is complex and their evaluation involve either floating-point arithmetic or integer multiplication with the potential for overflow.
                 On a different track is the often-overlooked logarithmic weight-balance strategy suggested by Roura, which instead uses simple bitwise operations to determine weight-balance and choice of rotation, thereby avoiding floating-point arithmetic, integer overflow, and the subjectivity around the parameters.
             </p>
             <p>

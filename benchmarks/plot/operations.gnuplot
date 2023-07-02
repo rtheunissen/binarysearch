@@ -74,10 +74,10 @@ CombinationSplay       = "AVLRelaxedBottomUp AVLWeakBottomUp LBSTBottomUp TreapT
 SizeOnly               = "LBSTBottomUp LBSTRelaxed Randomized Splay"
 
 GROUPS = "AVLWeakRedBlack AVLRelaxed RedBlack"
-GROUPS = "AVL"
+GROUPS = "AVLWeak AVL AVLRedBlack"
 
 OPERATIONS = "Insert InsertPersistent InsertDelete InsertDeletePersistent InsertDeleteCycles InsertDeleteCyclesPersistent InsertDeleteSearch InsertDeleteSearchPersistent"
-OPERATIONS = "Insert InsertDelete InsertDeleteCycles"
+OPERATIONS = "Insert InsertPersistent"
 
 DISTRIBUTIONS = "Uniform Normal Skewed Zipf Maximum"
 DISTRIBUTIONS = "Uniform Normal Skewed Zipf Maximum"
