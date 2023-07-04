@@ -1611,34 +1611,41 @@ func balance(p *Node, s Size) *Node {
 
 
             <p>
-                Implementing a linear list using a binary search tree requires that we track the size of each subtree along the search path.
+                Implementing a linear list using a binary search tree requires that we store the size of each subtree along the search path.
                 It seems ideal then to use this information for balancing, rather than heights or ranks stored additionally in each node.
             </p>
             <p>
-                The original paper by Nievergelt & Reingold in 1972 introduced <span>BB[$\alpha$]</span> trees or <em>trees of bounded balance</em>, where $\alpha$ is a parameter that adjusts between better balance and fewer rotations.
-                They showed that balance can be maintained by rotations along the search path by keeping subtree weights within a factor of $\alpha$.
+                In 1972, Nievergelt and Reingold introduced <em>trees of bounded balance</em>, or BB[$\alpha$] trees, where $\alpha$ is a parameter that determines the balance of the tree.
+                They proved that BB[$\alpha$] trees can maintain a maximum height of $1+\log_{1/(1-\alpha)}(n+1)$ by keeping subtree weights within a factor of $\alpha$.
             </p>
             <p>
-                Since then, other frameworks have used two related parameters: $\Delta$ to determine if a node is balanced, and $\Gamma$ to determine whether one or two rotations should be used to restore balance.
-                For example, after insertion into the right subtree, a node is balanced if the weight of the left subtree multiplied by $\Delta$ is greater than or equal to the weight of the right subtree.
+                The original insertion algorithm was purely top-down, but Blum and Mehlhorn proved in 1980 that the valid range provided for $\alpha$ was incorrect.
+                The supplied proof, however, only works for bottom-up balancing.
+                In 1993, Lai and Wood described top-down algorithms and proved their correctness for $\frac{2}{11} \lt \alpha \leq 1-\frac{\sqrt2}{2}$.
             </p>
             <p>
+                The valid range for these parameters is complex, and their evaluation involves floating-point arithmetic or integer multiplication that could overflow.
+                Ideally, there exists a strategy that keeps the weights of subtrees within some bound without the need to perform complex calculations.
             </p>
             <p>
-                The valid range for these parameters is complex and their evaluation involve either floating-point arithmetic or integer multiplication with the potential for overflow.
-                On a different track is the often-overlooked logarithmic weight-balance strategy suggested by Roura, which instead uses simple bitwise operations to determine weight-balance and choice of rotation, thereby avoiding floating-point arithmetic, integer overflow, and the subjectivity around the parameters.
+                Along this track is the <em>logarithmic binary search trees</em> introduced by Roura in 2001, which use simple bitwise operations to evaluate logarithmic weight-balance.
+                The maximum height of a logarithmic weight-balanced tree $2\log_{2}n$, which is the same as red-black trees and the original weight-balanced trees.
+                The original bottom-up algorithm uses subtree size as weight, but Roura mentions in the final remarks that it is possible to use the number of leaves as weight, which aligns with the definition of weight used so far.
+
+
             </p>
             <p>
-                Hirai & Yamamoto published a rigorous investigation of weight-balanced trees in 2011, which included a short section on logarithmic weight-balance stating that "for mathematical reliability, logarithmic weight-balanced trees are simpler".
-                They measured the original implementation by Roura against various parametric weight-balanced trees and found their performance to be the same.
+                Leonor Frias published top-down logarithmic weight-balanced trees in 2005, where insertion and deletion is done in constant space.
+                Using the standard definition of weight rather than subtree size simplifies their top-down algorithms significantly and becomes general with the top-down algorithms of Lai and Wood.
             </p>
             <p>
-                Leonor Frias published top-down logarithmic weight-balanced trees in 2005, where insertion and deletion is done with a single top-down traversal in constant space.
-                The original bottom-up implementation by Roura and the final top-down implementation by Frias both use node size as weight, but Roura mentions in the final remarks that "it is possible to use the number of leaves instead of the number of keys as balancing information".
-<!--                Doing would align with a common definition of weight and avoids a tricky triple-rotate case in the top-down algorithm.-->
+                Hirai and Yamamoto published an investigation of weight-balanced trees in 2011, which included a short section on logarithmic weight-balance stating that "for mathematical reliability, logarithmic weight-balanced trees are simpler".
+                They measured the original implementation by Roura against other weight-balanced trees and found their performance to be about the same.
             </p>
             <p>
-                Barth & Wagner published <em>engineering top-down weight-balanced trees</em> in 2019, wherein they evaluate viable parameters to implement parametric weight-balanced trees top-down, but mention logarithmic weight-balance only in the introduction without further evaluation.
+                Barth and Wagner evaluated top-down weight-balanced trees in 2019, but mention logarithmic weight-balance only in the introduction without further evaluation.
+                They state that "to our knowledge, no empirical analysis of top-down weight-balanced trees has been done yet", and contribute detailed benchmarks across a range of balancing parameters.
+                                                    
             </p>
 <!--            <p>-->
 <!--                The height of a logarithmic weight-balanced tree is at most $2\log_{2}n$, which is the same as a red-black tree.-->
@@ -1654,14 +1661,14 @@ func balance(p *Node, s Size) *Node {
             <h3>Scapegoat trees</h3>
             <p>
                 Exploring further we find the idea of <em>partial rebuilding</em> by Overmars in 1983. TODO
-                Further development produced the <a href="">general balanced trees</a> of Andersson in 1989 and 1999, followed by the <a href="">scapegoat tree</a> of Galperin & Rivest in 1993.
+                Further development produced the <a href="">general balanced trees</a> of Andersson in 1989 and 1999, followed by the <a href="">scapegoat tree</a> of Galperin and Rivest in 1993.
             </p>
             <p>
                 A weight-balanced tree has a known maximum height when every node of the tree is weight-balanced.
                 For example, when all the nodes of a binary search tree are logarithmically weight-balanced its height can not be greater than $2\log_{2}n$.
                 Therefore, when the height of a tree exceeds this bound there must be at least one node that is <em>not</em> weight-balanced.
             </p>
-              <p>Galperin & Rivest refer to this node as the <span class="quote">scapegoat</span>.
+              <p>Galperin and Rivest refer to this node as the <span class="quote">scapegoat</span>.
                 The basic idea of partial rebuilding is to search along the path that exceeds the height bound to find an unbalanced node and then balance it, thereby restoring the height-bound.
                 Intuitively, the height of a tree that was <em>not</em> balanced decreases when it becomes balanced.
                 This strategy combines the ideas of weight- and height-balance by allowing some nodes to not be weight-balanced, as long as the height of the tree is within bounds.
@@ -1677,7 +1684,7 @@ but that the tree has a low average search cost ]
             <p>
                 A scapegoat tree uses a parameter $\frac{1}{2} \leq \alpha \lt 1$ and defines height to be no greater than $\lfloor\log_{\frac{1}{\alpha}}\rfloor+1$.
                 A tree of size $s = sl + sr + 1$ is $\alpha$-weight-balanced if $sl \leq \alpha * s$ and $sr \leq \alpha * s$</span>.
-                The insertion algorithm described by Galperin & Rivest is a two-pass recursive algorithm, (i) search by descending from the root and attach a new node, then (ii) ascend bottom-up to find a scapegoat that is not $\alpha$-weight-balanced.
+                The insertion algorithm described by Galperin and Rivest is a two-pass recursive algorithm, (i) search by descending from the root and attach a new node, then (ii) ascend bottom-up to find a scapegoat that is not $\alpha$-weight-balanced.
                 There must be at least one such node along the search path when the height exceeds the height bound, so when that happens, the bottom-up part of the algorithm looks for a node that is not $\alpha$-weight-balanced, then rebuilds that subtree to restore the height bound.
                 The suggested rebuilding algorithm in [] is similar to Day-Stout-Warren, recursively flattening the tree into a list then rotating the list back into a perfectly-balanced tree.
             </p>
@@ -1706,7 +1713,7 @@ but that the tree has a low average search cost ]
             </p>
             <p>
                 There are however some hints that rebuilding larger subtrees closer to the root likely produces better results.
-                Overmars originally suggested in 1983 to use the node closest to the root [], and Galperin & Rivest write that <em>this heuristic performed better than choosing the first weight-unbalanced ancestor to be the scapegoat</em>.
+                Overmars originally suggested in 1983 to use the node closest to the root [], and Galperin and Rivest write that <em>this heuristic performed better than choosing the first weight-unbalanced ancestor to be the scapegoat</em>.
                 Even so, all visible references and implementations of scapegoat trees use the recursive method and choose the scapegoat furthest from the root.
             </p>
             <p>
@@ -1744,7 +1751,7 @@ but that the tree has a low average search cost ]
             </p>
             <p>
                 Occasionally rebuilding the tree when many deletions have occurred ensures that the height remains logarithmic in the current size of the tree.
-                Alternatively, we can use the concept of relaxed balance of Sen, Tarjan & Kim to only balance after an insertion and not after a deletion.
+                Alternatively, we can use the concept of relaxed balance of Sen, Tarjan and Kim to only balance after an insertion and not after a deletion.
                 The intuition here is that height does not increase when a node is deleted, and the following insertion will inevitably restore the height bound, possibly even at the root all the same.
                 The height is then at most logarithmic in the number of insertions rather than the current size of the tree.
             </p>
