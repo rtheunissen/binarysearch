@@ -25,8 +25,6 @@ func (tree *AVLTopDown) Insert(i list.Position, x list.Data) {
    tree.size = tree.size + 1
 }
 
-var doubleTraversal uint64 = 0
-var totalTraversal uint64 = 0
 func (tree *AVLTopDown) insert(p **Node, i list.Position, x list.Data) {
    if *p == nil {
       *p = tree.allocate(Node{x: x})
@@ -36,7 +34,6 @@ func (tree *AVLTopDown) insert(p **Node, i list.Position, x list.Data) {
    a := p
    j := i
    for {
-      totalTraversal++
       if i <= (*p).sizeL() {
          (*p).s = (*p).sizeL() + 1
          p = &(*p).l
@@ -59,7 +56,6 @@ func (tree *AVLTopDown) insert(p **Node, i list.Position, x list.Data) {
       }
    }
    for q := *a; q != *p; {
-      doubleTraversal++
       tree.promote(q)
       if j <= q.sizeL() {
          q = q.l

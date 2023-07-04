@@ -4,18 +4,19 @@ import (
    "bst/abstract/list"
    "bst/abstract/list/operations"
    "bst/trees/animations"
-   console2 "bst/utility/console"
+   "bst/utility/console"
    "bst/utility/random/distribution"
    "flag"
    "os"
+   "bst/trees"
 )
 
 func main() {
    flag.Parse()
-   console2.Animate(prompt())
+   console.Animate(prompt())
 }
 
-func prompt() console2.Animation {
+func prompt() console.Animation {
    //var binaryTree BST = &Splay{} // TODO what about an unbalanced tree? Can BST be List?
    //var distribution number.Distribution = &Uniform{}
 
@@ -37,7 +38,7 @@ func prompt() console2.Animation {
       Size:         1_000_000,
       Height:       40,
    }
-   return console2.Choose[console2.Animation]("Animation",
+   return console.Choose[console.Animation]("Animation",
       &animations.ExteriorHeights{BinaryTreeAnimation: animation},
       &animations.InteriorHeights{BinaryTreeAnimation: animation},
       &animations.WeightsPerLevel{BinaryTreeAnimation: animation},
@@ -45,7 +46,7 @@ func prompt() console2.Animation {
 }
 
 func chooseOperation() list.Operation {
-   return console2.Choose[list.Operation]("Operation",
+   return console.Choose[list.Operation]("Operation",
       &operations.Insert{},
       &operations.InsertPersistent{},
       &operations.InsertDelete{},
@@ -60,7 +61,7 @@ func chooseOperation() list.Operation {
 }
 
 func chooseDistribution() distribution.Distribution {
-   return console2.Choose[distribution.Distribution]("Distribution",
+   return console.Choose[distribution.Distribution]("Distribution",
       &distribution.Uniform{},
       &distribution.Normal{},
       &distribution.Skewed{},
@@ -79,23 +80,24 @@ func chooseDistribution() distribution.Distribution {
 }
 
 func chooseStrategy() list.List {
-   return console2.Choose[list.List]("Strategy",
-      &AVLTopDown{},
-      &AVLBottomUp{},
-      &AVLWeakTopDown{},
-      &AVLWeakBottomUp{},
-      &AVLRelaxedTopDown{},
-      &AVLRelaxedBottomUp{},
-      &RedBlackRelaxedBottomUp{},
-      &RedBlackRelaxedTopDown{},
-      &LBSTBottomUp{},
-      &LBSTTopDown{},
-      &LBSTRelaxed{},
-      &TreapTopDown{},
-      &TreapFingerTree{},
-      &Randomized{},
-      &Zip{},
-      &Splay{},
-      &Conc{},
+   return console.Choose[list.List]("Strategy",
+      &trees.WBSTBottomUp{},
+      &trees.AVLTopDown{},
+      &trees.AVLBottomUp{},
+      &trees.AVLWeakTopDown{},
+      &trees.AVLWeakBottomUp{},
+      &trees.AVLRelaxedTopDown{},
+      &trees.AVLRelaxedBottomUp{},
+      &trees.RedBlackRelaxedBottomUp{},
+      &trees.RedBlackRelaxedTopDown{},
+      &trees.LBSTBottomUp{},
+      &trees.LBSTTopDown{},
+      &trees.LBSTRelaxed{},
+      &trees.TreapTopDown{},
+      &trees.TreapFingerTree{},
+      &trees.Randomized{},
+      &trees.Zip{},
+      &trees.Splay{},
+      &trees.Conc{},
    )
 }

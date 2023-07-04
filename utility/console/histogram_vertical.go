@@ -3,6 +3,7 @@ package console
 import (
    "io"
    "strconv"
+   "bst/utility"
 )
 
 type VHistogram struct {
@@ -15,25 +16,25 @@ type VHistogram struct {
 func (g *VHistogram) Print(page io.Writer) {
    //
    for _, height := range g.Series[0] {
-      g.Height = Max(g.Height, height)
+      g.Height = utility.Max(g.Height, height)
    }
    for _, height := range g.Series[1] {
-      g.Height = Max(g.Height, height)
+      g.Height = utility.Max(g.Height, height)
    }
 
    //
-   g.Width = Max(g.Width, len(g.Series[0]))
+   g.Width = utility.Max(g.Width, len(g.Series[0]))
 
-   padding := Repeat(" ", g.Width-len(g.Series[0])+1)
+   padding := utility.Repeat(" ", g.Width-len(g.Series[0])+1)
 
    Println(page)
-   Println(page, PadLeft(strconv.Itoa(g.Height), 4), " ┌ ")
+   Println(page, utility.PadLeft(strconv.Itoa(g.Height), 4), " ┌ ")
 
    for h := g.Height; h >= 0; h-- {
       //if h == g.Height {
       //   console.Print(page, util.PadLeft(strconv.Itoa(h), 4), " ┬")
       //} else {
-      Print(page, Repeat(" ", 4+1), "│")
+      Print(page, utility.Repeat(" ", 4+1), "│")
       //}
       Print(page, padding)
 
@@ -53,7 +54,7 @@ func (g *VHistogram) Print(page io.Writer) {
       }
       Println(page)
    }
-   Println(page, Repeat(" ", 4+1), "└")
+   Println(page, utility.Repeat(" ", 4+1), "└")
    Println(page)
 }
 

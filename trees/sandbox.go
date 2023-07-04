@@ -4,8 +4,9 @@ import (
    "bst/abstract/list"
    "bst/utility"
    "bst/utility/random"
-   "fmt"
    "math"
+   "fmt"
+   "sync"
 )
 
 func init() {
@@ -154,22 +155,78 @@ func heightBound3(height int, size list.Size) bool {
    return (height + 1) / 2 > int(math.Log2(float64(size)))
 }
 func log2_1(x, y int) bool {
-   // assert(x <= y)
+   assert(x <= y)
    return (1 + int(math.Floor(math.Log2(float64(y))))) - (1 + int(math.Floor(math.Log2(float64(x))))) <= 1
 }
 func log2_2(x, y int) bool {
-   // assert(x <= y)
+   assert(x <= y)
    return x >= y / 2 && x <= y * 2
 }
+
+
 func Sandbox() {
    random.Seed(4)
-      //fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-      tree := &AVLTopDown{}
-      for i, n := uint64(0), uint64(1_000_000); i < n; i++ {
-         tree.Insert(random.Uint64() % (tree.Size() + 1), i)
+
+   deltaMin := 1.0
+   deltaMax := 5.0
+   gammaMin := 0.5
+   gammaMax := 5.0
+
+   N := 1_000
+
+   step := 0.01
+
+   type Pair struct {
+      delta float64
+      gamma float64
+   }
+   valid := []Pair{}
+
+
+
+   for delta := deltaMin; delta <= deltaMax; delta += step {
+      for gamma := gammaMin; gamma <= gammaMax; gamma += step {
+         var wg sync.WaitGroup
+         wg.Add(1)
+         go func() {
+            tree := &WBSTTopDown{
+               Delta: delta,
+               Gamma: gamma,
+            }
+            defer func() {
+               if r := recover(); r != nil {
+                  fmt.Println("Δ", delta, "Γ", gamma, "NO")
+               } else {
+                  valid = append(valid, Pair{
+                     delta: delta,
+                     gamma: gamma,
+                  })
+                  fmt.Println("Δ", delta, "Γ", gamma, "YES")
+               }
+               tree.Free()
+               wg.Done()
+            }()
+            for i, n := uint64(0), uint64(N); i < n; i++ {
+               tree.Insert(random.Uint64()%(tree.Size()+1), i)
+               tree.Verify()
+            }
+            for i, n := uint64(0), uint64(N); i < n; i++ {
+               tree.Insert(0, i)
+               tree.Verify()
+            }
+            for i, n := uint64(0), uint64(N/2); i < n; i++ {
+               tree.Insert(random.Uint64()%(tree.Size()+1), i)
+               tree.Insert(0, i)
+               tree.Verify()
+            }
+         }()
+         wg.Wait()
       }
-      tree.Free()
-      fmt.Print(doubleTraversal, totalTraversal, float64(doubleTraversal) / float64(totalTraversal))
+   }
+   for _, v := range valid {
+      fmt.Println(v)
+   }
+
 
    //random.Seed(4)
    //for {
@@ -1348,8 +1405,8 @@ func Sandbox() {
 //   //    }
 //   //    p := l.Join(r)
 //   //    p.Verify()
-//   //    // assert(p.Size() == l.Size() + r.Size())
-//   //    // assert(p.Size() == p.(*WAVL).root.count())
+//   //    assert(p.Size() == l.Size() + r.Size())
+//   //    assert(p.Size() == p.(*WAVL).root.count())
 //   //    print(".")
 //   // }
 //}
