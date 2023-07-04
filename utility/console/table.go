@@ -2,6 +2,7 @@ package console
 
 import (
    "io"
+   "bst/utility"
 )
 
 type Table struct {
@@ -16,32 +17,32 @@ const Padding = 4
 func (table Table) Print(page io.Writer) {
    //
    //
-   columnWidth := LengthOfLongestString(table.Columns)
+   columnWidth := utility.LengthOfLongestString(table.Columns)
 
    for _, values := range table.Values {
-      columnWidth = Max(columnWidth, LengthOfLongestString(values))
+      columnWidth = utility.Max(columnWidth, utility.LengthOfLongestString(values))
    }
 
    //
-   maxLabelWidth := CharacterCount(table.Title)
-   maxLabelWidth = Max(maxLabelWidth, LengthOfLongestString(table.Labels))
+   maxLabelWidth := utility.CharacterCount(table.Title)
+   maxLabelWidth = utility.Max(maxLabelWidth, utility.LengthOfLongestString(table.Labels))
 
    //
    // TITLE
    //
-   Print(page, Repeat(" ", Padding))
-   Print(page, Bold(PadRight(table.Title, maxLabelWidth)))
+   Print(page, utility.Repeat(" ", Padding))
+   Print(page, Bold(utility.PadRight(table.Title, maxLabelWidth)))
 
    //
    // COLUMN HEADERS
    //
    for _, columnLabel := range table.Columns {
-      Print(page, Repeat(" ", Padding))
-      Print(page, PadLeft(columnLabel, columnWidth))
+      Print(page, utility.Repeat(" ", Padding))
+      Print(page, utility.PadLeft(columnLabel, columnWidth))
    }
    Println(page)
-   Print(page, Repeat(" ", Padding), Repeat("─", maxLabelWidth))
-   Print(page, Repeat("─", (columnWidth+Padding)*len(table.Columns)))
+   Print(page, utility.Repeat(" ", Padding), utility.Repeat("─", maxLabelWidth))
+   Print(page, utility.Repeat("─", (columnWidth+Padding)*len(table.Columns)))
    Println(page)
 
    //
@@ -51,15 +52,15 @@ func (table Table) Print(page io.Writer) {
       //
       // LABELS
       //
-      Print(page, Repeat(" ", Padding))
-      Print(page, Italic(PadRight(table.Labels[row], maxLabelWidth)))
+      Print(page, utility.Repeat(" ", Padding))
+      Print(page, Italic(utility.PadRight(table.Labels[row], maxLabelWidth)))
 
       //
       // VALUES
       //
       for _, value := range values {
-         Print(page, Repeat(" ", Padding))
-         Print(page, PadLeft(value, columnWidth))
+         Print(page, utility.Repeat(" ", Padding))
+         Print(page, utility.PadLeft(value, columnWidth))
       }
       Println(page)
    }

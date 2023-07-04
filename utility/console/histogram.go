@@ -4,6 +4,7 @@ import (
    "io"
    "math"
    "strconv"
+   "bst/utility"
 )
 
 var maxHistogramBarWidth = 120
@@ -34,11 +35,11 @@ func (g Histogram) Print(page io.Writer) {
    capacityL := int(math.Floor(float64(h)/2)) + g.Offset
    capacityR := int(math.Ceil(float64(h)/2)) - g.Offset
 
-   l = l[Max(0, Min(len(l), len(l)-capacityL)):]
-   l = l[:Min(len(l), Max(0, len(l)+capacityR))]
+   l = l[utility.Max(0, utility.Min(len(l), len(l)-capacityL)):]
+   l = l[:utility.Min(len(l), utility.Max(0, len(l)+capacityR))]
 
-   r = r[Min(len(r), Max(0, 0-capacityL)):]
-   r = r[:Min(len(r), Max(0, 0+capacityR))]
+   r = r[utility.Min(len(r), utility.Max(0, 0-capacityL)):]
+   r = r[:utility.Min(len(r), utility.Max(0, 0+capacityR))]
 
    // Calculate padding to keep the graphic vertically centered.
    paddingTop := 0
@@ -46,8 +47,8 @@ func (g Histogram) Print(page io.Writer) {
 
    // Do we have some empty space?
    if emptySpace := h - (len(l) + len(r)); emptySpace > 0 {
-      paddingTop = Max(0, Min(emptySpace, capacityL-numberOfRowsL))
-      paddingBot = Max(0, Min(emptySpace, capacityR-numberOfRowsR))
+      paddingTop = utility.Max(0, utility.Min(emptySpace, capacityL-numberOfRowsL))
+      paddingBot = utility.Max(0, utility.Min(emptySpace, capacityR-numberOfRowsR))
    }
    //
    Println(page)
@@ -60,7 +61,7 @@ func (g Histogram) Print(page io.Writer) {
    //
    max := 0
    for _, width := range l {
-      max = Max(max, width)
+      max = utility.Max(max, width)
       Print(page, " │")
       //console.Print(page, PadLeft(strconv.Itoa(width), 4))
       //console.Print(page, " ")
@@ -69,7 +70,7 @@ func (g Histogram) Print(page io.Writer) {
    }
    //
    for _, width := range r {
-      max = Max(max, width)
+      max = utility.Max(max, width)
       Print(page, " │")
       //console.Print(page, PadLeft(strconv.Itoa(width), 4))
       //console.Print(page, " ") ░   ▒   ▓
@@ -82,14 +83,14 @@ func (g Histogram) Print(page io.Writer) {
    }
    //
    Print(page, " └") // └╰
-   Print(page, Repeat("─", max), "┤ ", strconv.Itoa(max))
+   Print(page, utility.Repeat("─", max), "┤ ", strconv.Itoa(max))
    Println(page)
 }
 
 func truncatedBar(char string, width int) string {
    if width > maxHistogramBarWidth {
-      return Repeat(char, maxHistogramBarWidth) + "···"
+      return utility.Repeat(char, maxHistogramBarWidth) + "···"
    } else {
-      return Repeat(char, width)
+      return utility.Repeat(char, width)
    }
 }

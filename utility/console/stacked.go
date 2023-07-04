@@ -4,6 +4,7 @@ import (
    "io"
    "math"
    "strconv"
+   "bst/utility"
 )
 
 type StackedHistogram struct {
@@ -32,13 +33,13 @@ func (g StackedHistogram) Print(page io.Writer) {
          barWidthR = int(math.Log2(float64(R[row])) + 1)
       }
 
-      Print(page, " │", PadLeft(strconv.Itoa(row), 4))
-      Print(page, Repeat(" ", g.Width-barWidthL+1))
+      Print(page, " │", utility.PadLeft(strconv.Itoa(row), 4))
+      Print(page, utility.Repeat(" ", g.Width-barWidthL+1))
       if barWidthL > 0 {
-         Print(page, "▕", Repeat("░", barWidthL))
+         Print(page, "▕", utility.Repeat("░", barWidthL))
       }
       if barWidthR > 0 {
-         Print(page, Repeat("▓", barWidthR), "▏")
+         Print(page, utility.Repeat("▓", barWidthR), "▏")
       }
       Println(page)
    }

@@ -2,53 +2,62 @@ package trees
 
 import (
    "bst/abstract/list"
-   "bst/utility"
 )
 
-type LBSTTopDown struct {
-   LBST
+type WBSTTopDown struct {
+   Tree
+   Delta float64
+   Gamma float64
 }
 
-func (LBSTTopDown) New() list.List {
-   return &LBSTTopDown{}
+func (WBSTTopDown) New() list.List {
+   return &WBSTTopDown{
+      Delta: 3,
+      Gamma: 2,
+   }
 }
 
-func (tree *LBSTTopDown) Clone() list.List {
-   return &LBSTTopDown{LBST{Tree: tree.Tree.Clone()}} // TODO: format
+func (tree *WBSTTopDown) Clone() list.List {
+   return &WBSTTopDown{
+      Delta: tree.Delta,
+      Gamma: tree.Gamma,
+      Tree: tree.Tree.Clone(),
+   }
 }
 
-func (tree LBSTTopDown) verifyBalance(p *Node, s list.Size) {
+func (tree WBSTTopDown) verifyBalance(p *Node, s list.Size) {
    if p == nil {
       return
    }
    sl := p.sizeL()
    sr := p.sizeR(s)
 
-   invariant(utility.Difference(utility.Log2(sl + 1), utility.Log2(sr + 1)) <= 1)
+   invariant(tree.isBalanced(sl, sr))
+   invariant(tree.isBalanced(sr, sl))
 
    tree.verifyBalance(p.l, sl)
    tree.verifyBalance(p.r, sr)
 }
 
-func (tree LBSTTopDown) verifyHeight(root *Node, size list.Size) {
-   invariant(root.height() <= int(2*utility.Log2(size)))
+func (tree WBSTTopDown) verifyHeight(root *Node, size list.Size) {
+   //invariant(root.height() <= int(2*utility.Log2(size)))
 }
 
-func (tree LBSTTopDown) Verify() {
-   tree.verifySizes()
+func (tree WBSTTopDown) Verify() {
+   //tree.verifySizes()
    tree.verifyBalance(tree.root, tree.size)
    tree.verifyHeight(tree.root, tree.size)
 }
 
-func (tree *LBSTTopDown) isBalanced(x, y list.Size) bool {
-   return tree.LBST.isBalanced(x + 1, y + 1)
+func (tree *WBSTTopDown) isBalanced(x, y list.Size) bool {
+   return tree.Delta * float64(x + 1) >= float64(y + 1)
 }
 
-func (tree *LBSTTopDown) singleRotation(x, y list.Size) bool {
-   return tree.LBST.singleRotation(x + 1, y + 1)
+func (tree *WBSTTopDown) singleRotation(x, y list.Size) bool {
+   return tree.Gamma * float64(x + 1) > float64(y + 1)
 }
 
-func (tree *LBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.Data) {
+func (tree *WBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.Data) {
    assert(i <= s)
    assert(s == (*p).size())
    for {
@@ -166,7 +175,7 @@ func (tree *LBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.D
    }
 }
 
-func (tree *LBSTTopDown) delete(p **Node, s list.Size, i list.Position) (deleted *Node) {
+func (tree *WBSTTopDown) delete(p **Node, s list.Size, i list.Position) (deleted *Node) {
    assert(i < s)
    assert(s == (*p).size())
    for {
@@ -234,7 +243,7 @@ func (tree *LBSTTopDown) delete(p **Node, s list.Size, i list.Position) (deleted
    }
 }
 
-func (tree *LBSTTopDown) rebalanceR(p **Node, sr list.Size) {
+func (tree *WBSTTopDown) rebalanceR(p **Node, sr list.Size) {
    if tree.singleRotation(sr-(*p).r.s-1, (*p).r.s) {
       tree.rotateL(p)
    } else {
@@ -242,7 +251,7 @@ func (tree *LBSTTopDown) rebalanceR(p **Node, sr list.Size) {
    }
 }
 
-func (tree *LBSTTopDown) rebalanceL(p **Node, sl list.Size) {
+func (tree *WBSTTopDown) rebalanceL(p **Node, sl list.Size) {
    if tree.singleRotation((*p).l.s, sl-(*p).l.s-1) { // R SINGLE
       tree.rotateR(p)
    } else { // R DOUBLE
@@ -250,67 +259,67 @@ func (tree *LBSTTopDown) rebalanceL(p **Node, sl list.Size) {
    }
 }
 
-func (tree *LBSTTopDown) pathL(p ***Node, s *list.Size) {
+func (tree *WBSTTopDown) pathL(p ***Node, s *list.Size) {
    *s = (**p).s
    (**p).s++
    *p = &(**p).l
 }
 
-func (tree *LBSTTopDown) deleteL(p ***Node, s *list.Size) {
+func (tree *WBSTTopDown) deleteL(p ***Node, s *list.Size) {
    *s = (**p).s
    (**p).s--
    *p = &(**p).l
 }
 
-func (tree *LBSTTopDown) pathR(p ***Node, s *list.Size, i *list.Position) {
+func (tree *WBSTTopDown) pathR(p ***Node, s *list.Size, i *list.Position) {
    *s = *s - (**p).s - 1
    *i = *i - (**p).s - 1
    *p = &(**p).r
 }
 
-func (tree *LBSTTopDown) deleteR(p ***Node, s *list.Size, i *list.Position) {
+func (tree *WBSTTopDown) deleteR(p ***Node, s *list.Size, i *list.Position) {
    *s = *s - (**p).s - 1
    *i = *i - (**p).s - 1
    *p = &(**p).r
 }
 
-func (tree *LBSTTopDown) Insert(i list.Position, x list.Data) {
+func (tree *WBSTTopDown) Insert(i list.Position, x list.Data) {
    assert(i <= tree.size)
    tree.insert(&tree.root, tree.size, i, x)
    tree.size++
 }
 
-func (tree *LBSTTopDown) Delete(i list.Position) (x list.Data) {
+func (tree *WBSTTopDown) Delete(i list.Position) (x list.Data) {
    assert(i < tree.size)
    x = tree.delete(&tree.root, tree.size, i).x
    tree.size--
    return
 }
 
-func (tree *LBSTTopDown) Join(that list.List) list.List {
+func (tree *WBSTTopDown) Join(that list.List) list.List {
    l := tree
-   r := that.(*LBSTTopDown)
+   r := that.(*WBSTTopDown)
    tree.share(l.root)
    tree.share(r.root)
-   return &LBSTTopDown{
-      LBST{
-         Tree: Tree{
-            arena: tree.arena,
-            root:  tree.join(l.root, r.root, l.size, r.size),
-            size:  l.size + r.size,
-         },
+   return &WBSTTopDown{
+      Delta: tree.Delta,
+      Gamma: tree.Gamma,
+      Tree: Tree{
+         arena: tree.arena,
+         root:  tree.join(l.root, r.root, l.size, r.size),
+         size:  l.size + r.size,
       },
    }
 }
-func (tree *LBSTTopDown) deleteMin(p **Node, s list.Size) *Node {
+func (tree *WBSTTopDown) deleteMin(p **Node, s list.Size) *Node {
    return tree.delete(p, s, 0)
 }
 
-func (tree *LBSTTopDown) deleteMax(p **Node, s list.Size) *Node {
+func (tree *WBSTTopDown) deleteMax(p **Node, s list.Size) *Node {
    return tree.delete(p, s, s-1)
 }
 
-func (tree *LBSTTopDown) join(l *Node, r *Node, sl, sr list.Size) *Node {
+func (tree *WBSTTopDown) join(l *Node, r *Node, sl, sr list.Size) *Node {
    if l == nil { return r }
    if r == nil { return l }
    if sl <= sr {
@@ -320,7 +329,7 @@ func (tree *LBSTTopDown) join(l *Node, r *Node, sl, sr list.Size) *Node {
    }
 }
 
-func (tree *LBSTTopDown) build(l, p, r *Node, sl, sr list.Size) *Node {
+func (tree *WBSTTopDown) build(l, p, r *Node, sl, sr list.Size) *Node {
    if sl <= sr {
       return tree.buildR(p, l, r, sl, sr)
    } else {
@@ -328,7 +337,7 @@ func (tree *LBSTTopDown) build(l, p, r *Node, sl, sr list.Size) *Node {
    }
 }
 
-func (tree *LBSTTopDown) buildL(p *Node, l, r *Node, sl, sr list.Size) *Node {
+func (tree *WBSTTopDown) buildL(p *Node, l, r *Node, sl, sr list.Size) *Node {
    if tree.isBalanced(sr, sl) {
       p.l = l
       p.r = r
@@ -343,7 +352,7 @@ func (tree *LBSTTopDown) buildL(p *Node, l, r *Node, sl, sr list.Size) *Node {
    return l
 }
 
-func (tree *LBSTTopDown) buildR(p *Node, l, r *Node, sl, sr list.Size) *Node {
+func (tree *WBSTTopDown) buildR(p *Node, l, r *Node, sl, sr list.Size) *Node {
    if tree.isBalanced(sl, sr) {
       p.l = l
       p.r = r
@@ -359,7 +368,7 @@ func (tree *LBSTTopDown) buildR(p *Node, l, r *Node, sl, sr list.Size) *Node {
    return r
 }
 
-func (tree LBSTTopDown) split(p *Node, i, s list.Size) (l, r *Node) {
+func (tree WBSTTopDown) split(p *Node, i, s list.Size) (l, r *Node) {
    if p == nil {
       return
    }
@@ -370,20 +379,20 @@ func (tree LBSTTopDown) split(p *Node, i, s list.Size) (l, r *Node) {
 
    if i <= (*p).s {
       l, r = tree.split(p.l, i, sl)
-         r = tree.build(r, p, p.r, sl-i, sr)
+      r = tree.build(r, p, p.r, sl-i, sr)
    } else {
       l, r = tree.split(p.r, i-sl-1, sr)
-         l = tree.build(p.l, p, l, sl, i-sl-1)
+      l = tree.build(p.l, p, l, sl, i-sl-1)
    }
    return l, r
 }
 
-func (tree LBSTTopDown) Split(i list.Position) (list.List, list.List) {
+func (tree WBSTTopDown) Split(i list.Position) (list.List, list.List) {
    assert(i <= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
 
-   return &LBSTTopDown{LBST{Tree: Tree{arena: tree.arena, root: l, size: i}}},
-          &LBSTTopDown{LBST{Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}}
+   return &WBSTTopDown{Delta: tree.Delta, Gamma: tree.Gamma, Tree: Tree{arena: tree.arena, root: l, size: i}},
+          &WBSTTopDown{Delta: tree.Delta, Gamma: tree.Gamma, Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
 }
 

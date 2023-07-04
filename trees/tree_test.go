@@ -45,8 +45,8 @@ func TestBST(t *testing.T) {
          //&distribution.Slope{},
       },
       Lists: []list.List{
-         &AVLBottomUp{},
-         &AVLTopDown{},
+         //&AVLBottomUp{},
+         //&AVLTopDown{},
          //&AVLWeakTopDown{},
          //&AVLWeakBottomUp{},
          //&AVLRelaxedTopDown{},
@@ -64,6 +64,8 @@ func TestBST(t *testing.T) {
          //&Zip{},
          //&Splay{},
          //&Conc{},
+         &WBSTBottomUp{},
+         &WBSTTopDown{},
       },
    }.Run(t)
 }
