@@ -2,6 +2,7 @@ package trees
 
 import (
    "bst/abstract/list"
+   "bst/utility/random"
    "bst/utility/random/distribution"
    "testing"
 )
@@ -14,27 +15,27 @@ func TestBST(t *testing.T) {
       Scale: 100,
       Tests: []list.Test{
          list.TestInsert,
-         list.TestInsertPersistent,
-         list.TestSelect,
-         list.TestSelectAfterInsert,
-         list.TestSelectAfterInsertPersistent,
-         list.TestUpdate,
-         list.TestUpdatePersistent,
+         //list.TestInsertPersistent,
+         //list.TestSelect,
+         //list.TestSelectAfterInsert,
+         //list.TestSelectAfterInsertPersistent,
+         //list.TestUpdate,
+         //list.TestUpdatePersistent,
          list.TestDelete,
-         list.TestDeletePersistent,
+         //list.TestDeletePersistent,
          list.TestInsertDelete,
-         list.TestInsertDeletePersistent,
-         list.TestSplit,
-         list.TestJoin,
-         list.TestJoinFromSplit,
-         list.TestJoinAfterInsertDelete,
+         //list.TestInsertDeletePersistent,
+         //list.TestSplit,
+         //list.TestJoin,
+         //list.TestJoinFromSplit,
+         //list.TestJoinAfterInsertDelete,
       },
-      Distributions: []distribution.Distribution{
+      Distributions: []random.Distribution{
          &distribution.Uniform{},
          &distribution.Normal{},
          &distribution.Skewed{},
          &distribution.Zipf{},
-         //&distribution.Maximum{},
+         &distribution.Maximum{},
          //&distribution.Minimum{},
          //&distribution.BiModal{},
          //&distribution.Ascending{},

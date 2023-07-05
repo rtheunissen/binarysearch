@@ -9,7 +9,7 @@ type Zipf struct {
    zipf *rand.Zipf
 }
 
-func (dist Zipf) New(seed uint64) Distribution {
+func (dist Zipf) New(seed uint64) random.Distribution {
    dist.zipf = rand.NewZipf(rand.New(random.New(seed)), 1.25, 1, 100)
    return &dist
 }

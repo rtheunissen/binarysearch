@@ -2,7 +2,7 @@ package animations
 
 import (
    "bst/abstract/list"
-   "bst/utility/random/distribution"
+   "bst/utility/random"
    "github.com/eiannone/keyboard"
    "io"
    "math"
@@ -16,7 +16,7 @@ type BinaryTreeAnimation struct {
    io.Writer
    list.List
    list.Operation
-   distribution.Distribution // remove
+   random.Distribution // remove
    list.Size
 }
 

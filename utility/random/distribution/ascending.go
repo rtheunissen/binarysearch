@@ -1,10 +1,12 @@
 package distribution
 
+import "bst/utility/random"
+
 type Ascending struct {
    i uint64
 }
 
-func (Ascending) New(seed uint64) Distribution {
+func (Ascending) New(seed uint64) random.Distribution {
    return &Ascending{i: 0}
 }
 

@@ -3,12 +3,13 @@ package main
 import (
    "bst/abstract/list"
    "bst/abstract/list/operations"
+   "bst/trees"
    "bst/trees/animations"
    "bst/utility/console"
+   "bst/utility/random"
    "bst/utility/random/distribution"
    "flag"
    "os"
-   "bst/trees"
 )
 
 func main() {
@@ -60,8 +61,8 @@ func chooseOperation() list.Operation {
    )
 }
 
-func chooseDistribution() distribution.Distribution {
-   return console.Choose[distribution.Distribution]("Distribution",
+func chooseDistribution() random.Distribution {
+   return console.Choose[random.Distribution]("Distribution",
       &distribution.Uniform{},
       &distribution.Normal{},
       &distribution.Skewed{},
@@ -81,6 +82,7 @@ func chooseDistribution() distribution.Distribution {
 
 func chooseStrategy() list.List {
    return console.Choose[list.List]("Strategy",
+      &trees.WBSTTopDown{},
       &trees.WBSTBottomUp{},
       &trees.AVLTopDown{},
       &trees.AVLBottomUp{},

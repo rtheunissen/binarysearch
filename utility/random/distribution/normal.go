@@ -11,7 +11,7 @@ type Normal struct {
    sdev float64
 }
 
-func (dist Normal) New(seed uint64) Distribution {
+func (dist Normal) New(seed uint64) random.Distribution {
    dist.rand = rand.New(random.New(seed))
    dist.mean = 0.50
    dist.sdev = 0.15

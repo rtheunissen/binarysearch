@@ -3,7 +3,6 @@ package operations
 import (
    "bst/abstract/list"
    "bst/utility/random"
-   "bst/utility/random/distribution"
 )
 
 type InsertDeleteSplitJoin struct {
@@ -17,7 +16,7 @@ func (InsertDeleteSplitJoin) Valid(instance list.List, scale list.Size) bool {
    return true
 }
 
-func (operation *InsertDeleteSplitJoin) Update(instance list.List, number distribution.Distribution) (list.List, list.Position) {
+func (operation *InsertDeleteSplitJoin) Update(instance list.List, number random.Distribution) (list.List, list.Position) {
    var i list.Size
    if instance.Size() == 0 {
       instance.Insert(0, 0)
@@ -43,6 +42,6 @@ type InsertDeleteSplitJoinPersistent struct {
    InsertDeleteSplitJoin
 }
 
-func (operation InsertDeleteSplitJoinPersistent) Update(instance list.List, dist distribution.Distribution) (list.List, list.Position) {
+func (operation InsertDeleteSplitJoinPersistent) Update(instance list.List, dist random.Distribution) (list.List, list.Position) {
    return operation.InsertDeleteSplitJoin.Update(instance.Clone(), dist)
 }

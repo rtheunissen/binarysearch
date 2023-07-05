@@ -4,6 +4,7 @@ import (
    "bst/abstract/list"
    "bst/trees"
    "bst/utility"
+   "bst/utility/random"
    "bst/utility/random/distribution"
    "fmt"
    "os"
@@ -16,7 +17,7 @@ func main() {
      Duration:           3000 * time.Millisecond,
      Samples:             100,
      Scale:        10_000_000,
-     Distributions: []distribution.Distribution{
+     Distributions: []random.Distribution{
         &distribution.Uniform{},
      },
      Strategies: []trees.Balancer{
@@ -35,7 +36,7 @@ type BalancerBenchmark struct {
   Scale         int
   Samples       int
   Strategies    []trees.Balancer
-  Distributions []distribution.Distribution
+  Distributions []random.Distribution
   Duration      time.Duration
 }
 

@@ -4,6 +4,7 @@ import (
    "bst/abstract/list"
    "bst/trees"
    "bst/utility"
+   "bst/utility/random"
    "bst/utility/random/distribution"
    "flag"
    "fmt"
@@ -27,7 +28,7 @@ func main() {
          &trees.MaximumPathLength{},
          &trees.Rotations{},
       },
-      Distributions: []distribution.Distribution{
+      Distributions: []random.Distribution{
          &distribution.Uniform{},
       },
       Strategy: utility.Resolve[trees.Balancer](*strategy, []trees.Balancer{
@@ -48,7 +49,7 @@ type BalancerMeasurement struct {
    Samples       int
    Strategy      trees.Balancer
    Measurements  []trees.Measurement
-   Distributions []distribution.Distribution
+   Distributions []random.Distribution
 }
 
 func (measurement BalancerMeasurement) Run() {

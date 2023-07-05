@@ -6,21 +6,15 @@ import (
 
 type WBSTTopDown struct {
    Tree
-   Delta float64
-   Gamma float64
 }
 
 func (WBSTTopDown) New() list.List {
    return &WBSTTopDown{
-      Delta: 3,
-      Gamma: 2,
    }
 }
 
 func (tree *WBSTTopDown) Clone() list.List {
    return &WBSTTopDown{
-      Delta: tree.Delta,
-      Gamma: tree.Gamma,
       Tree: tree.Tree.Clone(),
    }
 }
@@ -50,16 +44,15 @@ func (tree WBSTTopDown) Verify() {
 }
 
 func (tree *WBSTTopDown) isBalanced(x, y list.Size) bool {
-   return tree.Delta * float64(x + 1) >= float64(y + 1)
+   return 3 * (x+1) >= (y + 1)
 }
 
 func (tree *WBSTTopDown) singleRotation(x, y list.Size) bool {
-   return tree.Gamma * float64(x + 1) > float64(y + 1)
+   return 2 * (x+1) > (y + 1)
 }
 
 func (tree *WBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.Data) {
-   assert(i <= s)
-   assert(s == (*p).size())
+   // assert(i <= s)
    for {
       if *p == nil {
          *p = tree.allocate(Node{x: x})
@@ -70,8 +63,8 @@ func (tree *WBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.D
       sl := (*p).sizeL()
       sr := (*p).sizeR(s)
 
-      assert(tree.isBalanced(sr, sl))
-      assert(tree.isBalanced(sl, sr))
+      // assert(tree.isBalanced(sr, sl))
+      // assert(tree.isBalanced(sl, sr))
 
       if i <= (*p).s {
          if tree.isBalanced(sr, sl+1) {
@@ -104,6 +97,12 @@ func (tree *WBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.D
                   tree.pathR(&p, &s, &i)
                   tree.pathL(&p, &s)
                } else {
+                  if (*p).l.r == nil {
+                     (*p).l.r = tree.allocate(Node{x: x})
+                     (*p).s++
+                     tree.rotateLR(p)
+                     return
+                  }
                   if i <= (*p).l.s+(*p).l.r.s+1 {
                      //
                      // LRL DOUBLE
@@ -154,7 +153,14 @@ func (tree *WBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.D
                tree.pathL(&p, &s)
                tree.pathR(&p, &s, &i)
             } else {
-               if i > (*p).s+(*p).r.l.s+1 {
+               if (*p).r.l == nil {
+                  (*p).r.l = tree.allocate(Node{x: x})
+                  (*p).r.s++
+                  tree.rotateRL(p)
+                  return
+               }
+
+               if i > (*p).s + (*p).r.l.s + 1 { // TODO rotate first then just compare to p
                   //
                   // RLR DOUBLE
                   //
@@ -176,16 +182,16 @@ func (tree *WBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.D
 }
 
 func (tree *WBSTTopDown) delete(p **Node, s list.Size, i list.Position) (deleted *Node) {
-   assert(i < s)
-   assert(s == (*p).size())
+   // assert(i < s)
+   // assert(s == (*p).size())
    for {
       tree.persist(p)
 
       sl := (*p).s
       sr := s - (*p).s - 1
 
-      assert(tree.isBalanced(sl, sr))
-      assert(tree.isBalanced(sr, sl))
+      // assert(tree.isBalanced(sl, sr))
+      // assert(tree.isBalanced(sr, sl))
 
       if i == (*p).s {
          defer tree.free(*p)
@@ -284,13 +290,13 @@ func (tree *WBSTTopDown) deleteR(p ***Node, s *list.Size, i *list.Position) {
 }
 
 func (tree *WBSTTopDown) Insert(i list.Position, x list.Data) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.insert(&tree.root, tree.size, i, x)
    tree.size++
 }
 
 func (tree *WBSTTopDown) Delete(i list.Position) (x list.Data) {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    x = tree.delete(&tree.root, tree.size, i).x
    tree.size--
    return
@@ -302,8 +308,8 @@ func (tree *WBSTTopDown) Join(that list.List) list.List {
    tree.share(l.root)
    tree.share(r.root)
    return &WBSTTopDown{
-      Delta: tree.Delta,
-      Gamma: tree.Gamma,
+      //Delta: tree.Delta,
+      //Gamma: tree.Gamma,
       Tree: Tree{
          arena: tree.arena,
          root:  tree.join(l.root, r.root, l.size, r.size),
@@ -388,11 +394,15 @@ func (tree WBSTTopDown) split(p *Node, i, s list.Size) (l, r *Node) {
 }
 
 func (tree WBSTTopDown) Split(i list.Position) (list.List, list.List) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
 
-   return &WBSTTopDown{Delta: tree.Delta, Gamma: tree.Gamma, Tree: Tree{arena: tree.arena, root: l, size: i}},
-          &WBSTTopDown{Delta: tree.Delta, Gamma: tree.Gamma, Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
+   return &WBSTTopDown{
+      //Delta: tree.Delta, Gamma: tree.Gamma,
+      Tree: Tree{arena: tree.arena, root: l, size: i}},
+          &WBSTTopDown{
+      //Delta: tree.Delta, Gamma: tree.Gamma,
+      Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
 }
 

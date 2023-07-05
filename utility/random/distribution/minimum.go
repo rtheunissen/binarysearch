@@ -1,9 +1,11 @@
 package distribution
 
+import "bst/utility/random"
+
 type Minimum struct {
 }
 
-func (Minimum) New(uint64) Distribution {
+func (Minimum) New(uint64) random.Distribution {
    return Minimum{}
 }
 

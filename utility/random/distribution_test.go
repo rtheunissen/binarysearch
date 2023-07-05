@@ -1,4 +1,4 @@
-package distribution
+package random
 
 //
 //func TestDistributions(t *testing.T) {

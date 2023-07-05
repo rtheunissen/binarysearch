@@ -1,11 +1,13 @@
 package distribution
 
+import "bst/utility/random"
+
 type BiModal struct {
    Beta
    flip bool
 }
 
-func (BiModal) New(seed uint64) Distribution {
+func (BiModal) New(seed uint64) random.Distribution {
    return &BiModal{
       Beta: Beta{a: 5, b: 15}.Seed(seed),
    }

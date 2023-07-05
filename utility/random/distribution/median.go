@@ -1,9 +1,11 @@
 package distribution
 
+import "bst/utility/random"
+
 type Median struct {
 }
 
-func (Median) New(uint64) Distribution {
+func (Median) New(uint64) random.Distribution {
    return Median{}
 }
 

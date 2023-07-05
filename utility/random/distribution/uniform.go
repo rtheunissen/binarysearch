@@ -8,7 +8,7 @@ type Uniform struct {
    random2.Source
 }
 
-func (uniform Uniform) New(seed uint64) Distribution {
+func (uniform Uniform) New(seed uint64) random2.Distribution {
    uniform.Source = random2.New(seed)
    return &uniform
 }

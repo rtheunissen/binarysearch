@@ -8,7 +8,7 @@ type Queue struct {
    random.Source
 }
 
-func (dist Queue) New(seed uint64) Distribution {
+func (dist Queue) New(seed uint64) random.Distribution {
    dist.Source = random.New(seed)
    return &dist
 }

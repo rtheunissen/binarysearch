@@ -17,7 +17,7 @@ func TestBalancers(t *testing.T) {
       &Cost{},
       &DSW{},
    }
-   distributions := []distribution.Distribution{
+   distributions := []random.Distribution{
       &distribution.Uniform{},
       &distribution.Normal{},
       &distribution.Skewed{},
@@ -27,7 +27,7 @@ func TestBalancers(t *testing.T) {
    testBalancers(t, 1000, balancers, distributions) // TODO: make consistent with test suites and benchmarks patterns exactly
 }
 
-func testBalancers(t *testing.T, scale list.Size, balancers []Balancer, distributions []distribution.Distribution) {
+func testBalancers(t *testing.T, scale list.Size, balancers []Balancer, distributions []random.Distribution) {
    for _, balancer := range balancers {
 
       t.Run(utility.NameOf(balancer), func(t *testing.T) {

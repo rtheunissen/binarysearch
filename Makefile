@@ -16,7 +16,7 @@ test: assertions-on measurements-off
 
 # Runs the test suite and collects code coverage.
 coverage: assertions-off measurements-off
-	${GO} test ./binarytree -coverprofile "coverage.out"
+	${GO} test ./trees -coverprofile "coverage.out"
 	go tool cover -html="coverage.out" -o "coverage.html"
 	open coverage.html
 

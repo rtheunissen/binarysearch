@@ -5,6 +5,7 @@ import (
    operations2 "bst/abstract/list/operations"
    "bst/trees"
    "bst/utility"
+   "bst/utility/random"
    "bst/utility/random/distribution"
    "flag"
    "fmt"
@@ -31,7 +32,7 @@ func main() {
          //&operations2.InsertDeleteSearch{},
          //&operations2.InsertDeleteSearchPersistent{},
       }),
-      Distributions: []distribution.Distribution{
+      Distributions: []random.Distribution{
          &distribution.Uniform{},
          &distribution.Normal{},
          &distribution.Skewed{},
@@ -67,7 +68,7 @@ type TreeBenchmark struct {
    Scale         int
    Samples       int
    Operation     list.Operation
-   Distributions []distribution.Distribution
+   Distributions []random.Distribution
    Strategies    []list.List
    Iterations    int
 }

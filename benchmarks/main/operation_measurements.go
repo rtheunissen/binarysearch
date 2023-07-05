@@ -5,6 +5,7 @@ import (
    "bst/abstract/list/operations"
    "bst/trees"
    "bst/utility"
+   "bst/utility/random"
    "bst/utility/random/distribution"
    "flag"
    "fmt"
@@ -18,7 +19,7 @@ type OperationMeasurement struct {
    Scale         int
    Samples       int
    Operation     list.Operation
-   Distributions []distribution.Distribution
+   Distributions []random.Distribution
    Strategies    []list.List
    Measurements  []trees.Measurement
 }
@@ -36,7 +37,7 @@ func main() {
          &operations.InsertDeleteCycles{},
          &operations.InsertDeleteSearch{},
       }),
-      Distributions: []distribution.Distribution{
+      Distributions: []random.Distribution{
          &distribution.Uniform{},
          &distribution.Normal{},
          &distribution.Skewed{},

@@ -1,4 +1,4 @@
-package distribution
+package random
 
 // TODO We should have some distribution tests
 

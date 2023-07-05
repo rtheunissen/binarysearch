@@ -3,7 +3,6 @@ package operations
 import (
    "bst/abstract/list"
    "bst/utility/random"
-   "bst/utility/random/distribution"
 )
 
 type InsertDeleteCycles struct {
@@ -30,7 +29,7 @@ func (operation *InsertDeleteCycles) Setup(strategy list.List, scale list.Size) 
    return strategy.New() // TODO: do any operations actually use the strategy? Maybe new is worthless and we just seed random as needed in the lists
 }
 
-func (operation *InsertDeleteCycles) Update(instance list.List, dist distribution.Distribution) (list.List, list.Position) {
+func (operation *InsertDeleteCycles) Update(instance list.List, dist random.Distribution) (list.List, list.Position) {
    //
    // Inserting when empty.
    //
@@ -73,6 +72,6 @@ type InsertDeleteCyclesPersistent struct {
    InsertDeleteCycles
 }
 
-func (operation *InsertDeleteCyclesPersistent) Update(list list.List, access distribution.Distribution) (list.List, list.Position) {
+func (operation *InsertDeleteCyclesPersistent) Update(list list.List, access random.Distribution) (list.List, list.Position) {
    return operation.InsertDeleteCycles.Update(list.Clone(), access)
 }

@@ -1,10 +1,12 @@
 package distribution
 
+import "bst/utility/random"
+
 type Descending struct {
    i uint64
 }
 
-func (Descending) New(seed uint64) Distribution {
+func (Descending) New(seed uint64) random.Distribution {
    return &Descending{i: seed}
 }
 
