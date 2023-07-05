@@ -110,12 +110,6 @@ func (tree *Tree) Clone() Tree {
    return *tree
 }
 
-func (tree Tree) Free() {
-   if tree.arena != nil {
-      tree.arena.Free()
-   }
-}
-
 // Deletes the node at position `i` from the tree.
 // Returns the data that was in the deleted value.
 func (tree *Tree) Delete(i list.Position) list.Data {

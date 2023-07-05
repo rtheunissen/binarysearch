@@ -5,9 +5,15 @@ import (
    "bst/utility"
    "bst/utility/random"
    "bst/utility/random/distribution"
+   "bytes"
+   "encoding/csv"
+   "fmt"
+   "io"
    "math"
    "math/big"
+   "os"
    "sync"
+   "time"
 )
 
 func init() {
@@ -164,7 +170,6 @@ func log2_2(x, y int) bool {
    return x >= y / 2 && x <= y * 2
 }
 
-var printMutex sync.Mutex
 
 func Sandbox() {
    //
@@ -180,70 +185,233 @@ func Sandbox() {
    //}
    //tree.Free()
    //return
+   //
+   N := 100
 
+   I := 0
 
-   N := 1_000_000
-
-   random.Seed(1)
-
-   deltaMin := big.NewRat(1, 1)
-   deltaMax := big.NewRat(5, 1)
-   gammaMin := big.NewRat(0, 1)
-   gammaMax := big.NewRat(5, 1)
-
-   step := big.NewRat(1, 1000)
-
-   var Delta, Gamma big.Rat
-
-   delta, gamma := &Delta, &Gamma
+   random.Seed(uint64(time.Now().UnixNano()))
 
    distributions := []random.Distribution{
       &distribution.Uniform{},
+      &distribution.Skewed{},
+      &distribution.Normal{},
       &distribution.Zipf{},
       &distribution.Maximum{},
+      &distribution.Ascending{},
+      &distribution.BiModal{},
+      &distribution.Parabolic{},
+      &distribution.Slope{},
+      &distribution.Queue{},
    }
 
-   for delta.Set(deltaMin); delta.Cmp(deltaMax) <= 0; delta.Add(delta, step) {
-      for gamma.Set(gammaMin); gamma.Cmp(gammaMax) <= 0; gamma.Add(gamma, step) {
-            var wg sync.WaitGroup
-            wg.Add(1)
+   for {
+      I++
 
-            tree := &WBSTTopDown{
-               //Delta: delta,
-               //Gamma: gamma,
+      body, err := os.ReadFile("wb_topdown_polytope_many.csv")
+      if err != nil {
+         panic(err)
+      }
+      buffer := bytes.Buffer{}
+
+      reader := csv.NewReader(bytes.NewReader(body))
+      reader.Comma = ' '
+
+      for {
+         row, err := reader.Read()
+         if err == io.EOF {
+            break
+         }
+         if len(row) != 2 {
+            continue
+         }
+         delta, _ := new(big.Rat).SetString(row[0])
+         gamma, _ := new(big.Rat).SetString(row[1])
+
+         if gamma.Cmp(big.NewRat(4,3)) > 0 || gamma.Cmp(big.NewRat(1,1)) < 0 {
+            fmt.Println(I, delta.FloatString(4), gamma.FloatString(4))
+            _, err := fmt.Fprintln(&buffer, delta.FloatString(4), gamma.FloatString(4))
+            if err != nil {
+               return
             }
+            continue
+         }
 
+         var wg sync.WaitGroup
+
+         var invalid bool
+
+         for _, dist := range distributions {
+            dist := dist.New(random.Uint64())
+
+            wg.Add(1)
             go func() {
+               tree := &WBSTTopDown{
+                  Delta: delta,
+                  Gamma: gamma,
+               }
                defer func() {
                   tree.Free()
-                  if err := recover(); err == nil {
-                     //fmt.Println(tree.Delta.FloatString(6), tree.Gamma.FloatString(6))
+                  if err := recover(); err != nil {
+                     invalid = true
                   }
                   wg.Done()
                }()
-               for _, dist := range distributions {
-                  dist := dist.New(random.Uint64())
-                  //
-                  // INSERT
-                  //
-                  for tree.size < list.Size(N) {
-                     tree.Insert(dist.LessThan(tree.size+1), 0)
-                  }
+               //
+               // INSERT
+               //
+               for !invalid && tree.size < list.Size(N) {
+                  tree.Insert(dist.LessThan(tree.size+1), 0)
+               }
+               if !invalid {
                   tree.Verify()
-                  //
-                  // DELETE
-                  //
-                  for tree.size > 0 {
-                     tree.Delete(dist.LessThan(tree.size))
-                  }
+               }
+               //
+               // DELETE
+               //
+               for !invalid && tree.size > 0 {
+                  tree.Delete(dist.LessThan(tree.size))
+               }
+               if !invalid {
+                  tree.Verify()
+               }
+               //
+               // INSERT DELETE
+               //
+               for !invalid && tree.size < list.Size(N) {
+                  tree.Insert(dist.LessThan(tree.size+1), 0)
+                  tree.Insert(dist.LessThan(tree.size+1), 0)
+                  tree.Delete(dist.LessThan(tree.size))
+               }
+               if !invalid {
                   tree.Verify()
                }
             }()
-            wg.Wait()
+         }
+         wg.Wait()
+         if !invalid {
+            fmt.Println(I, delta.FloatString(4), gamma.FloatString(4))
+            _, err := fmt.Fprintln(&buffer, delta.FloatString(4), gamma.FloatString(4))
+            if err != nil {
+              return
+            }
          }
       }
-   }
+      //
+      if err := os.WriteFile("wb_topdown_polytope_many.csv", buffer.Bytes(), os.ModePerm); err != nil {
+         panic(err)
+      }
 
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//
+//
+//   N := 1_000
+//
+//   random.Seed(2)
+//
+//   step := big.NewRat(1, 100)
+//
+//   deltaMin := big.NewRat(0, 1)
+//   deltaMax := big.NewRat(10, 1)
+//   gammaMin := big.NewRat(0, 1)
+//   gammaMax := big.NewRat(5, 1)
+//
+//   var Delta, Gamma big.Rat
+//
+//   delta, gamma := &Delta, &Gamma
+//
+//   distributions := []random.Distribution{
+//      &distribution.Uniform{},
+//      &distribution.Skewed{},
+//      &distribution.Normal{},
+//      &distribution.Zipf{},
+//      &distribution.Maximum{},
+//   }
+//
+//   for delta.Set(deltaMin); delta.Cmp(deltaMax) <= 0; delta.Add(delta, step) {
+//      for gamma.Set(gammaMin); gamma.Cmp(gammaMax) <= 0; gamma.Add(gamma, step) {
+//         var wg sync.WaitGroup
+//         var invalid int64
+//
+//         for _, dist := range distributions {
+//            dist := dist.New(random.Uint64())
+//
+//            wg.Add(1)
+//            go func() {
+//               tree := &WBSTTopDown{
+//                  Delta: delta,
+//                  Gamma: gamma,
+//               }
+//               defer func() {
+//                  tree.Free()
+//                  if err := recover(); err != nil {
+//                     invalid++
+//                  }
+//                  wg.Done()
+//               }()
+//               //
+//               // INSERT DELETE
+//               //
+//               for tree.size < list.Size(N) && invalid == 0 {
+//                  tree.Insert(dist.LessThan(tree.size+1), 0)
+//                  tree.Insert(dist.LessThan(tree.size+1), 0)
+//                  tree.Delete(dist.LessThan(tree.size))
+//               }
+//               tree.Verify()
+//               //
+//               // DELETE
+//               //
+//               for tree.size > 0 && invalid == 0 {
+//                  tree.Delete(dist.LessThan(tree.size))
+//               }
+//               tree.Verify()
+//            }()
+//         }
+//         wg.Wait()
+//         if invalid == 0 {
+//            fmt.Println(delta.FloatString(6), gamma.FloatString(6))
+//         }
+//      }
+//   }
+//}
 
    //random.Seed(4)
    //for {

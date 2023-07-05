@@ -2,25 +2,32 @@ package trees
 
 import (
    "bst/abstract/list"
+   "math/big"
 )
 
 type WBSTTopDown struct {
    Tree
+   Delta *big.Rat
+   Gamma *big.Rat
 }
 
 func (WBSTTopDown) New() list.List {
    return &WBSTTopDown{
+      Delta: big.NewRat(3, 1),
+      Gamma: big.NewRat(2, 1),
    }
 }
 
 func (tree *WBSTTopDown) Clone() list.List {
    return &WBSTTopDown{
+      Delta: tree.Delta,
+      Gamma: tree.Gamma,
       Tree: tree.Tree.Clone(),
    }
 }
 
 func (tree WBSTTopDown) verifyBalance(p *Node, s list.Size) {
-   if p == nil {
+   if s < 3 {
       return
    }
    sl := p.sizeL()
@@ -40,15 +47,21 @@ func (tree WBSTTopDown) verifyHeight(root *Node, size list.Size) {
 func (tree WBSTTopDown) Verify() {
    //tree.verifySizes()
    tree.verifyBalance(tree.root, tree.size)
-   tree.verifyHeight(tree.root, tree.size)
+   //tree.verifyHeight(tree.root, tree.size)
 }
 
 func (tree *WBSTTopDown) isBalanced(x, y list.Size) bool {
-   return 3 * (x+1) >= (y + 1)
+   var a, b big.Rat
+   a.SetUint64(x + 1)
+   b.SetUint64(y + 1)
+   return a.Mul(tree.Delta, &a).Cmp(&b) >= 0
 }
 
 func (tree *WBSTTopDown) singleRotation(x, y list.Size) bool {
-   return 2 * (x+1) > (y + 1)
+   var a, b big.Rat
+   a.SetUint64(x + 1)
+   b.SetUint64(y + 1)
+   return a.Mul(tree.Gamma, &a).Cmp(&b) > 0
 }
 
 func (tree *WBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.Data) {
@@ -63,8 +76,8 @@ func (tree *WBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.D
       sl := (*p).sizeL()
       sr := (*p).sizeR(s)
 
-      // assert(tree.isBalanced(sr, sl))
-      // assert(tree.isBalanced(sl, sr))
+      assert(tree.isBalanced(sr, sl))
+      assert(tree.isBalanced(sl, sr))
 
       if i <= (*p).s {
          if tree.isBalanced(sr, sl+1) {
@@ -190,8 +203,8 @@ func (tree *WBSTTopDown) delete(p **Node, s list.Size, i list.Position) (deleted
       sl := (*p).s
       sr := s - (*p).s - 1
 
-      // assert(tree.isBalanced(sl, sr))
-      // assert(tree.isBalanced(sr, sl))
+      assert(tree.isBalanced(sl, sr))
+      assert(tree.isBalanced(sr, sl))
 
       if i == (*p).s {
          defer tree.free(*p)
@@ -308,8 +321,8 @@ func (tree *WBSTTopDown) Join(that list.List) list.List {
    tree.share(l.root)
    tree.share(r.root)
    return &WBSTTopDown{
-      //Delta: tree.Delta,
-      //Gamma: tree.Gamma,
+      Delta: tree.Delta,
+      Gamma: tree.Gamma,
       Tree: Tree{
          arena: tree.arena,
          root:  tree.join(l.root, r.root, l.size, r.size),
@@ -398,11 +411,7 @@ func (tree WBSTTopDown) Split(i list.Position) (list.List, list.List) {
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
 
-   return &WBSTTopDown{
-      //Delta: tree.Delta, Gamma: tree.Gamma,
-      Tree: Tree{arena: tree.arena, root: l, size: i}},
-          &WBSTTopDown{
-      //Delta: tree.Delta, Gamma: tree.Gamma,
-      Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
+   return &WBSTTopDown{Delta: tree.Delta, Gamma: tree.Gamma, Tree: Tree{arena: tree.arena, root: l, size: i}},
+          &WBSTTopDown{Delta: tree.Delta, Gamma: tree.Gamma, Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
 }
 

@@ -16,7 +16,11 @@ import (
 type Arena struct {
    *arenas.Arena
 }
-
+func (tree Tree) Free() {
+   if tree.arena != nil {
+      tree.arena.Free()
+   }
+}
 // Free releases all the memory allocated by this arena.
 //func (arena *Allocator) Free() {
 //  ((*arena.Arena)(arena)).Free()
@@ -25,6 +29,7 @@ type Arena struct {
 //   ((*arena.Arena)(arena)).Free()
 //}
 
+// Allocates memory for a new node and copies the given node into that memory.
 func (tree *Tree) allocate(node Node) (allocated *Node) {
    if tree.arena == nil {
       tree.arena = arenas.NewArena()
@@ -34,18 +39,6 @@ func (tree *Tree) allocate(node Node) (allocated *Node) {
    *allocated = node
    return
 }
-
-// Allocates memory for a new node and copies the given node into that memory.
-//func (arena *Arena) allocate(node Node) (allocated *Node) {
-//   if arena.Arena == nil {
-//      fmt.Println("arena is nil")
-//      arena.Arena = arenas.NewArena()
-//   }
-//   // measurement(&allocations, 1)
-//   allocated = arenas.New[Node](arena.Arena)
-//  *allocated = node
-//   return
-//}
 
 // ReferenceCounter is used to implemented copy-on-write persistence.
 //
