@@ -170,6 +170,26 @@ func log2_2(x, y int) bool {
    return x >= y / 2 && x <= y * 2
 }
 
+func Beep() {
+   //f, err := os.Open("dissolve.wav")
+   //if err != nil {
+   //   log.Fatal(err)
+   //}
+   //streamer, format, err := wav.Decode(f)
+   //if err != nil {
+   //   log.Fatal(err)
+   //}
+   //defer streamer.Close()
+   //
+   //speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
+   //
+   //done := make(chan bool)
+   //speaker.Play(beep.Seq(streamer, beep.Callback(func() {
+   //   done <- true
+   //})))
+   //<-done
+}
+
 
 func Sandbox() {
    //
@@ -186,7 +206,7 @@ func Sandbox() {
    //tree.Free()
    //return
    //
-   N := 100
+   N := 1000
 
    I := 0
 
@@ -197,8 +217,6 @@ func Sandbox() {
       &distribution.Skewed{},
       &distribution.Normal{},
       &distribution.Zipf{},
-      &distribution.Maximum{},
-      &distribution.Ascending{},
       &distribution.BiModal{},
       &distribution.Parabolic{},
       &distribution.Slope{},
@@ -218,6 +236,7 @@ func Sandbox() {
       reader := csv.NewReader(bytes.NewReader(body))
       reader.Comma = ' '
 
+      checked := 0
       for {
          row, err := reader.Read()
          if err == io.EOF {
@@ -237,6 +256,7 @@ func Sandbox() {
             }
             continue
          }
+         checked++
 
          var wg sync.WaitGroup
 
@@ -255,6 +275,9 @@ func Sandbox() {
                   tree.Free()
                   if err := recover(); err != nil {
                      invalid = true
+                     fmt.Fprintln(os.Stderr, utility.NameOf(dist), delta.FloatString(6), gamma.FloatString(6))
+                     Beep()
+                     //os.Stderr.Write([]byte("\a"))
                   }
                   wg.Done()
                }()
@@ -262,6 +285,16 @@ func Sandbox() {
                // INSERT
                //
                for !invalid && tree.size < list.Size(N) {
+                  tree.Insert(dist.LessThan(tree.size+1), 0)
+               }
+               if !invalid {
+                  tree.Verify()
+               }
+               //
+               // DELETE INSERT
+               //
+               for k := tree.size; !invalid && k > 0; k-- {
+                  tree.Delete(dist.LessThan(tree.size))
                   tree.Insert(dist.LessThan(tree.size+1), 0)
                }
                if !invalid {
@@ -277,12 +310,12 @@ func Sandbox() {
                   tree.Verify()
                }
                //
-               // INSERT DELETE
+               // INSERT DELETE INSERT
                //
                for !invalid && tree.size < list.Size(N) {
                   tree.Insert(dist.LessThan(tree.size+1), 0)
-                  tree.Insert(dist.LessThan(tree.size+1), 0)
                   tree.Delete(dist.LessThan(tree.size))
+                  tree.Insert(dist.LessThan(tree.size+1), 0)
                }
                if !invalid {
                   tree.Verify()
@@ -298,6 +331,7 @@ func Sandbox() {
             }
          }
       }
+      fmt.Fprintln(os.Stderr, checked, "remaining")
       //
       if err := os.WriteFile("wb_topdown_polytope_many.csv", buffer.Bytes(), os.ModePerm); err != nil {
          panic(err)

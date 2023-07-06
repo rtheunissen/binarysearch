@@ -110,6 +110,7 @@ operation-measurements: assertions-off measurements-on
 
 
 optimized-plots:
+	npx --yes svgo --folder "."
 	npx --yes svgo --recursive --folder "benchmarks/svg"
 
 plot-index:

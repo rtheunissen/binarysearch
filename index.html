@@ -1625,33 +1625,64 @@ func balance(p *Node, s Size) *Node {
             </p>
             <p>
                 The valid range for these parameters is complex, and their evaluation involves floating-point arithmetic or integer multiplication that could overflow.
-                Ideally, there exists a strategy that keeps the weights of subtrees within some bound without the need to perform complex calculations.
+                Ideally, we could keep the weights of subtrees within some bound without the need to perform complex calculations.
             </p>
             <p>
-                Along this track is the <em>logarithmic binary search trees</em> introduced by Roura in 2001, which use simple bitwise operations to evaluate logarithmic weight-balance.
-                The maximum height of a logarithmic weight-balanced tree $2\log_{2}n$, which is the same as red-black trees and the original weight-balanced trees.
-                The original bottom-up algorithm uses subtree size as weight, but Roura mentions in the final remarks that it is possible to use the number of leaves as weight, which aligns with the definition of weight used so far.
+                Roura introduced <em>logarithmic binary search trees</em> in 2001, which use simple bitwise operations to evaluate weight-balance.
+                There is no corresponding $\alpha$ value because the logarithmic weight-balance rule is not a linear relationship, as there is no constant factor.
+                The maximum height of a logarithmic weight-balanced tree is the same as red-black trees and weight-balanced trees:  $2\log_{2}n$.
+                The original bottom-up algorithm uses subtree size as weight, but Roura mentions in the final remarks that it is possible to use the number of leaves as weight, which aligns with the standard definition of weight.
             </p>
             <p>
-                Leonor Frias published top-down logarithmic weight-balanced trees in 2005, where insertion and deletion is done in constant space.
-                Using the standard definition of weight rather than subtree size simplifies their top-down algorithms significantly and becomes general with the top-down algorithms of Lai and Wood.
-                Their benchmarks indicate that top-down logarithmic weight-balanced trees are competitive with red-black trees.
+                Frias published top-down logarithmic weight-balanced trees in 2005, under advice from Roura.
+                Their algorithms are more complex than the top-down algorithms of Lai and Wood as a result of using subtree size as weight.
+                Using the standard definition of weight rather than subtree size simplifies their algorithms to become general with the top-down algorithms of Lai and Wood.
             </p>
             <p>
-                Hirai and Yamamoto published an investigation of weight-balanced trees in 2011, which included a short section on logarithmic weight-balance stating that "for mathematical reliability, logarithmic weight-balanced trees are simpler".
-                They measured the original implementation by Roura against other weight-balanced trees and found their performance to be about the same.
+                Hirai and Yamamoto published an investigation of weight-balanced trees in 2011, wherein they introduce two balancing parameters: $\Delta$ as the constant factor that determines if two subtrees are weight-balanced, and $\Gamma$ to determine the type of rotation that is needed to restore balance.
             </p>
             <p>
-                Barth and Wagner evaluated top-down weight-balanced trees in 2019, but mention logarithmic weight-balance only in the introduction without further evaluation.
-                They observe that "to our knowledge, no empirical analysis of top-down weight-balanced trees has been done yet", and contribute detailed benchmarks across a range of balancing parameters.
+                $$
+                \Delta = \frac{1-\alpha}{\alpha}
+                \qquad
+                \qquad
+                \alpha = \frac{1}{\Delta+1}
+                $$
+
+                $$
+                \Gamma = \frac{1}{1-\alpha}
+                \qquad
+                \qquad
+                \Gamma = \frac{\Delta+1}{\Delta}
+                $$
+            </p>
+            <p>
+                Balancing parameters are considered <em>feasible</em> if they consistently produce valid weight-balanced trees.
+                Hirai and Yamamoto show that the feasible space for $\langle\Delta,\Gamma\rangle$ is actually a polygon, suggesting that the linear dependency between $\Delta$ and $\Gamma$ implied by $\alpha$ is not necessary.
+                The feasible parameter space is expanded by separating two independent variables coupled linearly in $\alpha$.
+            </p>
+            <p>
+                Hirai and Yamamoto include a short section on logarithmic weight-balance, stating that "for mathematical reliability, logarithmic weight-balanced trees are simpler".
+                They benchmarked the original bottom-up implementation against other bottom-up weight-balanced trees and found their performance to be about the same.
+                They point out that the same weight-balance algorithms can be used bottom-up, providing only the concerns of $\Delta$ and $\Gamma$.
+            </p>
+            <p>
+                Barth and Wagner evaluated top-down weight-balanced trees in 2019, but mention logarithmic weight-balance only in the introduction, without further evaluation.
+                They contribute detailed benchmarks across a range of $\langle\Delta,\Gamma\rangle$, but acknowledge that "it is unclear what the feasible polytope looks like".
                 They conclude with a suggestion for further study, that "in the future, it would be interesting to determine the space of feasible balancing parameters for top-down weight-balanced trees similar to how Hirai and Yamamoto have done for bottom-up weight-balanced trees."
             </p>
             <p>
-                While not a rigorous proof, this project provides analysis to give an idea of this space for top-down weight-balanced trees.
-                For combinations of the balancing parameters $\Delta$ and $\Gamma$, both from 0 to 5 in steps of 0.001, trees of size up to 1,000,000 were created using insert, then emptied with delete.
-                After every individual operation, weight-balance was checked at every node and marked as valid if the parameters consistently produced a valid tree throughout the experiment.
-                To produce the polytope that represents the space if feasible parameters, a dot is placed at every $\Delta$ and $\Gamma$ combination that produced valid trees.
-                False-positives are possible but false-negatives are not, because a negative result indicates that at least one concrete counter-example was found.
+<!--                This project measures and plots the space of feasible balancing parameters for top-down weight-balanced trees.-->
+                To produce this, trees were simulated for a wide range of $\Delta$ and $\Gamma$.
+                If at any point during the simulation there is a node in the tree that is not weight-balanced, that $\langle\Delta,\Gamma\rangle$ pair is excluded from the plot because a counter-example exists.
+                The remaining area comprises the polytope of feasible balancing parameters for top-down weight-balanced trees.
+            </p>
+            <p>
+                <img src="docs/wb_topdown_polytope.svg">
+            </p>
+            <p>
+                The shape is practically identical to what Hirai and Yamamoto found for bottom-up weight-balanced trees, suggesting that the feasible space might be the same.
+                The dotted curve along the bottom of the shape is the corresponding $\langle\Delta,\Gamma\rangle$ line for the proof by Lai and Wood, and the highlighted area shows the corresponding range of their proof .
             </p>
             <p>
                 This project implements four weight-balanced trees:
@@ -1868,33 +1899,6 @@ but that the tree has a low average search cost ]
 <!--https://web.archive.org/web/*/http://t-t-travails.blogspot.com/2008/04/left-leaning-red-black-trees-are-hard.html-->
 <!--https://github.com/zarif98sjs/RedBlackTree-An-Intuitive-Approach-->
 <!--https://www.boost.org/doc/libs/1_53_0/doc/html/intrusive/set_multiset.html-->
-
-
-
-<script>
-    // Get all cite elements
-    const citeElements = document.querySelectorAll('cite');
-
-    // Reference block container
-    const referencesContainer = document.getElementById('references');
-
-    // Loop through each cite element
-    citeElements.forEach((citeElement, index) => {
-        // Increment the index by 1 for display
-        const referenceNumber = index + 1;
-
-        // Update the citation number in the <a> tag
-        const anchorElement = citeElement.querySelector('a');
-        anchorElement.innerText = `[${referenceNumber}]` //`[${citeElement.getAttribute('data-authors')}, ${citeElement.getAttribute('data-year')}]`;
-
-        // Create a new reference block
-        const referenceBlock = document.createElement('p');
-        referenceBlock.textContent = `[${referenceNumber}] ${citeElement.getAttribute('data-authors')}, "${citeElement.getAttribute('data-title')}", ${citeElement.getAttribute('data-year')}.`;
-
-        // Append the reference block to the container
-        referencesContainer.appendChild(referenceBlock);
-    });
-</script>
 
 
 </body>
