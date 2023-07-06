@@ -213,19 +213,29 @@ func Sandbox() {
    random.Seed(uint64(time.Now().UnixNano()))
 
    distributions := []random.Distribution{
-      &distribution.Uniform{},
       &distribution.Skewed{},
+      &distribution.Skewed2{},
+      &distribution.Skewed3{},
+      &distribution.Skewed4{},
+      &distribution.Skewed5{},
+      &distribution.Skewed6{},
+      &distribution.Skewed7{},
+      &distribution.Skewed8{},
+      &distribution.Skewed9{},
+      &distribution.Skewed10{},
+
+      &distribution.Uniform{},
       &distribution.Normal{},
       &distribution.Zipf{},
       &distribution.BiModal{},
       &distribution.Parabolic{},
       &distribution.Slope{},
+      &distribution.Maximum{},
       &distribution.Queue{},
    }
 
    for {
       I++
-      fmt.Println(I)
 
       body, err := os.ReadFile("wb_topdown_polytope_many.csv")
       if err != nil {
@@ -248,7 +258,7 @@ func Sandbox() {
          delta, _ := new(big.Rat).SetString(row[0])
          gamma, _ := new(big.Rat).SetString(row[1])
 
-         if gamma.Cmp(new(big.Rat).Quo(new(big.Rat).Add(delta, big.NewRat(1, 1)), delta)) > 0 {
+         if gamma.Cmp(new(big.Rat).Quo(new(big.Rat).Add(delta, big.NewRat(1, 1)), delta)) >= 0 {
             //fmt.Println(I, delta.FloatString(4), gamma.FloatString(4))
             _, err := fmt.Fprintln(&buffer, delta.FloatString(4), gamma.FloatString(4))
             if err != nil {
@@ -262,65 +272,72 @@ func Sandbox() {
 
          var invalid bool
 
-         for _, dist := range distributions {
-            dist := dist.New(random.Uint64())
+         for _, dist1 := range distributions {
+            for _, dist2 := range distributions {
+               dist1 := dist1.New(random.Uint64())
+               dist2 := dist2.New(random.Uint64())
 
-            wg.Add(1)
-            go func() {
-               tree := &WBSTTopDown{
-                  Delta: delta,
-                  Gamma: gamma,
-               }
-               defer func() {
-                  tree.Free()
-                  if err := recover(); err != nil {
-                     invalid = true
-                     fmt.Fprintln(os.Stderr, utility.NameOf(dist), delta.FloatString(6), gamma.FloatString(6))
-                     Beep()
-                     //os.Stderr.Write([]byte("\a"))
+               wg.Add(1)
+               go func() {
+                  tree := &WBSTTopDown{
+                     Delta: delta,
+                     Gamma: gamma,
                   }
-                  wg.Done()
+                  defer func() {
+                     tree.Free()
+                     if err := recover(); err != nil {
+                        invalid = true
+                        fmt.Println(utility.NameOf(dist1), utility.NameOf(dist2), delta.FloatString(6), gamma.FloatString(6))
+                        os.Stdout.Write([]byte("\a"))
+                        checked--
+                     }
+                     wg.Done()
+                  }()
+                  //
+                  // INSERT
+                  //
+                  for !invalid && tree.size < list.Size(N) {
+                     tree.Insert(dist1.LessThan(tree.size+1), 0)
+                  }
+                  if !invalid {
+                     tree.Verify()
+                  }
+                  //
+                  // DELETE, INSERT
+                  //
+                  for k := tree.size; !invalid && k > 0; k-- {
+                    tree.Insert(dist1.LessThan(tree.size+1), 0)
+                    tree.Delete(dist2.LessThan(tree.size))
+                  }
+                  if !invalid {
+                    tree.Verify()
+                  }
+                  //
+                  // DELETE
+                  //
+                  for !invalid && tree.size > 0 {
+                     if tree.size & 1 == 0 {
+                        tree.Delete(dist1.LessThan(tree.size))
+                     } else {
+                        tree.Delete(dist2.LessThan(tree.size))
+                     }
+                  }
+                  if !invalid {
+                     tree.Verify()
+                  }
+                  //
+                  // INSERT DELETE INSERT
+                  //
+                  for !invalid && tree.size < list.Size(N) {
+                    tree.Insert(dist1.LessThan(tree.size+1), 0)
+                    tree.Delete(dist2.LessThan(tree.size))
+                    tree.Insert(dist2.LessThan(tree.size+1), 0)
+                  }
+                  if !invalid {
+                    tree.Verify()
+                  }
                }()
-               //
-               // INSERT
-               //
-               for !invalid && tree.size < list.Size(N) {
-                  tree.Insert(dist.LessThan(tree.size+1), 0)
-               }
-               if !invalid {
-                  tree.Verify()
-               }
-               //
-               // DELETE INSERT
-               //
-               for k := tree.size; !invalid && k > 0; k-- {
-                  tree.Delete(dist.LessThan(tree.size))
-                  tree.Insert(dist.LessThan(tree.size+1), 0)
-               }
-               if !invalid {
-                  tree.Verify()
-               }
-               //
-               // DELETE
-               //
-               for !invalid && tree.size > 0 {
-                  tree.Delete(dist.LessThan(tree.size))
-               }
-               if !invalid {
-                  tree.Verify()
-               }
-               //
-               // INSERT DELETE INSERT
-               //
-               for !invalid && tree.size < list.Size(N) {
-                  tree.Insert(dist.LessThan(tree.size+1), 0)
-                  tree.Delete(dist.LessThan(tree.size))
-                  tree.Insert(dist.LessThan(tree.size+1), 0)
-               }
-               if !invalid {
-                  tree.Verify()
-               }
-            }()
+            }
          }
          wg.Wait()
          if !invalid {
@@ -331,12 +348,11 @@ func Sandbox() {
             }
          }
       }
-      fmt.Fprintln(os.Stderr, checked, "remaining")
+      fmt.Println(checked, "remaining")
       //
       if err := os.WriteFile("wb_topdown_polytope_many.csv", buffer.Bytes(), os.ModePerm); err != nil {
          panic(err)
       }
-
    }
 }
 

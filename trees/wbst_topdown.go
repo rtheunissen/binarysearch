@@ -71,7 +71,7 @@ func (tree *WBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.D
          *p = tree.allocate(Node{x: x})
          return
       }
-      tree.persist(p)
+      //tree.persist(p)
 
       sl := (*p).sizeL()
       sr := (*p).sizeR(s)
@@ -198,7 +198,7 @@ func (tree *WBSTTopDown) delete(p **Node, s list.Size, i list.Position) (deleted
    // assert(i < s)
    // assert(s == (*p).size())
    for {
-      tree.persist(p)
+      //tree.persist(p)
 
       sl := (*p).s
       sr := s - (*p).s - 1
@@ -207,7 +207,7 @@ func (tree *WBSTTopDown) delete(p **Node, s list.Size, i list.Position) (deleted
       assert(tree.isBalanced(sr, sl))
 
       if i == (*p).s {
-         defer tree.free(*p)
+         //defer tree.free(*p)
          x := *p
          *p = tree.join((*p).l, (*p).r, sl, sr)
          return x
