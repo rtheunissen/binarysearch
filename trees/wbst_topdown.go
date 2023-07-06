@@ -3,6 +3,7 @@ package trees
 import (
    "bst/abstract/list"
    "math/big"
+   "sync"
 )
 
 type WBSTTopDown struct {
@@ -50,18 +51,35 @@ func (tree WBSTTopDown) Verify() {
    //tree.verifyHeight(tree.root, tree.size)
 }
 
+var balCache sync.Map
+var rotCache sync.Map
+
 func (tree *WBSTTopDown) isBalanced(x, y list.Size) bool {
-   var a, b big.Rat
+   //key := fmt.Sprintf("%s %d %d", tree.Delta.String(), x + 1, y + 1)
+   //if balanced, cached := balCache.Load(key); cached {
+   //   return balanced.(bool)
+   //}
+   // not cached
+   var a big.Rat
+   var b big.Rat
    a.SetUint64(x + 1)
    b.SetUint64(y + 1)
-   return a.Mul(tree.Delta, &a).Cmp(&b) >= 0
+   balanced := a.Mul(tree.Delta, &a).Cmp(&b) >= 0
+   //balCache.Store(key, balanced)
+   return balanced
 }
 
 func (tree *WBSTTopDown) singleRotation(x, y list.Size) bool {
+   //key := fmt.Sprintf("%s %d %d", tree.Gamma.String(), x + 1, y + 1)
+   //if single, cached := rotCache.Load(key); cached {
+   //   return single.(bool)
+   //}
    var a, b big.Rat
    a.SetUint64(x + 1)
    b.SetUint64(y + 1)
-   return a.Mul(tree.Gamma, &a).Cmp(&b) > 0
+   single := a.Mul(tree.Gamma, &a).Cmp(&b) > 0
+   //rotCache.Store(key, single)
+   return single
 }
 
 func (tree *WBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.Data) {

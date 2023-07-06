@@ -192,6 +192,7 @@ func Beep() {
 
 
 func Sandbox() {
+
    //
    //tree := &WBSTTopDown{
    //   Delta: big.NewFloat(3.0),
@@ -234,6 +235,12 @@ func Sandbox() {
       &distribution.Queue{},
    }
 
+   var a, b, c, d big.Rat // temp
+
+   o := big.NewRat(1, 1)
+
+   includeCache := map[string]bool{}
+
    for {
       I++
 
@@ -255,16 +262,23 @@ func Sandbox() {
          if len(row) != 2 {
             continue
          }
-         delta, _ := new(big.Rat).SetString(row[0])
-         gamma, _ := new(big.Rat).SetString(row[1])
+         delta, _ := a.SetString(row[0])
+         gamma, _ := b.SetString(row[1])
 
-         if gamma.Cmp(new(big.Rat).Quo(new(big.Rat).Add(delta, big.NewRat(1, 1)), delta)) >= 0 {
-            //fmt.Println(I, delta.FloatString(4), gamma.FloatString(4))
-            _, err := fmt.Fprintln(&buffer, delta.FloatString(4), gamma.FloatString(4))
-            if err != nil {
-               return
-            }
-            continue
+         deltaS := delta.FloatString(4)
+         gammaS := gamma.FloatString(4)
+
+         skip, cached := includeCache[deltaS + gammaS]
+         if !cached {
+           skip = gamma.Cmp(c.Quo(d.Add(delta, o), delta)) >= 0
+           includeCache[deltaS+gammaS] = skip
+         }
+         if skip {
+           _, err := fmt.Fprintln(&buffer, deltaS, gammaS)
+           if err != nil {
+              panic(err)
+           }
+           continue
          }
          checked++
 
@@ -273,76 +287,88 @@ func Sandbox() {
          var invalid bool
 
          for _, dist1 := range distributions {
-            for _, dist2 := range distributions {
-               dist1 := dist1.New(random.Uint64())
-               dist2 := dist2.New(random.Uint64())
 
-               wg.Add(1)
-               go func() {
-                  tree := &WBSTTopDown{
-                     Delta: delta,
-                     Gamma: gamma,
+            dist1 := dist1.New(random.Uint64())
+
+            wg.Add(1)
+            go func() {
+               tree := &WBSTTopDown{
+                  Delta: delta,
+                  Gamma: gamma,
+               }
+               defer func() {
+                  tree.Free()
+                  if err := recover(); err != nil {
+                     invalid = true
+                     fmt.Println(deltaS, gammaS)
+                     os.Stdout.Write([]byte("\a"))
+                     checked--
                   }
-                  defer func() {
-                     tree.Free()
-                     if err := recover(); err != nil {
-                        invalid = true
-                        fmt.Println(utility.NameOf(dist1), utility.NameOf(dist2), delta.FloatString(6), gamma.FloatString(6))
-                        os.Stdout.Write([]byte("\a"))
-                        checked--
-                     }
-                     wg.Done()
-                  }()
+                  wg.Done()
+               }()
+               for _, dist2 := range distributions {
+                  dist2 := dist2.New(random.Uint64())
+
                   //
                   // INSERT
                   //
-                  for !invalid && tree.size < list.Size(N) {
+                  for tree.size < list.Size(N) && !invalid {
                      tree.Insert(dist1.LessThan(tree.size+1), 0)
                   }
-                  if !invalid {
-                     tree.Verify()
-                  }
+                  //if !invalid {
+                  //   tree.Verify()
+                  //}
                   //
                   // DELETE, INSERT
                   //
-                  for k := tree.size; !invalid && k > 0; k-- {
-                    tree.Insert(dist1.LessThan(tree.size+1), 0)
-                    tree.Delete(dist2.LessThan(tree.size))
-                  }
-                  if !invalid {
-                    tree.Verify()
-                  }
+                  //for k := tree.size; !invalid && k > 0; k-- {
+                  //   tree.Insert(dist1.LessThan(tree.size+1), 0)
+                  //   tree.Delete(dist2.LessThan(tree.size))
+                  //}
+                  //if !invalid {
+                  //  tree.Verify()
+                  //}
                   //
                   // DELETE
                   //
-                  for !invalid && tree.size > 0 {
-                     if tree.size & 1 == 0 {
+                  for tree.size > 0 && !invalid  {
+                     if tree.size&1 == 0 {
                         tree.Delete(dist1.LessThan(tree.size))
                      } else {
                         tree.Delete(dist2.LessThan(tree.size))
                      }
                   }
-                  if !invalid {
-                     tree.Verify()
-                  }
+                  //if !invalid {
+                  //   tree.Verify()
+                  //}
                   //
                   // INSERT DELETE INSERT
                   //
-                  for !invalid && tree.size < list.Size(N) {
-                    tree.Insert(dist1.LessThan(tree.size+1), 0)
-                    tree.Delete(dist2.LessThan(tree.size))
-                    tree.Insert(dist2.LessThan(tree.size+1), 0)
+                  for tree.size < list.Size(N) && !invalid  {
+                     tree.Insert(dist1.LessThan(tree.size+1), 0)
+                     tree.Delete(dist2.LessThan(tree.size))
+                     tree.Insert(dist2.LessThan(tree.size+1), 0)
                   }
-                  if !invalid {
-                    tree.Verify()
+                  //if !invalid {
+                  //  tree.Verify()
+                  //}
+                  //
+                  // DELETE
+                  //
+                  for tree.size > 0 && !invalid  {
+                     if tree.size&1 == 0 {
+                        tree.Delete(dist1.LessThan(tree.size))
+                     } else {
+                        tree.Delete(dist2.LessThan(tree.size))
+                     }
                   }
-               }()
-            }
+               }
+            }()
          }
          wg.Wait()
          if !invalid {
             //fmt.Println(I, delta.FloatString(4), gamma.FloatString(4))
-            _, err := fmt.Fprintln(&buffer, delta.FloatString(4), gamma.FloatString(4))
+            _, err := fmt.Fprintln(&buffer, deltaS, gammaS)
             if err != nil {
               return
             }
