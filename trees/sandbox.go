@@ -207,6 +207,7 @@ func Sandbox() {
 
    for {
       I++
+      fmt.Println(I)
 
       body, err := os.ReadFile("wb_topdown_polytope_many.csv")
       if err != nil {
@@ -228,8 +229,8 @@ func Sandbox() {
          delta, _ := new(big.Rat).SetString(row[0])
          gamma, _ := new(big.Rat).SetString(row[1])
 
-         if gamma.Cmp(big.NewRat(4,3)) > 0 || gamma.Cmp(big.NewRat(1,1)) < 0 {
-            fmt.Println(I, delta.FloatString(4), gamma.FloatString(4))
+         if gamma.Cmp(new(big.Rat).Quo(new(big.Rat).Add(delta, big.NewRat(1, 1)), delta)) > 0 {
+            //fmt.Println(I, delta.FloatString(4), gamma.FloatString(4))
             _, err := fmt.Fprintln(&buffer, delta.FloatString(4), gamma.FloatString(4))
             if err != nil {
                return
@@ -290,7 +291,7 @@ func Sandbox() {
          }
          wg.Wait()
          if !invalid {
-            fmt.Println(I, delta.FloatString(4), gamma.FloatString(4))
+            //fmt.Println(I, delta.FloatString(4), gamma.FloatString(4))
             _, err := fmt.Fprintln(&buffer, delta.FloatString(4), gamma.FloatString(4))
             if err != nil {
               return
