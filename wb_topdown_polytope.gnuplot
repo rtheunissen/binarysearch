@@ -1,21 +1,23 @@
-set terminal svg size 600,300 dynamic round
+set terminal svg size 400,300 dynamic round
 
-set xlabel "Δ" font ",8" offset 0,0
-set x2label "α" font ",8" offset 0,0 rotate by 0
-set ylabel "Γ" font ",8" offset 0,0 rotate by 0
-set y2label "α" font ",8" offset -3,0 rotate by 0
+FONT_SIZE=8
 
-set xtics font ",8"
-set ytics font ",8"
-set x2tics font ",8"
-set y2tics font ",8"
+set xlabel "Δ" font ",".FONT_SIZE offset 0,0
+set x2label "α" font ",".FONT_SIZE offset 0,0 rotate by 0
+set ylabel "Γ" font ",".FONT_SIZE offset 0,0 rotate by 0
+set y2label "α" font ",".FONT_SIZE offset -3,0 rotate by 0
 
-set tmargin
-set lmargin
-set bmargin 4
+set xtics font ",".FONT_SIZE
+set ytics font ",".FONT_SIZE
+set x2tics font ",".FONT_SIZE
+set y2tics font ",".FONT_SIZE
+
+set lmargin 8
+set bmargin 3
 set rmargin 10
+set tmargin 4
 
-set style line 1000 dashtype 3 lw 0.5 pt 1 ps 0 lc "#cccccc"
+set style line 1000 dashtype 3 lw 0.1 pt 1 ps 0 lc "#000000"
 
 set ytics ("1" 1, "2" 2, "5/3" 5./3, "3/2" 1.5, "√2" sqrt(2), "4/3" 4./3.)
 set xtics ("2" 2, "1+√2" 1.+sqrt(2), "3" 3, "7/2" 3.5, "4/3" 4./3., "4" 4, "9/2" 4.5, "5" 5)
@@ -38,7 +40,12 @@ set xrange [1.8:5]
 set yrange [0.9:2.1]
 set y2range [0.9:2.1]
 
-plot "wb_topdown_polytope_many.csv" using 1:2 with points axes x1y1 pt 7 ps 0.05 lc rgb "#000000" notitle, \
+
+set label "Γ ≥ (Δ + 1) / Δ" at graph 0.75, graph 0.21 font ",".FONT_SIZE
+set label "Γ ≤ (Δ - 1)"     at graph 0.15, graph 0.75 font ",".FONT_SIZE
+
+
+plot "wb_topdown_polytope_many.csv" using 1:2 with points axes x1y1 pt 5 ps 0.1 lc rgb "#000000" notitle, \
      "wb_topdown_polytope_many.csv" using 1:2 with points axes x1y2 pt 5 ps 0.0 lc rgb "#000000" notitle, \
-     (x+1)/x with lines axes x1y1 lc "#00C853" dt 4 lw 0.1  notitle, \
-     (x-1)/1 with lines axes x1y1 lc "#EE82EE" dt 5 lw 0.1  notitle
+     (x+1)/x with lines axes x1y1 lc "#000000" dt 1 lw 0.5  notitle, \
+     (x-1)/1 with lines axes x1y1 lc "#000000" dt 1 lw 0.5  notitle

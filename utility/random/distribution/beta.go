@@ -10,8 +10,8 @@ type RandomBeta struct {
    Beta
 }
 func (RandomBeta) New(seed uint64) random.Distribution {
-   return &BiModal{
-      Beta: Beta{a: rand.Float64()+0.01, b: rand.Float64()+0.01}.Seed(seed),
+   return &RandomBeta{
+      Beta: Beta{a: rand.Float64()*100+0.01, b: rand.Float64()*100+0.01}.Seed(seed),
    }
 }
 

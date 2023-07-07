@@ -192,7 +192,7 @@ func Beep() {
 
 func Sandbox() {
 
-   N := 1000
+   N := 10_000
 
    random.Seed(uint64(time.Now().UnixNano()))
 
@@ -209,6 +209,14 @@ func Sandbox() {
      &distribution.Skewed10{},
 
      &distribution.RandomBeta{},
+     &distribution.RandomBeta{},
+     &distribution.RandomBeta{},
+     &distribution.RandomBeta{},
+     &distribution.RandomBeta{},
+     &distribution.RandomBeta{},
+     &distribution.RandomBeta{},
+     &distribution.RandomBeta{},
+
      &distribution.Uniform{},
      &distribution.Normal{},
      &distribution.Zipf{},
@@ -250,20 +258,23 @@ func Sandbox() {
 
       wg.Add(1)
       go func() {
+         time.Sleep(100 * time.Millisecond)
+
         tree := &WBSTTopDown{
            Delta: delta,
            Gamma: gamma,
         }
         defer func() {
-
            if err := recover(); err != nil {
               fmt.Println()
               fmt.Println(delta.FloatString(2), gamma.FloatString(2))
               os.Stdout.Write([]byte("\a"))
            }
+           tree.Free()
            wg.Done()
         }()
         for  {
+           fmt.Print(".")
            for _, dist1 := range distributions {
               for _, dist2 := range distributions {
                  dist1 := dist1.New(random.Uint64())
@@ -273,36 +284,28 @@ func Sandbox() {
                  //
                  for tree.size < list.Size(N) {
                      tree.Insert(dist1.LessThan(tree.size+1), 0)
-                     tree.Verify()
                  }
+                 tree.Verify()
                  //
                  // DELETE
                  //
                  for tree.size > 0 {
-                    if tree.size & 1 == 0 {
-                       tree.Delete(dist1.LessThan(tree.size))
-                    } else {
-                       tree.Delete(dist2.LessThan(tree.size))
-                    }
+                    tree.Delete(dist1.LessThan(tree.size))
                  }
                  //
                  // INSERT DELETE INSERT
                  //
                  for tree.size < list.Size(N) {
-                    tree.Insert(dist1.LessThan(tree.size+1), 0)
-                    tree.Delete(dist2.LessThan(tree.size))
-                    tree.Insert(dist2.LessThan(tree.size+1), 0)
-                    tree.Verify()
+                     tree.Insert(dist1.LessThan(tree.size+1), 0)
+                     tree.Delete(dist2.LessThan(tree.size))
+                     tree.Insert(dist1.LessThan(tree.size+1), 0)
                  }
+                 tree.Verify()
                  //
                  // DELETE
                  //
                  for tree.size > 0 {
-                    if random.Uint64() & 1 == 0 {
-                       tree.Delete(dist1.LessThan(tree.size))
-                    } else {
-                       tree.Delete(dist2.LessThan(tree.size))
-                    }
+                     tree.Delete(dist2.LessThan(tree.size))
                  }
                  tree.Free()
               }

@@ -60,11 +60,11 @@ func (tree *WBSTTopDown) isBalanced(x, y list.Size) bool {
       return true
    }
    if tree.Cache == nil {
-      tree.Cache = map[[2]list.Size]bool{}
+     tree.Cache = map[[2]list.Size]bool{}
    }
    key := [2]list.Size{x,y}
    if balanced, cached := tree.Cache[key]; cached {
-      return balanced
+     return balanced
    } else {
       var a big.Rat
       var b big.Rat

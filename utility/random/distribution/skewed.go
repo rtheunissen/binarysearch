@@ -81,5 +81,5 @@ type Skewed10 struct {
 }
 
 func (Skewed10) New(seed uint64) random.Distribution {
-   return &Skewed10{Beta{a: 524, b: 50000}.Seed(seed)}
+   return &Skewed10{Beta{a: 24, b: 500}.Seed(seed)}
 }
