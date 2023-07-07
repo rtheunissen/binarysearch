@@ -1,8 +1,23 @@
 package distribution
 
 import (
+   "bst/utility/random"
+   "golang.org/x/exp/rand"
    "math"
 )
+
+type RandomBeta struct {
+   Beta
+}
+func (RandomBeta) New(seed uint64) random.Distribution {
+   return &BiModal{
+      Beta: Beta{a: rand.Float64()+0.01, b: rand.Float64()+0.01}.Seed(seed),
+   }
+}
+
+func (dist *RandomBeta) LessThan(n uint64) uint64 {
+   return dist.Beta.LessThan(n)
+}
 
 type Beta struct {
    a, b float64

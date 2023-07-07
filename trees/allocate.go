@@ -16,9 +16,10 @@ import (
 type Arena struct {
    *arenas.Arena
 }
-func (tree Tree) Free() {
+func (tree *Tree) Free() {
    if tree.arena != nil {
       tree.arena.Free()
+      tree.arena = nil
    }
 }
 // Free releases all the memory allocated by this arena.

@@ -3,13 +3,13 @@ package trees
 import (
    "bst/abstract/list"
    "math/big"
-   "sync"
 )
 
 type WBSTTopDown struct {
    Tree
    Delta *big.Rat
    Gamma *big.Rat
+   Cache map[[2]list.Size]bool
 }
 
 func (WBSTTopDown) New() list.List {
@@ -51,22 +51,41 @@ func (tree WBSTTopDown) Verify() {
    //tree.verifyHeight(tree.root, tree.size)
 }
 
-var balCache sync.Map
-var rotCache sync.Map
-
 func (tree *WBSTTopDown) isBalanced(x, y list.Size) bool {
    //key := fmt.Sprintf("%s %d %d", tree.Delta.String(), x + 1, y + 1)
    //if balanced, cached := balCache.Load(key); cached {
    //   return balanced.(bool)
    //}
-   // not cached
-   var a big.Rat
-   var b big.Rat
-   a.SetUint64(x + 1)
-   b.SetUint64(y + 1)
-   balanced := a.Mul(tree.Delta, &a).Cmp(&b) >= 0
-   //balCache.Store(key, balanced)
-   return balanced
+   if x >= y {
+      return true
+   }
+   if tree.Cache == nil {
+      tree.Cache = map[[2]list.Size]bool{}
+   }
+   key := [2]list.Size{x,y}
+   if balanced, cached := tree.Cache[key]; cached {
+      return balanced
+   } else {
+      var a big.Rat
+      var b big.Rat
+      a.SetUint64(x + 1)
+      b.SetUint64(y + 1)
+      balanced = a.Mul(tree.Delta, &a).Cmp(&b) >= 0
+      tree.Cache[key] = balanced
+      return balanced
+   }
+   //
+   //
+   //if (x + 1) >= (y + 1) {
+   //   return true
+   //}
+   //var a big.Rat
+   //var b big.Rat
+   //a.SetUint64(x + 1)
+   //b.SetUint64(y + 1)
+   //balanced := a.Mul(tree.Delta, &a).Cmp(&b) >= 0
+   ////balCache.Store(key, balanced)
+   //return balanced
 }
 
 func (tree *WBSTTopDown) singleRotation(x, y list.Size) bool {
@@ -74,6 +93,9 @@ func (tree *WBSTTopDown) singleRotation(x, y list.Size) bool {
    //if single, cached := rotCache.Load(key); cached {
    //   return single.(bool)
    //}
+   if (x + 1) >= (y + 1) {
+      return true
+   }
    var a, b big.Rat
    a.SetUint64(x + 1)
    b.SetUint64(y + 1)

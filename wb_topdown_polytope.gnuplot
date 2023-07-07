@@ -1,4 +1,4 @@
-set terminal svg size 400,300 dynamic round
+set terminal svg size 600,300 dynamic round
 
 set xlabel "Δ" font ",8" offset 0,0
 set x2label "α" font ",8" offset 0,0 rotate by 0
@@ -38,7 +38,7 @@ set xrange [1.8:5]
 set yrange [0.9:2.1]
 set y2range [0.9:2.1]
 
-plot "wb_topdown_polytope_many.csv" using 1:2 with points axes x1y1 pt 5 ps 0.175 lc rgb "#000000" notitle, \
+plot "wb_topdown_polytope_many.csv" using 1:2 with points axes x1y1 pt 7 ps 0.05 lc rgb "#000000" notitle, \
      "wb_topdown_polytope_many.csv" using 1:2 with points axes x1y2 pt 5 ps 0.0 lc rgb "#000000" notitle, \
-     (x+1)/x with lines axes x1y1 lc "#00C853" dt 4 lw 1  notitle, \
-     (x-1)/1 with lines axes x1y1 lc "#EE82EE" dt 5 lw 1  notitle
+     (x+1)/x with lines axes x1y1 lc "#00C853" dt 4 lw 0.1  notitle, \
+     (x-1)/1 with lines axes x1y1 lc "#EE82EE" dt 5 lw 0.1  notitle

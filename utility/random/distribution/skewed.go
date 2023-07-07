@@ -23,7 +23,7 @@ type Skewed3 struct {
 }
 
 func (Skewed3) New(seed uint64) random.Distribution {
-   return &Skewed3{Beta{a: 11, b: 9}.Seed(seed)}
+   return &Skewed3{Beta{a: 113, b: 9}.Seed(seed)}
 }
 
 type Skewed4 struct {
@@ -31,7 +31,7 @@ type Skewed4 struct {
 }
 
 func (Skewed4) New(seed uint64) random.Distribution {
-   return &Skewed4{Beta{a: 33, b: 17}.Seed(seed)}
+   return &Skewed4{Beta{a: 331, b: 17}.Seed(seed)}
 }
 
 
@@ -40,7 +40,7 @@ type Skewed5 struct {
 }
 
 func (Skewed5) New(seed uint64) random.Distribution {
-   return &Skewed5{Beta{a: 3, b: 2}.Seed(seed)}
+   return &Skewed5{Beta{a: 11, b: 2}.Seed(seed)}
 }
 
 type Skewed6 struct {
@@ -57,7 +57,7 @@ type Skewed7 struct {
 }
 
 func (Skewed7) New(seed uint64) random.Distribution {
-   return &Skewed7{Beta{a: 7, b: 13}.Seed(seed)}
+   return &Skewed7{Beta{a: 71, b: 132}.Seed(seed)}
 }
 
 type Skewed8 struct {
@@ -65,7 +65,7 @@ type Skewed8 struct {
 }
 
 func (Skewed8) New(seed uint64) random.Distribution {
-   return &Skewed8{Beta{a: 2, b: 101}.Seed(seed)}
+   return &Skewed8{Beta{a: 1, b: 23}.Seed(seed)}
 }
 
 type Skewed9 struct {
@@ -73,7 +73,7 @@ type Skewed9 struct {
 }
 
 func (Skewed9) New(seed uint64) random.Distribution {
-   return &Skewed9{Beta{a: 500, b: 50}.Seed(seed)}
+   return &Skewed9{Beta{a: 540, b: 50}.Seed(seed)}
 }
 
 type Skewed10 struct {
@@ -81,5 +81,5 @@ type Skewed10 struct {
 }
 
 func (Skewed10) New(seed uint64) random.Distribution {
-   return &Skewed10{Beta{a: 5, b: 5000}.Seed(seed)}
+   return &Skewed10{Beta{a: 524, b: 50000}.Seed(seed)}
 }
