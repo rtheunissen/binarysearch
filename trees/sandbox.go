@@ -192,39 +192,40 @@ func Beep() {
 
 func Sandbox() {
 
-   N := 10_000
+   N := 20_000
 
    random.Seed(uint64(time.Now().UnixNano()))
 
    distributions := []random.Distribution{
-     &distribution.Skewed{},
-     &distribution.Skewed2{},
-     &distribution.Skewed3{},
-     &distribution.Skewed4{},
-     &distribution.Skewed5{},
-     &distribution.Skewed6{},
-     &distribution.Skewed7{},
-     &distribution.Skewed8{},
-     &distribution.Skewed9{},
-     &distribution.Skewed10{},
-
+     //&distribution.Skewed{},
+     //&distribution.Skewed2{},
+     //&distribution.Skewed3{},
+     //&distribution.Skewed4{},
+     //&distribution.Skewed5{},
+     //&distribution.Skewed6{},
+     //&distribution.Skewed7{},
+     //&distribution.Skewed8{},
+     //&distribution.Skewed9{},
+     //&distribution.Skewed10{},
+     //
+     //&distribution.RandomBeta{},
+     //&distribution.RandomBeta{},
+     //&distribution.RandomBeta{},
+     //&distribution.RandomBeta{},
+     //&distribution.RandomBeta{},
+     //&distribution.RandomBeta{},
+     //&distribution.RandomBeta{},
      &distribution.RandomBeta{},
-     &distribution.RandomBeta{},
-     &distribution.RandomBeta{},
-     &distribution.RandomBeta{},
-     &distribution.RandomBeta{},
-     &distribution.RandomBeta{},
-     &distribution.RandomBeta{},
-     &distribution.RandomBeta{},
-
-     &distribution.Uniform{},
-     &distribution.Normal{},
-     &distribution.Zipf{},
-     &distribution.BiModal{},
-     &distribution.Parabolic{},
-     &distribution.Slope{},
-     &distribution.Maximum{},
-     &distribution.Queue{},
+     //&distribution.RandomBeta{},
+     //
+     //&distribution.Uniform{},
+     //&distribution.Normal{},
+     //&distribution.Zipf{},
+     //&distribution.BiModal{},
+     //&distribution.Parabolic{},
+     //&distribution.Slope{},
+     //&distribution.Maximum{},
+     //&distribution.Queue{},
    }
 
    body, err := os.ReadFile("wb_topdown_polytope_many.csv")
