@@ -4,30 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link rel="stylesheet" href="docs/katex/katex.min.css">
+    <link rel="stylesheet" href="katex/katex.min.css">
 
     <!-- The loading of KaTeX is deferred to speed up page rendering -->
-    <script defer src="docs/katex/katex.min.js"></script>
+    <script defer src="katex/katex.min.js"></script>
 
     <!-- To automatically render math in text elements, include the auto-render extension: -->
-    <script defer src="docs/katex/contrib/auto-render.min.js"></script>
-
+    <script defer src="katex/contrib/auto-render.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             renderMathInElement(document.body, {
-              // customised options
-              // • auto-render specific keys, e.g.:
-              delimiters: [
-                  {left: '$$', right: '$$', display: true},
-                  {left: '$', right: '$', display: false},
-              ],
-              // • rendering keys, e.g.:
-              throwOnError : false
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left:  '$', right:  '$', display: false},
+                ],
             });
         });
     </script>
 
     <title>Exploring the design space of binary search trees</title>
+
     <style>
 
         * {
@@ -97,6 +93,10 @@
 
         a {
             color: #000;
+        }
+
+        svg * {
+            font-family: KaTeX_Main, monospace;
         }
 
         article {
@@ -195,54 +195,15 @@
 
 
         .graphs {
-            /*gap: 40px 40px;*/
-            /*justify-content: space-between;*/
-            /*align-items: flex-start;*/
-            /*align-content: space-between;*/
             font-size: 0;
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-
-        .graphs img:nth-child(even) {
-            padding-left: 1rem;
-        }
-        .graphs img:nth-child(odd) {
-            padding-right: 1rem;
-        }
-
-        .graphs img {
-            width: 50%;
             margin-top: 2rem;
             margin-bottom: 1rem;
-            /*width: 50%; !* Display images side-by-side *!*/
-            /*max-width: 100%; !* Limit image width to its intrinsic size *!*/
-            /*margin: 20px 0;*/
-            /*max-width: 50%;*/
-            box-sizing: border-box;
-            /*gap: 40px 40px;*/
-            /*flex-grow: 0;*/
-            /*width: 50%;*/
-            /*padding: 40px;*/
-            /*flex-shrink: 1;*/
-            /*padding: 0 64px;*/
-            /*display: inline-block; !* Display images as inline blocks *!*/
-            /*box-sizing: border-box; !* Include border and padding in the width calculation *!*/
-            /*vertical-align: top; !* Align images to the top *!*/
         }
-
-        .graphs img:only-child {
+        .graphs img {
             width: 100%;
-            /*padding: 0 4rem;*/
+            box-sizing: border-box;
         }
 
-        /* Media query for screens with a maximum width of 400px */
-        @media (max-width: 720px) {
-            .graphs img {
-                padding: 0;
-                /*width: 100%; !* Display images in full-width *!*/
-            }
-        }
         .rb-red {
             color: red;
             font-weight: bold;
@@ -255,7 +216,7 @@
 
     </style>
 
-<!--    The guarantees we want from a data structure depend on our model of how that data structure will be used.-->
+    <!--    The guarantees we want from a data structure depend on our model of how that data structure will be used.-->
 </head>
 <body>
 <article>
@@ -505,14 +466,14 @@ type Node struct {
                     The same reasoning applies to decimal numbers, where the number of digits required to represent an integer $n$ is $\left\lfloor \log_{10}(n) \right\rfloor + 1$, or the number of times we can divide by 10 until we get to 1.
                     A binary number shortens by 1 bit when we divide by 2 and a decimal number shortens by 1 digit when we divide by 10.
                 </p>
-<!--                <p>-->
-<!--                    A two-way branch at every node ideally halves the path length every time and is therefore <em>logarithmic</em> in the size of the list: when the size of the list doubles, the search cost only increases by one.-->
-<!--                    By extension, search cost grows linearly when the list grows exponentially.-->
-<!--                </p>-->
-<!--                <p>-->
-<!--                    The maximum path length is the longest path from the root to a node is often referred to as the <span class="quote">height</span> of the tree and can be thought of as the maximum path length.-->
-<!--                    The total path length of a binary tree is the sum of the path length from the root to every other node, and the average path length is the total path length divided by the number of nodes.-->
-<!--                </p>-->
+                <!--                <p>-->
+                <!--                    A two-way branch at every node ideally halves the path length every time and is therefore <em>logarithmic</em> in the size of the list: when the size of the list doubles, the search cost only increases by one.-->
+                <!--                    By extension, search cost grows linearly when the list grows exponentially.-->
+                <!--                </p>-->
+                <!--                <p>-->
+                <!--                    The maximum path length is the longest path from the root to a node is often referred to as the <span class="quote">height</span> of the tree and can be thought of as the maximum path length.-->
+                <!--                    The total path length of a binary tree is the sum of the path length from the root to every other node, and the average path length is the total path length divided by the number of nodes.-->
+                <!--                </p>-->
             </section>
 
             <section id="insert">
@@ -650,7 +611,7 @@ func search(p *Node, i uint64) *Node {
                 For this to be efficient, a data structure must be <em>cheap to copy</em> and implicitly share memory between versions over time.
             </p>
 
-<!--            https://en.wikipedia.org/wiki/Persistent<em>data</em>structure-->
+            <!--            https://en.wikipedia.org/wiki/Persistent<em>data</em>structure-->
 
             <section id="reference-counting">
                 <h4>Reference counting</h4>
@@ -666,10 +627,10 @@ func search(p *Node, i uint64) *Node {
                     There is now one fewer tree depending on that node specifically, and because the reference count of the new node is zero, the program can make changes to it as needed.
                 </p>
 
-<!--                https://en.wikipedia.org/wiki/Copy-on-write-->
-<!--                https://en.wikipedia.org/wiki/Reference_counting-->
-<!--                https://en.wikipedia.org/wiki/Immutable_object-->
-<!---->
+                <!--                https://en.wikipedia.org/wiki/Copy-on-write-->
+                <!--                https://en.wikipedia.org/wiki/Reference_counting-->
+                <!--                https://en.wikipedia.org/wiki/Immutable_object-->
+                <!---->
             </section>
 
 
@@ -686,7 +647,7 @@ func search(p *Node, i uint64) *Node {
                     Every node has a unique path from the root, so for any operation we can mark the nodes that would need to be modified and trace their paths back up to the root;
                     it is these paths that would need to be copied so that they all belong to the same, new version of the tree that includes those modifications.
                 </p>
-<!--                https://en.wikipedia.org/wiki/Persistent<em>data</em>structure#:~:text=in%20the%20array.-,Path%20copying,-%5Bedit%5D-->
+                <!--                https://en.wikipedia.org/wiki/Persistent<em>data</em>structure#:~:text=in%20the%20array.-,Path%20copying,-%5Bedit%5D-->
             </section>
             <p>
                 TODO MIX IN HERE, APPLIES TO ALL:<br>
@@ -734,7 +695,7 @@ func search(p *Node, i uint64) *Node {
         </section>
     </section>
 
-    
+
 
     <section id="strategies-to-restore-balance">
         <h2><span>Part 2</span>Restoring Balance</h2>
@@ -878,7 +839,7 @@ func partition(p *Node, i uint64) *Node {
             </p>
             <p>
                 A median-balanced tree is perfectly balanced because every branch divides the search space exactly in half.
-                In 2017, Ivo Muusse published an algorithm to balance a binary search tree that uses <em>partition</em> to replace every node of a tree by its underlying median to produce a median-balanced tree <cite data-title="An algorithm for balancing a binary search tree" data-authors="Ivo Muusse" data-year="2017"><a href="docs/references/2017_muusse.pdf"></a></cite>.
+                In 2017, Ivo Muusse published an algorithm to balance a binary search tree that uses <em>partition</em> to replace every node of a tree by its underlying median to produce a median-balanced tree <cite data-title="An algorithm for balancing a binary search tree" data-authors="Ivo Muusse" data-year="2017"><a href="references/2017_muusse.pdf"></a></cite>.
             </p>
             <p>
                 Partitioning the root around its median distributes its nodes evenly between the left and right subtrees, however there might be nodes within those subtrees that are not median-balanced.
@@ -920,7 +881,7 @@ func balance(p *Node, s Size) *Node {
                 The median-balancing strategy would partition at (b) to make (c) the root, but the average path length stays the same.
                 This partitioning step is therefore redundant because it did not improve the average or worst-case search cost of the tree.
                 Ideally, partitioning by median should only be done if doing so reduces the average path length.
-<!--                Ideally, median partitioning should only be done if it would reduce the average path length of the tree.-->
+                <!--                Ideally, median partitioning should only be done if it would reduce the average path length of the tree.-->
 
             </p>
 
@@ -963,9 +924,9 @@ func balance(p *Node, s Size) *Node {
 
             <p>
                 The problem to solve is to determine whether a node is height-balanced.
-                Ivo Muusse solves this in <cite data-title="An algorithm for balancing a binary search tree" data-authors="Ivo Muusse" data-year="2017"><a href="docs/references/2017_muusse.pdf"></a></cite> by using a strict definition of height-balance where both the minimum and maximum path lengths of two subtrees differ by no more than 1.
+                Ivo Muusse solves this in <cite data-title="An algorithm for balancing a binary search tree" data-authors="Ivo Muusse" data-year="2017"><a href="references/2017_muusse.pdf"></a></cite> by using a strict definition of height-balance where both the minimum and maximum path lengths of two subtrees differ by no more than 1.
                 Then, by pretending that both subtrees are already strictly height-balanced, we can compare their minimum and maximum heights.
-<!--                We can then compare their minimum and maximum heights by pretending that both subtrees are already strictly height-balanced.-->
+                <!--                We can then compare their minimum and maximum heights by pretending that both subtrees are already strictly height-balanced.-->
 
             <p>
                 A binary tree is <em>perfect</em> if every node has either zero or two subtrees, thereby forming a complete triangular shape conceptually.
@@ -974,12 +935,12 @@ func balance(p *Node, s Size) *Node {
 
             <pre>
 
-                1     3         7             15
+1     3         7             15
 
-                ●     ●         ●              ●
-                     ● ●      ●   ●        ●       ●
-                             ● ● ● ●     ●   ●   ●   ●
-                                        ● ● ● ● ● ● ● ●
+●     ●         ●              ●
+     ● ●      ●   ●        ●       ●
+             ● ● ● ●     ●   ●   ●   ●
+                        ● ● ● ● ● ● ● ●
             </pre>
 
             <p>
@@ -990,21 +951,21 @@ func balance(p *Node, s Size) *Node {
             <p>
                 $$\text{Height}(x,y) = \lceil \log_2(\max(x,y)+1) \rceil - \lfloor \log_2(\min(x,y)+1) \rfloor \leq 1$$
             </p>
-<!--            <p>-->
-<!--                -->
-<!--            </p>-->
-<!--            <p>-->
-<!--                $$\text{Height}(x,y) = \lceil \log_{2}(y+1) \rceil - \lfloor \log_{2}(x+1) \rfloor \leq 1$$-->
-<!--            </p>-->
+            <!--            <p>-->
+            <!--                -->
+            <!--            </p>-->
+            <!--            <p>-->
+            <!--                $$\text{Height}(x,y) = \lceil \log_{2}(y+1) \rceil - \lfloor \log_{2}(x+1) \rfloor \leq 1$$-->
+            <!--            </p>-->
             <p>
                 This function, as presented above and by Muusse in [], can be simplified using an identity of the binary logarithm where $\lceil \log_{2}(s+1) \rceil \equiv \lfloor \log_{2}(s) \rfloor + 1$.
                 The result is the same whether you complete a level with <em>ceil</em> or empty a level with <em>floor</em> and add one.
                 This allows us to express both sides of the inequality in terms of the <em>floor</em> of the binary logarithm.
             </p>
-<!--            <p>-->
-<!--                Without loss of generality, assert that $x \leq y$:-->
-<!--                Given that the number of bits required to represent an integer $n$ in binary is $\lfloor \log_{2}(n) \rfloor + 1$, this becomes a comparison between the number of bits required to represent $x+1$ and $y$.-->
-<!--            </p>-->
+            <!--            <p>-->
+            <!--                Without loss of generality, assert that $x \leq y$:-->
+            <!--                Given that the number of bits required to represent an integer $n$ in binary is $\lfloor \log_{2}(n) \rfloor + 1$, this becomes a comparison between the number of bits required to represent $x+1$ and $y$.-->
+            <!--            </p>-->
             <p>
                 $$\text{Height}(x,y) = \lfloor \log_{2}(x+1) \rfloor \geq \lfloor \log_{2}(y) \rfloor$$
             </p>
@@ -1013,8 +974,8 @@ func balance(p *Node, s Size) *Node {
 
         <section id="weight-balance">
             <h3>Weight balance</h3>
-<!--            https://yoichihirai.com/bst.pdf-->
-<!--            https://i11www.iti.kit.edu/extra/publications/bw-etdwb-20.pdf-->
+            <!--            https://yoichihirai.com/bst.pdf-->
+            <!--            https://i11www.iti.kit.edu/extra/publications/bw-etdwb-20.pdf-->
             <p class="definition">
                 <span class="underline">Definition:</span><br>
                 <span class="indent">The <em>weight</em> of a tree is the number of leaves reachable from its root, which is one more than the number of nodes in the tree.</span>
@@ -1154,42 +1115,42 @@ func balance(p *Node, s Size) *Node {
                 \end{align*}
                 $$
             </p>
-<!--            <pre>-->
-<!--MSB(x) ≥ MSB(y) = x ≥ y || ((x & y) << 1) ≥ y-->
-<!--MSB(x) ≥ MSB(y) = x ≥ y || x ≥ (x ^ y)-->
-<!--MSB(x) ≥ MSB(y) = x ≥ (~x & y)-->
-<!--            </pre>-->
-<!--            MSB(x) ≥ MSB(y) = x ≥ y || ((x & y) << 1) ≥ y    Roura, S.-->
-<!--            MSB(x) ≥ MSB(y) = x ≥ y || x ≥ (x ^ y)           Chan, T.M.-->
-<!--            MSB(x) ≥ MSB(y) = x ≥ (~x & y)                   Warren, H.S.-->
+            <!--            <pre>-->
+            <!--MSB(x) ≥ MSB(y) = x ≥ y || ((x & y) << 1) ≥ y-->
+            <!--MSB(x) ≥ MSB(y) = x ≥ y || x ≥ (x ^ y)-->
+            <!--MSB(x) ≥ MSB(y) = x ≥ (~x & y)-->
+            <!--            </pre>-->
+            <!--            MSB(x) ≥ MSB(y) = x ≥ y || ((x & y) << 1) ≥ y    Roura, S.-->
+            <!--            MSB(x) ≥ MSB(y) = x ≥ y || x ≥ (x ^ y)           Chan, T.M.-->
+            <!--            MSB(x) ≥ MSB(y) = x ≥ (~x & y)                   Warren, H.S.-->
 
-<!--            <pre>-->
-<!--    Median(x, y) =    (<mark class="blue">x + 1) ≥    (<mark class="blue">y)-->
-<!--    Height(x, y) = MSB(<mark class="blue">x + 1) ≥ MSB(<mark class="blue">y)-->
-<!--  HalfSize(x, y) =    (<mark class="red">x + 1) ≥    (<mark class="red">(y + 1) >> 1)-->
-<!--   LogSize(x, y) = MSB(<mark class="red">x + 1) ≥ MSB(<mark class="red">(y + 1) >> 1)-->
-<!--            </pre>-->
+            <!--            <pre>-->
+            <!--    Median(x, y) =    (<mark class="blue">x + 1) ≥    (<mark class="blue">y)-->
+            <!--    Height(x, y) = MSB(<mark class="blue">x + 1) ≥ MSB(<mark class="blue">y)-->
+            <!--  HalfSize(x, y) =    (<mark class="red">x + 1) ≥    (<mark class="red">(y + 1) >> 1)-->
+            <!--   LogSize(x, y) = MSB(<mark class="red">x + 1) ≥ MSB(<mark class="red">(y + 1) >> 1)-->
+            <!--            </pre>-->
 
 
-<!--            <pre>-->
-<!--    Height(x, y) = MSB(<mark class="blue">x + 1) ≥ MSB(<mark class="blue">y)-->
-<!--    Median(x, y) =    (<mark class="blue">x + 1) ≥    (<mark class="blue">y)-->
+            <!--            <pre>-->
+            <!--    Height(x, y) = MSB(<mark class="blue">x + 1) ≥ MSB(<mark class="blue">y)-->
+            <!--    Median(x, y) =    (<mark class="blue">x + 1) ≥    (<mark class="blue">y)-->
 
-<!--   LogSize(x, y) = MSB(<mark class="red">x) ≥ MSB(<mark class="red">y >> 1)-->
-<!--  HalfSize(x, y) =    (<mark class="red">x) ≥    (<mark class="red">y >> 1)-->
+            <!--   LogSize(x, y) = MSB(<mark class="red">x) ≥ MSB(<mark class="red">y >> 1)-->
+            <!--  HalfSize(x, y) =    (<mark class="red">x) ≥    (<mark class="red">y >> 1)-->
 
-<!-- LogWeight(x, y) = MSB(<mark class="green">x + 1) ≥ MSB(<mark class="green">(y + 1) >> 1)-->
-<!--HalfWeight(x, y) =    (<mark class="green">x + 1) ≥    (<mark class="green">(y + 1) >> 1)-->
-<!--            </pre>-->
+            <!-- LogWeight(x, y) = MSB(<mark class="green">x + 1) ≥ MSB(<mark class="green">(y + 1) >> 1)-->
+            <!--HalfWeight(x, y) =    (<mark class="green">x + 1) ≥    (<mark class="green">(y + 1) >> 1)-->
+            <!--            </pre>-->
         </section>
         <section id="log-balance">
             <h3>Cost-optimized balance</h3>
             <p>
 
 
-            <!--          Roura, S. (2001). A New Method for Balancing Binary Search Trees. I-->
-            <!--          Chan, T.M. (2002). Closest-point problems simplified on the RAM. SO-->
-            <!--          Warren, H.S. (2002). Hacker's Delight. 2nd Edition, section 5-3.-->
+                <!--          Roura, S. (2001). A New Method for Balancing Binary Search Trees. I-->
+                <!--          Chan, T.M. (2002). Closest-point problems simplified on the RAM. SO-->
+                <!--          Warren, H.S. (2002). Hacker's Delight. 2nd Edition, section 5-3.-->
 
                 There is one other design candidate that does not follow the same pattern.
                 In 2000, Cho and Sahni introduced the idea of <em>cost-optimized search trees</em>, where the average search cost can not be reduced by a rotation anywhere in the tree.
@@ -1228,14 +1189,6 @@ func balance(p *Node, s Size) *Node {
 
             </p>
 
-<!--            <div class="graphs">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/PartitionCount__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/TotalPartitionDepth__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePartitionDepth__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/Duration__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePathLength__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/balancers/Partition/Uniform/MaximumPathLength__sbezier.svg">-->
-<!--            </div>-->
             <section id="partition-count">
                 <h4>Partition Count</h4>
                 <p>
@@ -1244,7 +1197,7 @@ func balance(p *Node, s Size) *Node {
                     A horizontal line indicates that the number of nodes to partition grows linearly in the size of the tree.
                 </p>
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/Partition/Uniform/PartitionCount__sbezier.svg">
+                    {{ include "../benchmarks/svg/balancers/Partition/Uniform/PartitionCount__sbezier.svg" }}
                 </div>
                 <p>
                     The expectation is that height-balance partitions less often than median-balance because it avoids some redundant partitioning, but the results show that height-balance actually partitions more nodes than median-balance.
@@ -1270,7 +1223,7 @@ func balance(p *Node, s Size) *Node {
 
 
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/Partition/Uniform/TotalPartitionDepth__sbezier.svg">
+                    {{ include "../benchmarks/svg/balancers/Partition/Uniform/TotalPartitionDepth__sbezier.svg" }}
                 </div>
                 <p>
                     Interestingly, height-balance partitions more often but takes shorter paths than median-balance during partition.
@@ -1285,7 +1238,7 @@ func balance(p *Node, s Size) *Node {
                     This is a promising result for cost-optimized balance from a structural perspective because it has a low partition count and low partition depth relative to median- and height-balance.
                 </p>
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/Partition/Uniform/AveragePartitionDepth__sbezier.svg">
+                    {{ include "../benchmarks/svg/balancers/Partition/Uniform/AveragePartitionDepth__sbezier.svg" }}
                 </div>
 
             </section>
@@ -1299,7 +1252,7 @@ func balance(p *Node, s Size) *Node {
                     For example, the tree of size 1,000,000 at the final increment would have an average path length of about $20$.
 
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/All/Uniform/AveragePathLength__sbezier.svg">
+                    {{ include "../benchmarks/svg/balancers/All/Uniform/AveragePathLength__sbezier.svg" }}
                 </div>
                 <p>
                     The results show that median-balance, height-balance and DSW all have optimal average path length, with cost-optimized balance only slightly above optimal.
@@ -1328,7 +1281,7 @@ func balance(p *Node, s Size) *Node {
                     cost-optimized balance has a maximum path length of $\sim 1.05\log_{2}$, weight-balance with a constant factor $\sim 1.18\log_{2}$, and logarithmic weight-balance $\sim 1.30\log_{2}$.
                 </p>
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/All/Uniform/MaximumPathLength__sbezier.svg">
+                    {{ include "../benchmarks/svg/balancers/All/Uniform/MaximumPathLength__sbezier.svg" }}
                 </div>
             </section>
 
@@ -1339,7 +1292,7 @@ func balance(p *Node, s Size) *Node {
                     Keep in mind that time-based measurements are system-dependent so the results could be entirely different on other machines.
                 </p>
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/All/Uniform/Duration__sbezier.svg">
+                    {{ include "../benchmarks/svg/balancers/All/Uniform/Duration__sbezier.svg" }}
                 </div>
                 <p>
                     The results show that median-balance is marginally faster than height-balance, which settles the competition with an unexpected result.
@@ -1356,7 +1309,7 @@ func balance(p *Node, s Size) *Node {
                 </p>
 
                 <div class="graphs">
-                    <img src="benchmarks/svg/balancers/All/Uniform/TotalDuration__cumulative.svg">
+                    {{ include "../benchmarks/svg/balancers/All/Uniform/TotalDuration__cumulative.svg" }}
                 </div>
                 <p>
                     DSW appears to be consistently slower to balance large random trees, but the algorithm has some advantages over partition-based balancing that should not be discounted.
@@ -1366,10 +1319,10 @@ func balance(p *Node, s Size) *Node {
                     The two phases of DSW are also useful procedures individually: (i) to convert any binary search tree into a linked list, and (ii) to convert a linked list into a balanced tree, both in linear time and constant space.
                     DSW also does not rely on subtree size which may not be available in some cases.
                 </p>
-                    Generally, balancing by partition is an excellent strategy when trees are already somewhat-balanced.
-                    The weight-balance strategies are the fastest and the resulting balance is only slightly suboptimal, suggesting a good trade in practice when balancing is frequent.
-                    Surprisingly, the benchmarks suggest that median-balance is likely the best choice to balance random trees when strict height-balance is a requirement or when balancing is infrequent.
-                    DSW is the best choice to balance trees that are likely to be linear lists, or when subtree sizes are not available.
+                Generally, balancing by partition is an excellent strategy when trees are already somewhat-balanced.
+                The weight-balance strategies are the fastest and the resulting balance is only slightly suboptimal, suggesting a good trade in practice when balancing is frequent.
+                Surprisingly, the benchmarks suggest that median-balance is likely the best choice to balance random trees when strict height-balance is a requirement or when balancing is infrequent.
+                DSW is the best choice to balance trees that are likely to be linear lists, or when subtree sizes are not available.
                 </p>
             </section>
         </section>
@@ -1437,21 +1390,9 @@ func balance(p *Node, s Size) *Node {
                 There is a trade-off between the cost of doing more rotations and the cost of traversing longer paths.
             </p>
 
-<!--            <div class="graphs">-->
-<!--                <img src="benchmarks/svg/operations/Insert/AVLRedBlack/Duration__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/Insert/AVLRedBlack/Rotations__sbezier.svg">-->
-
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Duration__unique.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/Rotations__unique.svg">-->
-
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/AveragePathLength__unique.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRedBlack/MaximumPathLength__unique.svg">-->
-<!--            </div>
--->
-
             <p>
                 Red-black trees are very common in pedagogy and practice.
-                Many of the implementations of the C++ standard library use a red-black tree for sorted sets, as well as Java's <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/TreeMap.html#:~:text=A-,Red%2DBlack%20tree,-based%20NavigableMap%20implementation">TreeMap</a>, and parts of the <a href="https://github.com/torvalds/linux/blob/master/include/linux/rbtree.h">Linux kernel</a>.
+                Many of the implementations of the C++ standard library use a red-black tree for sorted sets, as well as Java's <a href="https://docs.oracle.com/en/java/javase/17/api/java.base/java/util/TreeMap.html#:~:text=A-,Red%2DBlack%20tree,-based%20NavigableMap%20implementation">TreeMap</a>, and parts of the <a href="https://github.com/torvalds/linux/blob/master/include/linux/rbtree.h">Linux kernel</a>.
                 They are generally considered to be a decent all-rounder when it comes to self-balancing binary search trees, but attempting to implement them from reference material often results in frustration.
                 Most implementations are recursive and many use parent pointers.
             </p>
@@ -1465,37 +1406,13 @@ func balance(p *Node, s Size) *Node {
                 Concurrency is well-supported by weak AVL trees because both insertion and deletion can be implemented purely top-down.
             </p>
 
-<!--            <p>-->
-<!--                Benchmarks show that weak AVL trees are faster than both AVL trees and red-black trees when only inserting, which is interesting because weak AVL trees have the exact same structure as AVL trees when no deletions occur.-->
-<!--                Notice that the number of rotations when inserting is exactly the same between bottom-up AVL trees and bottom-up weak AVL trees.-->
-<!--                This suggests that the weak AVL insertion algorithm itself is more efficient, likely due to fewer interactions with memory along the way.-->
-<!--                Going through cycles of inserting and deleting show that weak AVL trees are consistently faster than AVL trees and maintain an average path length only slightly higher than AVL trees.-->
-<!--                Notice how slowly the average path length worsens compared to red-black trees.-->
-<!--            </p>-->
-
-
-<!--            <div class="graphs">-->
-<!--                <img src="benchmarks/svg/operations/Insert/AVLWeakRedBlack/Duration__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/Insert/AVLWeakRedBlack/Rotations__sbezier.svg">-->
-
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/Duration__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/Rotations__sbezier.svg">-->
-
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/AveragePathLength__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeakRedBlack/MaximumPathLength__sbezier.svg">-->
-<!--            </div>-->
-
-<!--            -->
-<!--            <div class="graphs">-->
-<!--                <img src="benchmarks/svg/operations/Insert/AVLWeak/Duration__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/Insert/AVLWeak/Rotations__sbezier.svg">-->
-
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Duration__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/Rotations__sbezier.svg">-->
-
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/AveragePathLength__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLWeak/MaximumPathLength__sbezier.svg">-->
-<!--            </div>-->
+            <!--            <p>-->
+            <!--                Benchmarks show that weak AVL trees are faster than both AVL trees and red-black trees when only inserting, which is interesting because weak AVL trees have the exact same structure as AVL trees when no deletions occur.-->
+            <!--                Notice that the number of rotations when inserting is exactly the same between bottom-up AVL trees and bottom-up weak AVL trees.-->
+            <!--                This suggests that the weak AVL insertion algorithm itself is more efficient, likely due to fewer interactions with memory along the way.-->
+            <!--                Going through cycles of inserting and deleting show that weak AVL trees are consistently faster than AVL trees and maintain an average path length only slightly higher than AVL trees.-->
+            <!--                Notice how slowly the average path length worsens compared to red-black trees.-->
+            <!--            </p>-->
 
 
             <p>
@@ -1504,36 +1421,27 @@ func balance(p *Node, s Size) *Node {
                 A key difference between the relaxed variants and their conventional counterparts is that the height bound is proportional to the number of insertions rather than the size of the tree.
             </p>
 
-<!--            <p>-->
-<!--                How do these strategies compare?-->
-<!--            </p>-->
+            <!--            <p>-->
+            <!--                How do these strategies compare?-->
+            <!--            </p>-->
 
-<!--            <p>-->
-<!--                This project implements 10 different rank-balanced strategies as pairs of bottom-up and top-down variations.-->
-<!--                The results are averaged across multiple access distributions to provide an indicator for the overall expected behavior of each strategy.-->
-<!--            </p>-->
-<!--            <p>-->
-<!--                <em>Insert</em> is an operation where a tree is grown by repeatedly inserting new values until the tree reaches the scale of the benchmark.-->
-<!--                This operation indicates how the tree grows and is the most common binary search tree benchmark.-->
-<!--            </p>-->
-<!--            <p>-->
-<!--                <em>InsertDeleteCycles</em> is an operation that grows a tree by insertion, then reduces the tree by half using deletion, then inserts back to scale again for a total of 10 cycles.-->
-<!--                This operations indicates how balance changes over time as a result of insertions and deletions.-->
-<!--            </p>-->
-<!--            <p>-->
-<!--                We start by comparing the standard AVL and red-black trees, both bottom-up and top-down.-->
-<!--            </p>-->
+            <!--            <p>-->
+            <!--                This project implements 10 different rank-balanced strategies as pairs of bottom-up and top-down variations.-->
+            <!--                The results are averaged across multiple access distributions to provide an indicator for the overall expected behavior of each strategy.-->
+            <!--            </p>-->
+            <!--            <p>-->
+            <!--                <em>Insert</em> is an operation where a tree is grown by repeatedly inserting new values until the tree reaches the scale of the benchmark.-->
+            <!--                This operation indicates how the tree grows and is the most common binary search tree benchmark.-->
+            <!--            </p>-->
+            <!--            <p>-->
+            <!--                <em>InsertDeleteCycles</em> is an operation that grows a tree by insertion, then reduces the tree by half using deletion, then inserts back to scale again for a total of 10 cycles.-->
+            <!--                This operations indicates how balance changes over time as a result of insertions and deletions.-->
+            <!--            </p>-->
+            <!--            <p>-->
+            <!--                We start by comparing the standard AVL and red-black trees, both bottom-up and top-down.-->
+            <!--            </p>-->
 
-<!--            <div class="graphs">-->
-<!--                <img src="benchmarks/svg/operations/Insert/AVLRelaxed/Duration__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/Insert/AVLRelaxed/Rotations__sbezier.svg">-->
 
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/Duration__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/Rotations__sbezier.svg">-->
-
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/AveragePathLength__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCycles/AVLRelaxed/MaximumPathLength__sbezier.svg">-->
-<!--            </div>-->
         </section>
         <section id="height-balanced-trees">
             <h3>Height-balanced trees</h3>
@@ -1554,15 +1462,6 @@ func balance(p *Node, s Size) *Node {
                 Instead, they make use of functional composition and smart constructors, where rather than copying and modifying an existing node it allocates and composes a new node by combining properties of other nodes.
                 Conceptually, conc-trees <em>construct</em> the resulting path more than they modify the existing one.
             </p>
-
-<!--            <div class="graphs">-->
-<!--                <img src="benchmarks/svg/operations/InsertPersistent/AVLConc/Duration__sbezier.svg">-->
-
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/AVLConc/Duration__sbezier.svg">-->
-
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/AVLConc/AveragePathLength__sbezier.svg">-->
-<!--                <img src="benchmarks/svg/operations/InsertDeleteCyclesPersistent/AVLConc/MaximumPathLength__sbezier.svg">-->
-<!--            </div>-->
 
         </section>
 
@@ -1677,14 +1576,14 @@ func balance(p *Node, s Size) *Node {
                 They conclude with a suggestion for further study, that "in the future, it would be interesting to determine the space of feasible balancing parameters for top-down weight-balanced trees similar to how Hirai and Yamamoto have done for bottom-up weight-balanced trees."
             </p>
             <p>
-<!--                This project measures and plots the space of feasible balancing parameters for top-down weight-balanced trees.-->
+                <!--                This project measures and plots the space of feasible balancing parameters for top-down weight-balanced trees.-->
                 To produce this, trees were simulated for a wide range of $\Delta$ and $\Gamma$.
                 If at any point during the simulation there is a node in the tree that is not weight-balanced, that $\langle\Delta,\Gamma\rangle$ pair is excluded from the plot because a counter-example exists.
                 The remaining area comprises the polytope of feasible balancing parameters for top-down weight-balanced trees.
             </p>
-            <p>
-                <img src="docs/wb_topdown_polytope.svg">
-            </p>
+            <div class="graphs">
+                {{ include "polytope/topdown.svg" }}
+            </div>
             <p>
                 The shape is practically identical to what Hirai and Yamamoto found for bottom-up weight-balanced trees, suggesting that the feasible space might be the same.
                 The dotted curve along the bottom of the shape is the corresponding $\langle\Delta,\Gamma\rangle$ line for the proof by Lai and Wood, and the highlighted area shows the corresponding range of their proof .
@@ -1843,61 +1742,61 @@ but that the tree has a low average search cost ]
 
     </section>
 
-<!--    <pre>-->
-<!--        1. Introduction-->
-<!--            - Giving semantic meaning to abstract memory-->
-<!--            - Linear lists-->
-<!--                - List operations-->
-<!--                - Dynamic arrays-->
-<!--                - Linked lists-->
-<!--            - Binary search trees-->
-<!--                - Relative position-->
-<!--                - Node structure-->
-<!--                - Traversal-->
-<!--                - Balance-->
-<!--                - Rotations-->
-<!--            - Persistence-->
-<!--                - Structural sharing-->
-<!--                - Immutability-->
-<!--                - Parent pointers-->
-<!--            - Concurrency-->
-<!--                - Contention-->
-<!--                - Recursion-->
-<!--            - Benchmarking-->
-<!--                - Access distributions-->
-<!--                - Operations-->
-<!--        2. Strategies to restore balance-->
-<!--            - Balancing by rotation-->
-<!--                - Day-Stout-Warren-->
-<!--            - Balancing by recursive median partitioning-->
-<!--                - Height balance-->
-<!--                - Weight balance-->
-<!--        3. Strategies to maintain balance-->
-<!--            - Join-based implementations-->
-<!--            - Rank-balanced trees-->
-<!--            - Weight-balanced trees-->
-<!--            - Randomly-balanced trees-->
-<!--            - Self-adjusting trees-->
-<!--            - Height-balanced trees-->
-<!--        4. Evaluation-->
-<!--            5. Measurements-->
-<!--            6. Evaluation criteria-->
-<!--            5. Benchmarks-->
-<!--            7. Conclusions-->
-<!--               Source code-->
-<!--            9. Repository-->
-<!--            10. Animations-->
-<!--            11. Contributing-->
-<!--                -. Open problems-->
-<!--            - Missing proofs of correctness-->
-<!--            - Complexity of balancing by median partitioning-->
-<!--            - Similar analysis for set data structures-->
-<!--            - Translation to another language, perhaps Rust-->
-<!--            - Comparisons to other list data structures-->
-<!--              Notes-->
-<!--              References-->
-<!--        </pre>-->
-<!--    </section>-->
+    <!--    <pre>-->
+    <!--        1. Introduction-->
+    <!--            - Giving semantic meaning to abstract memory-->
+    <!--            - Linear lists-->
+    <!--                - List operations-->
+    <!--                - Dynamic arrays-->
+    <!--                - Linked lists-->
+    <!--            - Binary search trees-->
+    <!--                - Relative position-->
+    <!--                - Node structure-->
+    <!--                - Traversal-->
+    <!--                - Balance-->
+    <!--                - Rotations-->
+    <!--            - Persistence-->
+    <!--                - Structural sharing-->
+    <!--                - Immutability-->
+    <!--                - Parent pointers-->
+    <!--            - Concurrency-->
+    <!--                - Contention-->
+    <!--                - Recursion-->
+    <!--            - Benchmarking-->
+    <!--                - Access distributions-->
+    <!--                - Operations-->
+    <!--        2. Strategies to restore balance-->
+    <!--            - Balancing by rotation-->
+    <!--                - Day-Stout-Warren-->
+    <!--            - Balancing by recursive median partitioning-->
+    <!--                - Height balance-->
+    <!--                - Weight balance-->
+    <!--        3. Strategies to maintain balance-->
+    <!--            - Join-based implementations-->
+    <!--            - Rank-balanced trees-->
+    <!--            - Weight-balanced trees-->
+    <!--            - Randomly-balanced trees-->
+    <!--            - Self-adjusting trees-->
+    <!--            - Height-balanced trees-->
+    <!--        4. Evaluation-->
+    <!--            5. Measurements-->
+    <!--            6. Evaluation criteria-->
+    <!--            5. Benchmarks-->
+    <!--            7. Conclusions-->
+    <!--               Source code-->
+    <!--            9. Repository-->
+    <!--            10. Animations-->
+    <!--            11. Contributing-->
+    <!--                -. Open problems-->
+    <!--            - Missing proofs of correctness-->
+    <!--            - Complexity of balancing by median partitioning-->
+    <!--            - Similar analysis for set data structures-->
+    <!--            - Translation to another language, perhaps Rust-->
+    <!--            - Comparisons to other list data structures-->
+    <!--              Notes-->
+    <!--              References-->
+    <!--        </pre>-->
+    <!--    </section>-->
 </article>
 <!--https://read.seas.harvard.edu/~kohler/notes/llrb.html-->
 <!--https://web.archive.org/web/20131106123552/http://t-t-travails.blogspot.com/2008/04/left-leaning-red-black-trees-are-hard.html-->

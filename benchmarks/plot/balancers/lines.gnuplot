@@ -1,8 +1,8 @@
 load "benchmarks/plot/graph.gnuplot"
 load "benchmarks/plot/functions.gnuplot"
 
-set tmargin 2
-set bmargin 2
+set tmargin 3
+set bmargin 3
 set rmargin 4
 set lmargin 4
 

@@ -110,8 +110,7 @@ operation-measurements: assertions-off measurements-on
 
 
 optimized-plots:
-	npx --yes svgo --folder "."
-	npx --yes svgo --recursive --folder "benchmarks/svg"
+	npx --yes svgo --folder "docs"
 
 plot-index:
 	${GO} run benchmarks/main/index.go < benchmarks/index.html
@@ -121,3 +120,9 @@ balancer-plots:
 
 operation-plots:
 	gnuplot benchmarks/plot/operations.gnuplot
+
+polytope:
+	cd docs && gnuplot polytope/topdown.gnuplot
+
+index:
+	cd docs && ${GO} run main/index/index.go
