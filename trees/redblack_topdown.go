@@ -40,7 +40,7 @@ func (tree *RedBlackTopDown) insert(p **Node, i list.Position, x list.Data) {
    // Maintaining the invariant that the current node is black and has at least one black child.
    //
    for {
-      // assert(!tree.isRedRed(*p))
+      assert(!tree.isRedRed(*p))
       //
       // "From *p, take one step down the search path..."
       //
@@ -65,8 +65,8 @@ func (tree *RedBlackTopDown) insert(p **Node, i list.Position, x list.Data) {
          //
          // In the remaining cases, y is a 0-child, and hence neither of its children is a 0-child
          //
-         // assert(tree.isRed(*p, (*p).l))
-         // assert(!tree.isRedRed((*p).l))
+         assert(tree.isRed(*p, (*p).l))
+         assert(!tree.isRedRed((*p).l))
 
          if i <= (*p).l.s {
             if (*p).l.l == nil {
@@ -194,7 +194,7 @@ func (tree *RedBlackTopDown) insert(p **Node, i list.Position, x list.Data) {
 }
 
 func (tree *RedBlackTopDown) Insert(i list.Position, x list.Data) {
-   // assert(i <= tree.size)
+   assert(i <= tree.size)
    tree.size = tree.size + 1
    tree.insert(&tree.root, i, x)
 }

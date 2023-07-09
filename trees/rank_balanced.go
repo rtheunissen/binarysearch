@@ -14,7 +14,7 @@ func (tree RankBalanced) rank(p *Node) int {
 }
 
 func (tree RankBalanced) rankDifference(parent, child *Node) int {
-   // assert(tree.rank(parent) >= tree.rank(child))
+   assert(tree.rank(parent) >= tree.rank(child))
    return tree.rank(parent) - tree.rank(child)
 }
 

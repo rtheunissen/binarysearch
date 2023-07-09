@@ -110,7 +110,8 @@ operation-measurements: assertions-off measurements-on
 
 
 optimized-plots:
-	npx --yes svgo --folder "docs"
+	npx --yes svgo --recursive --folder  "docs"
+	npx --yes svgo --recursive --folder  "benchmarks"
 
 plot-index:
 	${GO} run benchmarks/main/index.go < benchmarks/index.html
@@ -126,3 +127,7 @@ polytope:
 
 index:
 	cd docs && ${GO} run main/index/index.go
+
+article: optimized-plots index
+
+publish: article assertions-on measurements-on
