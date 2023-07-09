@@ -110,8 +110,7 @@ operation-measurements: assertions-off measurements-on
 
 
 optimized-plots:
-	npx --yes svgo --folder "."
-	npx --yes svgo --recursive --folder "benchmarks/svg"
+	npx --yes svgo --folder "docs"
 
 plot-index:
 	${GO} run benchmarks/main/index.go < benchmarks/index.html
