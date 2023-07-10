@@ -4,9 +4,7 @@ set samples 1000
 
 set border 6 front lc '#000000' lt -1 lw 0
 
-set title font "KaTeX_Main,10"
-
-set style line 1000 dashtype 3 lw 0.2 ps 0 lc rgb "#333333"
+set style line 1000 dashtype 1 lw 0.1 ps 0 lc rgb "#000000"
 
 #set grid y2tics back linestyle 1000
 set grid xtics back linestyle 1000

@@ -122,7 +122,7 @@ operation-plots:
 	gnuplot docs/benchmarks/plot/operations.gnuplot
 
 polytope:
-	gnuplot polytope/topdown.gnuplot
+	gnuplot docs/polytope/topdown.gnuplot
 
 index:
 	${GO} run docs/main/index/index.go < docs/index.html > index.html

@@ -1,6 +1,6 @@
 set terminal svg size 400,300 dynamic round font "KaTeX_Main,10"
 
-set output "polytope/topdown.svg"
+set output "docs/polytope/topdown.svg"
 
 set xlabel "Δ" font "Katex_Main,16" offset 25,2.5
 set ylabel "Γ" font "Katex_Main,16" offset 7.5,8 rotate by 0
@@ -46,5 +46,5 @@ set yrange [1:2.2]
 
 plot (x-1)/1 with lines axes x1y1 dt 4 lc rgb COLOR_PURPLE lw 1 title "Γ ≤ (Δ - 1)", \
      (x+1)/x with lines axes x1y1 dt 1 lc rgb COLOR_CYAN lw 1 title "Γ ≥ (Δ + 1) / Δ", \
-     "polytope/topdown.csv" using 1:2 with points pt 7 lc rgb "#000000" ps 0.1 notitle
+     "docs/polytope/topdown.csv" using 1:2 with points pt 7 lc rgb "#000000" ps 0.1 notitle
 
