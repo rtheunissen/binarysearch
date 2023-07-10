@@ -40,7 +40,7 @@ measurements-off:
 	${GO} run main/replace/replace.go -dir "./trees" -find "  measurement(" -replace "  // measurement("
 
 sandbox:
-	${GO} run main/sandbox/sandbox.go
+	@${GO} run main/sandbox/sandbox.go
 
 
 
@@ -70,13 +70,13 @@ BALANCERS := \
 	DSW \
 
 balancer-measurements-%:
-	${GO} run benchmarks/main/balancer_measurements.go -strategy $*
+	${GO} run docs/benchmarks/main/balancer_measurements.go -strategy $*
 
 balancer-measurements: assertions-off measurements-on
 	$(MAKE) -j $(foreach balancer,$(BALANCERS),balancer-measurements-$(balancer))
 
 balancer-benchmarks: assertions-off measurements-off
-	${GO} run benchmarks/main/balancer_benchmarks.go
+	${GO} run docs/benchmarks/main/balancer_benchmarks.go
 
 
 
@@ -93,13 +93,13 @@ OPERATIONS := \
 
 
 operation-benchmarks-%:
-	${GO} run benchmarks/main/operation_benchmarks.go -operation $*
+	${GO} run docs/benchmarks/main/operation_benchmarks.go -operation $*
 
 operation-benchmarks: assertions-off measurements-off
 	$(MAKE) $(foreach operation,$(OPERATIONS),operation-benchmarks-$(operation))
 
 operation-measurements-%:
-	${GO} run benchmarks/main/operation_measurements.go -operation $*
+	${GO} run docs/benchmarks/main/operation_measurements.go -operation $*
 
 operation-measurements: assertions-off measurements-on
 	$(MAKE) -j $(foreach operation,$(OPERATIONS),operation-measurements-$(operation))
@@ -110,23 +110,22 @@ operation-measurements: assertions-off measurements-on
 
 
 optimized-plots:
-	npx --yes svgo --recursive --folder  "docs"
-	npx --yes svgo --recursive --folder  "benchmarks"
+	npx --yes svgo --recursive --folder  "."
 
 plot-index:
-	${GO} run benchmarks/main/index.go < benchmarks/index.html
+	${GO} run docs/benchmarks/main/index.go < docs/benchmarks/index.html
 
 balancer-plots:
-	gnuplot benchmarks/plot/balancers.gnuplot
+	gnuplot docs/benchmarks/plot/balancers.gnuplot
 
 operation-plots:
-	gnuplot benchmarks/plot/operations.gnuplot
+	gnuplot docs/benchmarks/plot/operations.gnuplot
 
 polytope:
-	cd docs && gnuplot polytope/topdown.gnuplot
+	gnuplot polytope/topdown.gnuplot
 
 index:
-	cd docs && ${GO} run main/index/index.go
+	${GO} run docs/main/index/index.go < docs/index.html > index.html
 
 article: optimized-plots index
 

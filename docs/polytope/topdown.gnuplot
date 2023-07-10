@@ -1,4 +1,4 @@
-set terminal svg size 400,300 round dynamic font "KaTeX_Main,10"
+set terminal svg size 400,300 dynamic round font "KaTeX_Main,10"
 
 set output "polytope/topdown.svg"
 

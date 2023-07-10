@@ -2,28 +2,24 @@ package trees
 
 import (
    "bst/abstract/list"
-   "math/big"
+   "bst/utility"
 )
 
 type WBSTTopDown struct {
    Tree
-   Delta *big.Rat
-   Gamma *big.Rat
-   Cache map[[2]list.Size]bool
+   WeightBalance
 }
 
 func (WBSTTopDown) New() list.List {
    return &WBSTTopDown{
-      Delta: big.NewRat(3, 1),
-      Gamma: big.NewRat(2, 1),
+      WeightBalance: ThreeTwo{},
    }
 }
 
 func (tree *WBSTTopDown) Clone() list.List {
    return &WBSTTopDown{
-      Delta: tree.Delta,
-      Gamma: tree.Gamma,
       Tree: tree.Tree.Clone(),
+      WeightBalance: tree.WeightBalance,
    }
 }
 
@@ -42,82 +38,29 @@ func (tree WBSTTopDown) verifyBalance(p *Node, s list.Size) {
 }
 
 func (tree WBSTTopDown) verifyHeight(root *Node, size list.Size) {
-   //invariant(root.height() <= int(2*utility.Log2(size)))
+   invariant(root.height() <= int(2*utility.Log2(size)))
 }
 
 func (tree WBSTTopDown) Verify() {
-   //tree.verifySizes()
+   tree.verifySizes()
    tree.verifyBalance(tree.root, tree.size)
-   //tree.verifyHeight(tree.root, tree.size)
-}
-
-func (tree *WBSTTopDown) isBalanced(x, y list.Size) bool {
-   //key := fmt.Sprintf("%s %d %d", tree.Delta.String(), x + 1, y + 1)
-   //if balanced, cached := balCache.Load(key); cached {
-   //   return balanced.(bool)
-   //}
-   if x >= y {
-      return true
-   }
-   if tree.Cache == nil {
-     tree.Cache = map[[2]list.Size]bool{}
-   }
-   key := [2]list.Size{x,y}
-   if balanced, cached := tree.Cache[key]; cached {
-     return balanced
-   } else {
-      var a big.Rat
-      var b big.Rat
-      a.SetUint64(x + 1)
-      b.SetUint64(y + 1)
-      balanced = a.Mul(tree.Delta, &a).Cmp(&b) >= 0
-      tree.Cache[key] = balanced
-      return balanced
-   }
-   //
-   //
-   //if (x + 1) >= (y + 1) {
-   //   return true
-   //}
-   //var a big.Rat
-   //var b big.Rat
-   //a.SetUint64(x + 1)
-   //b.SetUint64(y + 1)
-   //balanced := a.Mul(tree.Delta, &a).Cmp(&b) >= 0
-   ////balCache.Store(key, balanced)
-   //return balanced
-}
-
-func (tree *WBSTTopDown) singleRotation(x, y list.Size) bool {
-   //key := fmt.Sprintf("%s %d %d", tree.Gamma.String(), x + 1, y + 1)
-   //if single, cached := rotCache.Load(key); cached {
-   //   return single.(bool)
-   //}
-   if (x + 1) >= (y + 1) {
-      return true
-   }
-   var a, b big.Rat
-   a.SetUint64(x + 1)
-   b.SetUint64(y + 1)
-   single := a.Mul(tree.Gamma, &a).Cmp(&b) > 0
-   //rotCache.Store(key, single)
-   return single
+   tree.verifyHeight(tree.root, tree.size)
 }
 
 func (tree *WBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.Data) {
-   assert(i <= s)
+   // assert(i <= s)
    for {
       if *p == nil {
          *p = tree.allocate(Node{x: x})
          return
       }
-      //tree.persist(p)
+      tree.persist(p)
 
       sl := (*p).sizeL()
       sr := (*p).sizeR(s)
 
-      assert(tree.isBalanced(sr, sl))
-      assert(tree.isBalanced(sl, sr))
+      // assert(tree.isBalanced(sr, sl))
+      // assert(tree.isBalanced(sl, sr))
 
       if i <= (*p).s {
          if tree.isBalanced(sr, sl+1) {
@@ -150,12 +93,12 @@ func (tree *WBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.D
                   tree.pathR(&p, &s, &i)
                   tree.pathL(&p, &s)
                } else {
-                  if (*p).l.r == nil {
-                     (*p).l.r = tree.allocate(Node{x: x})
-                     (*p).s++
-                     tree.rotateLR(p)
-                     return
-                  }
+                  //if (*p).l.r == nil {
+                  //   (*p).l.r = tree.allocate(Node{x: x})
+                  //   (*p).s++
+                  //   tree.rotateLR(p)
+                  //   return
+                  //}
                   if i <= (*p).l.s+(*p).l.r.s+1 {
                      //
                      // LRL DOUBLE
@@ -206,12 +149,12 @@ func (tree *WBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.D
                tree.pathL(&p, &s)
                tree.pathR(&p, &s, &i)
             } else {
-               if (*p).r.l == nil {
-                  (*p).r.l = tree.allocate(Node{x: x})
-                  (*p).r.s++
-                  tree.rotateRL(p)
-                  return
-               }
+               //if (*p).r.l == nil {
+               //   (*p).r.l = tree.allocate(Node{x: x})
+               //   (*p).r.s++
+               //   tree.rotateRL(p)
+               //   return
+               //}
 
                if i > (*p).s + (*p).r.l.s + 1 { // TODO rotate first then just compare to p
                   //
@@ -235,19 +178,19 @@ func (tree *WBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.D
 }
 
 func (tree *WBSTTopDown) delete(p **Node, s list.Size, i list.Position) (deleted *Node) {
-   assert(i < s)
-   assert(s == (*p).size())
+   // assert(i < s)
+   // assert(s == (*p).size())
    for {
-      //tree.persist(p)
+      tree.persist(p)
 
       sl := (*p).s
       sr := s - (*p).s - 1
 
-      assert(tree.isBalanced(sl, sr))
-      assert(tree.isBalanced(sr, sl))
+      // assert(tree.isBalanced(sl, sr))
+      // assert(tree.isBalanced(sr, sl))
 
       if i == (*p).s {
-         //defer tree.free(*p)
+         defer tree.free(*p)
          x := *p
          *p = tree.join((*p).l, (*p).r, sl, sr)
          return x
@@ -343,13 +286,13 @@ func (tree *WBSTTopDown) deleteR(p ***Node, s *list.Size, i *list.Position) {
 }
 
 func (tree *WBSTTopDown) Insert(i list.Position, x list.Data) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.insert(&tree.root, tree.size, i, x)
    tree.size++
 }
 
 func (tree *WBSTTopDown) Delete(i list.Position) (x list.Data) {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    x = tree.delete(&tree.root, tree.size, i).x
    tree.size--
    return
@@ -361,8 +304,7 @@ func (tree *WBSTTopDown) Join(that list.List) list.List {
    tree.share(l.root)
    tree.share(r.root)
    return &WBSTTopDown{
-      Delta: tree.Delta,
-      Gamma: tree.Gamma,
+      WeightBalance: tree.WeightBalance,
       Tree: Tree{
          arena: tree.arena,
          root:  tree.join(l.root, r.root, l.size, r.size),
@@ -447,11 +389,11 @@ func (tree WBSTTopDown) split(p *Node, i, s list.Size) (l, r *Node) {
 }
 
 func (tree WBSTTopDown) Split(i list.Position) (list.List, list.List) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
 
-   return &WBSTTopDown{Delta: tree.Delta, Gamma: tree.Gamma, Tree: Tree{arena: tree.arena, root: l, size: i}},
-          &WBSTTopDown{Delta: tree.Delta, Gamma: tree.Gamma, Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
+   return &WBSTTopDown{WeightBalance: tree.WeightBalance, Tree: Tree{arena: tree.arena, root: l, size: i}},
+          &WBSTTopDown{WeightBalance: tree.WeightBalance, Tree: Tree{arena: tree.arena, root: r, size: tree.size - i}}
 }
 

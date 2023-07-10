@@ -1,6 +1,9 @@
 package main
 
-import "os"
+import (
+   "io"
+   "os"
+)
 import "text/template"
 
 var funcMap = template.FuncMap{
@@ -11,19 +14,15 @@ var funcMap = template.FuncMap{
 }
 
 func main() {
-   body, err := os.ReadFile("index.template.html")
+   body, err := io.ReadAll(os.Stdin)
    if err != nil {
       panic(err)
    }
-   tmpl, err := template.New("index").Funcs(funcMap).Parse(string(body))
+   tmpl, err := template.New("").Funcs(funcMap).Parse(string(body))
    if err != nil {
       panic(err)
    }
-   file, err := os.Create("index.html")
-   if err != nil {
-      panic(err)
-   }
-   if err := tmpl.Execute(file, nil); err != nil {
+   if err := tmpl.Execute(os.Stdout, nil); err != nil {
       panic(err)
    }
 }
