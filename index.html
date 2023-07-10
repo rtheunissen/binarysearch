@@ -276,31 +276,31 @@
                 There could be many clerks working together on the same collection and within the same cabinet.
                 The fundamental interactions are simply to allocate, store, retrieve and forget individual memories as needed.
             </p>
-            <p>
-                What does a program actually <em>do</em> with memory? What is meant by "interaction" exactly?
-            </p>
-            <p>
-                Consider an example problem: to find the average grade of all students in a given school.
-                Student records are stored in a database, which includes information such as the name of the student, their registration status, and grade history.
-                An existing program starts by allocating enough memory to hold all the records, then loads them from the database into memory, then steps through them one at a time.
-                As the program steps through each record, it tracks the sum of all grades to later divide by the number of students to get the average grade.
-                With this strategy, the amount of allocation is linearly proportional to the number of students: if the number of students were to double, so would the memory requirement.
-            </p>
-            <p>
-                Another approach might be to not be so eager in the way we read the student records into memory.
-                Instead of loading <em>all</em> the students into memory at the start of the program, we can ask the database for one record at a time and only allocate enough memory for one record.
-                We can overwrite the current student record in memory with the next student from the database as soon as we add their grades to the sum because the current record is then no longer needed by the algorithm.
-                This algorithm therefore requires only a <em>constant</em> amount of memory but would still be linear in time because every student record must be read at least once at some point.
-                In this case, if the number of students were to double, the algorithm would take about twice as long to run but would not require any more memory than before.
-            </p>
-            <p>
-                Now consider that a student record also includes a designated friend who is also a student, and that student would then also have a friend, and so forth.
-                This creates a recursive relationship because the data model of a student is self-referencing.
-                To avoid an infinitely-embedded record structure, the friend field must be stored as a student <em>reference</em>, which a program must first <em>dereference</em> to access the full student record of the friend.
-            </p>
+<!--            <p>-->
+<!--                What does a program actually <em>do</em> with memory? What is meant by "interaction" exactly?-->
+<!--            </p>-->
+<!--            <p>-->
+<!--                Consider an example problem: to find the average grade of all students in a given school.-->
+<!--                Student records are stored in a database, which includes information such as the name of the student, their registration status, and grade history.-->
+<!--                An existing program starts by allocating enough memory to hold all the records, then loads them from the database into memory, then steps through them one at a time.-->
+<!--                As the program steps through each record, it tracks the sum of all grades to later divide by the number of students to get the average grade.-->
+<!--                With this strategy, the amount of allocation is linearly proportional to the number of students: if the number of students were to double, so would the memory requirement.-->
+<!--            </p>-->
+<!--            <p>-->
+<!--                Another approach might be to not be so eager in the way we read the student records into memory.-->
+<!--                Instead of loading <em>all</em> the students into memory at the start of the program, we can ask the database for one record at a time and only allocate enough memory for one record.-->
+<!--                We can overwrite the current student record in memory with the next student from the database as soon as we add their grades to the sum because the current record is then no longer needed by the algorithm.-->
+<!--                This algorithm therefore requires only a <em>constant</em> amount of memory but would still be linear in time because every student record must be read at least once at some point.-->
+<!--                In this case, if the number of students were to double, the algorithm would take about twice as long to run but would not require any more memory than before.-->
+<!--            </p>-->
+<!--            <p>-->
+<!--                Now consider that a student record also includes a designated friend who is also a student, and that student would then also have a friend, and so forth.-->
+<!--                This creates a recursive relationship because the data model of a student is self-referencing.-->
+<!--                To avoid an infinitely-embedded record structure, the friend field must be stored as a student <em>reference</em>, which a program must first <em>dereference</em> to access the full student record of the friend.-->
+<!--            </p>-->
             <p>
                 The general problem we are trying to solve concerns <em>the energy cost of memory interaction</em>.
-                In the case of the cabinet clerks that would be kinetic energy to run around and climb ladders, and in the case of a computer we require electrical energy to modulate the state of transistors.
+<!--                In the case of the cabinet clerks that would be kinetic energy to run around and climb ladders, and in the case of a computer we require electrical energy to modulate the state of transistors.-->
                 A program is considered efficient when it meets its functional requirements using only a small amount of energy relative to the complexity of the problem.
                 Some problems can not avoid frequent interaction with memory, but an inefficient algorithm wastes energy by interacting with memory more often than it needs to.
             <p>
@@ -340,13 +340,13 @@
                     An array is a block of contiguous memory allocated all at once and indexed directly by offset from the address of the block.
                     The total amount of memory allocated by an array is the number of records it can store multiplied by the memory required per record.
                 </p>
-                <p>
-                    To illustrate this, we could use a sheet of grid paper to represent an allocated array where every square is a space in which a single character can be stored.
-                    The sheet of grid paper is the array and the squares with characters in them form the sequence.
-                    Given that an array is the position of a character is determined by its offset from the start of the array, there can be no spaces between the characters of the sequence within the array.
-                    Starting from a blank sheet as an empty list, we might insert one character at a time at the end of the sequence: from the top left corner across the page by column and down the page by row as we start filling up the memory of the array.
-                    However, we could also start in the bottom right and spiral inward towards the center.
-                </p>
+<!--                <p>-->
+<!--                    To illustrate this, we could use a sheet of grid paper to represent an allocated array where every square is a space in which a single character can be stored.-->
+<!--                    The sheet of grid paper is the array and the squares with characters in them form the sequence.-->
+<!--                    Given that an array is the position of a character is determined by its offset from the start of the array, there can be no spaces between the characters of the sequence within the array.-->
+<!--                    Starting from a blank sheet as an empty list, we might insert one character at a time at the end of the sequence: from the top left corner across the page by column and down the page by row as we start filling up the memory of the array.-->
+<!--                    However, we could also start in the bottom right and spiral inward towards the center.-->
+<!--                </p>-->
                 <p>
                     We are free to organize the memory however we like as long as we continue to maintain the behavior of a list.
                     The sequence of characters we are recording on the grid paper has semantic meaning to the program asking us to record them, but the structure itself is not aware of that.
