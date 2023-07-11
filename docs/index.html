@@ -1815,6 +1815,77 @@ func balance(p *Node, s Size) *Node {
 
         <section id="randomly-balanced-trees">
             <h3>Randomly-balanced trees</h3>
+            <p>
+                All the balancing strategies explored so far produce the same structure for the same input.
+                As a result, they are consistent and predictable.
+                This is not always a benefit, however.
+                For example, an adversary could exploit predictability with with timing attacks to gain information about the system.
+                Some predictable strategies are also history-dependent, where information about previous operations can be derived from the current structure.
+                While these concerns are uncommon in practice, unpredictability is an essential feature for some applications.
+            </p>
+            <p>
+                Probabilistic balancing is effective regardless, and some of the most common data structures in practice use randomness in some way.
+                Focusing on binary search trees, we explore four strategies that use randomness to keep the tree balanced.
+            </p>
+            <p>
+                In 1989, Seidel and Aragon introduced the <em>treap</em> data structure, which combines the ideas of a tree and a heap [].
+                When a new node is allocated, the algorithm generates a random number as its rank, and stores that rank as part of the node structure.
+                The only invariant to maintain is that the rank of a node must be greater than or equal to the rank of its subtrees.
+                The root of the tree therefore has the highest rank, and ranks decrease further away from the root.
+            </p>
+            <p>
+                This results in a tree that is reasonably well-balanced, with an average path length logarithmic in the size of the tree with high probability, as it becomes increasingly unlikely that a new rank is greater than the rank of the level above it.
+            </p>
+            <p>
+                The algorithms to maintain the max-heap rank invariant are intuitive and simple to implement.
+                There are two fundamental algorithms: <em>split</em>, which partitions a node at a given position into two separate trees, and <em>join</em> which is effectively the inverse, combining two subtrees into one.
+                These algorithms are similar to <em>partition</em>, operating purely top-down in constant space.
+            </p>
+            <pre>
+func split(p *Node, i uint64) (*Node, *Node) {
+   n := Node{}
+   l := &n
+   r := &n
+   for p != nil {
+      if i <= p.s {
+         p.s = p.s - i
+         r.l = p
+         r = r.l
+         p = p.l
+      } else {
+         i = i - p.s - 1
+         l.r = p
+         l = l.r
+         p = p.r
+      }
+   }
+   l.r = nil
+   r.l = nil
+   return n.r, n.l
+}
+            </pre>
+
+            <pre>
+func join(l, r *Node, sl list.Size) (root *Node) {
+   p := &root
+   for {
+      if l == nil { *p = r; return }
+      if r == nil { *p = l; return }
+
+      if l.y >= r.y {
+         sl = sl - l.s - 1
+        *p = l
+         p = &l.r
+         l = *p
+      } else {
+         r.s = r.s + sl
+        *p = r
+         p = &r.l
+         r = *p
+      }
+   }
+}
+            </pre>
 
         </section>
 
