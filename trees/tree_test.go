@@ -59,11 +59,8 @@ func TestBST(t *testing.T) {
          //&LBSTBottomUp{},
          //&LBSTTopDown{},
          //&LBSTRelaxed{},
-<<<<<<< HEAD
          //&TreapTopDown{},
-=======
          &TreapTopDown{},
->>>>>>> 35027895df6e025dbd2cb64c43b9cef058796b83
          //&TreapFingerTree{},
          //&Randomized{},
          //&Zip{},

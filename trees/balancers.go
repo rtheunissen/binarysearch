@@ -13,18 +13,14 @@ type Balancer interface {
 }
 
 func partition(p *Node, i uint64) *Node {
-<<<<<<< HEAD
    assert(i < p.size())
-   measurement(&partitionCount, 1)
-=======
-   assert(i < p.size())
-   measurement(&partitionCount, 1)
->>>>>>> 35027895df6e025dbd2cb64c43b9cef058796b83
+   // measurement(&partitionCount, 1)
+
    n := Node{s: i}
    l := &n
    r := &n
    for i != p.s {
-      measurement(&partitionDepth, 1)
+      // measurement(&partitionDepth, 1)
       if i < p.s {
          p.s = p.s - i - 1
          r.l = p

@@ -29,17 +29,6 @@ func (tree *WBSTRelaxed) Delete(i list.Position) list.Data {
    return tree.Tree.Delete(i)
 }
 
-<<<<<<< HEAD
-=======
-// Deletes the node at position `i` from the tree.
-// Returns the data that was in the deleted value.
-func (tree *WBSTRelaxed) Delete(i list.Position) list.Data {
-   assert(i < tree.size)
-   x := tree.delete(&tree.root, tree.size, i)
-   tree.size = tree.size - 1
-   return x
-}
->>>>>>> 35027895df6e025dbd2cb64c43b9cef058796b83
 func (tree *WBSTRelaxed) insert(p **Node, s list.Size, i list.Position, x list.Data) {
    var unbalancedNode **Node    // An unbalanced node along the insertion path.
    var unbalancedSize list.Size // The size of the unbalanced node.

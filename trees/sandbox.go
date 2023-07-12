@@ -1,22 +1,5 @@
 package trees
 
-import (
-<<<<<<< HEAD
-   "bst/abstract/list"
-   "bst/abstract/list/operations"
-   "bst/utility"
-   "bst/utility/random/distribution"
-   "bytes"
-   "fmt"
-   "math"
-=======
-   "bst/types/list"
-   "bst/utility"
-   "math"
-   "os"
->>>>>>> 35027895df6e025dbd2cb64c43b9cef058796b83
-)
-
 func init() {
    //spew.Config.Indent = "       "
 }
@@ -153,23 +136,23 @@ func init() {
 //   ////}
 //}
 
-func heightBound1(height int, size list.Size) bool {
-   return height > 2 * int(utility.Log2(size))
-}
-func heightBound2(height int, size list.Size) bool {
-   return size < (1 << ((height + 1) >> 1))
-}
-func heightBound3(height int, size list.Size) bool {
-   return (height + 1) / 2 > int(math.Log2(float64(size)))
-}
-func log2_1(x, y int) bool {
-   assert(x <= y)
-   return (1 + int(math.Floor(math.Log2(float64(y))))) - (1 + int(math.Floor(math.Log2(float64(x))))) <= 1
-}
-func log2_2(x, y int) bool {
-   assert(x <= y)
-   return x >= y / 2 && x <= y * 2
-}
+//func heightBound1(height int, size list.Size) bool {
+//   return height > 2 * int(utility.Log2(size))
+//}
+//func heightBound2(height int, size list.Size) bool {
+//   return size < (1 << ((height + 1) >> 1))
+//}
+//func heightBound3(height int, size list.Size) bool {
+//   return (height + 1) / 2 > int(math.Log2(float64(size)))
+//}
+//func log2_1(x, y int) bool {
+//   assert(x <= y)
+//   return (1 + int(math.Floor(math.Log2(float64(y))))) - (1 + int(math.Floor(math.Log2(float64(x))))) <= 1
+//}
+//func log2_2(x, y int) bool {
+//   assert(x <= y)
+//   return x >= y / 2 && x <= y * 2
+//}
 
 func Beep() {
    //f, err := os.Open("dissolve.wav")
@@ -193,56 +176,35 @@ func Beep() {
 
 
 func Sandbox() {
-   n := uint64(1_000_000)
+   //n := uint64(1_000_000)
+   //
+   //op := operations.InsertDeleteCycles{}
+   //
+   //strategies := []list.List{
+   //   &RedBlackRelaxedBottomUp{},
+   //   &RedBlackRelaxedTopDown{},
+   //   &AVLRelaxedBottomUp{},
+   //   &AVLRelaxedTopDown{},
+   //   &WBSTRelaxed{},
+   //   &LBSTRelaxed{},
+   //}
+   //for i, s := range strategies {
+   //   strategies[i] = op.Setup(s, n)
+   //}
+   //for j := 0;; j++ {
+   //   for i, s := range strategies {
+   //      strategies[i], _ = op.Update(s, distribution.Uniform{}.New(uint64(j)))
+   //   }
+   //   if (j+1) % 1_000 == 0 {
+   //      fmt.Println()
+   //      var buf bytes.Buffer
+   //      for _, s := range strategies {
+   //         fmt.Fprintf(&buf, "%-32s apl: %.4f, h: %d, s: %d\n", utility.NameOf(s), s.(BinaryTree).Root().AveragePathLength(), s.(BinaryTree).Root().MaximumPathLength(), s.Size())
+   //      }
+   //      fmt.Println(buf.String())
+   //   }
+   //}
 
-<<<<<<< HEAD
-   op := operations.InsertDeleteCycles{}
-
-   strategies := []list.List{
-      &RedBlackRelaxedBottomUp{},
-      &RedBlackRelaxedTopDown{},
-      &AVLRelaxedBottomUp{},
-      &AVLRelaxedTopDown{},
-      &WBSTRelaxed{},
-      &LBSTRelaxed{},
-   }
-   for i, s := range strategies {
-      strategies[i] = op.Setup(s, n)
-   }
-   for j := 0;; j++ {
-      for i, s := range strategies {
-         strategies[i], _ = op.Update(s, distribution.Uniform{}.New(uint64(j)))
-      }
-      if (j+1) % 1_000 == 0 {
-         fmt.Println()
-         var buf bytes.Buffer
-         for _, s := range strategies {
-            fmt.Fprintf(&buf, "%-32s apl: %.4f, h: %d, s: %d\n", utility.NameOf(s), s.(BinaryTree).Root().AveragePathLength(), s.(BinaryTree).Root().MaximumPathLength(), s.Size())
-         }
-         fmt.Println(buf.String())
-      }
-   }
-=======
-   a := TreapTopDown{}.New().(*TreapTopDown)
-   b := TreapTopDown{}.New().(*TreapTopDown)
-
-
-   a.Insert(0, 3)
-   a.Insert(0, 2)
-   a.Insert(0, 1)
-   a.Insert(0, 0)
-
-
-   b.Insert(0, 7)
-   b.Insert(0, 6)
-   b.Insert(0, 5)
-   b.Insert(0, 4)
-
-   a.Draw(os.Stderr)
-   b.Draw(os.Stderr)
-   a.Join(b).(*TreapTopDown).Draw(os.Stderr)
-
->>>>>>> 35027895df6e025dbd2cb64c43b9cef058796b83
 
    //
    //
@@ -349,7 +311,6 @@ func Sandbox() {
    //}
    //fmt.Println(count, "to go")
 
-<<<<<<< HEAD
    //
    //
    //
@@ -485,9 +446,6 @@ func Sandbox() {
    ////
    ////
    ////
-=======
-
->>>>>>> 35027895df6e025dbd2cb64c43b9cef058796b83
    //
    //
    //N := 100_000
@@ -1074,10 +1032,7 @@ func Sandbox() {
    //      //Height{},
    //      //Median{},
    //   }
-   //<<<<<<< HEAD
-   //   fmt.Println(numberOfCopies)
-   //   t.Free()
-   //=======
+   //
    //
    //   for _, balancer := range balancers {
    //
