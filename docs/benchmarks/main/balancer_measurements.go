@@ -1,8 +1,8 @@
 package main
 
 import (
-   "bst/abstract/list"
    "bst/trees"
+   "bst/types/list"
    "bst/utility"
    "bst/utility/random"
    "bst/utility/random/distribution"
@@ -21,16 +21,6 @@ func main() {
       Iterations:        1,
       Samples:      10_000,
       Scale:     1_000_000,
-      Measurements: []trees.Measurement{
-         &trees.PartitionCount{},
-         &trees.PartitionDepth{},
-         &trees.AveragePathLength{},
-         &trees.MaximumPathLength{},
-         &trees.Rotations{},
-      },
-      Distributions: []random.Distribution{
-         &distribution.Uniform{},
-      },
       Strategy: utility.Resolve[trees.Balancer](*strategy, []trees.Balancer{
          &trees.Median{},
          &trees.Height{},
@@ -39,6 +29,16 @@ func main() {
          &trees.Cost{},
          &trees.DSW{},
       }),
+      Distributions: []random.Distribution{
+         &distribution.Uniform{},
+      },
+      Measurements: []trees.Measurement{
+         &trees.PartitionCount{},
+         &trees.PartitionDepth{},
+         &trees.AveragePathLength{},
+         &trees.MaximumPathLength{},
+         &trees.Rotations{},
+      },
    }.Run()
 }
 

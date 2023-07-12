@@ -1,8 +1,8 @@
 package main
 
 import (
-   "bst/abstract/list"
-   "bst/abstract/list/operations"
+   "bst/types/list"
+   "bst/types/list/operations"
    "bst/trees"
    "bst/trees/animations"
    "bst/utility/console"

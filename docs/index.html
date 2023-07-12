@@ -146,8 +146,10 @@
         }
 
         pre {
-            margin: 2rem 0 1rem 2rem;
-            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Inconsolata, Consolas, "Liberation Mono", monospace;
+            margin: 3rem 0 0 2rem;
+            font-family: KaTeX_Typewriter, monospace;
+            font-size: 0.9rem;
+            line-height: 1.25;
         }
 
         mark {
@@ -189,26 +191,32 @@
         }
 
         figure {
-            width: 100%;
-            box-sizing: border-box;
+            display: block;
+
             margin-top: 2rem;
             margin-bottom: 1rem;
         }
 
-        figure .caption {
+        .caption {
+            box-sizing: border-box;
+            border-top: 1px solid #000;
             display: block;
             font-size: 0.8rem;
-            text-align: center;
-            color: #000000;
+            /*text-align: center;*/
+            color: #000;
             width: 100%;
             max-width: 600px;
             margin: auto;
+            padding-top: 0.5rem;
+            /*margin-top: 1rem;*/
+            /*padding-left: 1rem;*/
+            /*padding-right: 1rem;*/
             /*font-family: "Charter", "Bitstream Charter", "Cambria", serif;*/
         }
-        figure .caption .katex {
-            font-size: 0.8rem;
-        }
 
+        .caption .katex {
+            font-size: 1rem;
+        }
         .rb-red {
             color: red;
             font-weight: bold;
@@ -582,7 +590,7 @@ type Node struct {
                     We can now follow this algorithm to search by relative position:
                 </p>
                 <pre>
-func search(p *Node, i uint64) *Node {
+<strong>search</strong> (p *Node, i uint64) *Node {
    for {
       if i == p.s {
          return p
@@ -719,9 +727,9 @@ func search(p *Node, i uint64) *Node {
 a  b  c         a  b  c           a  b  c
 
 (a)                (b)                  (c)
-  ╲               ╱   ╲                /
+  \               /   \                /
    (b)          (a)   (c)            (b)
-     ╲                              /
+     \                              /
       (c)                         (a)
 
             </pre>
@@ -763,27 +771,29 @@ a  b  c         a  b  c           a  b  c
                 At all stages, the sequence was (a,b,c,d).
             </p>
             <pre>
-
-           1                       2                      3
-
-1         (a)                     (c)                    (d)
-             ╲                   ╱   ╲                   /
-2            (c)               (a)   (d)               (c)
-             ╱  ╲                ╲                     /
-3          (b)  (d)               (b)                (a)
-                                                          ╲
-                                                          (b)
-    </pre>
+           r                    p                      l
+       p     rr            l         r             ll     p
+    l    rl             ll   lr   rl   rr              lr    r
+  ll lr                                                    rl rr
+</pre>
 
             <pre>
-func (p *Node) rotateL() *Node {       func (p *Node) rotateR() *Node {
-   r := p.r                               l := p.l
-   p.r = r.l                              p.l = l.r
-   r.l = p                                l.r = p
-   r.s = r.s + p.s + 1                    p.s = p.s - l.s - 1
-   return r                               return l
-}                                      }
-            </pre>
+<strong>rotateL</strong> (p *Node) *Node
+     r = p.r
+   p.r = r.l
+   r.l = p
+   r.s = r.s + p.s + 1
+   return r
+}
+
+<strong>rotateR</strong> (p *Node) *Node
+     l = p.l
+   p.l = l.r
+   l.r = p
+   p.s = p.s - l.s - 1
+   return l
+}
+</pre>
 
             <p>
                 A well-known algorithm to restore balance using tree rotations was designed by Quentin Stout and Bette Warren in 1986 [], based on work done by Colin Day in 1976 [].
@@ -801,11 +811,11 @@ func (p *Node) rotateL() *Node {       func (p *Node) rotateR() *Node {
             </p>
 
             <pre>
-func partition(p *Node, i uint64) *Node {
+<strong>partition</strong> (p *Node, i uint64) *Node {
    n = Node{s: i}
    l = &n
    r = &n
-   for i != p.s {
+   for i ≠ p.s {
       if i < p.s {
          p.s = p.s - i - 1
          r.l = p
@@ -852,7 +862,7 @@ func partition(p *Node, i uint64) *Node {
             </p>
 
             <pre>
-func balance(p *Node, s Size) *Node {
+<strong>balance</strong> (p *Node, s Size) *Node {
    if p == nil {
       return p
    }
@@ -897,9 +907,9 @@ func balance(p *Node, s Size) *Node {
 
 
    (b)                          (c)
-  ╱   ╲                        ╱   ╲
+  /   \                        /   \
 (a)   (d)                    (b)   (d)
-     ╱   ╲                   ╱       ╲
+     /   \                   /       \
    (c)   (e)               (a)       (e)
 
             </pre>
@@ -1647,6 +1657,17 @@ func balance(p *Node, s Size) *Node {
 
             <figure>
                 {{ include "docs/polytope/topdown.svg" }}
+                <p class="caption">
+                    <strong>Figure 1</strong>: Here is some information about this code $x + 1$.
+                    To produce this, we simulate random trees across a wide range of rational $\Delta$ and $\Gamma$ parameters.
+                    Whenever a node in the tree is not weight-balanced, it proves that a counter-example exists for that $\langle\Delta,\Gamma\rangle$ pair, which makes it infeasible and excludes it from the plot.
+                    The remaining area is the polygon of feasible balancing parameters for top-down weight-balanced trees.
+
+                    Barth and Wagner evaluated top-down weight-balanced trees in 2019, but mention logarithmic weight-balance only in the introduction, without further evaluation.
+                    They contribute detailed benchmarks across a range of $\langle\Delta,\Gamma\rangle$, but acknowledge that "it is unclear what the feasible polytope looks like".
+                    They conclude with a suggestion for further study, that "in the future, it would be interesting to determine the space of feasible balancing parameters for top-down weight-balanced trees similar to how Hirai and Yamamoto have done for bottom-up weight-balanced trees."
+
+                </p>
             </figure>
             <p>
                 The shape appears to be more detailed illustration of what Hirai and Yamamoto found for bottom-up weight-balanced trees, which suggests that the feasible space might be the same for all weight-balanced trees.
@@ -1796,8 +1817,9 @@ func balance(p *Node, s Size) *Node {
             </p>
             <figure>
                 {{ include "docs/benchmarks/svg/operations/WeightBalancedRelaxed/InsertDeleteCycles/AveragePathLength__sbezier.svg" }}
-                <span class="caption"></span>
+
             </figure>
+
             <figure>
                 {{ include "docs/benchmarks/svg/operations/WeightBalancedRelaxed/InsertDeleteCycles/MaximumPathLength__sbezier.svg" }}
             </figure>
@@ -1812,23 +1834,168 @@ func balance(p *Node, s Size) *Node {
 
         <section id="randomly-balanced-trees">
             <h3>Randomly-balanced trees</h3>
+            <p>
+                All the balancing strategies explored so far produce the same structure for the same input.
+                As a result, they are consistent and predictable.
+                This is not always a benefit, however.
+                For example, an adversary could exploit predictability with with timing attacks to gain information about the system.
+                Some predictable strategies are also history-dependent, where information about previous operations can be derived from the current structure.
+                While these concerns are uncommon in practice, unpredictability is an essential feature for some applications.
+            </p>
+            <p>
+                Probabilistic balancing is effective regardless, and some of the most common data structures in practice use randomness in some way.
+                Focusing on binary search trees, we explore four strategies that use randomness to keep the tree balanced.
+            </p>
+            <p>
+                In 1989, Seidel and Aragon introduced the <em>treap</em> data structure, which combines the ideas of a tree and a heap [].
+                When a new node is allocated, the algorithm generates a random number as its rank, and stores that rank as part of the node structure.
+                The only invariant to maintain is that the rank of a node must be greater than or equal to the rank of its subtrees.
+                The root of the tree therefore has the highest rank.
+                This results with high likelihood in a balanced tree, as it becomes increasingly unlikely that a new rank is greater than the ranks above it.
+            </p>
+                The algorithms to maintain the rank invariant are intuitive and simple to implement.
+                There are two fundamental algorithms: <em>split</em>, which partitions a node into two separate trees at a given position, and <em>join</em> which combines two subtrees into one.
+                These algorithms are similar to <em>partition</em>, operating purely top-down in constant space.
+            </p>
 
+            <pre>
+<strong>split</strong> (p *Node, i uint64) (*Node, *Node) {
+   n := Node{}
+   l := &n
+   r := &n
+   for p ≠ nil {
+      if i ≤ p.s {
+       p.s = p.s - i
+       r.l = p
+         r = r.l
+         p = p.l
+      } else {
+         i = i - p.s - 1
+       l.r = p
+         l = l.r
+         p = p.r
+      }
+   }
+   l.r = nil
+   r.l = nil
+   return n.r, n.l
+}
+            </pre>
+            <p class="caption">
+                <strong>Figure 1</strong>: Here is some information about this code $x + 1$.
+                A tree that is strictly weight-balanced, where every node of the tree is weight-balanced, has a known maximum height.
+                For example, the maximum height of logarithmic weight-balanced tree is $2\log_{2}n$.
+                Therefore, when the height of a tree exceeds this bound there must be at least one node that is <em>not</em> weight-balanced.
+                Galperin and Rivest refer to this node as a <span class="quote">scapegoat</span>.
+            </p>
+
+            <pre>
+<strong>join</strong> (l, r *Node, sl uint64) (root *Node) {
+   p := &root
+   for {
+      if l == nil { *p = r; return }
+      if r == nil { *p = l; return }
+
+      if rank(l) ≥ rank(r) {
+        sl = sl - l.s - 1
+        *p = l
+         p = &l.r
+         l = *p
+      } else {
+       r.s = r.s + sl
+        *p = r
+         p = &r.l
+         r = *p
+      }
+   }
+}
+            </pre>
+            <p class="caption">
+                <strong>Figure 1</strong>: Here is some information about this code $x + 1$.
+                A tree that is strictly weight-balanced, where every node of the tree is weight-balanced, has a known maximum height.
+                For example, the maximum height of logarithmic weight-balanced tree is $2\log_{2}n$.
+                Therefore, when the height of a tree exceeds this bound there must be at least one node that is <em>not</em> weight-balanced.
+                Galperin and Rivest refer to this node as a <span class="quote">scapegoat</span>.
+            </p>
+
+            <pre style="font-family: monospace"> <!-- temp because arrows are not monospace -->
+
+                   TODO DRAW THIS
+
+
+
+                         9
+                        (a)
+                      ↙     ↘  8
+                    △         (b)
+                            ↙     ↘  7
+                          △         (z)
+                               6  ↙     ↘
+                              (y)         △
+                         5  ↙     ↘
+                        (c)         △
+                      ↙     ↘  4
+                    △         (d)
+                            ↙     ↘  3
+                          △         (x)
+
+
+
+
+l* ↘                                                  ↙ r*
+       9                                         7
+      (a)                                       (z)
+   ↙      ↘  8                             6  ↙     ↘
+  △         (b)                           (y)         △
+          ↙     ↘  5                 3  ↙     ↘
+        △         (c)               (x)         △
+                ↙     ↘  4
+              △         (d)
+                      ↙
+                    △
+
+            </pre>
+            <p class="caption">
+                <strong>Figure 1</strong>: Here is some information about this code $x + 1$.
+                A tree that is strictly weight-balanced, where every node of the tree is weight-balanced, has a known maximum height.
+                For example, the maximum height of logarithmic weight-balanced tree is $2\log_{2}n$.
+                Therefore, when the height of a tree exceeds this bound there must be at least one node that is <em>not</em> weight-balanced.
+                Galperin and Rivest refer to this node as a <span class="quote">scapegoat</span>.
+            </p>
+
+            <p>
+                TODO Zip Trees / Skip Lists
+            </p>
+            <p>
+                TODO Randomized Binary Search Trees, Martinez
+            </p>
+        </section>
+
+        <section id="finger-search-trees">
+            <h3>Finger-search trees</h3>
+            <p>
+                In 1988, Tarjan and van Wyk...
+            </p>
         </section>
 
         <section id="self-adjusting-trees">
             <h3>Self-adjusting trees</h3>
-
+            <p>
+                TODO: Splay Trees, Tarjan & Sleator
+            </p>
         </section>
 
         <section id="join-based-trees">
             <h3>Join-based trees</h3>
-
+            <p>
+                TODO: General algorithms in terms of join.
+            </p>
         </section>
 
 
     </section>
-    <section id="conclusion">
-        <h2>Conclusion</h2>
+    <section id="observations">
+        <h2>Observations</h2>
 
     </section>
 

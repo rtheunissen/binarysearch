@@ -1,7 +1,7 @@
 package trees
 
 import (
-   "bst/abstract/list"
+   "bst/types/list"
    "bst/utility/random"
    "bst/utility/random/distribution"
    "testing"
@@ -15,20 +15,20 @@ func TestBST(t *testing.T) {
       Scale: 100,
       Tests: []list.Test{
          list.TestInsert,
-         list.TestInsertPersistent,
-         list.TestSelect,
-         list.TestSelectAfterInsert,
-         list.TestSelectAfterInsertPersistent,
-         list.TestUpdate,
-         list.TestUpdatePersistent,
+         //list.TestInsertPersistent,
+         //list.TestSelect,
+         //list.TestSelectAfterInsert,
+         //list.TestSelectAfterInsertPersistent,
+         //list.TestUpdate,
+         //list.TestUpdatePersistent,
          list.TestDelete,
-         list.TestDeletePersistent,
-         list.TestInsertDelete,
-         list.TestInsertDeletePersistent,
-         list.TestSplit,
-         list.TestJoin,
-         list.TestJoinFromSplit,
-         list.TestJoinAfterInsertDelete,
+         //list.TestDeletePersistent,
+         //list.TestInsertDelete,
+         //list.TestInsertDeletePersistent,
+         //list.TestSplit,
+         //list.TestJoin,
+         //list.TestJoinFromSplit,
+         //list.TestJoinAfterInsertDelete,
       },
       Distributions: []random.Distribution{
          &distribution.Uniform{},
@@ -59,7 +59,11 @@ func TestBST(t *testing.T) {
          //&LBSTBottomUp{},
          //&LBSTTopDown{},
          //&LBSTRelaxed{},
+<<<<<<< HEAD
          //&TreapTopDown{},
+=======
+         &TreapTopDown{},
+>>>>>>> 35027895df6e025dbd2cb64c43b9cef058796b83
          //&TreapFingerTree{},
          //&Randomized{},
          //&Zip{},

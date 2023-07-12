@@ -1,6 +1,6 @@
 package trees
 
-import "bst/abstract/list"
+import "bst/types/list"
 
 type Splay struct {
    Tree
@@ -115,7 +115,7 @@ func (tree *Splay) Size() list.Size {
 // 1. Splay the node at `i`
 // 2. Return the root.
 func (tree *Splay) Select(i list.Position) (x list.Data) {
-   // assert(i < tree.size)
+   assert(i < tree.size)
    tree.Splay(i)
    return tree.root.x
 }
@@ -124,7 +124,7 @@ func (tree *Splay) Select(i list.Position) (x list.Data) {
 // 2. Update the root's data.
 // 3. Return the root.
 func (tree *Splay) Update(i list.Position, x list.Data) {
-   // assert(i < tree.size)
+   assert(i < tree.size)
    tree.Splay(i)
    tree.root.x = x
 }
@@ -134,7 +134,7 @@ func (tree *Splay) Update(i list.Position, x list.Data) {
 //     that the first `i` nodes are on the left and the rest on the right.
 //  3. Replace the previous root with the new node.
 func (tree *Splay) Insert(i list.Position, x list.Data) {
-   // assert(i <= tree.size)
+   assert(i <= tree.size)
    //
    //
    if i == tree.size {
@@ -151,7 +151,7 @@ func (tree *Splay) Insert(i list.Position, x list.Data) {
 // 2. Replace the root by a join of its left and right subtrees.
 // 3. Return the deleted node.
 func (tree *Splay) Delete(i list.Position) (x list.Data) {
-   // assert(i < tree.size)
+   assert(i < tree.size)
 
    tree.Splay(i)
    defer tree.free(tree.root) // TODO: defer is difficult to translate, avoid it.
@@ -162,7 +162,7 @@ func (tree *Splay) Delete(i list.Position) (x list.Data) {
 }
 
 func (tree *Splay) Split(i list.Position) (list.List, list.List) {
-   // assert(i <= tree.size)
+   assert(i <= tree.size)
    tree.share(tree.root)
 
    if i == tree.size {
@@ -181,7 +181,7 @@ func (tree *Splay) Split(i list.Position) (list.List, list.List) {
 // 2. Cut the left subtree of the root as l**, leaving a nil in its place.
 // 3. The remaining root and right subtree is r**.
 func (tree Splay) split(p *Node, s, i list.Position) (l, r *Node) {
-   // assert(i < s)
+   assert(i < s)
    p = tree.splay(p, i)
    l = p.l
    r = p

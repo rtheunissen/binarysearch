@@ -1,6 +1,6 @@
 package trees
 
-import "bst/abstract/list"
+import "bst/types/list"
 
 type WBSTRelaxed struct {
    Tree
@@ -29,6 +29,17 @@ func (tree *WBSTRelaxed) Delete(i list.Position) list.Data {
    return tree.Tree.Delete(i)
 }
 
+<<<<<<< HEAD
+=======
+// Deletes the node at position `i` from the tree.
+// Returns the data that was in the deleted value.
+func (tree *WBSTRelaxed) Delete(i list.Position) list.Data {
+   assert(i < tree.size)
+   x := tree.delete(&tree.root, tree.size, i)
+   tree.size = tree.size - 1
+   return x
+}
+>>>>>>> 35027895df6e025dbd2cb64c43b9cef058796b83
 func (tree *WBSTRelaxed) insert(p **Node, s list.Size, i list.Position, x list.Data) {
    var unbalancedNode **Node    // An unbalanced node along the insertion path.
    var unbalancedSize list.Size // The size of the unbalanced node.
@@ -70,7 +81,7 @@ func (tree *WBSTRelaxed) insert(p **Node, s list.Size, i list.Position, x list.D
 }
 // Inserts a value `s` at position `i` in the tree.
 func (tree *WBSTRelaxed) Insert(i list.Position, x list.Data) {
-   // assert(i <= tree.size)
+   assert(i <= tree.size)
    tree.size = tree.size + 1
    tree.insert(&tree.root, tree.size, i, x)
 }
@@ -106,7 +117,7 @@ func (tree *WBSTRelaxed) rebuild(p **Node, s list.Size) {
 
 
 func (tree *WBSTRelaxed) Split(i list.Size) (list.List, list.List) {
-   // assert(i <= tree.size)
+   assert(i <= tree.size)
 
    tree.share(tree.root)
    l,r := tree.split(tree.root, i)

@@ -1,6 +1,7 @@
 package trees
 
 import (
+<<<<<<< HEAD
    "bst/abstract/list"
    "bst/abstract/list/operations"
    "bst/utility"
@@ -8,6 +9,12 @@ import (
    "bytes"
    "fmt"
    "math"
+=======
+   "bst/types/list"
+   "bst/utility"
+   "math"
+   "os"
+>>>>>>> 35027895df6e025dbd2cb64c43b9cef058796b83
 )
 
 func init() {
@@ -156,11 +163,11 @@ func heightBound3(height int, size list.Size) bool {
    return (height + 1) / 2 > int(math.Log2(float64(size)))
 }
 func log2_1(x, y int) bool {
-   // assert(x <= y)
+   assert(x <= y)
    return (1 + int(math.Floor(math.Log2(float64(y))))) - (1 + int(math.Floor(math.Log2(float64(x))))) <= 1
 }
 func log2_2(x, y int) bool {
-   // assert(x <= y)
+   assert(x <= y)
    return x >= y / 2 && x <= y * 2
 }
 
@@ -188,6 +195,7 @@ func Beep() {
 func Sandbox() {
    n := uint64(1_000_000)
 
+<<<<<<< HEAD
    op := operations.InsertDeleteCycles{}
 
    strategies := []list.List{
@@ -214,6 +222,27 @@ func Sandbox() {
          fmt.Println(buf.String())
       }
    }
+=======
+   a := TreapTopDown{}.New().(*TreapTopDown)
+   b := TreapTopDown{}.New().(*TreapTopDown)
+
+
+   a.Insert(0, 3)
+   a.Insert(0, 2)
+   a.Insert(0, 1)
+   a.Insert(0, 0)
+
+
+   b.Insert(0, 7)
+   b.Insert(0, 6)
+   b.Insert(0, 5)
+   b.Insert(0, 4)
+
+   a.Draw(os.Stderr)
+   b.Draw(os.Stderr)
+   a.Join(b).(*TreapTopDown).Draw(os.Stderr)
+
+>>>>>>> 35027895df6e025dbd2cb64c43b9cef058796b83
 
    //
    //
@@ -320,6 +349,7 @@ func Sandbox() {
    //}
    //fmt.Println(count, "to go")
 
+<<<<<<< HEAD
    //
    //
    //
@@ -455,12 +485,143 @@ func Sandbox() {
    ////
    ////
    ////
+=======
+
+>>>>>>> 35027895df6e025dbd2cb64c43b9cef058796b83
    //
    //
+   //N := 100_000
    //
+   //random.Seed(uint64(time.Now().UnixNano()))
    //
+   //distributions := []random.Distribution{
+   // //&distribution.Skewed{},
+   // //&distribution.Skewed2{},
+   // //&distribution.Skewed3{},
+   // //&distribution.Skewed4{},
+   // //&distribution.Skewed5{},
+   // //&distribution.Skewed6{},
+   // //&distribution.Skewed7{},
+   // //&distribution.Skewed8{},
+   // //&distribution.Skewed9{},
+   // //&distribution.Skewed10{},
+   // //
+   // //&distribution.RandomBeta{},
+   // //&distribution.RandomBeta{},
+   // //&distribution.RandomBeta{},
+   // //&distribution.RandomBeta{},
+   // //&distribution.RandomBeta{},
+   // //&distribution.RandomBeta{},
+   // //&distribution.RandomBeta{},
+   // &distribution.RandomBeta{},
+   // //&distribution.RandomBeta{},
+   // //
+   // //&distribution.Uniform{},
+   // //&distribution.Normal{},
+   // //&distribution.Zipf{},
+   // //&distribution.BiModal{},
+   // //&distribution.Parabolic{},
+   // //&distribution.Slope{},
+   // //&distribution.Maximum{},
+   // //&distribution.Queue{},
+   //}
    //
+   //body, err := os.ReadFile("docs/polytope/topdown.csv")
+   //if err != nil {
+   //  panic(err)
+   //}
+   //reader := csv.NewReader(bytes.NewReader(body))
+   //reader.Comma = ' '
    //
+   //pairs, err := reader.ReadAll()
+   //if err != nil {
+   //  panic(err)
+   //}
+   //
+   //fmt.Println(len(pairs), "total")
+   //
+   //count := 0
+   //
+   //var wg sync.WaitGroup
+   //
+   //for _, pair := range pairs {
+   //  delta, _ := new(big.Rat).SetString(pair[0])
+   //  gamma, _ := new(big.Rat).SetString(pair[1])
+   //
+   //  // delta + 1 / delta <= gamma is valid
+   //  if new(big.Rat).Quo(new(big.Rat).Add(delta, big.NewRat(1,1)), delta).Cmp(gamma) <= 0 {
+   //     continue
+   //  }
+   //  fmt.Println("Testing", delta.FloatString(2), gamma.FloatString(2))
+   //  count++
+   //
+   //  wg.Add(1)
+   //  go func() {
+   //     time.Sleep(100 * time.Millisecond)
+   //
+   //    tree := &WBSTTopDown{
+   //       WeightBalance: Rational{
+   //          Delta: delta,
+   //          Gamma: gamma,
+   //       },
+   //    }
+   //    defer func() {
+   //       if err := recover(); err != nil {
+   //          fmt.Println()
+   //          fmt.Println(delta.FloatString(2), gamma.FloatString(2))
+   //          os.Stdout.Write([]byte("\a"))
+   //       }
+   //       tree.Free()
+   //       wg.Done()
+   //    }()
+   //    for  {
+   //       fmt.Print(".")
+   //       for _, dist1 := range distributions {
+   //          for _, dist2 := range distributions {
+   //             dist1 := dist1.New(random.Uint64())
+   //             dist2 := dist2.New(random.Uint64())
+   //             //
+   //             // INSERT
+   //             //
+   //             for tree.size < list.Size(N) {
+   //                 tree.Insert(dist1.LessThan(tree.size+1), 0)
+   //             }
+   //             tree.Verify()
+   //             //
+   //             // DELETE
+   //             //
+   //             for tree.size > 0 {
+   //                tree.Delete(dist1.LessThan(tree.size))
+   //             }
+   //             //
+   //             // INSERT DELETE INSERT
+   //             //
+   //             for tree.size < list.Size(N) {
+   //                 tree.Insert(dist1.LessThan(tree.size+1), 0)
+   //                 tree.Delete(dist2.LessThan(tree.size))
+   //                 tree.Insert(dist1.LessThan(tree.size+1), 0)
+   //             }
+   //             tree.Verify()
+   //             //
+   //             // DELETE
+   //             //
+   //             for tree.size > 0 {
+   //                 tree.Delete(dist2.LessThan(tree.size))
+   //             }
+   //             tree.Free()
+   //          }
+   //      }
+   //   }
+   //  }()
+   //}
+   //fmt.Println(count, "to go")
+   //wg.Wait()
+   ////
+   ////
+   ////
+   ////
+   ////
+   ////
 
 
 
@@ -1728,8 +1889,8 @@ func Sandbox() {
 //   //    }
 //   //    p := l.Join(r)
 //   //    p.Verify()
-//   //    // assert(p.Size() == l.Size() + r.Size())
-//   //    // assert(p.Size() == p.(*WAVL).root.count())
+//   //    assert(p.Size() == l.Size() + r.Size())
+//   //    assert(p.Size() == p.(*WAVL).root.count())
 //   //    print(".")
 //   // }
 //}

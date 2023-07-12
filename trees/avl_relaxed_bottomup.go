@@ -1,6 +1,6 @@
 package trees
 
-import "bst/abstract/list"
+import "bst/types/list"
 
 type AVLRelaxedBottomUp struct {
    AVLBottomUp
@@ -24,6 +24,7 @@ func (tree *AVLRelaxedBottomUp) Clone() list.List {
    }
 }
 
+<<<<<<< HEAD
 
 //
 func (tree *AVLRelaxedBottomUp) delete(p **Node, s list.Size, i list.Size) (x list.Data) {
@@ -47,12 +48,19 @@ func (tree *AVLRelaxedBottomUp) delete(p **Node, s list.Size, i list.Size) (x li
       *p = tree.join((*p).l, (*p).r, (*p).s)
       return x
    }
+=======
+func (tree *AVLRelaxedBottomUp) Delete(i list.Position) list.Data {
+   assert(i < tree.size)
+   x := tree.Tree.delete(&tree.root, tree.size, i)
+   tree.size--
+   return x
+>>>>>>> 35027895df6e025dbd2cb64c43b9cef058796b83
 }
 
 // Deletes the node at position `i` from the tree.
 // Returns the data that was in the deleted value.
 func (tree *AVLRelaxedBottomUp) Delete(i list.Position) list.Data {
-  // assert(i < tree.size)
+  assert(i < tree.size)
   x := tree.delete(&tree.root, tree.size, i)
   tree.size = tree.size - 1
   return x
@@ -147,7 +155,7 @@ func (tree AVLRelaxedBottomUp) split(p *Node, i, s list.Size) (l, r *Node) {
 }
 
 func (tree AVLRelaxedBottomUp) Split(i list.Position) (list.List, list.List) {
-   // assert(i <= tree.size)
+   assert(i <= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
 

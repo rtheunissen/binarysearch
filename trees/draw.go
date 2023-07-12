@@ -221,7 +221,7 @@ drawing:
             // When the node to draw is NOT nil, we center the node's value (x)
             // within a cell of 3-characters and prefix it with node separation.
             //
-            value := utility.Centered(utility.String(node.y), " ", 3)
+            value := utility.Centered(utility.String(node.s), " ", 3)
             fmt.Fprint(writer, utility.Repeat(" ", spacing-len(value)+1))
             fmt.Fprint(writer, value)
 

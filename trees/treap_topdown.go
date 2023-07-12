@@ -1,7 +1,7 @@
 package trees
 
 import (
-   "bst/abstract/list"
+   "bst/types/list"
    "bst/utility/random"
 )
 
@@ -27,28 +27,51 @@ func (tree *TreapTopDown) Clone() list.List {
    }
 }
 
+//       l* ↘                                                  ↙ r*
+//
+//             (a)                                       (z)
+//           ↙  9  ↘                                   ↙  7  ↘
+//         ○         (b)                           (y)         ○
+//                 ↙  8  ↘                       ↙  6  ↘
+//               ○         (c)               (x)         ○
+//                       ↙  5  ↘              3
+//                     ○         (d)
+//                             ↙  4
+//                           ○
+//
+//
+//
+//                               (a)
+//                             ↙     ↘
+//                           ○         (b)
+//                                   ↙     ↘
+//                                 ○         (z)
+//                                         ↙     ↘
+//                                     (y)         ○
+//                                   ↙     ↘
+//                               (c)         ○
+//                             ↙     ↘
+//                           ○         (d)
+//                                   ↙     ↘
+//                                 ○         (x)
+//
+//
 func (tree *TreapTopDown) join(l, r *Node, sl list.Size) (root *Node) {
-   // assert(sl == l.size())
    p := &root
    for {
-      if l == nil {
-         *p = r
-         return
-      }
-      if r == nil {
-         *p = l
-         return
-      }
+      if l == nil { *p = r; return }
+      if r == nil { *p = l; return }
+
       if l.y >= r.y {
          tree.persist(&l)
-         sl = sl - l.s - 1
-         *p = l
+        sl = sl - l.s - 1
+        *p = l
          p = &l.r
          l = *p
       } else {
          tree.persist(&r)
-         r.s = r.s + sl
-         *p = r
+       r.s = r.s + sl
+        *p = r
          p = &r.l
          r = *p
       }
@@ -169,20 +192,20 @@ func (tree *TreapTopDown) insert(p **Node, i list.Position, n *Node) {
 }
 
 func (tree *TreapTopDown) Insert(i list.Position, x list.Data) {
-   // assert(i <= tree.size)
+   assert(i <= tree.size)
    tree.size++
-   tree.insert(&tree.root, i, tree.allocate(Node{x: x, y: tree.Source.Uint64()}))
+   tree.insert(&tree.root, i, tree.allocate(Node{x: x, y: tree.Source.Uint64() % 10}))
 }
 
 func (tree *TreapTopDown) Delete(i list.Position) (x list.Data) {
-   // assert(i < tree.size)
+   assert(i < tree.size)
    tree.delete(&tree.root, i, &x)
    tree.size--
    return
 }
 
 func (tree TreapTopDown) split(i list.Size) (Tree, Tree) {
-   // assert(i <= tree.size)
+   assert(i <= tree.size)
    tree.share(tree.root)
    l, r := tree.Tree.split(tree.root, i)
 
@@ -191,19 +214,19 @@ func (tree TreapTopDown) split(i list.Size) (Tree, Tree) {
 }
 
 func (tree TreapTopDown) Split(i list.Position) (list.List, list.List) {
-   // assert(i <= tree.size)
+   assert(i <= tree.size)
    l, r := tree.split(i)
    return &TreapTopDown{Tree: l, Source: tree.Source},
       &TreapTopDown{Tree: r, Source: tree.Source}
 }
 
 func (tree *TreapTopDown) Select(i list.Size) list.Data {
-   // assert(i < tree.size)
+   assert(i < tree.size)
    return tree.lookup(tree.root, i)
 }
 
 func (tree *TreapTopDown) Update(i list.Size, x list.Data) {
-   // assert(i < tree.size)
+   assert(i < tree.size)
    tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }

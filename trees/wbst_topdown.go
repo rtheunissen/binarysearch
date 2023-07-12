@@ -1,7 +1,7 @@
 package trees
 
 import (
-   "bst/abstract/list"
+   "bst/types/list"
    "bst/utility"
 )
 
@@ -48,7 +48,7 @@ func (tree WBSTTopDown) Verify() {
 }
 
 func (tree *WBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.Data) {
-   // assert(i <= s)
+   assert(i <= s)
    for {
       if *p == nil {
          *p = tree.allocate(Node{x: x})
@@ -59,8 +59,8 @@ func (tree *WBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.D
       sl := (*p).sizeL()
       sr := (*p).sizeR(s)
 
-      // assert(tree.isBalanced(sr, sl))
-      // assert(tree.isBalanced(sl, sr))
+      assert(tree.isBalanced(sr, sl))
+      assert(tree.isBalanced(sl, sr))
 
       if i <= (*p).s {
          if tree.isBalanced(sr, sl+1) {
@@ -178,16 +178,16 @@ func (tree *WBSTTopDown) insert(p **Node, s list.Size, i list.Position, x list.D
 }
 
 func (tree *WBSTTopDown) delete(p **Node, s list.Size, i list.Position) (deleted *Node) {
-   // assert(i < s)
-   // assert(s == (*p).size())
+   assert(i < s)
+   assert(s == (*p).size())
    for {
       tree.persist(p)
 
       sl := (*p).s
       sr := s - (*p).s - 1
 
-      // assert(tree.isBalanced(sl, sr))
-      // assert(tree.isBalanced(sr, sl))
+      assert(tree.isBalanced(sl, sr))
+      assert(tree.isBalanced(sr, sl))
 
       if i == (*p).s {
          defer tree.free(*p)
@@ -286,13 +286,13 @@ func (tree *WBSTTopDown) deleteR(p ***Node, s *list.Size, i *list.Position) {
 }
 
 func (tree *WBSTTopDown) Insert(i list.Position, x list.Data) {
-   // assert(i <= tree.size)
+   assert(i <= tree.size)
    tree.insert(&tree.root, tree.size, i, x)
    tree.size++
 }
 
 func (tree *WBSTTopDown) Delete(i list.Position) (x list.Data) {
-   // assert(i < tree.size)
+   assert(i < tree.size)
    x = tree.delete(&tree.root, tree.size, i).x
    tree.size--
    return
@@ -389,7 +389,7 @@ func (tree WBSTTopDown) split(p *Node, i, s list.Size) (l, r *Node) {
 }
 
 func (tree WBSTTopDown) Split(i list.Position) (list.List, list.List) {
-   // assert(i <= tree.size)
+   assert(i <= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
 

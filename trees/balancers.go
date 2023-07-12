@@ -1,7 +1,7 @@
 package trees
 
 import (
-   "bst/abstract/list"
+   "bst/types/list"
    "bst/utility"
    "bst/utility/random"
    "math"
@@ -13,8 +13,13 @@ type Balancer interface {
 }
 
 func partition(p *Node, i uint64) *Node {
-   // assert(i < p.size())
+<<<<<<< HEAD
+   assert(i < p.size())
    measurement(&partitionCount, 1)
+=======
+   assert(i < p.size())
+   measurement(&partitionCount, 1)
+>>>>>>> 35027895df6e025dbd2cb64c43b9cef058796b83
    n := Node{s: i}
    l := &n
    r := &n
@@ -599,7 +604,7 @@ func (Tree) Vine(size list.Size) Tree {
 }
 
 func (Tree) WorstCaseMedianVine(size list.Size) Tree {
-   // assert(size > 0)
+   assert(size > 0)
    t := Tree{}
    n := Node{}
    p := &n
@@ -678,7 +683,7 @@ func (tree Tree) Randomize(access random.Distribution) Tree {
 }
 
 func (tree Tree) randomize(access random.Distribution, p *Node, s list.Size) *Node {
-   // assert(p.size() == s)
+   assert(p.size() == s)
    if p == nil {
       return nil
    }
