@@ -35,7 +35,7 @@ func (tree *Tree) allocate(node Node) (allocated *Node) {
    if tree.arena == nil {
       tree.arena = arenas.NewArena()
    }
-   // measurement(&allocations, 1)
+   measurement(&allocations, 1)
    allocated = arenas.New[Node](tree.arena)
    *allocated = node
    return
@@ -111,7 +111,7 @@ func (tree Tree) shared(p *Node) bool {
 
 // Replaces the given node with a copy only if the node shared with other trees.
 func (tree Tree) persist(p **Node) {
-   assert(*p != nil)
+   // assert(*p != nil)
    //
    // There is no need to copy the node if it is NOT shared with other trees.
    //

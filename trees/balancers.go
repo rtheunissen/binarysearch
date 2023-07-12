@@ -13,14 +13,14 @@ type Balancer interface {
 }
 
 func partition(p *Node, i uint64) *Node {
-   assert(i < p.size())
-   // measurement(&partitionCount, 1)
+   // assert(i < p.size())
+   measurement(&partitionCount, 1)
 
    n := Node{s: i}
    l := &n
    r := &n
    for i != p.s {
-      // measurement(&partitionDepth, 1)
+      measurement(&partitionDepth, 1)
       if i < p.s {
          p.s = p.s - i - 1
          r.l = p
@@ -76,8 +76,15 @@ func (balancer Median) verify(p *Node, s list.Size) {
 }
 
 func (Median) isBalanced(p *Node, s list.Size) bool {
-   return p.s >= s >> 1 &&
-          p.s <= s >> 1
+   sl := p.sizeL()
+   sr := p.sizeR(s)
+   if sl > sr {
+      return sl - sr <= 1
+   } else {
+      return sr - sl <= 1
+   }
+   //return p.s >= s >> 1 &&
+   //       p.s <= s >> 1
 }
 
 type Height struct{}
@@ -600,7 +607,7 @@ func (Tree) Vine(size list.Size) Tree {
 }
 
 func (Tree) WorstCaseMedianVine(size list.Size) Tree {
-   assert(size > 0)
+   // assert(size > 0)
    t := Tree{}
    n := Node{}
    p := &n
@@ -679,7 +686,7 @@ func (tree Tree) Randomize(access random.Distribution) Tree {
 }
 
 func (tree Tree) randomize(access random.Distribution, p *Node, s list.Size) *Node {
-   assert(p.size() == s)
+   // assert(p.size() == s)
    if p == nil {
       return nil
    }

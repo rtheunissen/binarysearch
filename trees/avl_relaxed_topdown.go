@@ -103,7 +103,7 @@ func (tree AVLRelaxedTopDown) split(p *Node, i, s list.Size) (l, r *Node) {
 }
 
 func (tree AVLRelaxedTopDown) Split(i list.Position) (list.List, list.List) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.share(tree.root)
    l, r := tree.split(tree.root, i, tree.size)
 

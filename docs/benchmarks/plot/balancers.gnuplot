@@ -225,7 +225,7 @@ do for [GROUP in GROUPS] {
     set ylabel "{/:Bold Total Duration } / Size"
 
     x = "column('Size')/(column('Scale')/10)"
-    y = "column('Duration')/column('Size')"
+    y = "column('Duration')/column('Size')/1000"
 
     set format y2 "%.0f"
 

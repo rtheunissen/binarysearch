@@ -146,11 +146,11 @@ func init() {
 //   return (height + 1) / 2 > int(math.Log2(float64(size)))
 //}
 //func log2_1(x, y int) bool {
-//   assert(x <= y)
+//   // assert(x <= y)
 //   return (1 + int(math.Floor(math.Log2(float64(y))))) - (1 + int(math.Floor(math.Log2(float64(x))))) <= 1
 //}
 //func log2_2(x, y int) bool {
-//   assert(x <= y)
+//   // assert(x <= y)
 //   return x >= y / 2 && x <= y * 2
 //}
 
@@ -1844,8 +1844,8 @@ func Sandbox() {
 //   //    }
 //   //    p := l.Join(r)
 //   //    p.Verify()
-//   //    assert(p.Size() == l.Size() + r.Size())
-//   //    assert(p.Size() == p.(*WAVL).root.count())
+//   //    // assert(p.Size() == l.Size() + r.Size())
+//   //    // assert(p.Size() == p.(*WAVL).root.count())
 //   //    print(".")
 //   // }
 //}

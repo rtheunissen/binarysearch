@@ -201,11 +201,11 @@
             box-sizing: border-box;
             border-top: 1px solid #000;
             display: block;
-            font-size: 0.8rem;
+            font-size: 1rem;
             /*text-align: center;*/
             color: #000;
-            width: 100%;
-            max-width: 600px;
+            /*width: 100%;*/
+            /*max-width: 600px;*/
             margin: auto;
             padding-top: 0.5rem;
             /*margin-top: 1rem;*/
@@ -771,10 +771,10 @@ a  b  c         a  b  c           a  b  c
                 At all stages, the sequence was (a,b,c,d).
             </p>
             <pre>
-           r                    p                      l
-       p     rr            l         r             ll     p
-    l    rl             ll   lr   rl   rr              lr    r
-  ll lr                                                    rl rr
+           r                p                   l
+       p     rr        l         r          ll     p
+    l    rl         ll   lr   rl   rr           lr    r
+  ll lr                                             rl rr
 </pre>
 
             <pre>
@@ -1235,7 +1235,7 @@ a  b  c         a  b  c           a  b  c
 
 
                 <figure>
-                    {{ include "docs/benchmarks/svg/balancers/Partition/Uniform/TotalPartitionDepth__sbezier.svg" }}
+                    {{ include "docs/benchmarks/svg/balancers/Partition/TotalPartitionDepth__sbezier.svg" }}
                 </figure>
                 <p>
                     Interestingly, height-balance partitions more often but takes shorter paths than median-balance during partition.
@@ -1250,7 +1250,7 @@ a  b  c         a  b  c           a  b  c
                     This is a promising result for cost-optimized balance from a structural perspective because it has a low partition count and low partition depth relative to median- and height-balance.
                 </p>
                 <figure>
-                    {{ include "docs/benchmarks/svg/balancers/Partition/Uniform/AveragePartitionDepth__sbezier.svg" }}
+                    {{ include "docs/benchmarks/svg/balancers/Partition/AveragePartitionDepth__sbezier.svg" }}
                 </figure>
 
             </section>
@@ -1265,7 +1265,7 @@ a  b  c         a  b  c           a  b  c
                     For example, the tree of size 1,000,000 at the final increment would have an average path length of about $20$.
 
                 <figure>
-                    {{ include "docs/benchmarks/svg/balancers/All/Uniform/AveragePathLength__sbezier.svg" }}
+                    {{ include "docs/benchmarks/svg/balancers/All/AveragePathLength__sbezier.svg" }}
             </figure>
                 <p>
                     The results show that median-balance, height-balance and DSW all have optimal average path length, with cost-optimized balance only slightly above optimal.
@@ -1294,7 +1294,7 @@ a  b  c         a  b  c           a  b  c
                     cost-optimized balance has a maximum path length of $\sim 1.05\log_{2}$, weight-balance with a constant factor $\sim 1.18\log_{2}$, and logarithmic weight-balance $\sim 1.30\log_{2}$.
                 </p>
                 <figure>
-                    {{ include "docs/benchmarks/svg/balancers/All/Uniform/MaximumPathLength__sbezier.svg" }}
+                    {{ include "docs/benchmarks/svg/balancers/All/MaximumPathLength__sbezier.svg" }}
                 </figure>
 
             </section>
@@ -1306,7 +1306,7 @@ a  b  c         a  b  c           a  b  c
                     Keep in mind that time-based measurements are system-dependent so the results could be entirely different on other machines.
                 </p>
                 <figure>
-                    {{ include "docs/benchmarks/svg/balancers/All/Uniform/Duration__sbezier.svg" }}
+                    {{ include "docs/benchmarks/svg/balancers/All/Duration__sbezier.svg" }}
                 </figure>
                 <p>
                     The results show that median-balance is marginally faster than height-balance, which settles the competition with an unexpected result.
@@ -1323,7 +1323,7 @@ a  b  c         a  b  c           a  b  c
                 </p>
 
                 <figure>
-                    {{ include "docs/benchmarks/svg/balancers/All/Uniform/TotalDuration__cumulative.svg" }}
+                    {{ include "docs/benchmarks/svg/balancers/All/TotalDuration__cumulative.svg" }}
                 </figure>
                 <p>
                     DSW appears to be consistently slower to balance large random trees, but the algorithm has some advantages over partition-based balancing that should not be discounted.
@@ -1474,6 +1474,9 @@ a  b  c         a  b  c           a  b  c
             <figure>
                 {{ include "docs/benchmarks/svg/operations/AVLRedBlack/InsertDeleteCycles/Duration__sbezier.svg" }}
             </figure>
+            <figure>
+                {{ include "docs/benchmarks/svg/operations/AVLRedBlack/InsertDeleteCycles/Duration__cumulative.svg" }}
+            </figure>
             <p>
                 <span class="indent">
                     $\text{AVLWeakBottomUp}$ and $\text{AVLWeakTopDown}$.
@@ -1484,6 +1487,9 @@ a  b  c         a  b  c           a  b  c
             </figure>
             <figure>
                 {{ include "docs/benchmarks/svg/operations/AVLWeak/InsertDeleteCycles/Duration__sbezier.svg" }}
+            </figure>
+            <figure>
+                {{ include "docs/benchmarks/svg/operations/AVLWeak/InsertDeleteCycles/Duration__cumulative.svg" }}
             </figure>
             </div>
             <p>
@@ -1497,12 +1503,18 @@ a  b  c         a  b  c           a  b  c
             <figure>
                 {{ include "docs/benchmarks/svg/operations/AVLRelaxed/InsertDeleteCycles/Duration__sbezier.svg" }}
             </figure>
+            <figure>
+                {{ include "docs/benchmarks/svg/operations/AVLRelaxed/InsertDeleteCycles/Duration__cumulative.svg" }}
+            </figure>
 
             <figure>
                 {{ include "docs/benchmarks/svg/operations/RedBlackRelaxed/InsertDeleteCycles/AveragePathLength__sbezier.svg" }}
             </figure>
             <figure>
                 {{ include "docs/benchmarks/svg/operations/RedBlackRelaxed/InsertDeleteCycles/Duration__sbezier.svg" }}
+            </figure>
+            <figure>
+                {{ include "docs/benchmarks/svg/operations/RedBlackRelaxed/InsertDeleteCycles/Duration__cumulative.svg" }}
             </figure>
 
             <p>
@@ -1515,6 +1527,9 @@ a  b  c         a  b  c           a  b  c
             </figure>
             <figure>
                 {{ include "docs/benchmarks/svg/operations/RankBalanced/InsertDeleteCycles/Duration__sbezier.svg" }}
+            </figure>
+            <figure>
+                {{ include "docs/benchmarks/svg/operations/RankBalanced/InsertDeleteCycles/Duration__cumulative.svg" }}
             </figure>
         </section>
 
@@ -1705,6 +1720,9 @@ a  b  c         a  b  c           a  b  c
             </figure>
             <figure>
                 {{ include "docs/benchmarks/svg/operations/WeightBalanced/InsertDeleteCycles/Duration__sbezier.svg" }}
+            </figure>
+            <figure>
+                {{ include "docs/benchmarks/svg/operations/WeightBalanced/InsertDeleteCycles/Duration__cumulative.svg" }}
             </figure>
         </section>
 

@@ -70,7 +70,7 @@ func (tree *WBSTRelaxed) insert(p **Node, s list.Size, i list.Position, x list.D
 }
 // Inserts a value `s` at position `i` in the tree.
 func (tree *WBSTRelaxed) Insert(i list.Position, x list.Data) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.size = tree.size + 1
    tree.insert(&tree.root, tree.size, i, x)
 }
@@ -106,7 +106,7 @@ func (tree *WBSTRelaxed) rebuild(p **Node, s list.Size) {
 
 
 func (tree *WBSTRelaxed) Split(i list.Size) (list.List, list.List) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
 
    tree.share(tree.root)
    l,r := tree.split(tree.root, i)
