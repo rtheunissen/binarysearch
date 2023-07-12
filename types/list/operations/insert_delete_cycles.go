@@ -1,7 +1,7 @@
 package operations
 
 import (
-   "bst/abstract/list"
+   "bst/types/list"
    "bst/utility/random"
 )
 

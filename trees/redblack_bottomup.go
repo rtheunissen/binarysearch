@@ -14,7 +14,7 @@
 
 package trees
 
-import "bst/abstract/list"
+import "bst/types/list"
 
 type RedBlackBottomUp struct {
    Tree

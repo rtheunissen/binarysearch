@@ -1,7 +1,7 @@
 package trees
 
 import (
-   "bst/abstract/list"
+   "bst/types/list"
    "bst/utility/random"
 )
 
@@ -104,6 +104,7 @@ func (tree *TreapTopDown) join(l, r *Node, sl list.Size) (root *Node) {
    for {
       if l == nil { *p = r; return }
       if r == nil { *p = l; return }
+
       if l.y >= r.y {
          tree.persist(&l)
         sl = sl - l.s - 1

@@ -1,6 +1,6 @@
 package trees
 
-import "bst/abstract/list"
+import "bst/types/list"
 
 // TODO figure out why certain sections of the balancing alg is for relaxed only
 type RedBlackTopDown struct {

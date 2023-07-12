@@ -1,7 +1,7 @@
 package main
 
 import (
-   "bst/abstract/list"
+   "bst/types/list"
    "bst/trees"
    "bst/utility"
    "bst/utility/random"

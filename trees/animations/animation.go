@@ -1,7 +1,7 @@
 package animations
 
 import (
-   "bst/abstract/list"
+   "bst/types/list"
    "bst/utility/random"
    "github.com/eiannone/keyboard"
    "io"
