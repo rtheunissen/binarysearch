@@ -22,12 +22,43 @@ func (tree AVLRelaxedTopDown) Verify() {
    tree.verifyRanks(tree.root)
 }
 
-func (tree *AVLRelaxedTopDown) Delete(i list.Position) list.Data {
-   // assert(i < tree.size)
-   x := tree.Tree.delete(&tree.root, tree.size, i)
-   tree.size--
-   return x
+
+
+//
+func (tree *AVLRelaxedTopDown) delete(p **Node, s list.Size, i list.Size) (x list.Data) {
+   for {
+      tree.persist(p)
+      sl := (*p).sizeL()
+      sr := (*p).sizeR(s)
+      if i < sl {
+         s = sl
+         (*p).s = sl - 1
+         p = &(*p).l
+         continue
+      }
+      if i > sl {
+         s = sr
+         i = i - sl - 1
+         p = &(*p).r
+         continue
+      }
+      x := (*p).x
+      *p = tree.join((*p).l, (*p).r, (*p).s)
+      return x
+   }
 }
+
+func (tree *AVLRelaxedTopDown) Delete(i list.Position) list.Data {
+  // assert(i < tree.size)
+  x := tree.delete(&tree.root, tree.size, i)
+  tree.size = tree.size - 1
+  return x
+}
+
+
+//func (tree *AVLRelaxedTopDown) Delete(i list.Position) list.Data {
+//   return tree.Tree.Delete(i)
+//}
 
 func (tree AVLRelaxedTopDown) buildL(l *Node, p *Node, r *Node, sl list.Size) (root *Node) {
    if tree.rank(l) - tree.rank(r) <= 1 {

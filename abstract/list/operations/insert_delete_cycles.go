@@ -62,7 +62,7 @@ func (operation *InsertDeleteCycles) Update(instance list.List, dist random.Dist
       //
       // Delete by reflection of the access distribution.
       //
-      i = instance.Size() - dist.LessThan(instance.Size()) - 1
+      i = 0//instance.Size() - dist.LessThan(instance.Size()) - 1
       instance.Delete(i)
    }
    return instance, i

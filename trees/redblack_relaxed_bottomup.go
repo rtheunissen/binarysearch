@@ -27,7 +27,7 @@ func (tree *RedBlackRelaxedBottomUp) Insert(i list.Position, x list.Data) {
    tree.RedBlackBottomUp.Insert(i, x)
 }
 
-func (tree *RedBlackRelaxedBottomUp) Delete(i list.Position) (x list.Data) {
+func (tree *RedBlackRelaxedBottomUp) Delete(i list.Position) list.Data {
    return tree.Tree.Delete(i)
 }
 

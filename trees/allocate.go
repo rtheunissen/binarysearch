@@ -35,7 +35,7 @@ func (tree *Tree) allocate(node Node) (allocated *Node) {
    if tree.arena == nil {
       tree.arena = arenas.NewArena()
    }
-   // measurement(&allocations, 1)
+   measurement(&allocations, 1)
    allocated = arenas.New[Node](tree.arena)
    *allocated = node
    return

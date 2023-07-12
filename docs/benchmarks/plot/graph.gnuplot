@@ -37,7 +37,6 @@ set xrange [0.8:*]
 
 unset y2tics
 set y2tics autofreq offset 0,0
-set y2range [*:*]
 
 set datafile missing "NaN"
 

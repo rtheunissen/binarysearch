@@ -224,7 +224,7 @@ func (p *Node) inorder(visit func(list.Data)) {
 }
 
 func (p *Node) rotateL() (r *Node) {
-   // measurement(&rotations, 1)
+   measurement(&rotations, 1)
    r = p.r
    p.r = r.l
    r.l = p
@@ -233,7 +233,7 @@ func (p *Node) rotateL() (r *Node) {
 }
 
 func (p *Node) rotateR() (l *Node) {
-   // measurement(&rotations, 1)
+   measurement(&rotations, 1)
    l = p.l
    p.l = l.r
    l.r = p

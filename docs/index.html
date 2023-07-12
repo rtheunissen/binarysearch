@@ -856,7 +856,7 @@ func balance(p *Node, s Size) *Node {
    if p == nil {
       return p
    }
-   if not balanced(p) {
+   if !balanced(p) {
       p = tree.partition(p, s / 2)
    }
    p.l = balance(tree, p.l, size(p.l))
@@ -1059,11 +1059,11 @@ func balance(p *Node, s Size) *Node {
             </p>
             <p>
                 $$
-                \begin{align}
+                \begin{align*}
                 \lfloor\log_{2}(x)\rfloor \geq \lfloor\log_{2}(y)\rfloor &\equiv x \geq y \text{ || } y \leq (x \mathbin{\&} y) \ll 1
                 \\                                                      &\equiv x \geq y \text{ || } x \geq (x \oplus y)
                 \\                                                      &\equiv x \geq (\lnot{x} \mathbin{\&} y)
-                \end{align}
+                \end{align*}
                 $$
             </p>
             <!--
@@ -1083,11 +1083,8 @@ func balance(p *Node, s Size) *Node {
 
 
             <p>
-                So far we have four definitions of weight-balance: median-balance (4),  height-balance (5),  weight-balance (6), and logarithmic weight-balance (7).
+                So far we have four definitions of weight-balance: median-balance,  height-balance,  weight-balance, and logarithmic weight-balance.
                 There appears to be a pattern where a stronger definition of balance is relaxed by the logarithm — what a neat relationship.
-
-                <!--                There are two defined strategies in terms of the binary logarithm that can be rewritten as bitwise operations.-->
-
             </p>
             <p>
                 $$
@@ -1808,7 +1805,7 @@ func balance(p *Node, s Size) *Node {
                 {{ include "docs/benchmarks/svg/operations/WeightBalancedRelaxed/InsertDeleteCycles/Duration__sbezier.svg" }}
             </figure>
             <figure>
-                {{ include "docs/benchmarks/svg/operations/WeightBalancedRelaxed/Insert/Duration__sbezier.svg" }}
+                {{ include "docs/benchmarks/svg/operations/WeightBalancedRelaxed/InsertDeleteCycles/Duration__cumulative.svg" }}
             </figure>
         </section>
 

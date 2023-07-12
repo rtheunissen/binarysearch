@@ -70,12 +70,12 @@ type Tree struct {
 //
 //func (tree *LBSTRelaxed) partition(p *Node, i uint64) *Node {
 //   // assert(i < p.size())
-//   // measurement(&partitionCount, 1)
+//   measurement(&partitionCount, 1)
 //   n := Node{s: i}
 //   l := &n
 //   r := &n
 //   for i != p.s {
-//      // measurement(&partitionDepth, 1)
+//      measurement(&partitionDepth, 1)
 //      tree.persist(&p)
 //      if i < p.s {
 //         p.s = p.s - i - 1

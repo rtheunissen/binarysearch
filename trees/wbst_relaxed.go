@@ -25,38 +25,10 @@ func (tree *WBSTRelaxed) Verify() {
    tree.verifySizes()
 }
 
-//
-func (tree *WBSTRelaxed) delete(p **Node, s list.Size, i list.Size) (x list.Data) {
-   for {
-      tree.persist(p)
-      sl := (*p).sizeL()
-      sr := (*p).sizeR(s)
-      if i < sl {
-         s = sl
-         (*p).s = sl - 1
-         p = &(*p).l
-         continue
-      }
-      if i > sl {
-         s = sr
-         i = i - sl - 1
-         p = &(*p).r
-         continue
-      }
-      x := (*p).x
-      *p = tree.join((*p).l, (*p).r, sl, sr)
-      return x
-   }
+func (tree *WBSTRelaxed) Delete(i list.Position) list.Data {
+   return tree.Tree.Delete(i)
 }
 
-// Deletes the node at position `i` from the tree.
-// Returns the data that was in the deleted value.
-func (tree *WBSTRelaxed) Delete(i list.Position) list.Data {
-   // assert(i < tree.size)
-   x := tree.delete(&tree.root, tree.size, i)
-   tree.size = tree.size - 1
-   return x
-}
 func (tree *WBSTRelaxed) insert(p **Node, s list.Size, i list.Position, x list.Data) {
    var unbalancedNode **Node    // An unbalanced node along the insertion path.
    var unbalancedSize list.Size // The size of the unbalanced node.

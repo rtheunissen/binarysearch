@@ -14,12 +14,12 @@ type Balancer interface {
 
 func partition(p *Node, i uint64) *Node {
    // assert(i < p.size())
-   // measurement(&partitionCount, 1)
+   measurement(&partitionCount, 1)
    n := Node{s: i}
    l := &n
    r := &n
    for i != p.s {
-      // measurement(&partitionDepth, 1)
+      measurement(&partitionDepth, 1)
       if i < p.s {
          p.s = p.s - i - 1
          r.l = p
@@ -38,6 +38,89 @@ func partition(p *Node, i uint64) *Node {
    p.r = n.l
    p.s = n.s
    return p
+}
+
+type Median struct{}
+
+func (balancer Median) balance(p *Node, s list.Size) *Node {
+   if s <= 2 {
+      return p
+   }
+   if !balancer.isBalanced(p, s) {
+      p = partition(p, s >> 1)
+   }
+   p.l = balancer.balance(p.l, p.sizeL())
+   p.r = balancer.balance(p.r, p.sizeR(s))
+   return p
+}
+
+func (balancer Median) Restore(tree Tree) Tree {
+   tree.root = balancer.balance(tree.root, tree.size)
+   return tree
+}
+
+func (balancer Median) Verify(tree Tree) {
+   balancer.verify(tree.root, tree.size)
+}
+
+// -1 <= L - R <= 1
+func (balancer Median) verify(p *Node, s list.Size) {
+   if p == nil {
+      return
+   }
+   invariant(utility.Difference(p.sizeL(), p.sizeR(s)) <= 1)
+
+   balancer.verify(p.l, p.sizeL())
+   balancer.verify(p.r, p.sizeR(s))
+}
+
+func (Median) isBalanced(p *Node, s list.Size) bool {
+   return p.s >= s >> 1 &&
+          p.s <= s >> 1
+}
+
+type Height struct{}
+
+func (balancer Height) balance(p *Node, s list.Size) *Node {
+   if s <= 2 {
+      return p
+   }
+   if !balancer.isBalanced(p, s) {
+      p = partition(p, s >> 1)
+   }
+   p.l = balancer.balance(p.l, p.sizeL())
+   p.r = balancer.balance(p.r, p.sizeR(s))
+   return p
+}
+
+func (balancer Height) Restore(tree Tree) Tree {
+   tree.root = balancer.balance(tree.root, tree.size)
+   return tree
+}
+
+func (Height) isBalanced(p *Node, s list.Size) bool {
+   return utility.GreaterThanOrEqualToMSB(p.sizeL() + 1, p.sizeR(s)) &&
+          utility.GreaterThanOrEqualToMSB(p.sizeR(s) + 1, p.sizeL())
+}
+
+func (balancer Height) Verify(tree Tree) {
+   balancer.verify(tree.root, tree.size)
+}
+
+// A node is height-balanced when the difference between the height of its
+// subtrees is no greater than 1, and both subtrees are also height-balanced.
+//
+// invariant(p.height() <= FloorLog2(s))
+func (balancer Height) verify(p *Node, s list.Size) (height int) {
+   if p == nil {
+      return
+   }
+   heightL := balancer.verify(p.l, p.sizeL())
+   heightR := balancer.verify(p.r, p.sizeR(s))
+
+   invariant(utility.Difference(heightL, heightR) <= 1)
+
+   return 1 + utility.Max(heightL, heightR)
 }
 
 type Log struct{}
@@ -187,89 +270,6 @@ func (balancer Cost) verify(p *Node, s list.Size) (height int) {
    return height
 }
 
-
-type Median struct{}
-
-func (balancer Median) balance(p *Node, s list.Size) *Node {
-   if s <= 2 {
-      return p
-   }
-   if !balancer.isBalanced(p, s) {
-      p = partition(p, s >> 1)
-   }
-   p.l = balancer.balance(p.l, p.sizeL())
-   p.r = balancer.balance(p.r, p.sizeR(s))
-   return p
-}
-
-func (balancer Median) Restore(tree Tree) Tree {
-   tree.root = balancer.balance(tree.root, tree.size)
-   return tree
-}
-
-func (balancer Median) Verify(tree Tree) {
-   balancer.verify(tree.root, tree.size)
-}
-
-// -1 <= L - R <= 1
-func (balancer Median) verify(p *Node, s list.Size) {
-   if p == nil {
-      return
-   }
-   invariant(utility.Difference(p.sizeL(), p.sizeR(s)) <= 1)
-
-   balancer.verify(p.l, p.sizeL())
-   balancer.verify(p.r, p.sizeR(s))
-}
-
-func (Median) isBalanced(p *Node, s list.Size) bool {
-   return p.s >= s >> 1 &&
-          p.s <= s >> 1
-}
-
-type Height struct{}
-
-func (balancer Height) balance(p *Node, s list.Size) *Node {
-   if s <= 2 {
-      return p
-   }
-   if !balancer.isBalanced(p, s) {
-      p = partition(p, s >> 1)
-   }
-   p.l = balancer.balance(p.l, p.sizeL())
-   p.r = balancer.balance(p.r, p.sizeR(s))
-   return p
-}
-
-func (balancer Height) Restore(tree Tree) Tree {
-   tree.root = balancer.balance(tree.root, tree.size)
-   return tree
-}
-
-func (Height) isBalanced(p *Node, s list.Size) bool {
-   return utility.GreaterThanOrEqualToMSB(p.sizeL() + 1, p.sizeR(s)) &&
-          utility.GreaterThanOrEqualToMSB(p.sizeR(s) + 1, p.sizeL())
-}
-
-func (balancer Height) Verify(tree Tree) {
-   balancer.verify(tree.root, tree.size)
-}
-
-// A node is height-balanced when the difference between the height of its
-// subtrees is no greater than 1, and both subtrees are also height-balanced.
-//
-// invariant(p.height() <= FloorLog2(s))
-func (balancer Height) verify(p *Node, s list.Size) (height int) {
-   if p == nil {
-      return
-   }
-   heightL := balancer.verify(p.l, p.sizeL())
-   heightR := balancer.verify(p.r, p.sizeR(s))
-
-   invariant(utility.Difference(heightL, heightR) <= 1)
-
-   return 1 + utility.Max(heightL, heightR)
-}
 
 //
 //func (balancer Weight) Balance(p *Node, s Size) *Node {

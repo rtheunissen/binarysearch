@@ -63,9 +63,12 @@ do for [GROUP in GROUPS] {
     SMOOTH = "sbezier"
     load "docs/benchmarks/plot/balancers/lines.gnuplot"
 
+    SMOOTH = "unique"
+    load "docs/benchmarks/plot/balancers/lines.gnuplot"
+
     ##################################################################
     #
-    #           TOTAL PARTITION COST
+    #           TOTAL PARTITION DEPTH
     #
     ##################################################################
 
@@ -84,10 +87,13 @@ do for [GROUP in GROUPS] {
     SMOOTH = "sbezier"
     load "docs/benchmarks/plot/balancers/lines.gnuplot"
 
+    SMOOTH = "unique"
+    load "docs/benchmarks/plot/balancers/lines.gnuplot"
+
 
     ##################################################################
     #
-    #           AVERAGE PARTITION COST
+    #           AVERAGE PARTITION DEPTH
     #
     ##################################################################
 
@@ -104,6 +110,9 @@ do for [GROUP in GROUPS] {
     DATA = "docs/benchmarks/data/balancers/measurements"
 
     SMOOTH = "sbezier"
+    load "docs/benchmarks/plot/balancers/lines.gnuplot"
+
+    SMOOTH = "unique"
     load "docs/benchmarks/plot/balancers/lines.gnuplot"
 
     ##################################################################
@@ -125,6 +134,9 @@ do for [GROUP in GROUPS] {
     DATA = "docs/benchmarks/data/balancers/measurements"
 
     SMOOTH = "sbezier"
+    load "docs/benchmarks/plot/balancers/lines.gnuplot"
+
+    SMOOTH = "unique"
     load "docs/benchmarks/plot/balancers/lines.gnuplot"
 
 
@@ -149,6 +161,9 @@ do for [GROUP in GROUPS] {
     SMOOTH = "sbezier"
     load "docs/benchmarks/plot/balancers/lines.gnuplot"
 
+    SMOOTH = "unique"
+    load "docs/benchmarks/plot/balancers/lines.gnuplot"
+
 
     ##################################################################
     #
@@ -169,6 +184,9 @@ do for [GROUP in GROUPS] {
     DATA = "docs/benchmarks/data/balancers/measurements"
 
     SMOOTH = "sbezier"
+    load "docs/benchmarks/plot/balancers/lines.gnuplot"
+
+    SMOOTH = "unique"
     load "docs/benchmarks/plot/balancers/lines.gnuplot"
 
     ##################################################################

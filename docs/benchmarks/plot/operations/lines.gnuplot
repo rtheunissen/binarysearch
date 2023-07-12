@@ -7,7 +7,7 @@ set lmargin 4
 set rmargin 4
 
 #set title offset 0,2.5
-set key at graph 0.5, screen 1
+#set key at graph 0.5, screen 0.85
 unset title
 
 SVG = sprintf("docs/benchmarks/svg/operations/%s/%s/%s__%s.svg", GROUP, OPERATION, MEASUREMENT, SMOOTH)
@@ -19,7 +19,7 @@ set table $TABLE
 plot for [STRATEGY in @GROUP] DATA.'/'.STRATEGY using (@x):(@y) smooth @SMOOTH
 unset table
 
-# set title "{/:Bold ".OPERATION."}"
+#set title "{/:Bold ".OPERATION."}"
 
 plot for [i=1:words(@GROUP)] $TABLE \
     index (i-1) \
@@ -40,7 +40,7 @@ do for [DISTRIBUTION in DISTRIBUTIONS] {
     plot for [STRATEGY in @GROUP] DATA.'/'.STRATEGY using (@x):(filter('Distribution', DISTRIBUTION, @y)) smooth @SMOOTH
     unset table
 
-   # set title "{/:Bold ".OPERATION."} — {/:Italic ".DISTRIBUTION."}"
+    #set title "{/:Bold ".OPERATION."} — {/:Italic ".DISTRIBUTION."}"
 
     plot for [i=1:words(@GROUP)] $TABLE \
         index (i-1) \

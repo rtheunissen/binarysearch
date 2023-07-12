@@ -32,12 +32,12 @@ func main() {
          &distribution.Uniform{},
       },
       Strategy: utility.Resolve[trees.Balancer](*strategy, []trees.Balancer{
-         //&trees.Median{},
-         //&trees.Height{},
+         &trees.Median{},
+         &trees.Height{},
          &trees.Weight{},
          &trees.Log{},
-         //&trees.Cost{},
-         //&trees.DSW{},
+         &trees.Cost{},
+         &trees.DSW{},
       }),
    }.Run()
 }

@@ -98,7 +98,7 @@ func (tree *TreapFingerTree) rotateParentLeftOnRightSpine(p *Node) {
    r.r = p.l
    p.l = r
    p.s = p.s + r.s + 1
-   // measurement(&rotations, 1)
+   measurement(&rotations, 1)
 }
 
 func (tree *TreapFingerTree) rotateParentRightOnLeftSpine(p *Node) {
@@ -109,7 +109,7 @@ func (tree *TreapFingerTree) rotateParentRightOnLeftSpine(p *Node) {
    p.r = l
    p.s = p.s + l.s + 1
    l.s = p.s - l.s - 1
-   // measurement(&rotations, 1)
+   measurement(&rotations, 1)
 }
 
 func (tree *TreapFingerTree) rotateRightIntoRoot(l *Node) {
@@ -127,7 +127,7 @@ func (tree *TreapFingerTree) rotateRightIntoRoot(l *Node) {
    p.s = p.s - l.s - 1
 
    tree.root = l // TODO: consider returning this, accepting p?, not tree
-   // measurement(&rotations, 1)
+   measurement(&rotations, 1)
 }
 
 func (tree *TreapFingerTree) rotateLeftIntoRoot(r *Node) {
@@ -145,7 +145,7 @@ func (tree *TreapFingerTree) rotateLeftIntoRoot(r *Node) {
    p.s = r.s - p.s - 1
 
    tree.root = r
-   // measurement(&rotations, 1)
+   measurement(&rotations, 1)
 }
 
 func (tree *TreapFingerTree) rotateUpR(p *Node) *Node {
@@ -198,7 +198,7 @@ func (tree *TreapFingerTree) rotateDownL(p *Node) {
       r.s = p.s - r.s - 1
       p.s = p.s - r.s - 1
    }
-   // measurement(&rotations, 1)
+   measurement(&rotations, 1)
 }
 
 func (tree *TreapFingerTree) rotateDownR(p *Node) {
@@ -210,7 +210,7 @@ func (tree *TreapFingerTree) rotateDownR(p *Node) {
       p.r = l
       p.s = p.s - l.s - 1
    }
-   // measurement(&rotations, 1)
+   measurement(&rotations, 1)
 }
 
 //   func (tree *TreapFingerTree) setRoot(p *Node) {

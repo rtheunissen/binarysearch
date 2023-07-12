@@ -23,12 +23,13 @@ func (tree *RedBlackRelaxedTopDown) Clone() list.List {
       RedBlackTopDown: *tree.RedBlackTopDown.Clone().(*RedBlackTopDown),
    }
 }
+
 func (tree *RedBlackRelaxedTopDown) Insert(i list.Position, x list.Data) {
    tree.RedBlackTopDown.Insert(i, x)
 }
 
 func (tree *RedBlackRelaxedTopDown) Delete(i list.Position) (x list.Data) {
-   return tree.Tree.Delete(i)
+  return tree.Tree.Delete(i)
 }
 
 func (tree *RedBlackRelaxedTopDown) Select(i list.Size) list.Data {

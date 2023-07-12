@@ -14,9 +14,9 @@ import (
 
 func main() {
   BalancerBenchmark{
-     Duration:           3000 * time.Millisecond,
-     Samples:             100,
-     Scale:        10_000_000,
+     Duration:              10 * time.Second,
+     Samples:              100,
+     Scale:         10_000_000,
      Distributions: []random.Distribution{
         &distribution.Uniform{},
      },

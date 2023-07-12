@@ -127,6 +127,6 @@ polytope:
 index:
 	${GO} run docs/main/index/index.go < docs/index.html > index.html
 
-article: optimized-plots index
+article: optimized-plots plot-index index
 
 publish: article assertions-on measurements-on

@@ -51,7 +51,7 @@ set style line AVLRelaxedBottomUp           dashtype 1 ps 1 lw 1 pt   7 pn 2 lc 
 set style line RedBlackBottomUp             dashtype 1 ps 1 lw 1 pt  12 pn 2 lc rgb COLOR_RED
 set style line RedBlackTopDown              dashtype 3 ps 1 lw 1 pt   5 pn 2 lc rgb COLOR_BLUE
 set style line RedBlackRelaxedBottomUp      dashtype 1 ps 1 lw 1 pt   8 pn 2 lc rgb COLOR_GREEN
-set style line RedBlackRelaxedTopDown       dashtype 5 ps 1 lw 1 pt   9 pn 2 lc rgb COLOR_CYAN
+set style line RedBlackRelaxedTopDown       dashtype 5 ps 1 lw 1 pt   5 pn 2 lc rgb COLOR_YELLOW
 
 set style line LBSTBottomUp                 dashtype 1 ps 1 lw 1 pt   6 pn 2 lc rgb COLOR_BLUE
 set style line LBSTTopDown                  dashtype 5 ps 1 lw 1 pt   7 pn 2 lc rgb COLOR_RED
@@ -82,8 +82,6 @@ AVLRelaxed             = "AVLBottomUp AVLTopDown AVLRelaxedBottomUp AVLRelaxedTo
 RedBlackRelaxed        = "RedBlackBottomUp RedBlackTopDown RedBlackRelaxedBottomUp RedBlackRelaxedTopDown"
 RankBalanced           = "AVLBottomUp AVLWeakTopDown AVLRelaxedTopDown RedBlackRelaxedTopDown"
 
-HeightBalanced        = "AVLBottomUp RedBlackBottomUp AVLWeakBottomUp AVLRelaxedBottomUp Conc"
-
 WeightBalanced         = "LBSTBottomUp LBSTTopDown WBSTBottomUp WBSTTopDown"
 WeightBalancedRelaxed  = "LBSTBottomUp LBSTRelaxed WBSTBottomUp WBSTRelaxed"
 
@@ -92,14 +90,11 @@ Combination            = "AVLRelaxedBottomUp AVLWeakBottomUp LBSTBottomUp TreapT
 CombinationSplay       = "AVLRelaxedBottomUp AVLWeakBottomUp LBSTBottomUp TreapTopDown Splay"
 SizeOnly               = "LBSTBottomUp LBSTRelaxed Randomized Splay"
 
-GROUPS = "AVLWeakRedBlack AVLRelaxed RedBlack"
 GROUPS = "RankBalanced AVLRedBlack AVLWeak AVLRelaxed RedBlackRelaxed WeightBalanced WeightBalancedRelaxed"
 
-OPERATIONS = "Insert InsertPersistent InsertDelete InsertDeletePersistent InsertDeleteCycles InsertDeleteCyclesPersistent InsertDeleteSearch InsertDeleteSearchPersistent"
-OPERATIONS = "Insert InsertDeleteCycles"
+OPERATIONS = "Insert InsertPersistent InsertDeleteCycles InsertDeleteCyclesPersistent"
 
-
-DISTRIBUTIONS = "Uniform"
+DISTRIBUTIONS = "Uniform Zipf Maximum Skewed Normal"
 
 do for [GROUP in GROUPS] {
 
@@ -223,6 +218,9 @@ do for [GROUP in GROUPS] {
         load "docs/benchmarks/plot/operations/lines.gnuplot"
 
         SMOOTH = "unique"
+        load "docs/benchmarks/plot/operations/lines.gnuplot"
+
+        SMOOTH = "cumulative"
         load "docs/benchmarks/plot/operations/lines.gnuplot"
     }
 }
