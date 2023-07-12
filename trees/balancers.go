@@ -76,15 +76,12 @@ func (balancer Median) verify(p *Node, s list.Size) {
 }
 
 func (Median) isBalanced(p *Node, s list.Size) bool {
+   //return (s + 1) >> 1 <= p.s + 1 &&
+   //       (s + 1) >> 1 >= p.s
    sl := p.sizeL()
    sr := p.sizeR(s)
-   if sl > sr {
-      return sl - sr <= 1
-   } else {
-      return sr - sl <= 1
-   }
-   //return p.s >= s >> 1 &&
-   //       p.s <= s >> 1
+   return sl + 1 >= sr &&
+          sr + 1 >= sl
 }
 
 type Height struct{}
@@ -107,8 +104,10 @@ func (balancer Height) Restore(tree Tree) Tree {
 }
 
 func (Height) isBalanced(p *Node, s list.Size) bool {
-   return utility.GreaterThanOrEqualToMSB(p.sizeL() + 1, p.sizeR(s)) &&
-          utility.GreaterThanOrEqualToMSB(p.sizeR(s) + 1, p.sizeL())
+   sl := p.sizeL()
+   sr := p.sizeR(s)
+   return utility.GreaterThanOrEqualToMSB(sl + 1, sr) &&
+          utility.GreaterThanOrEqualToMSB(sr + 1, sl)
 }
 
 func (balancer Height) Verify(tree Tree) {
@@ -146,12 +145,10 @@ func (balancer Log) balance(p *Node, s list.Size) *Node {
 }
 
 func (balancer Log) balanced(p *Node, s list.Size) bool {
-   return balancer.isBalanced(p.sizeL(), p.sizeR(s)) &&
-          balancer.isBalanced(p.sizeR(s), p.sizeL())
-}
-
-func (balancer Log) isBalanced(x, y list.Size) bool {
-   return utility.GreaterThanOrEqualToMSB(x + 1, (y + 1) >> 1)
+   sl := p.sizeL()
+   sr := p.sizeR(s)
+   return utility.GreaterThanOrEqualToMSB(sl + 1, (sr + 1) >> 1) &&
+          utility.GreaterThanOrEqualToMSB(sr + 1, (sl + 1) >> 1)
 }
 
 func (balancer Log) Restore(tree Tree) Tree {

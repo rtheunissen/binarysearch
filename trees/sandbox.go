@@ -176,6 +176,17 @@ func Beep() {
 
 
 func Sandbox() {
+
+   //for x := 0; x < 1_000; x++ {
+   //   for y := 0; y < 1_000; y++ {
+   //      if (x + 1) >= y && (y + 1) >= x {
+   //         fmt.Println(x, y, 1)
+   //      } else {
+   //         fmt.Println(x, y, 0)
+   //      }
+   //   }
+   //}
+
    //n := uint64(1_000_000)
    //
    //op := operations.InsertDeleteCycles{}

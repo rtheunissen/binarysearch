@@ -1,5 +1,16 @@
 load "docs/benchmarks/plot/colors.gnuplot"
 
+
+set output "median.svg"
+set xlabel 'x'
+set ylabel 'y'
+
+median(x,y) = ((x+1)>=y && (y+1)>=x ? 1 : NaN)
+
+plot [0:10][0:10] median t "Median"
+
+
+
 ##################################################################
 #
 #           BALANCERS
@@ -198,7 +209,7 @@ do for [GROUP in GROUPS] {
     MEASUREMENT = "Duration"
 
     set xlabel "Size × 10^6"
-    set ylabel "{/:Bold Duration } / Size"
+    set ylabel "{/:Bold Duration } in milliseconds / Size"
 
     x = "column('Size')/(column('Scale')/10)"
     y = "column('Duration')/column('Size')"
@@ -222,12 +233,12 @@ do for [GROUP in GROUPS] {
     MEASUREMENT = "TotalDuration"
 
     set xlabel "Size × 10^6"
-    set ylabel "{/:Bold Total Duration } / Size"
+    set ylabel "{/:Bold Total Duration } in seconds / Size"
 
     x = "column('Size')/(column('Scale')/10)"
     y = "column('Duration')/column('Size')/1000"
 
-    set format y2 "%.0f"
+    set format y2 "%.2f"
 
     DATA = "docs/benchmarks/data/balancers/benchmarks"
     SMOOTH = "cumulative"
