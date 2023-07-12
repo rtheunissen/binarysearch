@@ -1854,14 +1854,13 @@ a  b  c         a  b  c           a  b  c
                 When a new node is allocated, the algorithm generates a random number as its rank, and stores that rank as part of the node structure.
                 The only invariant to maintain is that the rank of a node must be greater than or equal to the rank of its subtrees.
                 The root of the tree therefore has the highest rank.
-            </p>
-            <p>
                 This results with high likelihood in a balanced tree, as it becomes increasingly unlikely that a new rank is greater than the ranks above it.
             </p>
-                The algorithms to maintain the max-heap rank invariant are intuitive and simple to implement.
-                There are two fundamental algorithms: <em>split</em>, which partitions a node at a given position into two separate trees, and <em>join</em> which is effectively the inverse, combining two subtrees into one.
+                The algorithms to maintain the rank invariant are intuitive and simple to implement.
+                There are two fundamental algorithms: <em>split</em>, which partitions a node into two separate trees at a given position, and <em>join</em> which combines two subtrees into one.
                 These algorithms are similar to <em>partition</em>, operating purely top-down in constant space.
             </p>
+
             <pre>
 <strong>split</strong> (p *Node, i uint64) (*Node, *Node) {
    n := Node{}
@@ -1922,22 +1921,84 @@ a  b  c         a  b  c           a  b  c
                 Galperin and Rivest refer to this node as a <span class="quote">scapegoat</span>.
             </p>
 
+            <pre style="font-family: monospace"> <!-- temp because arrows are not monospace -->
+
+                   TODO DRAW THIS
+
+
+
+                         9
+                        (a)
+                      ↙     ↘  8
+                    △         (b)
+                            ↙     ↘  7
+                          △         (z)
+                               6  ↙     ↘
+                              (y)         △
+                         5  ↙     ↘
+                        (c)         △
+                      ↙     ↘  4
+                    △         (d)
+                            ↙     ↘  3
+                          △         (x)
+
+
+
+
+l* ↘                                                  ↙ r*
+       9                                         7
+      (a)                                       (z)
+   ↙      ↘  8                             6  ↙     ↘
+  △         (b)                           (y)         △
+          ↙     ↘  5                 3  ↙     ↘
+        △         (c)               (x)         △
+                ↙     ↘  4
+              △         (d)
+                      ↙
+                    △
+
+            </pre>
+            <p class="caption">
+                <strong>Figure 1</strong>: Here is some information about this code $x + 1$.
+                A tree that is strictly weight-balanced, where every node of the tree is weight-balanced, has a known maximum height.
+                For example, the maximum height of logarithmic weight-balanced tree is $2\log_{2}n$.
+                Therefore, when the height of a tree exceeds this bound there must be at least one node that is <em>not</em> weight-balanced.
+                Galperin and Rivest refer to this node as a <span class="quote">scapegoat</span>.
+            </p>
+
+            <p>
+                TODO Zip Trees / Skip Lists
+            </p>
+            <p>
+                TODO Randomized Binary Search Trees, Martinez
+            </p>
+        </section>
+
+        <section id="finger-search-trees">
+            <h3>Finger-search trees</h3>
+            <p>
+                In 1988, Tarjan and van Wyk...
+            </p>
         </section>
 
         <section id="self-adjusting-trees">
             <h3>Self-adjusting trees</h3>
-
+            <p>
+                TODO: Splay Trees, Tarjan & Sleator
+            </p>
         </section>
 
         <section id="join-based-trees">
             <h3>Join-based trees</h3>
-
+            <p>
+                TODO: General algorithms in terms of join.
+            </p>
         </section>
 
 
     </section>
-    <section id="conclusion">
-        <h2>Conclusion</h2>
+    <section id="observations">
+        <h2>Observations</h2>
 
     </section>
 

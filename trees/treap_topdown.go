@@ -27,78 +27,35 @@ func (tree *TreapTopDown) Clone() list.List {
    }
 }
 
-// def join(pseudo_root, T1, T2):
-//    if not T1 or not T2:
-//        return T1 if T1 else T2
+//       l* ↘                                                  ↙ r*
 //
-//    pseudo_root.left = T1
-//    pseudo_root.right = T2
+//             (a)                                       (z)
+//           ↙  9  ↘                                   ↙  7  ↘
+//         ○         (b)                           (y)         ○
+//                 ↙  8  ↘                       ↙  6  ↘
+//               ○         (c)               (x)         ○
+//                       ↙  5  ↘              3
+//                     ○         (d)
+//                             ↙  4
+//                           ○
 //
-//    curr = pseudo_root
-//    while True:
-//        if not curr.right:
-//            break
-//        if curr.right.priority > T2.priority:
-//            T1 = curr.right
-//            curr.right = T1.left
-//            T1.left = None
-//            curr = T1
-//        else:
-//            curr = curr.right
 //
-//    return pseudo_root
-
-//       if i < p.s {
-//         p.s = p.s - i - 1
-//         r.l = p
-//         r = r.l
-//         p = p.l
-//      } else {
-//         i = i - p.s - 1
-//         l.r = p
-//         l = l.r
-//         p = p.r
-//      }
-func (tree *TreapTopDown) join2(l, r *Node, sl list.Size) (root *Node) {
-   if l == nil { return r }
-   if r == nil { return l }
-
-   tree.persist(&l)
-   tree.persist(&r)
-
-   n := Node{}
-   p := &n
-   for {
-      if l.y >= r.y {
-         tree.persist(&l)
-         sl = sl - l.s - 1
-         p.l = l
-         p = p.l
-         if l.r == nil {
-            p.r = r
-            break
-         }
-         l = l.r
-      } else {
-         tree.persist(&r)
-         r.s = r.s + sl
-         p.r = r
-         p = p.r
-         if r.l == nil {
-            p.l = l
-            break
-         }
-         //tree.persist(&r.l)
-         r = r.l
-      }
-   }
-   if n.l == nil {
-      return n.r
-   } else {
-      return n.l
-   }
-}
-
+//
+//                               (a)
+//                             ↙     ↘
+//                           ○         (b)
+//                                   ↙     ↘
+//                                 ○         (z)
+//                                         ↙     ↘
+//                                     (y)         ○
+//                                   ↙     ↘
+//                               (c)         ○
+//                             ↙     ↘
+//                           ○         (d)
+//                                   ↙     ↘
+//                                 ○         (x)
+//
+//
 func (tree *TreapTopDown) join(l, r *Node, sl list.Size) (root *Node) {
    p := &root
    for {
