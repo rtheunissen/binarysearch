@@ -1,16 +1,5 @@
 load "docs/benchmarks/plot/colors.gnuplot"
 
-
-set output "median.svg"
-set xlabel 'x'
-set ylabel 'y'
-
-median(x,y) = ((x+1)>=y && (y+1)>=x ? 1 : NaN)
-
-plot [0:10][0:10] median t "Median"
-
-
-
 ##################################################################
 #
 #           BALANCERS
