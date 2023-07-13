@@ -1985,8 +1985,11 @@ l* ↘                                                  ↙ r*
                 While not technically a tree, skip lists are often used as an alternative to binary search trees because they have similar performance bounds and are generally considered simpler to implement.
                 Skip lists are popular in practice, for example:
                     RocksDB, maintained by Meta and based on LevelDB by Google, uses a skip list for its memory buffer,
+<!--                https://github.com/facebook/rocksdb/blob/c3c84b3397a0eaa6450340ecea3b267c0e6c1f3c/memtable/skiplist.h#L46-->
                     Redis uses skip lists for sorted sets, and
-                    Apache HBase uses skip lists for in-memory data.
+<!--                https://github.com/redis/redis/blob/9b1d4f003de1b141ea850f01e7104e7e5c670620/src/server.h#L1335-->
+                    Apache HBase uses skip lists as the default in-memory store.
+
             </p>
             <p>
                 In 2018, Tarjan, Levy and Timmel introduced <em>zip trees</em>, which are binary search trees that are naturally isomorphic to skip lists, and simplify the mapping between skip lists and binary search trees by Dean and Jones in 2007.
