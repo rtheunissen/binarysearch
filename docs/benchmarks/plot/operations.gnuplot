@@ -86,11 +86,12 @@ WeightBalanced         = "LBSTBottomUp LBSTTopDown WBSTBottomUp WBSTTopDown"
 WeightBalancedRelaxed  = "LBSTBottomUp LBSTRelaxed WBSTBottomUp WBSTRelaxed"
 
 Probabilistic          = "TreapTopDown TreapFingerTree Randomized Zip"
-Combination            = "AVLRelaxedBottomUp AVLWeakBottomUp LBSTBottomUp TreapTopDown"
-CombinationSplay       = "AVLRelaxedBottomUp AVLWeakBottomUp LBSTBottomUp TreapTopDown Splay"
-SizeOnly               = "LBSTBottomUp LBSTRelaxed Randomized Splay"
 
-GROUPS = "RankBalanced AVLRedBlack AVLWeak AVLRelaxed RedBlackRelaxed WeightBalanced WeightBalancedRelaxed"
+SelfAdjusting          = "Splay AVLBottomUp LBSTBottomUp TreapTopDown"
+
+AllStar                = "Splay TreapFingerTree LBSTRelaxed RedBlackRelaxedTopDown"
+
+GROUPS = "Probabilistic RankBalanced AVLRedBlack AVLWeak AVLRelaxed RedBlackRelaxed WeightBalanced WeightBalancedRelaxed AllStar SelfAdjusting"
 
 OPERATIONS = "Insert InsertPersistent InsertDeleteCycles InsertDeleteCyclesPersistent"
 
@@ -116,6 +117,7 @@ do for [GROUP in GROUPS] {
         x = "column('Position')/(column('Scale')/10)"
         y = "column('Allocations')/column('Step')/log2(column('Size'))"
 
+        set xrange [0.5:*]
         set format y2 "%.2f"
 
         SMOOTH = "sbezier"
@@ -140,6 +142,7 @@ do for [GROUP in GROUPS] {
 
         DATA = sprintf("docs/benchmarks/data/operations/measurements/%s", OPERATION)
 
+        set xrange [0.5:*]
         set format y2 "%.2f"
 
         SMOOTH = "sbezier"
@@ -147,6 +150,36 @@ do for [GROUP in GROUPS] {
 
         SMOOTH = "unique"
         load "docs/benchmarks/plot/operations/lines.gnuplot"
+
+        ##################################################################
+        #
+        #           MAXIMUM PATH LENGTH (LOGARITHMIC)
+        #
+        ##################################################################
+
+        MEASUREMENT = 'LogMaximumPathLength'
+
+        set xlabel "Operations × 10^5"
+        set ylabel "log_2({/:Bold MaximumPathLength } / log_2(Size))"
+
+        DATA = sprintf("docs/benchmarks/data/operations/measurements/%s", OPERATION)
+
+        set logscale y2 2
+
+        set xrange [0.5:*]
+        set format y2 "%L"
+
+        x = "column('Position')/(column('Scale')/10)"
+        y = "column('MaximumPathLength')/log2(column('Size'))"
+
+        SMOOTH = "sbezier"
+        load "docs/benchmarks/plot/operations/lines.gnuplot"
+
+        SMOOTH = "unique"
+        load "docs/benchmarks/plot/operations/lines.gnuplot"
+
+        unset logscale y2
+
 
         ##################################################################
         #
@@ -161,6 +194,7 @@ do for [GROUP in GROUPS] {
 
         DATA = sprintf("docs/benchmarks/data/operations/measurements/%s", OPERATION)
 
+        set xrange [0.5:*]
         set format y2 "%.2f"
 
         x = "column('Position')/(column('Scale')/10)"
@@ -171,6 +205,36 @@ do for [GROUP in GROUPS] {
 
         SMOOTH = "unique"
         load "docs/benchmarks/plot/operations/lines.gnuplot"
+
+
+        ##################################################################
+        #
+        #           AVERAGE PATH LENGTH (LOGARITHMIC)
+        #
+        ##################################################################
+
+        MEASUREMENT = 'LogAveragePathLength'
+
+        set xlabel "Operations × 10^5"
+        set ylabel "log_2({/:Bold AveragePathLength } / log_2(Size))"
+
+        DATA = sprintf("docs/benchmarks/data/operations/measurements/%s", OPERATION)
+
+        set logscale y2 2
+
+        set xrange [0.5:*]
+        set format y2 "%L"
+
+        x = "column('Position')/(column('Scale')/10)"
+        y = "column('AveragePathLength')/log2(column('Size'))"
+
+        SMOOTH = "sbezier"
+        load "docs/benchmarks/plot/operations/lines.gnuplot"
+
+        SMOOTH = "unique"
+        load "docs/benchmarks/plot/operations/lines.gnuplot"
+
+        unset logscale y2
 
         ##################################################################
         #
@@ -188,6 +252,7 @@ do for [GROUP in GROUPS] {
 
         DATA = sprintf("docs/benchmarks/data/operations/measurements/%s", OPERATION)
 
+        set xrange [0.5:*]
         set format y2 "%.2f"
 
         SMOOTH = "sbezier"
@@ -204,12 +269,13 @@ do for [GROUP in GROUPS] {
 
         MEASUREMENT = 'Duration'
 
-        set xlabel "Operations / 10^6"
+        set xlabel "Operations / 10^5"
         set ylabel "{/:Bold Duration } in milliseconds"
 
         x = "column('Position')/(column('Scale')/10)"
         y = "column('Duration')/1000000" # nano / 10^6 is 1k
 
+        set xrange [0.5:*]
         set format y2 "%.2f"
 
         DATA = sprintf("docs/benchmarks/data/operations/benchmarks/%s", OPERATION)
@@ -219,6 +285,25 @@ do for [GROUP in GROUPS] {
 
         SMOOTH = "unique"
         load "docs/benchmarks/plot/operations/lines.gnuplot"
+
+        ##################################################################
+        #
+        #           TOTAL DURATION
+        #
+        ##################################################################
+
+        MEASUREMENT = 'Duration'
+
+        DATA = sprintf("docs/benchmarks/data/operations/benchmarks/%s", OPERATION)
+
+        set xlabel "Operations / 10^5"
+        set ylabel "{/:Bold Total Duration } in seconds"
+
+        x = "column('Position')/(column('Scale')/10)"
+        y = "column('Duration')/1000/1000/1000"
+
+        set xrange [0:*]
+        set format y2 "%.2f"
 
         SMOOTH = "cumulative"
         load "docs/benchmarks/plot/operations/lines.gnuplot"

@@ -56,6 +56,7 @@ do for [GROUP in GROUPS] {
     x = "column('Size')/(column('Scale')/10)"
     y = "column('PartitionCount')/column('Size')"
 
+    set xrange [0.5:*]
     set format y2 "%.2f"
 
     DATA = "docs/benchmarks/data/balancers/measurements"
@@ -80,6 +81,7 @@ do for [GROUP in GROUPS] {
     x = "column('Size')/(column('Scale')/10)"
     y = "column('PartitionDepth')/column('Size')"
 
+    set xrange [0.5:*]
     set format y2 "%.2f"
 
     DATA = "docs/benchmarks/data/balancers/measurements"
@@ -105,6 +107,7 @@ do for [GROUP in GROUPS] {
     x = "column('Size')/(column('Scale')/10)"
     y = "column('PartitionDepth')/column('PartitionCount')"
 
+    set xrange [0.5:*]
     set format y2 "%.2f"
 
     DATA = "docs/benchmarks/data/balancers/measurements"
@@ -129,6 +132,7 @@ do for [GROUP in GROUPS] {
     x = "column('Size')/(column('Scale')/10)"
     y = "column('Rotations')"
 
+    set xrange [0.5:*]
     set format y2 "%.0f"
 
     DATA = "docs/benchmarks/data/balancers/measurements"
@@ -154,6 +158,7 @@ do for [GROUP in GROUPS] {
     x = "column('Size')/(column('Scale')/10)"
     y = "column('MaximumPathLength')/log2(column('Size'))"
 
+    set xrange [0.5:*]
     set format y2 "%.2f"
 
     DATA = "docs/benchmarks/data/balancers/measurements"
@@ -179,6 +184,7 @@ do for [GROUP in GROUPS] {
     x = "column('Size')/(column('Scale')/10)"
     y = "column('AveragePathLength')/log2(column('Size'))"
 
+    set xrange [0.5:*]
     set format y2 "%.2f"
 
     DATA = "docs/benchmarks/data/balancers/measurements"
@@ -203,6 +209,7 @@ do for [GROUP in GROUPS] {
     x = "column('Size')/(column('Scale')/10)"
     y = "column('Duration')/column('Size')"
 
+    set xrange [0.5:*]
     set format y2 "%.0f"
 
     DATA = "docs/benchmarks/data/balancers/benchmarks"
@@ -219,17 +226,19 @@ do for [GROUP in GROUPS] {
     #
     ##################################################################
 
-    MEASUREMENT = "TotalDuration"
+    MEASUREMENT = "Duration"
 
     set xlabel "Size × 10^6"
-    set ylabel "{/:Bold Total Duration } in seconds / Size"
+    set ylabel "{/:Bold Total Duration } in seconds"
 
     x = "column('Size')/(column('Scale')/10)"
-    y = "column('Duration')/column('Size')/1000"
+    y = "column('Duration')/1000/1000/1000"
 
+    set xrange [0:*]
     set format y2 "%.2f"
 
     DATA = "docs/benchmarks/data/balancers/benchmarks"
+
     SMOOTH = "cumulative"
     load "docs/benchmarks/plot/balancers/lines.gnuplot"
 }

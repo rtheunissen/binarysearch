@@ -13,14 +13,14 @@ type Balancer interface {
 }
 
 func partition(p *Node, i uint64) *Node {
-   // assert(i < p.size())
-   // measurement(&partitionCount, 1)
+   assert(i < p.size())
+   measurement(&partitionCount, 1)
 
    n := Node{s: i}
    l := &n
    r := &n
    for i != p.s {
-      // measurement(&partitionDepth, 1)
+      measurement(&partitionDepth, 1)
       if i < p.s {
          p.s = p.s - i - 1
          r.l = p
@@ -602,7 +602,7 @@ func (Tree) Vine(size list.Size) Tree {
 }
 
 func (Tree) WorstCaseMedianVine(size list.Size) Tree {
-   // assert(size > 0)
+   assert(size > 0)
    t := Tree{}
    n := Node{}
    p := &n
@@ -681,7 +681,7 @@ func (tree Tree) Randomize(access random.Distribution) Tree {
 }
 
 func (tree Tree) randomize(access random.Distribution, p *Node, s list.Size) *Node {
-   // assert(p.size() == s)
+   assert(p.size() == s)
    if p == nil {
       return nil
    }
