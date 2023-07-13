@@ -19769,21 +19769,82 @@ l* ↘                                                  ↙ r*
                 The algorithms are very similar to that of treaps, but the method by which random choices are made is different.
                 Consider insertion, where a treap has some new rank in hand and is searching for a node with a lower rank along the search path to split and replace.
                 Randomized trees similarly search for a node to split and replace, but since they do not store ranks, they require a different method to determine which node to split and replace.
-                Instead of generating a single random variable across the entire integer range, randomized trees generate at each step a random number between zero and the size of the subtree, then split and replace if that number is equal to the size of the subtree, otherwise continue the search.
-                The size of the root is large, so the probability of generating a random number equal to its size is low, and becomes increasingly more likely as the search descends and subtrees become smaller.
+            </p>
+            <p>
+                Instead of generating a single random variable across the entire integer range, randomized trees generate a random number between zero and the size of the subtree at each step, then split and replace at that node if the number is equal to the size of that subtree.
+                The size of the root is large, and subtrees become smaller on the way down, so it becomes increasingly more likely to generate a random number equal to the size of the current subtree as the search continues.
             </p>
             <p>
                 Both treaps and randomized trees produce exactly the same result — random trees, so we expect the average and maximum path lengths to be similar.
-                The one advantage of treaps is that they only require one random variable per operation, where randomized trees require randomness at every step along the search path.
-                However, they do require a rank field as part of the node structure, which is not required by randomized trees.
+                The one advantage of treaps is that they require only one random variable per operation, where randomized trees require bounded randomness at every step along the search path.
+                On the other hand, treaps require a rank field as part of the node structure, which is not required by randomized trees.
             </p>
             <p>
-                TODO Zip Trees / Skip Lists
-            </p>
-            <p>
-                In 1988, Tarjan and van Wyk...
-            </p>
+                One strategy that always makes an appearance when probabilistic data structures are discussed is the <em>skip list</em> of Pugh in 1989.
+                While not technically a tree, skip lists are often used as an alternative to binary search trees because they have similar performance bounds and are generally considered simpler to implement.
+                Skip lists are popular in practice, for example:
+                    RocksDB, maintained by Meta and based on LevelDB by Google, uses a skip list for its memory buffer,
+<!--                https://github.com/facebook/rocksdb/blob/c3c84b3397a0eaa6450340ecea3b267c0e6c1f3c/memtable/skiplist.h#L46-->
+                    Redis uses skip lists for sorted sets, and
+<!--                https://github.com/redis/redis/blob/9b1d4f003de1b141ea850f01e7104e7e5c670620/src/server.h#L1335-->
+                    Apache HBase uses skip lists as the default in-memory store.
 
+            </p>
+            <p>
+                In 2018, Tarjan, Levy and Timmel introduced <em>zip trees</em>, which are binary search trees that are naturally isomorphic to skip lists, and simplify the mapping between skip lists and binary search trees by Dean and Jones in 2007.
+                Zip trees are essentially treaps, except that ranks are drawn from a geometric distribution instead of a uniform distribution, where rank ties are allowed only on the right.
+                This strategy requires fewer bits of randomness than treaps, and the structural equivalence to skip lists is a novel characteristic.
+            </p>
+            <p>
+                The geometric rank distribution used by zip trees is the same as in zip trees, conceptually the number of times in a row a coin-flip lands on heads.
+                The probability of each successive coin-flip landing on heads is half the probability of the previous flip.
+                This aligns with binary search trees where approximately half the nodes are in the lowest level, a quarter of the nodes are one level up, all the way to the root level with only one node.
+                The root node therefore has the highest-equal rank, corresponding to the longest streak of successive coin-flips landing on heads produced by that tree so far.
+            </p>
+            <p>
+                In 1988, Tarjan and van Wyk discussed a <em>homogenous finger search tree</em>, where the pointers along the left-most and right-most paths of the tree, referred to as the spines, are reversed such that the left pointer of nodes along the left spine and the right pointer of nodes along the right spine point up to their parent.
+                Access to the tree is then through the <em>head</em> and the <em>tail</em> nodes, rather than the root.
+                Intuitively, this provides access from the front and the back of the sequence searching towards the middle, rather than starting in the middle and searching outward from there.
+                This results in a longer average path length, but access close to the start or the end of the sequence is more efficient.
+            </p>
+            <p>
+                Searching for a node in a homogenous finger search tree starts at either the head or the tail of the tree and proceeds upward towards the root, until the search is about to ascend too far, at which point it descends inward.
+                This inward branch is the same branch that would be taken by a typical search for the same node starting from the root.
+                Balancing is maintained as usual in the internal tree at the branching point, which has the usual pointer convention, then bottom-up along the spine as far as needed until balance is known to be restored.
+            </p>
+            <p>
+                The ideal balancing strategy for finger search trees is then one that does not need to traverse all the way up to the root every time.
+                Strategies like the standard AVL rule and weight-balanced trees and are not great here, because they may require rotations all along the search path and therefore must traverse all the way up to the root.
+                Other rank-balanced strategies like red-black trees and weak AVL trees are a great choice because their balancing procedure can stop as soon as a terminating case is handled.
+                The idea of reversing the pointers along the left and right spines of the tree was also explored by Blandford and Blelloch in 2001, who used a treap as the underlying balancing strategy.
+            </p>
+            <p>
+                Reversing the nodes along the spine creates a problem for persistence through path copying.
+                The root node still determines the size of its conceptual left subtree, which is used to determine whether to search from the head or the tail.
+                When the size of the left subtree of the root changes as a result of an insertion or deletion from the head, all paths that lead to the root must be copied, which includes the entire right spine.
+                To resolve this, consider breaking the links pointing up to the root, and using the left and right pointers of the root to reference the head and tail nodes.
+            </p>
+            <p>
+                Another adjustment is to always have the nodes along the spine store the size of their interior subtrees.
+                This is already in place for the right spine because nodes store the size of their left subtree already, but the sizes along the left spine must be flipped.
+                This breaks the convention a little and is certainly more complex, but perhaps there is an elegant representation hidden here.
+                Nonetheless, we arrive at a structure that resembles this:
+            </p>
+            <pre style="font-family: monospace">
+
+               ROOT
+                    ↘
+                      ●
+
+              ●               ●
+            ↗   ↘           ↙   ↖
+          ●       △       △       ●
+        ↗   ↘                   ↙   ↖
+      ●       △               △      ●
+    ↗   ↘                          ↙   ↖
+HEAD      △                      △      TAIL
+
+            </pre>
             <figure>
                 <?xml version="1.0" encoding="utf-8"  standalone="no"?>
 <svg 
