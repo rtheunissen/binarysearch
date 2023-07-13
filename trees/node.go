@@ -480,7 +480,7 @@ func (tree *Tree) replacedByLeftSubtree(p **Node) *Node {
 //
 //
 //func (tree *Tree) deleteMin2(p *Node) (root *Node, deleted *Node) {
-//   // assert(p != nil)
+//   assert(p != nil)
 //   n := Node{}
 //   l := &n
 //   for {
@@ -886,25 +886,25 @@ func deleteR(p *Node, i *list.Position) **Node {
 
 /*
 func (tree *Tree) pathL(p *Node) **Node {
-   // assert(p.l != nil)
+   assert(p.l != nil)
    tree.copy(&p.l)
    return pathL(p)
 }
 
 func (tree *Tree) pathR(p *Node, i *Position) **Node {
-   // assert(p.r != nil)
+   assert(p.r != nil)
    tree.copy(&p.r)
    return pathR(p, i)
 }
 */
 // TODO: these are nuts
 func (tree *Tree) pathLeft(p ***Node) {
-   // assert((**p).l != nil)
+   assert((**p).l != nil)
    tree.persist(&(**p).l)
    *p = insertL(**p)
 }
 func (tree *Tree) pathRight(p ***Node, i *list.Position) {
-   // assert((**p).r != nil)
+   assert((**p).r != nil)
    tree.persist(&(**p).r)
    *p = insertR(**p, i)
 }
@@ -1018,7 +1018,7 @@ func (tree *Tree) appendL(p **Node, n *Node) {
 
 //// TODO put this under linked list ?
 //func (tree *Tree) truncateL(p **Node) *Node {
-//   // assert(*p != nil)
+//   assert(*p != nil)
 //   tree.copy(p)
 //   for (*p).l != nil {
 //      p = &(*p).l
@@ -1030,7 +1030,7 @@ func (tree *Tree) appendL(p **Node, n *Node) {
 //}
 //
 //func (tree *Tree) truncateR(p **Node) *Node {
-//   // assert(*p != nil)
+//   assert(*p != nil)
 //   tree.copy(p)
 //   for (*p).r != nil {
 //      p = &(*p).r

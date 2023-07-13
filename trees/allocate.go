@@ -111,7 +111,7 @@ func (tree Tree) shared(p *Node) bool {
 
 // Replaces the given node with a copy only if the node shared with other trees.
 func (tree Tree) persist(p **Node) {
-   // assert(*p != nil)
+   assert(*p != nil)
    //
    // There is no need to copy the node if it is NOT shared with other trees.
    //
