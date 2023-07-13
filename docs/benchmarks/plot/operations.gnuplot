@@ -90,11 +90,14 @@ Combination            = "AVLRelaxedBottomUp AVLWeakBottomUp LBSTBottomUp TreapT
 CombinationSplay       = "AVLRelaxedBottomUp AVLWeakBottomUp LBSTBottomUp TreapTopDown Splay"
 SizeOnly               = "LBSTBottomUp LBSTRelaxed Randomized Splay"
 
-GROUPS = "RankBalanced AVLRedBlack AVLWeak AVLRelaxed RedBlackRelaxed WeightBalanced WeightBalancedRelaxed"
+GROUPS = "Probabilistic RankBalanced AVLRedBlack AVLWeak AVLRelaxed RedBlackRelaxed WeightBalanced WeightBalancedRelaxed"
+#GROUPS = "RedBlackRelaxed"
 
 OPERATIONS = "Insert InsertPersistent InsertDeleteCycles InsertDeleteCyclesPersistent"
+OPERATIONS = "InsertDeleteCycles"
 
 DISTRIBUTIONS = "Uniform Zipf Maximum Skewed Normal"
+DISTRIBUTIONS = ""
 
 do for [GROUP in GROUPS] {
 
@@ -116,6 +119,7 @@ do for [GROUP in GROUPS] {
         x = "column('Position')/(column('Scale')/10)"
         y = "column('Allocations')/column('Step')/log2(column('Size'))"
 
+        set xrange [0.5:*]
         set format y2 "%.2f"
 
         SMOOTH = "sbezier"
@@ -140,6 +144,7 @@ do for [GROUP in GROUPS] {
 
         DATA = sprintf("docs/benchmarks/data/operations/measurements/%s", OPERATION)
 
+        set xrange [0.5:*]
         set format y2 "%.2f"
 
         SMOOTH = "sbezier"
@@ -161,6 +166,7 @@ do for [GROUP in GROUPS] {
 
         DATA = sprintf("docs/benchmarks/data/operations/measurements/%s", OPERATION)
 
+        set xrange [0.5:*]
         set format y2 "%.2f"
 
         x = "column('Position')/(column('Scale')/10)"
@@ -188,6 +194,7 @@ do for [GROUP in GROUPS] {
 
         DATA = sprintf("docs/benchmarks/data/operations/measurements/%s", OPERATION)
 
+        set xrange [0.5:*]
         set format y2 "%.2f"
 
         SMOOTH = "sbezier"
@@ -204,12 +211,13 @@ do for [GROUP in GROUPS] {
 
         MEASUREMENT = 'Duration'
 
-        set xlabel "Operations / 10^6"
+        set xlabel "Operations / 10^5"
         set ylabel "{/:Bold Duration } in milliseconds"
 
         x = "column('Position')/(column('Scale')/10)"
         y = "column('Duration')/1000000" # nano / 10^6 is 1k
 
+        set xrange [0.5:*]
         set format y2 "%.2f"
 
         DATA = sprintf("docs/benchmarks/data/operations/benchmarks/%s", OPERATION)
@@ -219,6 +227,25 @@ do for [GROUP in GROUPS] {
 
         SMOOTH = "unique"
         load "docs/benchmarks/plot/operations/lines.gnuplot"
+
+        ##################################################################
+        #
+        #           TOTAL DURATION
+        #
+        ##################################################################
+
+        MEASUREMENT = 'Duration'
+
+        DATA = sprintf("docs/benchmarks/data/operations/benchmarks/%s", OPERATION)
+
+        set xlabel "Operations / 10^5"
+        set ylabel "{/:Bold Total Duration } in seconds"
+
+        x = "column('Position')/(column('Scale')/10)"
+        y = "column('Duration')/1000/1000/1000"
+
+        set xrange [0:*]
+        set format y2 "%.2f"
 
         SMOOTH = "cumulative"
         load "docs/benchmarks/plot/operations/lines.gnuplot"

@@ -4,7 +4,7 @@ set samples 1000
 
 set border 6 front lc '#000000' lt -1 lw 0
 
-set style line 1000 dashtype 1 lw 0.1 ps 0 lc rgb "#000000"
+set style line 1000 dashtype 1 lw 0.1 ps 0 lc rgb "#333333"
 
 #set grid y2tics back linestyle 1000
 set grid xtics back linestyle 1000
@@ -32,8 +32,8 @@ unset mx2tics
 unset x2tics
 unset y2tics
 
-set xtics offset 0,0.5
-set xrange [0.8:*]
+set xtics 1,1,10 offset 0,0.5
+
 
 unset y2tics
 set y2tics autofreq offset 0,0

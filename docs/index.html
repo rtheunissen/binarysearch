@@ -100,9 +100,10 @@
             font-family: "Charter", "Bitstream Charter", "Cambria", serif;
             display: block;
             margin: auto;
-            max-width: 38rem;
+            max-width: 40rem;
             line-height: 1.4;
             padding: 0 1rem;
+            box-sizing: border-box;
         }
         a, .underline {
             display: inline-block;
@@ -1209,7 +1210,7 @@ a  b  c         a  b  c           a  b  c
                     A horizontal line indicates that the number of nodes to partition grows linearly in the size of the tree.
                 </p>
                 <figure>
-                    {{ include "docs/benchmarks/svg/balancers/Partition/Uniform/PartitionCount__sbezier.svg" }}
+                    {{ include "docs/benchmarks/svg/balancers/Partition/PartitionCount__sbezier.svg" }}
                 </figure>
                 <p>
                     The expectation is that height-balance partitions less often than median-balance because it avoids some redundant partitioning, but the results show that height-balance actually partitions more nodes than median-balance.
@@ -1233,7 +1234,6 @@ a  b  c         a  b  c           a  b  c
                     Dividing the total partition depth by the size of the tree gives the average partition depth per node, and plotting partition depth against partition count gives the average partition depth per call.
                 </p>
 
-
                 <figure>
                     {{ include "docs/benchmarks/svg/balancers/Partition/TotalPartitionDepth__sbezier.svg" }}
                 </figure>
@@ -1254,7 +1254,6 @@ a  b  c         a  b  c           a  b  c
                 </figure>
 
             </section>
-
 
             <section id="average-path-length">
                 <h4>Average Path Length</h4>
@@ -1323,7 +1322,7 @@ a  b  c         a  b  c           a  b  c
                 </p>
 
                 <figure>
-                    {{ include "docs/benchmarks/svg/balancers/All/TotalDuration__cumulative.svg" }}
+                    {{ include "docs/benchmarks/svg/balancers/All/Duration__cumulative.svg" }}
                 </figure>
                 <p>
                     DSW appears to be consistently slower to balance large random trees, but the algorithm has some advantages over partition-based balancing that should not be discounted.
@@ -1835,9 +1834,7 @@ a  b  c         a  b  c           a  b  c
             </p>
             <figure>
                 {{ include "docs/benchmarks/svg/operations/WeightBalancedRelaxed/InsertDeleteCycles/AveragePathLength__sbezier.svg" }}
-
             </figure>
-
             <figure>
                 {{ include "docs/benchmarks/svg/operations/WeightBalancedRelaxed/InsertDeleteCycles/MaximumPathLength__sbezier.svg" }}
             </figure>
@@ -1871,9 +1868,17 @@ a  b  c         a  b  c           a  b  c
                 The root of the tree therefore has the highest rank.
                 This results with high likelihood in a balanced tree, as it becomes increasingly unlikely that a new rank is greater than the ranks above it.
             </p>
+            <p>
                 The algorithms to maintain the rank invariant are intuitive and simple to implement.
                 There are two fundamental algorithms: <em>split</em>, which partitions a node into two separate trees at a given position, and <em>join</em> which combines two subtrees into one.
-                These algorithms are similar to <em>partition</em>, operating purely top-down in constant space.
+                These algorithms are similar to <em>partition</em>, operating top-down in constant space.
+            </p>
+            <p>
+                To insert a node, start by generating a new random rank for it, then follow the search path from the root until a node is reached with a lower rank than the new rank.
+                Replace this node by the new node, then split the remaining search space into the left and right subtrees of the new node.
+                When the search reaches the bottom of the tree, it suggests that the rank of the new node is the minimum of its path, and therefore safe to attach there.
+                This algorithm is exactly the "insert at root" algorithm of Stephenson, on which <em>partition</em> is based.
+                To delete a node, simply find the node to delete then replace it by the join of its subtrees.
             </p>
 
             <pre>
@@ -1980,20 +1985,38 @@ l* ↘                                                  ↙ r*
                 Therefore, when the height of a tree exceeds this bound there must be at least one node that is <em>not</em> weight-balanced.
                 Galperin and Rivest refer to this node as a <span class="quote">scapegoat</span>.
             </p>
-
+            <p>
+                In 1997, Martínez and Roura introduced <em>randomized binary search trees</em>, which are based on subtree size and thereby avoid the need to generate and store a rank in every node.
+                The algorithms are very similar to that of treaps, but the method by which random choices are made is different.
+                Consider insertion, where a treap has some new rank in hand and is searching for a node with a lower rank along the search path to split and replace.
+                Randomized trees similarly search for a node to split and replace, but since they do not store ranks, they require a different method to determine which node to split and replace.
+                Instead of generating a single random variable across the entire integer range, randomized trees generate at each step a random number between zero and the size of the subtree, then split and replace if that number is equal to the size of the subtree, otherwise continue the search.
+                The size of the root is large, so the probability of generating a random number equal to its size is low, and becomes increasingly more likely as the search descends and subtrees become smaller.
+            </p>
+            <p>
+                Both treaps and randomized trees produce exactly the same result — random trees, so we expect the average and maximum path lengths to be similar.
+                The one advantage of treaps is that they only require one random variable per operation, where randomized trees require randomness at every step along the search path.
+                However, they do require a rank field as part of the node structure, which is not required by randomized trees.
+            </p>
             <p>
                 TODO Zip Trees / Skip Lists
             </p>
             <p>
-                TODO Randomized Binary Search Trees, Martinez
-            </p>
-        </section>
-
-        <section id="finger-search-trees">
-            <h3>Finger-search trees</h3>
-            <p>
                 In 1988, Tarjan and van Wyk...
             </p>
+
+            <figure>
+                {{ include "docs/benchmarks/svg/operations/Probabilistic/InsertDeleteCycles/AveragePathLength__sbezier.svg" }}
+            </figure>
+            <figure>
+                {{ include "docs/benchmarks/svg/operations/Probabilistic/InsertDeleteCycles/MaximumPathLength__sbezier.svg" }}
+            </figure>
+            <figure>
+                {{ include "docs/benchmarks/svg/operations/Probabilistic/InsertDeleteCycles/Duration__sbezier.svg" }}
+            </figure>
+            <figure>
+                {{ include "docs/benchmarks/svg/operations/Probabilistic/InsertDeleteCycles/Duration__cumulative.svg" }}
+            </figure>
         </section>
 
         <section id="self-adjusting-trees">

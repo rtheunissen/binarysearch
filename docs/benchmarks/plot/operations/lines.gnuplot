@@ -16,7 +16,7 @@ set output SVG
 print SVG
 
 set table $TABLE
-plot for [STRATEGY in @GROUP] DATA.'/'.STRATEGY using (@x):(@y) smooth @SMOOTH
+plot for [STRATEGY in @GROUP] DATA.'/'.STRATEGY using (@x):(@y) smooth unique
 unset table
 
 #set title "{/:Bold ".OPERATION."}"
@@ -25,6 +25,7 @@ plot for [i=1:words(@GROUP)] $TABLE \
     index (i-1) \
     using 1:2 \
     axes x1y2 \
+    smooth @SMOOTH \
     with linespoints \
     linestyle value(word(@GROUP,i)) \
     title word(@GROUP,i)
@@ -37,7 +38,7 @@ do for [DISTRIBUTION in DISTRIBUTIONS] {
     print SVG
 
     set table $TABLE
-    plot for [STRATEGY in @GROUP] DATA.'/'.STRATEGY using (@x):(filter('Distribution', DISTRIBUTION, @y)) smooth @SMOOTH
+    plot for [STRATEGY in @GROUP] DATA.'/'.STRATEGY using (@x):(filter('Distribution', DISTRIBUTION, @y)) smooth unique
     unset table
 
     #set title "{/:Bold ".OPERATION."} — {/:Italic ".DISTRIBUTION."}"
@@ -46,6 +47,7 @@ do for [DISTRIBUTION in DISTRIBUTIONS] {
         index (i-1) \
         using 1:2 \
         axes x1y2 \
+        smooth @SMOOTH \
         with linespoints \
         linestyle value(word(@GROUP,i)) \
         title word(@GROUP,i)
