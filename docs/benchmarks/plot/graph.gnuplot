@@ -32,11 +32,8 @@ unset mx2tics
 unset x2tics
 unset y2tics
 
-set xtics 1,1,10 offset 0,0.5
-
-
-unset y2tics
-set y2tics autofreq offset 0,0
+set xtics 1,1,10 offset 0,0.5 font "KaTeX_Main,8"
+set y2tics autofreq offset 0,0 font "KaTeX_Main,8"
 
 set datafile missing "NaN"
 

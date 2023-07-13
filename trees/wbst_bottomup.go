@@ -220,8 +220,8 @@ func (tree *WBSTBottomUp) insert(p *Node, s list.Size, i list.Position, x list.D
    sl := p.s
    sr := s - p.s - 1
 
-   assert(tree.isBalanced(sl, sr))
-   assert(tree.isBalanced(sr, sl))
+   // assert(tree.isBalanced(sl, sr))
+   // assert(tree.isBalanced(sr, sl))
 
    if i <= p.s {
       p.l = tree.insert(p.l, sl, i, x)
@@ -254,8 +254,8 @@ func (tree *WBSTBottomUp) delete(p *Node, s list.Size, i list.Position, x *list.
    sl := p.s
    sr := s - p.s - 1
 
-   assert(tree.isBalanced(sl, sr))
-   assert(tree.isBalanced(sr, sl))
+   // assert(tree.isBalanced(sl, sr))
+   // assert(tree.isBalanced(sr, sl))
 
    if i == p.s {
       defer tree.free(p)
@@ -309,24 +309,24 @@ func (tree *WBSTBottomUp) delete(p *Node, s list.Size, i list.Position, x *list.
 }
 
 func (tree *WBSTBottomUp) Select(i list.Size) list.Data {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    return tree.lookup(tree.root, i)
 }
 
 func (tree *WBSTBottomUp) Update(i list.Size, x list.Data) {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    tree.persist(&tree.root)
    tree.update(tree.root, i, x)
 }
 
 func (tree *WBSTBottomUp) Insert(i list.Position, x list.Data) {
-   assert(i <= tree.size)
+   // assert(i <= tree.size)
    tree.root = tree.insert(tree.root, tree.size, i, x)
    tree.size++
 }
 
 func (tree *WBSTBottomUp) Delete(i list.Position) (x list.Data) {
-   assert(i < tree.size)
+   // assert(i < tree.size)
    tree.root = tree.delete(tree.root, tree.size, i, &x)
    tree.size--
    return

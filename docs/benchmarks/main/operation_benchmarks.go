@@ -1,9 +1,9 @@
 package main
 
 import (
+   "bst/trees"
    "bst/types/list"
    "bst/types/list/operations"
-   "bst/trees"
    "bst/utility"
    "bst/utility/random"
    "bst/utility/random/distribution"

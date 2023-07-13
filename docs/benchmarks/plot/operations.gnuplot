@@ -47,7 +47,7 @@ set style line AVLTopDown                   dashtype 3 ps 1 lw 1 pt   2 pn 2 lc 
 set style line AVLWeakBottomUp              dashtype 1 ps 1 lw 1 pt   4 pn 2 lc rgb COLOR_BLUE
 set style line AVLWeakTopDown               dashtype 5 ps 1 lw 1 pt   3 pn 2 lc rgb COLOR_GREEN
 set style line AVLRelaxedTopDown            dashtype 5 ps 1 lw 1 pt   6 pn 2 lc rgb COLOR_BLUE
-set style line AVLRelaxedBottomUp           dashtype 1 ps 1 lw 1 pt   7 pn 2 lc rgb COLOR_YELLOW
+set style line AVLRelaxedBottomUp           dashtype 1 ps 1 lw 1 pt   7 pn 2 lc rgb COLOR_PURPLE
 set style line RedBlackBottomUp             dashtype 1 ps 1 lw 1 pt  12 pn 2 lc rgb COLOR_RED
 set style line RedBlackTopDown              dashtype 3 ps 1 lw 1 pt   5 pn 2 lc rgb COLOR_BLUE
 set style line RedBlackRelaxedBottomUp      dashtype 1 ps 1 lw 1 pt   8 pn 2 lc rgb COLOR_GREEN
@@ -80,7 +80,7 @@ AVLRedBlack            = "AVLBottomUp AVLTopDown RedBlackBottomUp RedBlackTopDow
 AVLWeak                = "AVLBottomUp AVLTopDown AVLWeakBottomUp AVLWeakTopDown"
 AVLRelaxed             = "AVLBottomUp AVLTopDown AVLRelaxedBottomUp AVLRelaxedTopDown"
 RedBlackRelaxed        = "RedBlackBottomUp RedBlackTopDown RedBlackRelaxedBottomUp RedBlackRelaxedTopDown"
-RankBalanced           = "AVLBottomUp AVLWeakTopDown AVLRelaxedTopDown RedBlackRelaxedTopDown"
+RankBalanced           = "AVLBottomUp AVLWeakTopDown AVLRelaxedBottomUp RedBlackRelaxedTopDown"
 
 WeightBalanced         = "LBSTBottomUp LBSTTopDown WBSTBottomUp WBSTTopDown"
 WeightBalancedRelaxed  = "LBSTBottomUp LBSTRelaxed WBSTBottomUp WBSTRelaxed"
@@ -89,7 +89,7 @@ Probabilistic          = "TreapTopDown TreapFingerTree Randomized Zip"
 
 SelfAdjusting          = "Splay AVLBottomUp LBSTBottomUp TreapTopDown"
 
-AllStar                = "Splay TreapFingerTree LBSTRelaxed RedBlackRelaxedTopDown"
+AllStar                = "Splay LBSTRelaxed AVLRelaxedBottomUp AVLWeakBottomUp"
 
 GROUPS = "Probabilistic RankBalanced AVLRedBlack AVLWeak AVLRelaxed RedBlackRelaxed WeightBalanced WeightBalancedRelaxed AllStar SelfAdjusting"
 
