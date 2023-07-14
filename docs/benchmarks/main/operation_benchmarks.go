@@ -21,7 +21,7 @@ func main() {
    TreeBenchmark{
       Scale:       1_000_000,
       Samples:         1_000,
-      Iterations:         10,
+      Iterations:        100,
       Operation: utility.Resolve(*operation, []list.Operation{
          &operations.Insert{},
          &operations.InsertPersistent{},
